@@ -16,7 +16,9 @@ uses
   uTTransacao in '..\..\..\GeralAppServer\uTTransacao.pas',
   Funcoes in '..\..\..\GeralAppServer\Funcoes.pas',
   Libs.TSeguranca in '..\Libs\Libs.TSeguranca.pas',
-  ServerMethods.Importacao.AutoSc in 'ServerMethods\ServerMethods.Importacao.AutoSc.pas' {SMImportacaoAutoSC: TDSServerModule};
+  ServerMethods.AutoSc in 'ServerMethods\ServerMethods.AutoSc.pas' {SMAutoSC: TDSServerModule},
+  Libs.TFiltros in '..\Libs\Libs.TFiltros.pas',
+  Utils.TFuncoesJSON in 'Utils\Utils.TFuncoesJSON.pas';
 
 {$R *.res}
 

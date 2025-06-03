@@ -139,11 +139,13 @@
         <DCCReference Include="..\..\..\GeralAppServer\uTTransacao.pas"/>
         <DCCReference Include="..\..\..\GeralAppServer\Funcoes.pas"/>
         <DCCReference Include="..\Libs\Libs.TSeguranca.pas"/>
-        <DCCReference Include="ServerMethods\ServerMethods.Importacao.AutoSc.pas">
-            <Form>SMImportacaoAutoSC</Form>
+        <DCCReference Include="ServerMethods\ServerMethods.AutoSc.pas">
+            <Form>SMAutoSC</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\Libs\Libs.TFiltros.pas"/>
+        <DCCReference Include="Utils\Utils.TFuncoesJSON.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

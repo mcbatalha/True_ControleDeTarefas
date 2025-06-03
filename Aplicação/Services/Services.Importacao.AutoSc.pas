@@ -23,9 +23,11 @@ type
   TSrvImportacaoAutoAc = class
   private
      Fdm            : TdtmImportacoesAutoSC;
-     FPxyImportacao : TSMImportacaoAutoSCClient;
+     FPxyImportacao : TSMAutoSCClient;
      FDados         : TJSONArray;
      FTotalDeLinhas : integer;
+     FJSonCarregado : Boolean;
+
 
 
      function PosicaoColuna(const AColuna : String): integer;
@@ -37,7 +39,6 @@ type
      function Validar(const ASheet : Variant) : Boolean;
      function Analisar(ALblGauge : TLabel; AGauge : TGauge; const ASheet : Variant) : Boolean;
      function DadoDaColuna(const ASheet : Variant; const AColuna : String; const ALinha : integer) : String;
-
      function ImportarDados : Boolean;
 
      property TotalLinhas : integer read FTotalDeLinhas write FTotalDeLinhas;
@@ -58,27 +59,13 @@ var
    LColuna : String;
    LAux    : String;
 
-   j : integer;
-
 begin
    Result := False;
    FDados := TJSONArray.create;
    AGauge.MaxValue := FTotalDeLinhas;
 
-   j := 1;
    for I := 2 to FTotalDeLinhas + 1 do
       begin
-
-      if i = 2 then
-         begin
-         LAux    := DadoDaColuna(ASheet, 'PROCESSO',i);
-         InformationMessage(LAux,C_TITULO_MENSAGENS);
-      end else if i = FTotalDeLinhas then
-         begin
-         LAux    := DadoDaColuna(ASheet, 'PROCESSO',i);
-         InformationMessage(LAux,C_TITULO_MENSAGENS);
-      end;
-
       LDado := TJSONObject.Create;
 
       LColuna := 'AUDITORIA';
@@ -116,20 +103,17 @@ begin
       LColuna := 'PRAZOANS';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
-      LAux    := DadoDaColuna(ASheet, 'PROCESSO',i);
-
       FDados.Add(LDado);
       AGauge.Progress := AGauge.Progress + 1;
-      ALblGauge.caption := 'Analisando ' + inttostr(i) + ' de ' + inttostr(FTotalDeLinhas);
+      ALblGauge.caption := 'Analisando ' + inttostr(i-1) + ' de ' + inttostr(FTotalDeLinhas);
       Application.ProcessMessages;
-
-      inc(j);
    end;
 
-   InformationMessage(LAux,C_TITULO_MENSAGENS);
+   ALblGauge.caption := 'Analisados ' + inttostr(FTotalDeLinhas) + ' de ' + inttostr(FTotalDeLinhas);
 
    InformationMessage('Análise finalizada', C_TITULO_MENSAGENS);
    Result          := True;
+   FJSonCarregado  := Result;
    AGauge.Progress := 0;
 
 //   Result := Trim(RemoveAspas(FColunas[PosicaoColuna(AColuna)])));
@@ -138,7 +122,7 @@ end;
 constructor TSrvImportacaoAutoAc.Create;
 begin
    Application.CreateForm(TdtmImportacoesAutoSC, Fdm);
-   FPxyImportacao := TSMImportacaoAutoSCClient.Create(Fdm.SQLConnection.DBXConnection);
+   FPxyImportacao := TSMAutoSCClient.Create(Fdm.SQLConnection.DBXConnection);
 end;
 
 
@@ -154,6 +138,10 @@ destructor TSrvImportacaoAutoAc.Destroy;
 begin
    FreeAndNil(FPxyImportacao);
    FreeAndNil(Fdm);
+
+   if FJSonCarregado then
+      FreeAndNil(FDados);
+
 
    inherited;
 end;
@@ -177,6 +165,8 @@ begin
    frmMensagem.Close;
 
    Result   := LRetorno.Values['importou'].AsType<Boolean>;
+
+   FJSonCarregado := not Result;
 
    if Result then
       begin

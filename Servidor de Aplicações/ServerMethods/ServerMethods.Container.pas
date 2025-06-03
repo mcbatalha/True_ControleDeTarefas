@@ -79,7 +79,7 @@ uses
   ServerMethods.MetodosGerais,
   ServerMethods.Cadastro.Usuarios,
   ServerMethods.Cadastro.Setores,
-  ServerMethods.Importacao.AutoSc;
+  ServerMethods.AutoSc;
 
 procedure TServerContainer.DSAuthenticationManagerUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean; UserRoles: TStrings);
 begin
@@ -115,7 +115,7 @@ end;
 
 procedure TServerContainer.dsscImportacaoAutoSCGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
-  PersistentClass := ServerMethods.Importacao.AutoSc.TSMImportacaoAutoSC;
+  PersistentClass := ServerMethods.AutoSc.TSMAutoSC;
 
 end;
 

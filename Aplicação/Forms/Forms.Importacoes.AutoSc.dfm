@@ -10,7 +10,6 @@ inherited frmImportacoesAutoSc: TfrmImportacoesAutoSc
     inherited btnEfetivarImportacao: TBitBtn
       Left = 217
       Top = 299
-      OnClick = btnEfetivarImportacaoClick
       ExplicitLeft = 217
       ExplicitTop = 299
     end

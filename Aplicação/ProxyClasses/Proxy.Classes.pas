@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 01/06/2025 14:22:59
+// 03/06/2025 14:48:02
 //
 
 unit Proxy.Classes;
@@ -64,7 +64,7 @@ type
     procedure GravarLogLimpesaSenha(AIdUsuario: Integer; AIdUsuarioResponsavel: Integer);
   end;
 
-  TSMImportacaoAutoSCClient = class(TDSAdminClient)
+  TSMAutoSCClient = class(TDSAdminClient)
   private
     FImportarCommand: TDBXCommand;
   public
@@ -351,13 +351,13 @@ begin
   inherited;
 end;
 
-function TSMImportacaoAutoSCClient.Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
+function TSMAutoSCClient.Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
 begin
   if FImportarCommand = nil then
   begin
     FImportarCommand := FDBXConnection.CreateCommand;
     FImportarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FImportarCommand.Text := 'TSMImportacaoAutoSC.Importar';
+    FImportarCommand.Text := 'TSMAutoSC.Importar';
     FImportarCommand.Prepare;
   end;
   FImportarCommand.Parameters[0].Value.SetJSONValue(ARegistros, FInstanceOwner);
@@ -366,17 +366,17 @@ begin
   Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-constructor TSMImportacaoAutoSCClient.Create(ADBXConnection: TDBXConnection);
+constructor TSMAutoSCClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
 end;
 
-constructor TSMImportacaoAutoSCClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+constructor TSMAutoSCClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
 begin
   inherited Create(ADBXConnection, AInstanceOwner);
 end;
 
-destructor TSMImportacaoAutoSCClient.Destroy;
+destructor TSMAutoSCClient.Destroy;
 begin
   FImportarCommand.DisposeOf;
   inherited;

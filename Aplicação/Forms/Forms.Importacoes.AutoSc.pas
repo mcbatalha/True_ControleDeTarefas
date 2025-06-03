@@ -36,7 +36,8 @@ type
   private
     { Private declarations }
 
-    FService : TSrvImportacaoAutoAc;
+    FService  : TSrvImportacaoAutoAc;
+
     function ValidarPlanilha : Boolean; override;
 
     const

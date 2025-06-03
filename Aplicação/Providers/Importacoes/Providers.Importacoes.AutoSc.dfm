@@ -1,5 +1,5 @@
 inherited dtmImportacoesAutoSC: TdtmImportacoesAutoSC
   inherited DSProviderConnection: TDSProviderConnection
-    ServerClassName = 'TSMImportacaoAutoSC'
+    ServerClassName = 'TSMAutoSC'
   end
 end
