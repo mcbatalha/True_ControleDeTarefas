@@ -1,0 +1,19 @@
+# Ignorar arquivos temporários e backups
+**/*.bak
+**/*.tmp
+**/*.~*
+**/*~
+
+# Ignorar arquivos de backup do Delphi
+**/*.dcu
+**/*.~dfm
+**/*.~pas
+**/*.~dpr
+**/*.dsk
+**/*.local
+**/*.identcache
+
+# Ignorar diretórios
+**/__history/
+**/__recovery/
+**/Exe/

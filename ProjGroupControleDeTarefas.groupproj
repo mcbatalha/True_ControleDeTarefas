@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{045EF23C-23F8-492F-9FC4-6524908D63C9}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Aplicação\ControleDeTarefas.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Servidor de Aplicações\AppServerControleTarefas.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ControleDeTarefas">
+        <MSBuild Projects="Aplicação\ControleDeTarefas.dproj"/>
+    </Target>
+    <Target Name="ControleDeTarefas:Clean">
+        <MSBuild Projects="Aplicação\ControleDeTarefas.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ControleDeTarefas:Make">
+        <MSBuild Projects="Aplicação\ControleDeTarefas.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="AppServerControleTarefas">
+        <MSBuild Projects="Servidor de Aplicações\AppServerControleTarefas.dproj"/>
+    </Target>
+    <Target Name="AppServerControleTarefas:Clean">
+        <MSBuild Projects="Servidor de Aplicações\AppServerControleTarefas.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AppServerControleTarefas:Make">
+        <MSBuild Projects="Servidor de Aplicações\AppServerControleTarefas.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ControleDeTarefas;AppServerControleTarefas"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ControleDeTarefas:Clean;AppServerControleTarefas:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ControleDeTarefas:Make;AppServerControleTarefas:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
