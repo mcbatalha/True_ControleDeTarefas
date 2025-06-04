@@ -121,7 +121,7 @@ type
   public
     function Importar(const ARegistros : TJSONArray; const AIdUsuario : integer) : TJSONObject;
 
-    function FiltrarProcessos(const AFiltros : TFiltros) : TJSONArray;
+    function FiltrarProcessos(const AFiltros : TJSONObject) : TJSONArray;
 
 
 
@@ -274,63 +274,80 @@ begin
    qryTiposAuditoria.Close;
 end;
 
-function TSMAutoSC.FiltrarProcessos(const AFiltros : TFiltros) : TJSONArray;
+function TSMAutoSC.FiltrarProcessos(const AFiltros : TJSONObject) : TJSONArray;
 var
    LFiltros : TFiltrosAutoSc;
-
 begin
-   LFiltros := AFiltros.getFiltrosAutoSC;
+
+   LFiltros.idTipoAuditoria      := AFiltros.GetValue<integer>('idTipoAuditoria');
+   LFiltros.idTipoPrazoCaixa     := AFiltros.GetValue<integer>('idTipoPrazoCaixa');
+   LFiltros.idTipoPrazoCaixaHoje := AFiltros.GetValue<integer>('idTipoPrazoCaixaHoje');
+   LFiltros.idTipoStatus         := AFiltros.GetValue<integer>('idTipoStatus');
+   LFiltros.idTipoProcesso       := AFiltros.GetValue<integer>('idTipoProcesso');
+   LFiltros.idTipoProcessoE      := AFiltros.GetValue<integer>('idTipoProcessoE');
+   LFiltros.idTipoPrazoANS       := AFiltros.GetValue<integer>('idTipoPrazoANS');
+   LFiltros.idSetorDesignado     := AFiltros.GetValue<integer>('idSetorDesignado');
+   LFiltros.idUsuarioDesignado   := AFiltros.GetValue<integer>('idUsuarioDesignado');
+   LFiltros.UF                   := AFiltros.GetValue<String>('UF');
+   LFiltros.nomeUsuario          := AFiltros.GetValue<String>('nomeUsuario');
+   LFiltros.usaDataStatus        := AFiltros.GetValue<Boolean>('usaDataStatus');
+   if LFiltros.usaDataStatus then
+     begin
+     LFiltros.dataInicio           := AFiltros.GetValue<TDateTime>('dataInicio');
+     LFiltros.dataFim              := AFiltros.GetValue<TDateTime>('dataFim');
+   end;
+
    MontarQueryPainel;
 
-   if LFiltros.idTipoAuditoria = 0 then
+   if LFiltros.idTipoAuditoria > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Auditoria = :pIdTipoAuditoria');
       qryPainelAutoSc.ParamByName('pIdTipoAuditoria').AsInteger := LFiltros.idTipoAuditoria;
    end;
 
-   if LFiltros.idTipoPrazoCaixa     = 0 then
+   if LFiltros.idTipoPrazoCaixa > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Prazo_Caixa = :pIdTipoPrazoCaixa');
       qryPainelAutoSc.ParamByName('pIdTipoPrazoCaixa').AsInteger := LFiltros.idTipoPrazoCaixa;
    end;
 
-   if LFiltros.idTipoPrazoCaixaHoje = 0 then
+   if LFiltros.idTipoPrazoCaixaHoje > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Prazo_Caixa_Hoje = :pIdTipoPrazoCaixaHoje');
       qryPainelAutoSc.ParamByName('pIdTipoPrazoCaixaHoje').AsInteger := LFiltros.idTipoPrazoCaixaHoje;
    end;
 
-   if LFiltros.idTipoStatus = 0 then
+   if LFiltros.idTipoStatus > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Status = :pIdTipoStatus');
       qryPainelAutoSc.ParamByName('pIdTipoStatus').AsInteger := LFiltros.idTipoStatus;
    end;
 
-   if LFiltros.idTipoProcesso = 0 then
+   if LFiltros.idTipoProcesso > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Processo = :pIdTipoProcesso');
       qryPainelAutoSc.ParamByName('pIdTipoProcesso').AsInteger := LFiltros.idTipoProcesso;
    end;
 
-   if LFiltros.idTipoProcessoE = 0 then
+   if LFiltros.idTipoProcessoE > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Processo_E = :pIdTipoProcessoE');
       qryPainelAutoSc.ParamByName('pIdTipoProcessoE').AsInteger := LFiltros.idTipoProcessoE;
    end;
 
-   if LFiltros.idTipoPrazoANS = 0 then
+   if LFiltros.idTipoPrazoANS > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Tipo_Prazo_ANS = :pIdTipoPrazoANS');
       qryPainelAutoSc.ParamByName('pIdTipoPrazoANS').AsInteger := LFiltros.idTipoPrazoANS;
    end;
 
-   if LFiltros.idSetorDesignado = 0 then
+   if LFiltros.idSetorDesignado > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Setor_Designado = :pIdSetorDesignado');
       qryPainelAutoSc.ParamByName('pIdSetorDesignado').AsInteger := LFiltros.idSetorDesignado;
    end;
 
-   if LFiltros.idUsuarioDesignado = 0 then
+   if LFiltros.idUsuarioDesignado > 0 then
       begin
       qryPainelAutoSc.Sql.Add(' and a.id_Usuario_Designado = :pIdUsuarioDesignado');
       qryPainelAutoSc.ParamByName('pIdUsuarioDesignado').AsInteger := LFiltros.idUsuarioDesignado;
@@ -352,8 +369,6 @@ begin
    qryPainelAutoSc.Open;
    Result := TFuncoesJSON.MontarJSON(qryPainelAutoSc);
    qryPainelAutoSc.Close;
-
-
 end;
 
 procedure TSMAutoSC.GravarHistorico(const AId: Largeint);

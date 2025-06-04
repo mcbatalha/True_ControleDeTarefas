@@ -85,6 +85,10 @@ type
     dtsTiposProcessoE: TDataSource;
     dtsTiposStatus: TDataSource;
     dtsSetores: TDataSource;
+    mtbTiposPrazoANS: TFDMemTable;
+    dtsTiposPrazoANS: TDataSource;
+    mtbTiposPrazoANSid: TIntegerField;
+    mtbTiposPrazoANSTipo_Prazo_Caixa: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

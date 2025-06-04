@@ -360,68 +360,70 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
+          ExplicitLeft = 10
+          ExplicitTop = 44
           DesignSize = (
             611
             496)
           object Label2: TLabel
             Left = 40
-            Top = 38
+            Top = 20
             Width = 51
             Height = 16
             Caption = 'Auditoria'
           end
           object Label3: TLabel
             Left = 40
-            Top = 103
+            Top = 79
             Width = 67
             Height = 16
             Caption = 'Prazo Caixa'
           end
           object Label4: TLabel
             Left = 328
-            Top = 103
+            Top = 79
             Width = 97
             Height = 16
             Caption = 'Prazo Caixa Hoje'
           end
           object Label5: TLabel
             Left = 40
-            Top = 169
+            Top = 196
             Width = 98
             Height = 16
             Caption = 'Tipo de Processo'
           end
           object Label6: TLabel
             Left = 328
-            Top = 169
+            Top = 196
             Width = 109
             Height = 16
             Caption = 'Tipo de Processo E'
           end
           object Label7: TLabel
             Left = 40
-            Top = 234
+            Top = 256
             Width = 36
             Height = 16
             Caption = 'Status'
           end
           object Label8: TLabel
-            Left = 328
-            Top = 236
+            Left = 40
+            Top = 315
             Width = 31
             Height = 16
             Caption = 'Setor'
           end
           object Label9: TLabel
             Left = 40
-            Top = 366
+            Top = 374
             Width = 43
             Height = 16
             Caption = 'Usu'#225'rio'
           end
           object btnPesquisarUsuario: TSpeedButton
             Left = 544
-            Top = 385
+            Top = 392
             Width = 23
             Height = 22
             Flat = True
@@ -441,22 +443,43 @@ object frmPaineis: TfrmPaineis
             NumGlyphs = 2
           end
           object Label10: TLabel
-            Left = 40
-            Top = 322
-            Width = 127
+            Left = 328
+            Top = 256
+            Width = 93
             Height = 16
-            Caption = 'Data do Status:  entre'
+            Caption = 'Data do Status: '
           end
           object Label11: TLabel
-            Left = 267
-            Top = 322
+            Left = 464
+            Top = 277
             Width = 7
             Height = 16
             Caption = 'e'
           end
+          object Label12: TLabel
+            Left = 40
+            Top = 138
+            Width = 60
+            Height = 16
+            Caption = 'Prazo ANS'
+          end
+          object Label13: TLabel
+            Left = 536
+            Top = 9
+            Width = 51
+            Height = 16
+            Caption = 'Auditoria'
+          end
+          object Label14: TLabel
+            Left = 328
+            Top = 277
+            Width = 30
+            Height = 16
+            Caption = 'entre'
+          end
           object cmbAuditorias: TDBLookupComboBox
             Left = 40
-            Top = 56
+            Top = 37
             Width = 241
             Height = 24
             KeyField = 'id'
@@ -466,7 +489,7 @@ object frmPaineis: TfrmPaineis
           end
           object cmbPrazosCaixa: TDBLookupComboBox
             Left = 40
-            Top = 121
+            Top = 96
             Width = 241
             Height = 24
             KeyField = 'id'
@@ -476,7 +499,7 @@ object frmPaineis: TfrmPaineis
           end
           object cmbPrazosCaixaHoje: TDBLookupComboBox
             Left = 328
-            Top = 121
+            Top = 96
             Width = 241
             Height = 24
             KeyField = 'id'
@@ -486,53 +509,53 @@ object frmPaineis: TfrmPaineis
           end
           object cmbTipoProcesso: TDBLookupComboBox
             Left = 40
-            Top = 187
+            Top = 214
             Width = 241
             Height = 24
             KeyField = 'id'
             ListField = 'Tipo_Processo'
             ListSource = dtmPainelAutoSC.dtsTiposProcesso
-            TabOrder = 3
+            TabOrder = 4
           end
           object cmbTipoProcessoE: TDBLookupComboBox
             Left = 328
-            Top = 187
+            Top = 214
             Width = 241
             Height = 24
             KeyField = 'id'
             ListField = 'Tipo_Processo_E'
             ListSource = dtmPainelAutoSC.dtsTiposProcessoE
-            TabOrder = 4
+            TabOrder = 5
           end
           object cmbStatus: TDBLookupComboBox
             Left = 40
-            Top = 252
+            Top = 273
             Width = 241
             Height = 24
             KeyField = 'id'
             ListField = 'Tipo_Status'
             ListSource = dtmPainelAutoSC.dtsTiposStatus
-            TabOrder = 5
+            TabOrder = 6
           end
           object cmbSetores: TDBLookupComboBox
-            Left = 328
-            Top = 252
+            Left = 40
+            Top = 332
             Width = 241
             Height = 24
             KeyField = 'id'
             ListField = 'Nome_Setor'
             ListSource = dtmPainelAutoSC.dtsSetores
-            TabOrder = 6
+            TabOrder = 9
           end
           object edtUsuario: TEdit
             Left = 40
-            Top = 384
+            Top = 391
             Width = 505
             Height = 24
             TabStop = False
             Color = clBtnFace
             ReadOnly = True
-            TabOrder = 9
+            TabOrder = 10
             Text = 'edtUsuario'
           end
           object btnFiltrarAutoSC: TBitBtn
@@ -599,7 +622,7 @@ object frmPaineis: TfrmPaineis
               0303030303030303030303030303030303030303030303030303030303030303
               0303}
             NumGlyphs = 2
-            TabOrder = 10
+            TabOrder = 11
             OnClick = btnFiltrarAutoSCClick
           end
           object btnCancelarFiltroAutoSC: TBitBtn
@@ -666,12 +689,12 @@ object frmPaineis: TfrmPaineis
               0303030303030303030303030303030303030303030303030303030303030303
               0303}
             NumGlyphs = 2
-            TabOrder = 11
+            TabOrder = 12
             OnClick = btnCancelarFiltroAutoSCClick
           end
           object edtDataInicio: TMaskEdit
-            Left = 171
-            Top = 318
+            Left = 367
+            Top = 273
             Width = 88
             Height = 24
             EditMask = '99/99/9999'
@@ -680,14 +703,24 @@ object frmPaineis: TfrmPaineis
             Text = '  /  /    '
           end
           object edtDataFim: TMaskEdit
-            Left = 282
-            Top = 317
+            Left = 480
+            Top = 273
             Width = 88
             Height = 24
             EditMask = '99/99/9999'
             MaxLength = 10
             TabOrder = 8
             Text = '  /  /    '
+          end
+          object cmbPrazosAns: TDBLookupComboBox
+            Left = 40
+            Top = 155
+            Width = 241
+            Height = 24
+            KeyField = 'id'
+            ListField = 'Tipo_Prazo_Caixa'
+            ListSource = dtmPainelAutoSC.dtsTiposPrazoANS
+            TabOrder = 3
           end
         end
       end

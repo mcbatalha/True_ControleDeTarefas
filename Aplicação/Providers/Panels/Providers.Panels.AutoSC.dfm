@@ -175,7 +175,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 220
+    Top = 295
     object mtbTiposProcessoid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -204,7 +204,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 290
+    Top = 365
     object mtbTiposProcessoEid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -232,7 +232,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 361
+    Top = 436
     object mtbTiposStatusid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -283,7 +283,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 432
+    Top = 507
     object mtbSetoresid: TIntegerField
       FieldName = 'id'
     end
@@ -310,21 +310,48 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   object dtsTiposProcesso: TDataSource
     DataSet = mtbTiposProcesso
     Left = 832
-    Top = 220
+    Top = 295
   end
   object dtsTiposProcessoE: TDataSource
     DataSet = mtbTiposProcessoE
     Left = 832
-    Top = 290
+    Top = 365
   end
   object dtsTiposStatus: TDataSource
     DataSet = mtbTiposStatus
     Left = 832
-    Top = 361
+    Top = 436
   end
   object dtsSetores: TDataSource
     DataSet = mtbSetores
     Left = 832
-    Top = 432
+    Top = 507
+  end
+  object mtbTiposPrazoANS: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 1009
+    Top = 219
+    object mtbTiposPrazoANSid: TIntegerField
+      FieldName = 'id'
+    end
+    object mtbTiposPrazoANSTipo_Prazo_Caixa: TStringField
+      FieldName = 'Tipo_Prazo_Caixa'
+      Origin = 'Tipo_Prazo_Caixa'
+      Size = 15
+    end
+  end
+  object dtsTiposPrazoANS: TDataSource
+    DataSet = mtbTiposPrazoANS
+    Left = 833
+    Top = 219
   end
 end

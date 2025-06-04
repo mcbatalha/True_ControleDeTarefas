@@ -1,13 +1,13 @@
 //
 // Created by the DataSnap proxy generator.
-// 04/06/2025 18:13:21
+// 04/06/2025 19:42:07
 //
 
 unit Proxy.Classes;
 
 interface
 
-uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, Libs.TFiltros, Data.DBXJSONReflect;
+uses System.JSON, Data.DBXCommon, Data.DBXClient, Data.DBXDataSnap, Data.DBXJSON, Datasnap.DSProxy, System.Classes, System.SysUtils, Data.DB, Data.SqlExpr, Data.DBXDBReaders, Data.DBXCDSReaders, Data.DBXJSONReflect;
 
 type
   TSMMetodosGeraisClient = class(TDSAdminClient)
@@ -67,7 +67,6 @@ type
   TSMAutoSCClient = class(TDSAdminClient)
   private
     FImportarCommand: TDBXCommand;
-    FPainelCommand: TDBXCommand;
     FFiltrarProcessosCommand: TDBXCommand;
     FTiposDeAuditoriaCommand: TDBXCommand;
     FTiposDePrazoCommand: TDBXCommand;
@@ -81,8 +80,7 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
-    function Painel(AFiltros: TFiltros): TJSONArray;
-    function FiltrarProcessos(AFiltros: TFiltros): TJSONArray;
+    function FiltrarProcessos(AFiltros: TJSONObject): TJSONArray;
     function TiposDeAuditoria: TJSONArray;
     function TiposDePrazo: TJSONArray;
     function TiposDePrazoHoje: TJSONArray;
@@ -384,33 +382,7 @@ begin
   Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMAutoSCClient.Painel(AFiltros: TFiltros): TJSONArray;
-begin
-  if FPainelCommand = nil then
-  begin
-    FPainelCommand := FDBXConnection.CreateCommand;
-    FPainelCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FPainelCommand.Text := 'TSMAutoSC.Painel';
-    FPainelCommand.Prepare;
-  end;
-  if not Assigned(AFiltros) then
-    FPainelCommand.Parameters[0].Value.SetNull
-  else
-  begin
-    FMarshal := TDBXClientCommand(FPainelCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
-    try
-      FPainelCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AFiltros), True);
-      if FInstanceOwner then
-        AFiltros.Free
-    finally
-      FreeAndNil(FMarshal)
-    end
-  end;
-  FPainelCommand.ExecuteUpdate;
-  Result := TJSONArray(FPainelCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
-end;
-
-function TSMAutoSCClient.FiltrarProcessos(AFiltros: TFiltros): TJSONArray;
+function TSMAutoSCClient.FiltrarProcessos(AFiltros: TJSONObject): TJSONArray;
 begin
   if FFiltrarProcessosCommand = nil then
   begin
@@ -419,19 +391,7 @@ begin
     FFiltrarProcessosCommand.Text := 'TSMAutoSC.FiltrarProcessos';
     FFiltrarProcessosCommand.Prepare;
   end;
-  if not Assigned(AFiltros) then
-    FFiltrarProcessosCommand.Parameters[0].Value.SetNull
-  else
-  begin
-    FMarshal := TDBXClientCommand(FFiltrarProcessosCommand.Parameters[0].ConnectionHandler).GetJSONMarshaler;
-    try
-      FFiltrarProcessosCommand.Parameters[0].Value.SetJSONValue(FMarshal.Marshal(AFiltros), True);
-      if FInstanceOwner then
-        AFiltros.Free
-    finally
-      FreeAndNil(FMarshal)
-    end
-  end;
+  FFiltrarProcessosCommand.Parameters[0].Value.SetJSONValue(AFiltros, FInstanceOwner);
   FFiltrarProcessosCommand.ExecuteUpdate;
   Result := TJSONArray(FFiltrarProcessosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
@@ -540,7 +500,6 @@ end;
 destructor TSMAutoSCClient.Destroy;
 begin
   FImportarCommand.DisposeOf;
-  FPainelCommand.DisposeOf;
   FFiltrarProcessosCommand.DisposeOf;
   FTiposDeAuditoriaCommand.DisposeOf;
   FTiposDePrazoCommand.DisposeOf;

@@ -50,6 +50,10 @@ type
     edtDataInicio: TMaskEdit;
     Label11: TLabel;
     edtDataFim: TMaskEdit;
+    Label12: TLabel;
+    cmbPrazosAns: TDBLookupComboBox;
+    Label13: TLabel;
+    Label14: TLabel;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -105,6 +109,7 @@ begin
     LFiltro.idTipoPrazoCaixaHoje   := cmbPrazosCaixaHoje.KeyValue;
     LFiltro.idTipoProcesso         := cmbTipoProcesso.KeyValue;
     LFiltro.idTipoProcessoE        := cmbTipoProcessoE.KeyValue;
+    LFiltro.idTipoPrazoANS         := cmbPrazosAns.KeyValue;
     LFiltro.idTipoStatus           := cmbStatus.KeyValue;
     LFiltro.idSetorDesignado       := cmbSetores.KeyValue;
     LFiltro.nomeUsuario            := edtUsuario.Text;
@@ -128,11 +133,12 @@ procedure TfrmPaineis.FiltrosAutoSC;
 var
    LFiltro : TFiltrosAutoSc;
 begin
-   LFiltro := FFiltroAutoSC.getFiltrosAutoSC;
+   LFiltro := FFiltroAutoSC.getFiltrosAutoSCAsRecord;
 
    cmbAuditorias.KeyValue      := LFiltro.idTipoAuditoria;
    cmbPrazosCaixa.KeyValue     := LFiltro.idTipoPrazoCaixa;
    cmbPrazosCaixaHoje.KeyValue := LFiltro.idTipoPrazoCaixaHoje;
+   cmbPrazosAns.KeyValue       := LFiltro.idTipoPrazoANS;
    cmbTipoProcesso.KeyValue    := LFiltro.idTipoProcesso;
    cmbTipoProcessoE.KeyValue   := LFiltro.idTipoProcessoE;
    cmbStatus.KeyValue          := LFiltro.idTipoStatus;
@@ -204,7 +210,8 @@ procedure TfrmPaineis.btnFiltrarAutoSCClick(Sender: TObject);
 begin
    if AplicarFiltrosAutoSC then
       begin
-      FServiceAutoSC.Filtrar(FFiltroAutoSC);
+      FServiceAutoSC.Filtrar(FFiltroAutoSC.getFiltrosAutoSCAsJSON);
+
       HabilitarEdicaoDoPainel(Self, pnlFiltrosAutoSC, False);
    end;
 end;

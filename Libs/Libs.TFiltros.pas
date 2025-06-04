@@ -2,7 +2,8 @@ unit Libs.TFiltros;
 
 interface
 uses
-   System.SysUtils;
+   System.SysUtils,
+   System.JSON;
 
 type
     TFiltrosAutoSc = record
@@ -16,10 +17,10 @@ type
      idSetorDesignado     : integer;
      idUsuarioDesignado   : integer;
      UF                   : String;
+     nomeUsuario          : String;
      usaDataStatus        : Boolean;
      dataInicio           : TDateTime;
      dataFim              : TDateTime;
-     nomeUsuario          : String;
  end;
 
 type
@@ -36,7 +37,8 @@ type
       constructor create(const ATipo : integer);
 
       procedure setFiltrosAutoSC(const AFiltro : TFiltrosAutoSc);
-      function getFiltrosAutoSC : TFiltrosAutoSc;
+      function getFiltrosAutoSCAsRecord : TFiltrosAutoSc;
+      function getFiltrosAutoSCAsJSON : TJSONObject;
 
 
       destructor destroy; override;
@@ -67,7 +69,33 @@ begin
 end;
 
 
-function TFiltros.getFiltrosAutoSC: TFiltrosAutoSc;
+
+function TFiltros.getFiltrosAutoSCAsJSON: TJSONObject;
+begin
+   Result := TJSONObject.Create;
+
+   Result.AddPair('idTipoAuditoria',      TJSONNumber.Create(FFiltrosAutoSc.idTipoAuditoria));
+   Result.AddPair('idTipoPrazoCaixa',     TJSONNumber.Create(FFiltrosAutoSc.idTipoPrazoCaixa));
+   Result.AddPair('idTipoPrazoCaixaHoje', TJSONNumber.Create(FFiltrosAutoSc.idTipoPrazoCaixaHoje));
+   Result.AddPair('idTipoStatus',         TJSONNumber.Create(FFiltrosAutoSc.idTipoStatus));
+   Result.AddPair('idTipoProcesso',       TJSONNumber.Create(FFiltrosAutoSc.idTipoProcesso));
+   Result.AddPair('idTipoProcessoE',      TJSONNumber.Create(FFiltrosAutoSc.idTipoProcessoE));
+   Result.AddPair('idTipoPrazoANS',       TJSONNumber.Create(FFiltrosAutoSc.idTipoPrazoANS));
+   Result.AddPair('idSetorDesignado',     TJSONNumber.Create(FFiltrosAutoSc.idSetorDesignado));
+   Result.AddPair('idUsuarioDesignado',   TJSONNumber.Create(FFiltrosAutoSc.idUsuarioDesignado));
+   Result.AddPair('UF',                   TJSONString.Create(FFiltrosAutoSc.UF));
+   Result.AddPair('nomeUsuario',          TJSONString.Create(FFiltrosAutoSc.nomeUsuario));
+   Result.AddPair('usaDataStatus',        TJSONBool.Create(FFiltrosAutoSc.usaDataStatus));
+   if FFiltrosAutoSc.usaDataStatus then
+      begin
+      Result.AddPair('dataInicio',           TJSONString.Create(DateToStr(FFiltrosAutoSc.dataInicio)));
+      Result.AddPair('dataFim',              TJSONString.Create(DateToStr(FFiltrosAutoSc.dataFim)));
+   end;
+
+
+end;
+
+function TFiltros.getFiltrosAutoSCAsRecord: TFiltrosAutoSc;
 begin
    Result := FFiltrosAutoSC;
 end;
@@ -84,10 +112,8 @@ begin
    FFiltrosAutoSc.idSetorDesignado     := 0;
    FFiltrosAutoSc.idUsuarioDesignado   := 0;
    FFiltrosAutoSc.UF                   := '';
-   FFiltrosAutoSc.usaDataStatus        := False;
-   FFiltrosAutoSc.dataInicio           := Date;
-   FFiltrosAutoSc.dataFim              := Date;
    FFiltrosAutoSc.nomeUsuario          := C_TODOS;
+   FFiltrosAutoSc.usaDataStatus        := False;
 end;
 
 procedure TFiltros.setFiltrosAutoSC(const AFiltro: TFiltrosAutoSc);
