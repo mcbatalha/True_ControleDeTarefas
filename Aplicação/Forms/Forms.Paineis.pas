@@ -203,7 +203,10 @@ end;
 procedure TfrmPaineis.btnFiltrarAutoSCClick(Sender: TObject);
 begin
    if AplicarFiltrosAutoSC then
+      begin
+      FServiceAutoSC.Filtrar(FFiltroAutoSC);
       HabilitarEdicaoDoPainel(Self, pnlFiltrosAutoSC, False);
+   end;
 end;
 
 procedure TfrmPaineis.btnFiltrarClick(Sender: TObject);

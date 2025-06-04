@@ -16,11 +16,11 @@ uses
   Proxy.Classes,
   Funcoes,
   Libs.Constantes,
-  Providers.Panels.AutoSC,
   Forms.Mensagem,
   Libs.TSeguranca,
   Libs.TFuncoesJSON,
-  Providers.Panels.Conexao;
+  Providers.Panels.AutoSC,
+  Providers.Panels.Conexao, Libs.TFiltros;
 
 type
 
@@ -35,6 +35,9 @@ type
         C_TITULO_MENSAGENS = 'Importação de Planilha AUTOSC';
   public
      constructor Create(ASqlConnection : TSQLConnection);
+
+     function Filtrar(const AFiltros : TFiltros) : Boolean;
+
      destructor Destroy(); override;
 
   end;
@@ -60,6 +63,15 @@ begin
    FreeAndNil(FdmAutoSC);
 
    inherited;
+end;
+
+function TSrvAutoSC.Filtrar(const AFiltros: TFiltros): Boolean;
+var
+   LDados : TJSONArray;
+begin
+   Result := True;
+
+   LDados := FPxyAutoSC.FiltrarProcessos(AFiltros);
 end;
 
 procedure TSrvAutoSC.TabelasDeDominio;

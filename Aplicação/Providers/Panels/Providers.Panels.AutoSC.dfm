@@ -1,7 +1,8 @@
 inherited dtmPainelAutoSC: TdtmPainelAutoSC
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Width = 1149
+  Height = 762
+  Width = 1466
   inherited mtbPainel: TFDMemTable
     StoreDefs = True
     object mtbPainelid_Processo: TLargeintField
