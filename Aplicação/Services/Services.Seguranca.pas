@@ -19,6 +19,7 @@ type
      FPxySeguranca : TSMUsuariosClient;
      FPxyMetodos   : TSMMetodosGeraisClient;
      Fdm           : TdtmSeguranca;
+
      FIdUsuario    : Integer;
      FNome         : String;
      FLogin        : String;

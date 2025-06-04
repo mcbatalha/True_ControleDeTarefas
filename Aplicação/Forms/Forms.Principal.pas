@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage,
-  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca;
+  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis;
 
 type
   TfrmPrincipal = class(TForm)
@@ -23,12 +23,16 @@ type
     mngImportaoPlanilhas: TMenuItem;
     mniImportacaoAutoSC: TMenuItem;
     mniImportacaoSiags: TMenuItem;
+    PaineisdeAcompanhamento1: TMenuItem;
+    mniSair: TMenuItem;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniSegurancaClick(Sender: TObject);
     procedure mniImportacaoAutoSCClick(Sender: TObject);
+    procedure PaineisdeAcompanhamento1Click(Sender: TObject);
+    procedure mniSairClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -73,11 +77,25 @@ begin
    end;
 end;
 
+procedure TfrmPrincipal.mniSairClick(Sender: TObject);
+begin
+   Application.Terminate;
+end;
+
 procedure TfrmPrincipal.mniSegurancaClick(Sender: TObject);
 var
    LForm : TfrmSeguranca;
 begin
    Application.CreateForm(TfrmSeguranca, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.PaineisdeAcompanhamento1Click(Sender: TObject);
+var
+   LForm : TfrmPaineis;
+begin
+   Application.CreateForm(TfrmPaineis, LForm);
    LForm.ShowModal;
    FreeAndNil(LForm);
 end;

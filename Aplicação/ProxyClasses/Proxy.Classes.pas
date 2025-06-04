@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 03/06/2025 14:48:02
+// 03/06/2025 20:59:26
 //
 
 unit Proxy.Classes;
@@ -67,11 +67,25 @@ type
   TSMAutoSCClient = class(TDSAdminClient)
   private
     FImportarCommand: TDBXCommand;
+    FTiposDeAuditoriaCommand: TDBXCommand;
+    FTiposDePrazoCommand: TDBXCommand;
+    FTiposDePrazoHojeCommand: TDBXCommand;
+    FTiposDeProcessoCommand: TDBXCommand;
+    FTiposDeProcessoECommand: TDBXCommand;
+    FTiposDeStatusCommand: TDBXCommand;
+    FSetoresCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
+    function TiposDeAuditoria: TJSONArray;
+    function TiposDePrazo: TJSONArray;
+    function TiposDePrazoHoje: TJSONArray;
+    function TiposDeProcesso: TJSONArray;
+    function TiposDeProcessoE: TJSONArray;
+    function TiposDeStatus: TJSONArray;
+    function Setores: TJSONArray;
   end;
 
 implementation
@@ -366,6 +380,97 @@ begin
   Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
+function TSMAutoSCClient.TiposDeAuditoria: TJSONArray;
+begin
+  if FTiposDeAuditoriaCommand = nil then
+  begin
+    FTiposDeAuditoriaCommand := FDBXConnection.CreateCommand;
+    FTiposDeAuditoriaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeAuditoriaCommand.Text := 'TSMAutoSC.TiposDeAuditoria';
+    FTiposDeAuditoriaCommand.Prepare;
+  end;
+  FTiposDeAuditoriaCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeAuditoriaCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.TiposDePrazo: TJSONArray;
+begin
+  if FTiposDePrazoCommand = nil then
+  begin
+    FTiposDePrazoCommand := FDBXConnection.CreateCommand;
+    FTiposDePrazoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDePrazoCommand.Text := 'TSMAutoSC.TiposDePrazo';
+    FTiposDePrazoCommand.Prepare;
+  end;
+  FTiposDePrazoCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDePrazoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.TiposDePrazoHoje: TJSONArray;
+begin
+  if FTiposDePrazoHojeCommand = nil then
+  begin
+    FTiposDePrazoHojeCommand := FDBXConnection.CreateCommand;
+    FTiposDePrazoHojeCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDePrazoHojeCommand.Text := 'TSMAutoSC.TiposDePrazoHoje';
+    FTiposDePrazoHojeCommand.Prepare;
+  end;
+  FTiposDePrazoHojeCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDePrazoHojeCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.TiposDeProcesso: TJSONArray;
+begin
+  if FTiposDeProcessoCommand = nil then
+  begin
+    FTiposDeProcessoCommand := FDBXConnection.CreateCommand;
+    FTiposDeProcessoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeProcessoCommand.Text := 'TSMAutoSC.TiposDeProcesso';
+    FTiposDeProcessoCommand.Prepare;
+  end;
+  FTiposDeProcessoCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeProcessoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.TiposDeProcessoE: TJSONArray;
+begin
+  if FTiposDeProcessoECommand = nil then
+  begin
+    FTiposDeProcessoECommand := FDBXConnection.CreateCommand;
+    FTiposDeProcessoECommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeProcessoECommand.Text := 'TSMAutoSC.TiposDeProcessoE';
+    FTiposDeProcessoECommand.Prepare;
+  end;
+  FTiposDeProcessoECommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeProcessoECommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.TiposDeStatus: TJSONArray;
+begin
+  if FTiposDeStatusCommand = nil then
+  begin
+    FTiposDeStatusCommand := FDBXConnection.CreateCommand;
+    FTiposDeStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeStatusCommand.Text := 'TSMAutoSC.TiposDeStatus';
+    FTiposDeStatusCommand.Prepare;
+  end;
+  FTiposDeStatusCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeStatusCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.Setores: TJSONArray;
+begin
+  if FSetoresCommand = nil then
+  begin
+    FSetoresCommand := FDBXConnection.CreateCommand;
+    FSetoresCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FSetoresCommand.Text := 'TSMAutoSC.Setores';
+    FSetoresCommand.Prepare;
+  end;
+  FSetoresCommand.ExecuteUpdate;
+  Result := TJSONArray(FSetoresCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
 constructor TSMAutoSCClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -379,6 +484,13 @@ end;
 destructor TSMAutoSCClient.Destroy;
 begin
   FImportarCommand.DisposeOf;
+  FTiposDeAuditoriaCommand.DisposeOf;
+  FTiposDePrazoCommand.DisposeOf;
+  FTiposDePrazoHojeCommand.DisposeOf;
+  FTiposDeProcessoCommand.DisposeOf;
+  FTiposDeProcessoECommand.DisposeOf;
+  FTiposDeStatusCommand.DisposeOf;
+  FSetoresCommand.DisposeOf;
   inherited;
 end;
 

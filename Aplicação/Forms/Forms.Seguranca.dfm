@@ -1,6 +1,5 @@
 inherited frmSeguranca: TfrmSeguranca
   Caption = 'Seguran'#231'a do Sistema'
-  OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 120
   TextHeight = 16
@@ -19,7 +18,7 @@ inherited frmSeguranca: TfrmSeguranca
       Top = 111
       Width = 902
       Height = 421
-      ActivePage = tbsManutencao
+      ActivePage = tbsImportacoes
       Align = alClient
       TabOrder = 1
       OnChange = pgcSegurancaChange
@@ -59,6 +58,47 @@ inherited frmSeguranca: TfrmSeguranca
             Width = 192
             Height = 17
             Caption = 'Usu'#225'rios'
+            TabOrder = 2
+          end
+        end
+      end
+      object tbsImportacoes: TTabSheet
+        Caption = 'Importa'#231#227'o de Planilhas'
+        ImageIndex = 2
+        object pnlImportacaoPlanihas: TPanel
+          Left = 0
+          Top = 0
+          Width = 894
+          Height = 390
+          Align = alClient
+          BevelInner = bvRaised
+          BevelOuter = bvLowered
+          TabOrder = 0
+          object chbMenuImportacoes: TCheckBox
+            Left = 33
+            Top = 44
+            Width = 288
+            Height = 17
+            Caption = 'Acesso ao Menu Importa'#231#227'o de Planilhas'
+            Checked = True
+            State = cbChecked
+            TabOrder = 0
+            OnClick = chbMenuImportacoesClick
+          end
+          object chbImportacaoAutoSC: TCheckBox
+            Left = 57
+            Top = 81
+            Width = 192
+            Height = 17
+            Caption = 'AUTOSC'
+            TabOrder = 1
+          end
+          object chbImportacaoSiags: TCheckBox
+            Left = 57
+            Top = 118
+            Width = 192
+            Height = 17
+            Caption = 'SIAGS'
             TabOrder = 2
           end
         end

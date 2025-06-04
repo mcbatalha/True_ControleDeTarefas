@@ -57,7 +57,6 @@ begin
    inherited;
    SQLConnection.Connected := False;
    FreeAndNil(FPxyMetodosGerais);
-
 end;
 
 procedure TdtmCadastros.NovoId(const ADataSet: TClientDataSet; const ATabela: String);

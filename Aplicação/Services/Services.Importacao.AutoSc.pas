@@ -28,8 +28,6 @@ type
      FTotalDeLinhas : integer;
      FJSonCarregado : Boolean;
 
-
-
      function PosicaoColuna(const AColuna : String): integer;
 
     const

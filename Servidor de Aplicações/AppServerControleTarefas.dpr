@@ -18,7 +18,7 @@ uses
   Libs.TSeguranca in '..\Libs\Libs.TSeguranca.pas',
   ServerMethods.AutoSc in 'ServerMethods\ServerMethods.AutoSc.pas' {SMAutoSC: TDSServerModule},
   Libs.TFiltros in '..\Libs\Libs.TFiltros.pas',
-  Utils.TFuncoesJSON in 'Utils\Utils.TFuncoesJSON.pas';
+  Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas';
 
 {$R *.res}
 

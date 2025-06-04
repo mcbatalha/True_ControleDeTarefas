@@ -54,6 +54,12 @@ begin
            2000 : frmPrincipal.mngManutencaoSistema.Visible := True;
            2001 : frmPrincipal.mniSeguranca.Visible         := True;
            {$endRegion}
+
+           {$Region 'Importação de Planilhas'}
+           3000 : frmPrincipal.mngImportaoPlanilhas.Visible := True;
+           3001 : frmPrincipal.mniImportacaoAutoSC.Visible  := True;
+           3002 : frmPrincipal.mniImportacaoSiags.Visible   := True;
+           {$endRegion}
         end;
      end;
    finally

@@ -12,7 +12,7 @@ uses
   Datasnap.DSProviderDataModuleAdapter,
 
   Libs.Constantes, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, uTTransacao, Libs.TFiltros, Utils.TFuncoesJSON;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, uTTransacao, Libs.TFiltros, Libs.TFuncoesJSON;
 
 type
   TSMAutoSC = class(TDSServerModule)
@@ -74,6 +74,9 @@ type
     qryPainelAutoScTipo_Processo_E: TStringField;
     qryPainelAutoScTipo_Prazo_Ans: TStringField;
     qryPainelAutoScUsuario_Designado: TStringField;
+    qrySetores: TFDQuery;
+    qrySetoresid: TIntegerField;
+    qrySetoresNome_Setor: TStringField;
   private
     { Private declarations }
 
@@ -118,6 +121,14 @@ type
   public
     function Importar(const ARegistros : TJSONArray; const AIdUsuario : integer) : TJSONObject;
     function Painel(const AFiltros : TFiltrosAutoSc) : TJSONArray;
+
+    function TiposDeAuditoria : TJSONArray;
+    function TiposDePrazo     : TJSONArray;
+    function TiposDePrazoHoje : TJSONArray;
+    function TiposDeProcesso  : TJSONArray;
+    function TiposDeProcessoE : TJSONArray;
+    function TiposDeStatus    : TJSONArray;
+    function Setores          : TJSONArray;
   end;
 
 implementation
@@ -255,6 +266,41 @@ begin
    Result := TFuncoesJSON.MontarJSON(qryPainelAutoSc);
    qryPainelAutoSc.Close;
 
+end;
+
+function TSMAutoSC.Setores: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qrySetores);
+end;
+
+function TSMAutoSC.TiposDeAuditoria: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qryTiposAuditoria);
+end;
+
+function TSMAutoSC.TiposDePrazo: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qryTiposPrazo);
+end;
+
+function TSMAutoSC.TiposDePrazoHoje: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qryTiposPrazoHoje);
+end;
+
+function TSMAutoSC.TiposDeProcesso: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qryTiposProcesso);
+end;
+
+function TSMAutoSC.TiposDeProcessoE: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qryTiposProcessoE);
+end;
+
+function TSMAutoSC.TiposDeStatus: TJSONArray;
+begin
+  Result := TFuncoesJSON.MontarJSON(qryTiposStatus);
 end;
 
 function TSMAutoSC.ObterIdTipoProcesso(const AValor: String): integer;

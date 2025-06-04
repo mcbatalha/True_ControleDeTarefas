@@ -10,11 +10,11 @@ inherited frmCadastroSetores: TfrmCadastroSetores
   inherited pnlForm: TPanel
     Width = 475
     Height = 374
-    ExplicitWidth = 501
-    ExplicitHeight = 303
+    ExplicitWidth = 475
+    ExplicitHeight = 374
     inherited fraBotoes: TfraBotoes
       Width = 471
-      ExplicitWidth = 497
+      ExplicitWidth = 471
       inherited btnNovo: TSpeedButton
         Left = -2
         Top = 0
@@ -31,18 +31,18 @@ inherited frmCadastroSetores: TfrmCadastroSetores
     inherited pnlBotoes: TPanel
       Top = 315
       Width = 471
-      ExplicitTop = 244
-      ExplicitWidth = 497
+      ExplicitTop = 315
+      ExplicitWidth = 471
       inherited Panel1: TPanel
         Left = 147
-        ExplicitLeft = 173
+        ExplicitLeft = 147
       end
     end
     inherited pnlCentral: TPanel
       Width = 471
       Height = 257
-      ExplicitWidth = 497
-      ExplicitHeight = 186
+      ExplicitWidth = 471
+      ExplicitHeight = 257
       object Label1: TLabel
         Left = 45
         Top = 50
@@ -66,29 +66,28 @@ inherited frmCadastroSetores: TfrmCadastroSetores
         DataField = 'Nome_Setor'
         DataSource = dtsCadastro
         TabOrder = 0
-        ExplicitWidth = 358
       end
       object DBCheckBox2: TDBCheckBox
         Left = 82
-        Top = 174
+        Top = 205
         Width = 97
         Height = 17
         Caption = 'CONTROLPC'
         DataField = 'CONTROLPC'
         DataSource = dtsCadastro
-        TabOrder = 2
+        TabOrder = 3
         ValueChecked = 'Sim'
         ValueUnchecked = 'N'#227'o'
       end
       object DBCheckBox3: TDBCheckBox
         Left = 82
-        Top = 205
+        Top = 174
         Width = 97
         Height = 17
         Caption = 'SIAGS'
-        DataField = 'CONTROLPC'
+        DataField = 'SIAGS'
         DataSource = dtsCadastro
-        TabOrder = 3
+        TabOrder = 2
         ValueChecked = 'Sim'
         ValueUnchecked = 'N'#227'o'
       end

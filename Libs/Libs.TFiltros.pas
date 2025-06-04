@@ -6,33 +6,40 @@ uses
 
 type
     TFiltrosAutoSc = record
-        idTipoAuditoria      : integer;
-        idTipoPrazoCaixa     : integer;
-        idTipoPrazoCaixaHoje : integer;
-        idTipoStatus         : integer;
-        idTipoProcesso       : integer;
-        idTipoProcessoE      : integer;
-        idTipoPrazoANS       : integer;
-        idSetorDesignado     : integer;
-        idUsuarioDesignado   : integer;
-        UF                   : String;
-        UsaDataStatus        : Boolean;
-        DataInicio           : TDateTime;
-        DataFim              : TDateTime;
-    end;
-
+     idTipoAuditoria      : integer;
+     idTipoPrazoCaixa     : integer;
+     idTipoPrazoCaixaHoje : integer;
+     idTipoStatus         : integer;
+     idTipoProcesso       : integer;
+     idTipoProcessoE      : integer;
+     idTipoPrazoANS       : integer;
+     idSetorDesignado     : integer;
+     idUsuarioDesignado   : integer;
+     UF                   : String;
+     usaDataStatus        : Boolean;
+     dataInicio           : TDateTime;
+     dataFim              : TDateTime;
+     nomeUsuario          : String;
+ end;
 
 type
-   TFitros = class
+   TFiltros = class
+
 
     private
-      FFiltrosAutoSc : TFiltrosAutoSc;
+      FFiltrosAutoSC: TFiltrosAutoSC;
+      property FiltrosAutoSC: TFiltrosAutoSC read FFiltrosAutoSC write FFiltrosAutoSC;
 
-      procedure IniciarFiltrosAutoSc;
+      procedure LimparFiltrosAutoSc;
     public
 
-      constructor create(AFiltros : TFiltrosAutoSc);
-      destructor destroy();
+      constructor create(const ATipo : integer);
+
+      procedure setFiltrosAutoSC(const AFiltro : TFiltrosAutoSc);
+      function getFiltrosAutoSC : TFiltrosAutoSc;
+
+
+      destructor destroy; override;
 
 
    end;
@@ -45,18 +52,27 @@ implementation
 
 { TFitros }
 
-constructor TFitros.create(AFiltros : TFiltrosAutoSc);
-begin
-   FFiltrosAutoSc := AFiltros;
+uses Libs.Constantes;
 
+constructor TFiltros.create(const ATipo : Integer);
+begin
+   case ATipo of
+      C_FILTRO_AUTOSC : LimparFiltrosAutoSc;
+   end;
 end;
 
-destructor TFitros.destroy;
+destructor TFiltros.destroy;
 begin
   inherited;
 end;
 
-procedure TFitros.IniciarFiltrosAutoSc;
+
+function TFiltros.getFiltrosAutoSC: TFiltrosAutoSc;
+begin
+   Result := FFiltrosAutoSC;
+end;
+
+procedure TFiltros.LimparFiltrosAutoSc;
 begin
    FFiltrosAutoSc.idTipoAuditoria      := 0;
    FFiltrosAutoSc.idTipoPrazoCaixa     := 0;
@@ -68,9 +84,15 @@ begin
    FFiltrosAutoSc.idSetorDesignado     := 0;
    FFiltrosAutoSc.idUsuarioDesignado   := 0;
    FFiltrosAutoSc.UF                   := '';
-   FFiltrosAutoSc.UsaDataStatus        := False;
-   FFiltrosAutoSc.DataInicio           := Date;
-   FFiltrosAutoSc.DataFim              := Date;
+   FFiltrosAutoSc.usaDataStatus        := False;
+   FFiltrosAutoSc.dataInicio           := Date;
+   FFiltrosAutoSc.dataFim              := Date;
+   FFiltrosAutoSc.nomeUsuario          := C_TODOS;
+end;
+
+procedure TFiltros.setFiltrosAutoSC(const AFiltro: TFiltrosAutoSc);
+begin
+   FFiltrosAutoSC := AFiltro;
 end;
 
 end.

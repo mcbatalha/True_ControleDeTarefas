@@ -27,6 +27,11 @@ type
     chbSeguranca: TCheckBox;
     btnMarcarTodos: TSpeedButton;
     btnDesmarcarTodos: TSpeedButton;
+    tbsImportacoes: TTabSheet;
+    pnlImportacaoPlanihas: TPanel;
+    chbMenuImportacoes: TCheckBox;
+    chbImportacaoAutoSC: TCheckBox;
+    chbImportacaoSiags: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -39,6 +44,7 @@ type
     procedure pgcSegurancaChange(Sender: TObject);
     procedure btnMarcarTodosClick(Sender: TObject);
     procedure btnDesmarcarTodosClick(Sender: TObject);
+    procedure chbMenuImportacoesClick(Sender: TObject);
 
   private
 
@@ -107,6 +113,14 @@ begin
       LItens.Add(2000);
       if chbSeguranca.Checked   then LItens.Add(2001);
    end;
+
+   if chbMenuImportacoes.Checked then
+      begin
+      LItens.Add(3000);
+      if chbImportacaoAutoSC.Checked then LItens.Add(3001);
+      if chbImportacaoSiags.Checked  then LItens.Add(3002);
+   end;
+
    if not FService.Gravar(LItens) then
       begin
       InformationMessage('Ocorreu um erro tentativa de gravar os dados!',C_TITULO_MENSAGENS);
@@ -157,6 +171,24 @@ begin
    chbCadastroUsusarios.Enabled := LMarcar;
 end;
 
+procedure TfrmSeguranca.chbMenuImportacoesClick(Sender: TObject);
+var
+   LMarcar : Boolean;
+begin
+  inherited;
+
+   if chbMenuImportacoes.Checked then
+      LMarcar := True
+   else
+      begin
+      LMarcar := False;
+      MarcarItensDoGrupo(False,3000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
+   end;
+   chbImportacaoAutoSC.Enabled := LMarcar;
+   chbImportacaoSiags.Enabled  := LMarcar;
+
+end;
+
 procedure TfrmSeguranca.chbMenuManutencaoClick(Sender: TObject);
 var
    LMarcar : Boolean;
@@ -183,8 +215,9 @@ procedure TfrmSeguranca.Editar(const AHabilitar: Boolean);
 begin
    pnlPesquisaUsuario.Enabled := not AHabilitar;
 
-   pnlCadastros.Enabled  := AHabilitar;
-   pnlManutencao.Enabled := AHabilitar;
+   pnlCadastros.Enabled          := AHabilitar;
+   pnlManutencao.Enabled         := AHabilitar;
+   pnlImportacaoPlanihas.Enabled := AHabilitar;
 
    BotoesDeEdicao(AHabilitar);
 end;
@@ -263,9 +296,15 @@ begin
         1002 : chbCadastroUsusarios.Checked := True;
         {$endRegion}
 
-        {$Region 'Manutenção do SistemaCadastros'}
+        {$Region 'Manutenção do Sistema'}
         2000 : chbMenuManutencao.Checked := True;
         2001 : chbSeguranca.Checked      := True;
+        {$endRegion}
+
+        {$Region 'Importações de Planilhas'}
+        3000 : chbMenuImportacoes.Checked  := True;
+        3001 : chbImportacaoAutoSC.Checked := True;
+        3002 : chbImportacaoSiags.Checked  := True;
         {$endRegion}
      end;
    end;
@@ -285,6 +324,13 @@ begin
       chbMenuManutencao.Checked := AMarcar;
       chbSeguranca.Checked      := AMarcar;
    end;
+
+   if (AGrupo = 0) or (AGrupo = 3000) then     // Importação de Planilhas ou Todos
+      begin
+      chbMenuImportacoes.Checked  := AMarcar;
+      chbImportacaoAutoSC.Checked := AMarcar;
+      chbImportacaoSiags.Checked  := AMarcar;
+   end;
 end;
 
 procedure TfrmSeguranca.MarcarTodos(const AMarcar: Boolean; const APainel: TPanel);
@@ -293,6 +339,8 @@ begin
        MarcarItensDoGrupo(AMarcar, 1000)
     else if APainel = pnlManutencao  then
        MarcarItensDoGrupo(AMarcar, 2000)
+    else if APainel = pnlImportacaoPlanihas  then
+       MarcarItensDoGrupo(AMarcar, 3000)
 end;
 
 procedure TfrmSeguranca.ObterDados;
@@ -309,6 +357,8 @@ begin
      RealocarBotoesDeMarcacao(pnlCadastros)
   else if pgcSeguranca.ActivePage = tbsManutencao then
      RealocarBotoesDeMarcacao(pnlManutencao)
+  else if pgcSeguranca.ActivePage = tbsImportacoes then
+     RealocarBotoesDeMarcacao(pnlImportacaoPlanihas)
 
 end;
 

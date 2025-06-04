@@ -56,6 +56,14 @@ const
    C_PERFIL_SUPERVISOR = 'Supervisor';
    C_PERFIL_GERENTE    = 'Gerente';
 
+// Situação dos processo
+   C_PROCESSO_NAO_DESIGNADO = 'Não designado';
+
+// Tipos de Filtro
+   C_FILTRO_AUTOSC    = 0;
+   C_FILTRO_SIAGS     = 1;
+   C_FILTRO_CONTROLPC = 2;
+
 implementation
 
 

@@ -145,7 +145,7 @@
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Libs\Libs.TFiltros.pas"/>
-        <DCCReference Include="Utils\Utils.TFuncoesJSON.pas"/>
+        <DCCReference Include="..\Libs\Libs.TFuncoesJSON.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

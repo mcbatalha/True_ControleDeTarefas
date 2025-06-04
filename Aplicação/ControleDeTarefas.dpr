@@ -35,7 +35,14 @@ uses
   Forms.Importacoes in 'Forms\Forms.Importacoes.pas' {frmImportacoes},
   Providers.Importacoes.AutoSc in 'Providers\Importacoes\Providers.Importacoes.AutoSc.pas' {dtmImportacoesAutoSC: TDataModule},
   Forms.Importacoes.AutoSc in 'Forms\Forms.Importacoes.AutoSc.pas' {frmImportacoesAutoSc},
-  Services.Importacao.AutoSc in 'Services\Services.Importacao.AutoSc.pas';
+  Services.Importacao.AutoSc in 'Services\Services.Importacao.AutoSc.pas',
+  Providers.Panels in 'Providers\Panels\Providers.Panels.pas' {dtmPainel: TDataModule},
+  Providers.Panels.AutoSC in 'Providers\Panels\Providers.Panels.AutoSC.pas' {dtmPainelAutoSC: TDataModule},
+  Services.Panels in 'Services\Panels\Services.Panels.pas',
+  Services.Panels.AutoSC in 'Services\Panels\Services.Panels.AutoSC.pas',
+  Forms.Paineis in 'Forms\Forms.Paineis.pas' {frmPaineis},
+  Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas',
+  Libs.TFiltros in '..\Libs\Libs.TFiltros.pas';
 
 {$R *.res}
 

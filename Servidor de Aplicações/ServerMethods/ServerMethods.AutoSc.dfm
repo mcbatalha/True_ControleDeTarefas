@@ -1,6 +1,6 @@
 object SMAutoSC: TSMAutoSC
   OldCreateOrder = False
-  Height = 445
+  Height = 596
   Width = 1227
   object qryAux: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -10,7 +10,8 @@ object SMAutoSC: TSMAutoSC
   object qryTiposAuditoria: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Auditoria')
+      'select * from Tipos_Auditoria'
+      'Order by Tipo_Auditoria')
     Left = 80
     Top = 24
     object qryTiposAuditoriaid: TFDAutoIncField
@@ -46,7 +47,8 @@ object SMAutoSC: TSMAutoSC
   object qryTiposPrazoHoje: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Prazo_Hoje')
+      'select * from Tipos_Prazo_Hoje'
+      'order by Tipo_Prazo_Caixa_Hoje')
     Left = 80
     Top = 176
     object qryTiposPrazoHojeid: TFDAutoIncField
@@ -64,7 +66,8 @@ object SMAutoSC: TSMAutoSC
   object qryTiposProcesso: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Processo')
+      'select * from Tipos_Processo'
+      'order by Tipo_Processo')
     Left = 80
     Top = 248
     object qryTiposProcessoid: TFDAutoIncField
@@ -82,7 +85,8 @@ object SMAutoSC: TSMAutoSC
   object qryTiposProcessoE: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Processo_E')
+      'select * from Tipos_Processo_E'
+      'Order by Tipo_Processo_E')
     Left = 80
     Top = 312
     object qryTiposProcessoEid: TFDAutoIncField
@@ -99,7 +103,8 @@ object SMAutoSC: TSMAutoSC
   object qryTiposStatus: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Status')
+      'select * from Tipos_Status'
+      'Order by Tipo_Status')
     Left = 80
     Top = 376
     object qryTiposStatusid: TFDAutoIncField
@@ -334,6 +339,28 @@ object SMAutoSC: TSMAutoSC
       FieldName = 'Usuario_Designado'
       Origin = 'Usuario_Designado'
       Size = 100
+    end
+  end
+  object qrySetores: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'Select id, Nome_Setor'
+      'from Setores'
+      'where Ativo = '#39'Sim'#39
+      '      and AutoSC = '#39'Sim'#39
+      'Order by Nome_Setor')
+    Left = 80
+    Top = 456
+    object qrySetoresid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qrySetoresNome_Setor: TStringField
+      FieldName = 'Nome_Setor'
+      Origin = 'Nome_Setor'
+      Size = 50
     end
   end
 end

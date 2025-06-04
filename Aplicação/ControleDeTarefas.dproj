@@ -213,6 +213,24 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Services\Services.Importacao.AutoSc.pas"/>
+        <DCCReference Include="Providers\Panels\Providers.Panels.pas">
+            <Form>dtmPainel</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Providers\Panels\Providers.Panels.AutoSC.pas">
+            <Form>dtmPainelAutoSC</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Services\Panels\Services.Panels.pas"/>
+        <DCCReference Include="Services\Panels\Services.Panels.AutoSC.pas"/>
+        <DCCReference Include="Forms\Forms.Paineis.pas">
+            <Form>frmPaineis</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Libs\Libs.TFuncoesJSON.pas"/>
+        <DCCReference Include="..\Libs\Libs.TFiltros.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
