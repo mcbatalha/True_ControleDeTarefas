@@ -231,6 +231,11 @@
         </DCCReference>
         <DCCReference Include="..\Libs\Libs.TFuncoesJSON.pas"/>
         <DCCReference Include="..\Libs\Libs.TFiltros.pas"/>
+        <DCCReference Include="Providers\Panels\Providers.Panels.Conexao.pas">
+            <Form>dtmPaineisConexao</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

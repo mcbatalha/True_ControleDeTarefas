@@ -105,12 +105,12 @@ implementation
 procedure TdtmPainelAutoSC.DataModuleCreate(Sender: TObject);
 begin
   inherited;
-  ConnectionProvider.ConfigurarConexao(SQLConnection);
+//  ConnectionProvider.ConfigurarConexao(SQLConnection);
 end;
 
 procedure TdtmPainelAutoSC.DataModuleDestroy(Sender: TObject);
 begin
-   SQLConnection.Connected := False;
+//   SQLConnection.Connected := False;
    inherited;
 end;
 

@@ -42,7 +42,8 @@ uses
   Services.Panels.AutoSC in 'Services\Panels\Services.Panels.AutoSC.pas',
   Forms.Paineis in 'Forms\Forms.Paineis.pas' {frmPaineis},
   Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas',
-  Libs.TFiltros in '..\Libs\Libs.TFiltros.pas';
+  Libs.TFiltros in '..\Libs\Libs.TFiltros.pas',
+  Providers.Panels.Conexao in 'Providers\Panels\Providers.Panels.Conexao.pas' {dtmPaineisConexao: TDataModule};
 
 {$R *.res}
 

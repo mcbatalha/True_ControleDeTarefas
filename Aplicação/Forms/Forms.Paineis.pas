@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Buttons, Funcoes, Vcl.ComCtrls, Vcl.StdCtrls,
   Services.Importacao.AutoSc, Services.Panels.AutoSC, Vcl.Grids, vcl.wwdbigrd, vcl.wwdbgrid,
-  Data.DB, Vcl.DBCtrls, Vcl.Mask, Libs.TFiltros;
+  Data.DB, Vcl.DBCtrls, Vcl.Mask, Libs.TFiltros, Providers.Panels.Conexao;
 
 type
   TfrmPaineis = class(TForm)
@@ -62,6 +62,8 @@ type
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
+
+    Fdm            : TdtmPaineisConexao;
 
 
     procedure ConfigurarBotoes;
@@ -162,7 +164,9 @@ begin
    BotoesDeEdicao(False);
    ConfigurarBotoes;
 
-   FServiceAutoSC := TSrvAutoSC.create;
+   Application.CreateForm(TdtmPaineisConexao, Fdm);
+
+   FServiceAutoSC := TSrvAutoSC.create(Fdm.SQLConnection);
    FFiltroAutoSC := TFiltros.create(C_FILTRO_AUTOSC);
 
 end;
@@ -171,6 +175,7 @@ procedure TfrmPaineis.FormDestroy(Sender: TObject);
 begin
    FreeAndNil(FFiltroAutoSC);
    FreeAndNil(FServiceAutoSC);
+   FreeAndNil(Fdm);
 end;
 
 procedure TfrmPaineis.FormKeyPress(Sender: TObject; var Key: Char);

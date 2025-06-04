@@ -360,8 +360,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 10
-          ExplicitTop = 44
           DesignSize = (
             611
             496)
@@ -603,7 +601,6 @@ object frmPaineis: TfrmPaineis
             NumGlyphs = 2
             TabOrder = 10
             OnClick = btnFiltrarAutoSCClick
-            ExplicitTop = 392
           end
           object btnCancelarFiltroAutoSC: TBitBtn
             Left = 318
@@ -671,7 +668,6 @@ object frmPaineis: TfrmPaineis
             NumGlyphs = 2
             TabOrder = 11
             OnClick = btnCancelarFiltroAutoSCClick
-            ExplicitTop = 392
           end
           object edtDataInicio: TMaskEdit
             Left = 171

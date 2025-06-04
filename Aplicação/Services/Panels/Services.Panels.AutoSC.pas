@@ -10,6 +10,8 @@ uses
   System.Classes,
   System.JSON,
 
+  Data.SqlExpr,
+
   Providers.Seguranca,
   Proxy.Classes,
   Funcoes,
@@ -17,7 +19,8 @@ uses
   Providers.Panels.AutoSC,
   Forms.Mensagem,
   Libs.TSeguranca,
-  Libs.TFuncoesJSON;
+  Libs.TFuncoesJSON,
+  Providers.Panels.Conexao;
 
 type
 
@@ -31,7 +34,7 @@ type
      const
         C_TITULO_MENSAGENS = 'Importação de Planilha AUTOSC';
   public
-     constructor Create();
+     constructor Create(ASqlConnection : TSQLConnection);
      destructor Destroy(); override;
 
   end;
@@ -42,11 +45,12 @@ implementation
 
 { TSrvImportacaoAutoAc }
 
-constructor TSrvAutoSC.Create;
+constructor TSrvAutoSC.Create(ASqlConnection : TSQLConnection);
 begin
-   Application.CreateForm(TdtmPainelAutoSC, FdmAutoSC);
-   FPxyAutoSC := TSMAutoSCClient.Create(FdmAutoSC.SQLConnection.DBXConnection);
+//   FPxyAutoSC := TSMAutoSCClient.Create(FdmAutoSC.SQLConnection.DBXConnection);
 
+   Application.CreateForm(TdtmPainelAutoSC, FdmAutoSC);
+   FPxyAutoSC := TSMAutoSCClient.Create(ASqlConnection.DBXConnection);
    TabelasDeDominio;
 end;
 
