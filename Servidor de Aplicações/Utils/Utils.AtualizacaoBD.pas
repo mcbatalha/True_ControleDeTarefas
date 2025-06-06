@@ -21,6 +21,7 @@ var
    procedure Atualizacao004;
    procedure Atualizacao005;
    procedure Atualizacao006;
+   procedure Atualizacao007;
 
 implementation
 
@@ -111,6 +112,58 @@ begin
    if FVersaoAtual = 3 then Atualizacao004;
    if FVersaoAtual = 4 then Atualizacao005;
    if FVersaoAtual = 5 then Atualizacao006;
+   if FVersaoAtual = 6 then Atualizacao007;
+end;
+
+
+procedure Atualizacao007;
+var LQuery : TFDQuery;
+begin
+   FAtualizou := False;
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+         LQuery := TFDQuery.Create(nil);
+         LQuery.Connection := ServerContainer.FDConnection;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSC');
+         LQuery.SQL.Add('ADD Data_Hora_Encerramento smalldatetime, ');
+         LQuery.SQL.Add('    id_Usuario_Encerramento int,');
+         LQuery.SQL.Add('    id_Responsavel_Designacao int,');
+         LQuery.SQL.Add('    Data_Hora_Designacao smalldatetime, ');
+         LQuery.SQL.Add('    Justificativa_Encerramento varchar(100), ');
+         LQuery.SQL.Add('    Justificativa_Designacao varchar(100), ');
+         LQuery.SQL.Add('    CONSTRAINT FK_AutoSC_Usuarios_Designador FOREIGN KEY (id_Responsavel_Designacao) ');
+         LQuery.SQL.Add('               REFERENCES Usuarios (id),');
+         LQuery.SQL.Add('    CONSTRAINT FK_AutoSC_Usuarios_Encerramento FOREIGN KEY (id_Usuario_Encerramento) ');
+         LQuery.SQL.Add('               REFERENCES Usuarios (id)');
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSc_Historico');
+         LQuery.SQL.Add('ADD Data_Hora_Historico smalldatetime');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSc_Log');
+         LQuery.SQL.Add('ADD Data_Hora_Log smalldatetime');
+         LQuery.ExecSQL;
+
+         AtualizarVersao;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         FAtualizou := True;
+         Inc(FVersaoAtual);
+      except
+         on E: Exception do
+            begin
+            TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+            ShowMessage('Erro ao processar a atualização ' + IntToStrZero(VersaoAtual +1,3) + chr(13) + E.Message );
+         end;
+      end;
+   finally
+      LQuery.Close;
+      FreeAndNil(LQuery);
+   end;
 end;
 
 
@@ -257,7 +310,8 @@ begin
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE AutoSc_Historico ');
          LQuery.SQL.Add('(id Bigint Identity(1,1), id_AutoSC bigint, id_Tipo_Prazo_Caixa int, ');
-         LQuery.SQL.Add(' id_Tipo_Prazo_Caixa_Hoje int, id_Tipo_Status int, Data_Status smalldatetime, ');
+         LQuery.SQL.Add(' id_Tipo_Prazo_Caixa_Hoje int, id_Tipo_Prazo_ANS int, ');
+         LQuery.SQL.Add(' id_Tipo_Status int, Data_Status smalldatetime, ');
          LQuery.SQL.Add(' id_Usuario_Responsavel int, ');
 
          LQuery.SQL.Add(' CONSTRAINT PK_AutoSc_Historico PRIMARY KEY (id), ');
@@ -270,8 +324,11 @@ begin
          LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Historico_Tipos_Prazo_Caixa FOREIGN KEY (id_Tipo_Prazo_Caixa) ');
          LQuery.SQL.Add(' REFERENCES Tipos_Prazo (id), ');
 
-         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Historico_Tipos_Prazo_Caixa_Hoje FOREIGN KEY (id_Tipo_Prazo_Caixa_Hoje) ');
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Historico_Tipos_Prazo_ANS FOREIGN KEY (id_Tipo_Prazo_ANS) ');
          LQuery.SQL.Add(' REFERENCES Tipos_Prazo (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Historico_Tipos_Prazo_Caixa_Hoje FOREIGN KEY (id_Tipo_Prazo_Caixa_Hoje) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Prazo_Hoje (id), ');
 
          LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Historico_Tipos_Status FOREIGN KEY (id_Tipo_Status) ');
          LQuery.SQL.Add(' REFERENCES Tipos_Status (id), ');

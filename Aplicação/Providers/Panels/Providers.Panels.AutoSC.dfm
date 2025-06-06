@@ -10,11 +10,9 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       FieldName = 'id_Processo'
       Origin = 'id_Processo'
       ProviderFlags = [pfInWhere]
-      ReadOnly = True
     end
     object mtbPainelNumero_Processo: TLargeintField
       FieldName = 'Numero_Processo'
-      Origin = 'Numero_Processo'
     end
     object mtbPainelData_Status: TDateTimeField
       FieldName = 'Data_Status'
@@ -63,31 +61,51 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Origin = 'Tipo_Prazo_Ans'
       Size = 15
     end
+    object mtbPainelid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+    end
     object mtbPainelUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'
       Origin = 'Usuario_Designado'
       Size = 100
     end
+    object mtbPainelid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+    end
+    object mtbPainelSetor_Designado: TStringField
+      FieldName = 'Setor_Designado'
+      Size = 50
+    end
+    object mtbPainelQtd_Historicos: TIntegerField
+      FieldName = 'Qtd_Historicos'
+    end
+    object mtbPainelQtd_Designacoes: TIntegerField
+      FieldName = 'Qtd_Designacoes'
+    end
   end
   inherited cdsPainel: TClientDataSet
     object cdsPainelid_Processo: TLargeintField
       FieldName = 'id_Processo'
-      ReadOnly = True
     end
     object cdsPainelNumero_Processo: TLargeintField
+      Alignment = taCenter
       FieldName = 'Numero_Processo'
     end
     object cdsPainelData_Status: TDateTimeField
+      Alignment = taCenter
       FieldName = 'Data_Status'
     end
     object cdsPainelQtd_Arquivos: TIntegerField
+      Alignment = taCenter
       FieldName = 'Qtd_Arquivos'
     end
     object cdsPaineluf: TStringField
+      Alignment = taCenter
       FieldName = 'uf'
       Size = 2
     end
     object cdsPainelTipo_Auditoria: TStringField
+      Alignment = taCenter
       FieldName = 'Tipo_Auditoria'
       Size = 15
     end
@@ -105,6 +123,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     end
     object cdsPainelTipo_Processo: TStringField
       FieldName = 'Tipo_Processo'
+      OnGetText = cdsPainelTipo_ProcessoGetText
       Size = 50
     end
     object cdsPainelTipo_Processo_E: TStringField
@@ -116,7 +135,27 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     end
     object cdsPainelUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
       Size = 100
+    end
+    object cdsPainelSetor_Designado: TStringField
+      FieldName = 'Setor_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
+      Size = 50
+    end
+    object cdsPainelid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+    end
+    object cdsPainelid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+    end
+    object cdsPainelQtd_Historicos: TIntegerField
+      Alignment = taCenter
+      FieldName = 'Qtd_Historicos'
+    end
+    object cdsPainelQtd_Designacoes: TIntegerField
+      Alignment = taCenter
+      FieldName = 'Qtd_Designacoes'
     end
   end
   object mtbTiposAuditoria: TFDMemTable
@@ -353,5 +392,88 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     DataSet = mtbTiposPrazoANS
     Left = 833
     Top = 219
+  end
+  object dtsPainel: TDataSource
+    DataSet = cdsPainel
+    Left = 144
+    Top = 179
+  end
+  object mtbUsuarios: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 1176
+    Top = 16
+    object mtbUsuariosid: TIntegerField
+      FieldName = 'id'
+    end
+    object mtbUsuariosNome_Usuario: TStringField
+      FieldName = 'Nome_Usuario'
+      Size = 100
+    end
+  end
+  object mtbUF: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 1008
+    Top = 579
+    object mtbUFSigla: TStringField
+      Alignment = taCenter
+      FieldName = 'Sigla'
+      Size = 5
+    end
+  end
+  object dtsUF: TDataSource
+    DataSet = mtbUF
+    Left = 832
+    Top = 579
+  end
+  object mtbHistoricoDesignacoes: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 64
+    Top = 400
+    object mtbHistoricoDesignacoesJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Size = 100
+    end
+    object mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField
+      Alignment = taCenter
+      FieldName = 'Data_Hora_Log'
+    end
+    object mtbHistoricoDesignacoesNome_Setor: TStringField
+      FieldName = 'Nome_Setor'
+      Size = 50
+    end
+    object mtbHistoricoDesignacoesUsuario_Designado: TStringField
+      FieldName = 'Usuario_Designado'
+      Size = 100
+    end
+    object mtbHistoricoDesignacoesUsuario_Responsavel: TStringField
+      FieldName = 'Usuario_Responsavel'
+      Size = 100
+    end
+  end
+  object dtsHistoricoDesignacoes: TDataSource
+    DataSet = mtbHistoricoDesignacoes
+    Left = 256
+    Top = 403
   end
 end

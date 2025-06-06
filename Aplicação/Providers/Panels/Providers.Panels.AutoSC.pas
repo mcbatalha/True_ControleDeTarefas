@@ -32,7 +32,6 @@ uses
 type
   TdtmPainelAutoSC = class(TdtmPainel)
     mtbPainelid_Processo: TLargeintField;
-    mtbPainelNumero_Processo: TLargeintField;
     mtbPainelData_Status: TDateTimeField;
     mtbPainelQtd_Arquivos: TIntegerField;
     mtbPaineluf: TStringField;
@@ -89,8 +88,35 @@ type
     dtsTiposPrazoANS: TDataSource;
     mtbTiposPrazoANSid: TIntegerField;
     mtbTiposPrazoANSTipo_Prazo_Caixa: TStringField;
+    dtsPainel: TDataSource;
+    mtbPainelSetor_Designado: TStringField;
+    cdsPainelSetor_Designado: TStringField;
+    mtbPainelNumero_Processo: TLargeintField;
+    mtbUsuarios: TFDMemTable;
+    mtbUsuariosid: TIntegerField;
+    mtbUsuariosNome_Usuario: TStringField;
+    mtbUF: TFDMemTable;
+    dtsUF: TDataSource;
+    mtbUFSigla: TStringField;
+    mtbPainelid_Usuario_Designado: TIntegerField;
+    mtbPainelid_Setor_Designado: TIntegerField;
+    cdsPainelid_Usuario_Designado: TIntegerField;
+    cdsPainelid_Setor_Designado: TIntegerField;
+    mtbPainelQtd_Historicos: TIntegerField;
+    mtbPainelQtd_Designacoes: TIntegerField;
+    cdsPainelQtd_Historicos: TIntegerField;
+    cdsPainelQtd_Designacoes: TIntegerField;
+    mtbHistoricoDesignacoes: TFDMemTable;
+    mtbHistoricoDesignacoesJustificativa: TStringField;
+    mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField;
+    mtbHistoricoDesignacoesNome_Setor: TStringField;
+    mtbHistoricoDesignacoesUsuario_Designado: TStringField;
+    mtbHistoricoDesignacoesUsuario_Responsavel: TStringField;
+    dtsHistoricoDesignacoes: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure cdsPainelTipo_ProcessoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+    procedure cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
 
   public
@@ -105,6 +131,24 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdtmPainelAutoSC.cdsPainelTipo_ProcessoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+   inherited;
+   Text := Sender.AsString;
+   if cdsPainelTipo_Processo_E.AsString <> '' then
+      Text := Text + ' - ' + cdsPainelTipo_Processo_E.AsString;
+end;
+
+procedure TdtmPainelAutoSC.cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+   inherited;
+
+   if Sender.AsString = '' then
+      Text := 'Não designado'
+   else
+      Text := Sender.AsString;
+end;
 
 procedure TdtmPainelAutoSC.DataModuleCreate(Sender: TObject);
 begin

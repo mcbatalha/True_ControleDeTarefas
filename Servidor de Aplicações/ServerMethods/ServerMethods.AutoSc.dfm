@@ -201,6 +201,32 @@ object SMAutoSC: TSMAutoSC
       FieldName = 'id_Usuario_Designado'
       Origin = 'id_Usuario_Designado'
     end
+    object qryAutoScid_Responsavel_Designacao: TIntegerField
+      FieldName = 'id_Responsavel_Designacao'
+      Origin = 'id_Responsavel_Designacao'
+    end
+    object qryAutoScData_Hora_Designacao: TDateTimeField
+      FieldName = 'Data_Hora_Designacao'
+      Origin = 'Data_Hora_Designacao'
+    end
+    object qryAutoScData_Hora_Encerramento: TDateTimeField
+      FieldName = 'Data_Hora_Encerramento'
+      Origin = 'Data_Hora_Encerramento'
+    end
+    object qryAutoScid_Usuario_Encerramento: TIntegerField
+      FieldName = 'id_Usuario_Encerramento'
+      Origin = 'id_Usuario_Encerramento'
+    end
+    object qryAutoScJustificativa_Encerramento: TStringField
+      FieldName = 'Justificativa_Encerramento'
+      Origin = 'Justificativa_Encerramento'
+      Size = 100
+    end
+    object qryAutoScJustificativa_Designacao: TStringField
+      FieldName = 'Justificativa_Designacao'
+      Origin = 'Justificativa_Designacao'
+      Size = 100
+    end
   end
   object qryAutoScHistorico: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -234,6 +260,10 @@ object SMAutoSC: TSMAutoSC
       FieldName = 'id_Tipo_Prazo_Caixa_Hoje'
       Origin = 'id_Tipo_Prazo_Caixa_Hoje'
     end
+    object qryAutoScHistoricoid_Tipo_Prazo_ANS: TIntegerField
+      FieldName = 'id_Tipo_Prazo_ANS'
+      Origin = 'id_Tipo_Prazo_ANS'
+    end
     object qryAutoScHistoricoid_Tipo_Status: TIntegerField
       FieldName = 'id_Tipo_Status'
       Origin = 'id_Tipo_Status'
@@ -245,6 +275,10 @@ object SMAutoSC: TSMAutoSC
     object qryAutoScHistoricoid_Usuario_Responsavel: TIntegerField
       FieldName = 'id_Usuario_Responsavel'
       Origin = 'id_Usuario_Responsavel'
+    end
+    object qryAutoScHistoricoData_Hora_Historico: TDateTimeField
+      FieldName = 'Data_Hora_Historico'
+      Origin = 'Data_Hora_Historico'
     end
   end
   object qryPainelAutoSc: TFDQuery
@@ -261,7 +295,9 @@ object SMAutoSC: TSMAutoSC
       '   f.Tipo_Processo,'
       '   g.Tipo_Processo_E,'
       '   h.Tipo_Prazo_Caixa as Tipo_Prazo_Ans,'
-      '   i.Nome_Usuario as Usuario_Designado'
+      '   i.Nome_Usuario as Usuario_Designado,'
+      '   1 as Qtd_Historicos,'
+      '   1 as Qtd_Designacoes'
       'From AutoSc a'
       '     INNER JOIN Tipos_Auditoria b on b.id = a.id_Tipo_Auditoria'
       #9' INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo_Caixa '
@@ -340,6 +376,18 @@ object SMAutoSC: TSMAutoSC
       Origin = 'Usuario_Designado'
       Size = 100
     end
+    object qryPainelAutoScQtd_Historicos: TIntegerField
+      FieldName = 'Qtd_Historicos'
+      Origin = 'Qtd_Historicos'
+      ReadOnly = True
+      Required = True
+    end
+    object qryPainelAutoScQtd_Designacoes: TIntegerField
+      FieldName = 'Qtd_Designacoes'
+      Origin = 'Qtd_Designacoes'
+      ReadOnly = True
+      Required = True
+    end
   end
   object qrySetores: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -361,6 +409,53 @@ object SMAutoSC: TSMAutoSC
       FieldName = 'Nome_Setor'
       Origin = 'Nome_Setor'
       Size = 50
+    end
+  end
+  object qryAutoScLog: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'Select * from AutoSc_Log'
+      'where id_AutoSC = :pIdAutoSC')
+    Left = 232
+    Top = 192
+    ParamData = <
+      item
+        Name = 'PIDAUTOSC'
+        DataType = ftLargeint
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryAutoScLogid: TLargeintField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryAutoScLogid_AutoSC: TLargeintField
+      FieldName = 'id_AutoSC'
+      Origin = 'id_AutoSC'
+    end
+    object qryAutoScLogid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+      Origin = 'id_Setor_Designado'
+    end
+    object qryAutoScLogid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      Origin = 'id_Usuario_Designado'
+    end
+    object qryAutoScLogid_Usuario_Responsavel: TIntegerField
+      FieldName = 'id_Usuario_Responsavel'
+      Origin = 'id_Usuario_Responsavel'
+    end
+    object qryAutoScLogJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Origin = 'Justificativa'
+      Size = 100
+    end
+    object qryAutoScLogData_Hora_Log: TDateTimeField
+      FieldName = 'Data_Hora_Log'
+      Origin = 'Data_Hora_Log'
     end
   end
 end

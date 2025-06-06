@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage,
-  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis;
+  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis, Funcoes;
 
 type
   TfrmPrincipal = class(TForm)
@@ -95,6 +95,13 @@ procedure TfrmPrincipal.PaineisdeAcompanhamento1Click(Sender: TObject);
 var
    LForm : TfrmPaineis;
 begin
+   if (not Seguranca.PodeAUTOSC) and (not Seguranca.PodeSIAGS) and (not Seguranca.PodeCONTROLPC) then
+      begin
+      InformationMessage('Usuário não habilitado para processos (AUTOSC, SIAGS ou CONTROLPC).','Controle de Tarefas');
+      Exit;
+   end;
+
+
    Application.CreateForm(TfrmPaineis, LForm);
    LForm.ShowModal;
    FreeAndNil(LForm);

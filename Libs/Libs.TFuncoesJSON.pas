@@ -4,17 +4,28 @@ interface
 Uses
    System.JSON,
    System.SysUtils,
+   System.Classes,
+
    Data.DB,
    Funcoes;
 
 type
    TFuncoesJSON = class
+  private
 
       public
          class function MontarJSON(ADataSet : TDataSet) : TJSONArray;
-         class function PopularTabela(ADataSet : TDataSet;
+         class function PopularTabela(
+                        ADataSet : TDataSet;
                         const AJSONArray : TJSONArray;
-                        const ATodosTodas : String = '') :  TJSONArray;
+                        const ATodosTodas : String = '') :  TJSONArray; overload;
+
+         class function PopularTabela(
+                        ADataSet : TDataSet;
+                        const AStringList : TStringList;
+                        const ATodosTodas : String = '') :  TJSONArray; overload;
+
+         class function UF : TJSONArray;
    end;
 
 
@@ -71,30 +82,106 @@ begin
    if ADataSet.State = dsInactive then
       ADataSet.open;
 
-   for I := 0 to AJSONArray.Count - 1  do
-       begin
-       LObjeto := AJSONArray.Items[I] as TJSONObject;
-
-       ADataSet.Append;
-       for J := 0 to LObjeto.Count - 1 do
+   ADataSet.DisableControls;
+   try
+      for I := 0 to AJSONArray.Count - 1  do
           begin
-          LRotulo := LObjeto.Pairs[J].JsonString.Value;
-          if ADataSet.FieldByName(LRotulo) is TIntegerField then
-             ADataSet.FieldByName(LRotulo).AsInteger := LObjeto.GetValue<Integer>(LRotulo)
-          else if ADataSet.FieldByName(LRotulo) is TStringField then
-             ADataSet.FieldByName(LRotulo).AsString := LObjeto.GetValue<String>(LRotulo)
-          else if ADataSet.FieldByName(LRotulo) is TFloatField then
-             ADataSet.FieldByName(LRotulo).AsFloat := StrToFloatDef(LObjeto.GetValue<String>(LRotulo),0)
-          else if ADataSet.FieldByName(LRotulo) is TDateTimeField then
-             begin
-             LDate := LObjeto.GetValue<String>(LRotulo);
+          LObjeto := AJSONArray.Items[I] as TJSONObject;
 
-             if VerificarData(LDate) then
-                ADataSet.FieldByName(LRotulo).AsDateTime := StrToDate(LDate);
+          ADataSet.Append;
+          for J := 0 to LObjeto.Count - 1 do
+             begin
+             LRotulo := LObjeto.Pairs[J].JsonString.Value;
+             if Assigned(ADataSet.FindField(LRotulo)) then
+                begin
+                if ADataSet.FieldByName(LRotulo) is TIntegerField then
+                   ADataSet.FieldByName(LRotulo).AsInteger := LObjeto.GetValue<Integer>(LRotulo)
+                else if ADataSet.FieldByName(LRotulo) is TLargeintField then
+                   ADataSet.FieldByName(LRotulo).AsInteger := LObjeto.GetValue<Integer>(LRotulo)
+                else if ADataSet.FieldByName(LRotulo) is TStringField then
+                   ADataSet.FieldByName(LRotulo).AsString := LObjeto.GetValue<String>(LRotulo)
+                else if ADataSet.FieldByName(LRotulo) is TFloatField then
+                   ADataSet.FieldByName(LRotulo).AsFloat := StrToFloatDef(LObjeto.GetValue<String>(LRotulo),0)
+                else if ADataSet.FieldByName(LRotulo) is TDateTimeField then
+                   begin
+                   LDate := LObjeto.GetValue<String>(LRotulo);
+
+                   if Length(LDate) = 10 then
+                      begin
+                      if VerificarData(LDate) then
+                         ADataSet.FieldByName(LRotulo).AsDateTime := StrToDate(LDate);
+                   end else if Length(LDate) = 19 then
+                      begin
+                      if VerificarDataHora(LDate) then
+                         ADataSet.FieldByName(LRotulo).AsDateTime := StrToDateTime(LDate);
+                   end
+                end;
+             end;
           end;
-       end;
-       ADataSet.Post;
+          ADataSet.Post;
+      end;
+   finally
+      ADataSet.First;
+      ADataSet.EnableControls;
    end;
+end;
+
+
+
+class function TFuncoesJSON.PopularTabela(ADataSet: TDataSet; const AStringList: TStringList; const ATodosTodas: String): TJSONArray;
+var
+   I: Integer;
+begin
+   if ADataSet.State = dsInactive then
+      ADataSet.Open;
+
+   for I := 0 to AStringList.Count -1 do
+      begin
+      ADataSet.Append;
+      ADataSet.Fields[0].Value := AStringList[I];
+      ADataSet.Post;
+   end;
+
+   FreeAndNil(AStringList);
+end;
+
+class function TFuncoesJSON.UF: TJSONArray;
+var
+   LObjeto : TJSONObject;
+begin
+   Result := TJSONArray.Create;
+
+   LObjeto.Create;
+   LObjeto.AddPair('sigla','AC');
+   LObjeto.AddPair('sigla','AL');
+   LObjeto.AddPair('sigla','AM');
+   LObjeto.AddPair('sigla','AP');
+   LObjeto.AddPair('sigla','BA');
+   LObjeto.AddPair('sigla','CE');
+   LObjeto.AddPair('sigla','DF');
+   LObjeto.AddPair('sigla','ES');
+   LObjeto.AddPair('sigla','GO');
+   LObjeto.AddPair('sigla','MA');
+   LObjeto.AddPair('sigla','MG');
+   LObjeto.AddPair('sigla','MS');
+   LObjeto.AddPair('sigla','MT');
+   LObjeto.AddPair('sigla','PA');
+   LObjeto.AddPair('sigla','PB');
+   LObjeto.AddPair('sigla','PE');
+   LObjeto.AddPair('sigla','PI');
+   LObjeto.AddPair('sigla','PR');
+   LObjeto.AddPair('sigla','RJ');
+   LObjeto.AddPair('sigla','RN');
+   LObjeto.AddPair('sigla','RO');
+   LObjeto.AddPair('sigla','RR');
+   LObjeto.AddPair('sigla','RS');
+   LObjeto.AddPair('sigla','SC');
+   LObjeto.AddPair('sigla','SE');
+   LObjeto.AddPair('sigla','SP');
+   LObjeto.AddPair('sigla','TO');
+
+   Result.Add(LObjeto);
+
 end;
 
 end.

@@ -58,11 +58,12 @@ const
 
 // Situação dos processo
    C_PROCESSO_NAO_DESIGNADO = 'Não designado';
+   C_CODIGO_NAO_DESIGNADO   = 999999;
 
 // Tipos de Filtro
-   C_FILTRO_AUTOSC    = 0;
-   C_FILTRO_SIAGS     = 1;
-   C_FILTRO_CONTROLPC = 2;
+   C_TIPO_AUTOSC    = 0;
+   C_TIPO_SIAGS     = 1;
+   C_TIPO_CONTROLPC = 2;
 
 implementation
 

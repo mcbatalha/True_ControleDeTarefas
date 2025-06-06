@@ -108,6 +108,10 @@ begin
       Seguranca.id    := 99999;
       Seguranca.nome  := 'Manutenção do Sistema';
       Seguranca.Login := 'MCCB';
+      Seguranca.PodeAUTOSC    := True;
+      Seguranca.PodeSIAGS     := True;
+      Seguranca.PodeCONTROLPC := True;
+
       Result := True;
       Exit;
    end else
@@ -123,13 +127,16 @@ begin
       Exit;
    end;
 
-   Seguranca.id    := LLogin.Values['id'].AsType<Integer>;
-   Seguranca.nome  := LLogin.Values['nome'].AsType<String>;
-   Seguranca.Login := ALogin;
-   Seguranca.Perfil  := LLogin.Values['perfil'].AsType<String>;
-   Seguranca.TrocarSenha := LLogin.Values['trocarSenha'].AsType<Boolean>;
-   Result := True;
+   Seguranca.id            := LLogin.Values['id'].AsType<Integer>;
+   Seguranca.nome          := LLogin.Values['nome'].AsType<String>;
+   Seguranca.Login         := ALogin;
+   Seguranca.Perfil        := LLogin.Values['perfil'].AsType<String>;
+   Seguranca.TrocarSenha   := LLogin.Values['trocarSenha'].AsType<Boolean>;
+   Seguranca.PodeAUTOSC    := LLogin.Values['autosc'].AsType<Boolean>;
+   Seguranca.PodeSIAGS     := LLogin.Values['siags'].AsType<Boolean>;
+   Seguranca.PodeCONTROLPC := LLogin.Values['controlpc'].AsType<Boolean>;
 
+   Result := True;
 
    if ALogin = 'MCCB' then
       Seguranca.TrocarSenha := False;

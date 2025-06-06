@@ -14,16 +14,19 @@ type
 
   TSeguranca = class
   private
-    FId          : integer;
-    FLogin       : String;
-    FNome        : String;
-    FSenha       : String;
-    FEMail       : String;
-    FMensagem    : String;
-    FPerfil      : String;
-    FUltimoAcesso: String;
-    FTrocarSenha : Boolean;
-    FLoginOl     : Boolean;
+    FId            : integer;
+    FLogin         : String;
+    FNome          : String;
+    FSenha         : String;
+    FEMail         : String;
+    FMensagem      : String;
+    FPerfil        : String;
+    FUltimoAcesso  : String;
+    FTrocarSenha   : Boolean;
+    FLoginOl       : Boolean;
+    FPodeAUTOSC    : Boolean;
+    FPodeSIAGS     : Boolean;
+    FPodeCONTROLPC : Boolean;
 
   published
        property Id           : integer read FId write FId;
@@ -36,6 +39,11 @@ type
        property UltimoAcesso : String read FUltimoAcesso write FUltimoAcesso;
        property TrocarSenha  : Boolean read FTrocarSenha write FTrocarSenha;
        property LoginOl      : Boolean read FLoginOl write FLoginOl;
+
+       // Tipos de processo
+       property PodeAUTOSC   : Boolean read FPodeAUTOSC write FPodeAUTOSC;
+       property PodeSIAGS    : Boolean read FPodeSIAGS write FPodeSIAGS;
+       property PodeCONTROLPC: Boolean read FPodeCONTROLPC write FPodeCONTROLPC;
 
   public
      constructor create();

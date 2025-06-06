@@ -43,7 +43,8 @@ uses
   Forms.Paineis in 'Forms\Forms.Paineis.pas' {frmPaineis},
   Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas',
   Libs.TFiltros in '..\Libs\Libs.TFiltros.pas',
-  Providers.Panels.Conexao in 'Providers\Panels\Providers.Panels.Conexao.pas' {dtmPaineisConexao: TDataModule};
+  Providers.Panels.Conexao in 'Providers\Panels\Providers.Panels.Conexao.pas' {dtmPaineisConexao: TDataModule},
+  Frames.Pesquisa.Usuario in 'Forms\Frames\Frames.Pesquisa.Usuario.pas' {fraPesquisaUsuario: TFrame};
 
 {$R *.res}
 

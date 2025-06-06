@@ -59,7 +59,7 @@ uses Libs.Constantes;
 constructor TFiltros.create(const ATipo : Integer);
 begin
    case ATipo of
-      C_FILTRO_AUTOSC : LimparFiltrosAutoSc;
+      C_TIPO_AUTOSC : LimparFiltrosAutoSc;
    end;
 end;
 
@@ -111,7 +111,7 @@ begin
    FFiltrosAutoSc.idTipoPrazoANS       := 0;
    FFiltrosAutoSc.idSetorDesignado     := 0;
    FFiltrosAutoSc.idUsuarioDesignado   := 0;
-   FFiltrosAutoSc.UF                   := '';
+   FFiltrosAutoSc.UF                   := C_TODOS;
    FFiltrosAutoSc.nomeUsuario          := C_TODOS;
    FFiltrosAutoSc.usaDataStatus        := False;
 end;

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 04/06/2025 19:42:07
+// 05/06/2025 20:51:24
 //
 
 unit Proxy.Classes;
@@ -68,6 +68,8 @@ type
   private
     FImportarCommand: TDBXCommand;
     FFiltrarProcessosCommand: TDBXCommand;
+    FDesignarCommand: TDBXCommand;
+    FHistoricoDeDesignacoesCommand: TDBXCommand;
     FTiposDeAuditoriaCommand: TDBXCommand;
     FTiposDePrazoCommand: TDBXCommand;
     FTiposDePrazoHojeCommand: TDBXCommand;
@@ -75,12 +77,15 @@ type
     FTiposDeProcessoECommand: TDBXCommand;
     FTiposDeStatusCommand: TDBXCommand;
     FSetoresCommand: TDBXCommand;
+    FUsuariosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
     function FiltrarProcessos(AFiltros: TJSONObject): TJSONArray;
+    function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProcesso: Integer): Boolean;
+    function HistoricoDeDesignacoes(AIdProcesso: Integer): TJSONArray;
     function TiposDeAuditoria: TJSONArray;
     function TiposDePrazo: TJSONArray;
     function TiposDePrazoHoje: TJSONArray;
@@ -88,6 +93,7 @@ type
     function TiposDeProcessoE: TJSONArray;
     function TiposDeStatus: TJSONArray;
     function Setores: TJSONArray;
+    function Usuarios: TJSONArray;
   end;
 
 implementation
@@ -396,6 +402,38 @@ begin
   Result := TJSONArray(FFiltrarProcessosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
+function TSMAutoSCClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProcesso: Integer): Boolean;
+begin
+  if FDesignarCommand = nil then
+  begin
+    FDesignarCommand := FDBXConnection.CreateCommand;
+    FDesignarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDesignarCommand.Text := 'TSMAutoSC.Designar';
+    FDesignarCommand.Prepare;
+  end;
+  FDesignarCommand.Parameters[0].Value.SetWideString(AJustificativa);
+  FDesignarCommand.Parameters[1].Value.SetInt32(AIdSetor);
+  FDesignarCommand.Parameters[2].Value.SetInt32(AIdUsuario);
+  FDesignarCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
+  FDesignarCommand.Parameters[4].Value.SetInt32(AIdProcesso);
+  FDesignarCommand.ExecuteUpdate;
+  Result := FDesignarCommand.Parameters[5].Value.GetBoolean;
+end;
+
+function TSMAutoSCClient.HistoricoDeDesignacoes(AIdProcesso: Integer): TJSONArray;
+begin
+  if FHistoricoDeDesignacoesCommand = nil then
+  begin
+    FHistoricoDeDesignacoesCommand := FDBXConnection.CreateCommand;
+    FHistoricoDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FHistoricoDeDesignacoesCommand.Text := 'TSMAutoSC.HistoricoDeDesignacoes';
+    FHistoricoDeDesignacoesCommand.Prepare;
+  end;
+  FHistoricoDeDesignacoesCommand.Parameters[0].Value.SetInt32(AIdProcesso);
+  FHistoricoDeDesignacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FHistoricoDeDesignacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
 function TSMAutoSCClient.TiposDeAuditoria: TJSONArray;
 begin
   if FTiposDeAuditoriaCommand = nil then
@@ -487,6 +525,19 @@ begin
   Result := TJSONArray(FSetoresCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
+function TSMAutoSCClient.Usuarios: TJSONArray;
+begin
+  if FUsuariosCommand = nil then
+  begin
+    FUsuariosCommand := FDBXConnection.CreateCommand;
+    FUsuariosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUsuariosCommand.Text := 'TSMAutoSC.Usuarios';
+    FUsuariosCommand.Prepare;
+  end;
+  FUsuariosCommand.ExecuteUpdate;
+  Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
 constructor TSMAutoSCClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -501,6 +552,8 @@ destructor TSMAutoSCClient.Destroy;
 begin
   FImportarCommand.DisposeOf;
   FFiltrarProcessosCommand.DisposeOf;
+  FDesignarCommand.DisposeOf;
+  FHistoricoDeDesignacoesCommand.DisposeOf;
   FTiposDeAuditoriaCommand.DisposeOf;
   FTiposDePrazoCommand.DisposeOf;
   FTiposDePrazoHojeCommand.DisposeOf;
@@ -508,6 +561,7 @@ begin
   FTiposDeProcessoECommand.DisposeOf;
   FTiposDeStatusCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
+  FUsuariosCommand.DisposeOf;
   inherited;
 end;
 
