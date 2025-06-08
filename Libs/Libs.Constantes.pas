@@ -60,12 +60,16 @@ const
    C_PROCESSO_NAO_DESIGNADO = 'Não designado';
    C_CODIGO_NAO_DESIGNADO   = 999999;
 
-// Tipos de Filtro
-   C_TIPO_AUTOSC    = 0;
-   C_TIPO_SIAGS     = 1;
-   C_TIPO_CONTROLPC = 2;
+// Tipos de Processo
+   C_CODIGO_AUTOSC    = 0;
+   C_CODIGO_SIAGS     = 1;
+   C_CODIGO_CONTROLPC = 2;
 
-implementation
+   C_TIPO_AUTOSC    = 'AUTOSC';
+   C_TIPO_SIAGS     = 'SIAGS';
+   C_TIPO_CONTROLPC = 'CONTROLPC';
+
+   implementation
 
 
 

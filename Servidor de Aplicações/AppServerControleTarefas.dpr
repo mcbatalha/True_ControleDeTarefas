@@ -9,16 +9,18 @@ uses
   ServerMethods.Container in 'ServerMethods\ServerMethods.Container.pas' {ServerContainer: TDataModule},
   ServerMethods.Cadastro.Setores in 'ServerMethods\ServerMethods.Cadastro.Setores.pas' {SMSetores: TDSServerModule},
   FuncoesGerais in '..\..\..\Geral\FuncoesGerais.pas',
-  uTFuncoesServer in '..\..\..\GeralAppServer\uTFuncoesServer.pas',
-  Libs.Constantes in '..\Libs\Libs.Constantes.pas',
+  Libs.TFuncoesServer in '..\..\..\GeralAppServer\Libs.TFuncoesServer.pas',
   ServerMethods.Cadastro.Usuarios in 'ServerMethods\ServerMethods.Cadastro.Usuarios.pas' {SMUsuarios: TDSServerModule},
   Utils.AtualizacaoBD in 'Utils\Utils.AtualizacaoBD.pas',
-  uTTransacao in '..\..\..\GeralAppServer\uTTransacao.pas',
+  Libs.TTransacao in '..\..\..\GeralAppServer\Libs.TTransacao.pas',
   Funcoes in '..\..\..\GeralAppServer\Funcoes.pas',
   Libs.TSeguranca in '..\Libs\Libs.TSeguranca.pas',
   ServerMethods.AutoSc in 'ServerMethods\ServerMethods.AutoSc.pas' {SMAutoSC: TDSServerModule},
   Libs.TFiltros in '..\Libs\Libs.TFiltros.pas',
-  Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas';
+  Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas',
+  Utils.TFuncoesServer in 'Utils\Utils.TFuncoesServer.pas',
+  Libs.Constantes in '..\Libs\Libs.Constantes.pas',
+  ServerMethods.Siags in 'ServerMethods\ServerMethods.Siags.pas' {SMSiags: TDSServerModule};
 
 {$R *.res}
 

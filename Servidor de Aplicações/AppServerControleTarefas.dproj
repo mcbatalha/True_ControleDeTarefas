@@ -128,15 +128,14 @@
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\..\..\Geral\FuncoesGerais.pas"/>
-        <DCCReference Include="..\..\..\GeralAppServer\uTFuncoesServer.pas"/>
-        <DCCReference Include="..\Libs\Libs.Constantes.pas"/>
+        <DCCReference Include="..\..\..\GeralAppServer\Libs.TFuncoesServer.pas"/>
         <DCCReference Include="ServerMethods\ServerMethods.Cadastro.Usuarios.pas">
             <Form>SMUsuarios</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDSServerModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Utils\Utils.AtualizacaoBD.pas"/>
-        <DCCReference Include="..\..\..\GeralAppServer\uTTransacao.pas"/>
+        <DCCReference Include="..\..\..\GeralAppServer\Libs.TTransacao.pas"/>
         <DCCReference Include="..\..\..\GeralAppServer\Funcoes.pas"/>
         <DCCReference Include="..\Libs\Libs.TSeguranca.pas"/>
         <DCCReference Include="ServerMethods\ServerMethods.AutoSc.pas">
@@ -146,6 +145,13 @@
         </DCCReference>
         <DCCReference Include="..\Libs\Libs.TFiltros.pas"/>
         <DCCReference Include="..\Libs\Libs.TFuncoesJSON.pas"/>
+        <DCCReference Include="Utils\Utils.TFuncoesServer.pas"/>
+        <DCCReference Include="..\Libs\Libs.Constantes.pas"/>
+        <DCCReference Include="ServerMethods\ServerMethods.Siags.pas">
+            <Form>SMSiags</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDSServerModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

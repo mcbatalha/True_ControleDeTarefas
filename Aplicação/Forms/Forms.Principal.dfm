@@ -1034,6 +1034,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 56
   end
   object MainMenu1: TMainMenu
+    Tag = 1
     Left = 728
     Top = 64
     object mngCadastros: TMenuItem
@@ -1069,6 +1070,7 @@ object frmPrincipal: TfrmPrincipal
       end
     end
     object mniSair: TMenuItem
+      Tag = 1
       Caption = 'Sair'
       OnClick = mniSairClick
     end

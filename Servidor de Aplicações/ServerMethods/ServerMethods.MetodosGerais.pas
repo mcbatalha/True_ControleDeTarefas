@@ -19,7 +19,9 @@ uses
   FireDAC.DApt,
   Data.DB,
   FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, uTTransacao, Libs.TFuncoesJSON;
+  FireDAC.Comp.Client,
+  Libs.TTransacao,
+  Libs.TFuncoesJSON;
 
 type
 {$METHODINFO ON}
@@ -43,7 +45,7 @@ implementation
 
 
 uses System.StrUtils,
-     uTFuncoesServer, ServerMethods.Container, Funcoes, Libs.Constantes;
+     Libs.TFuncoesServer, ServerMethods.Container, Funcoes, Libs.Constantes;
 
 function TSMMetodosGerais.AlterarSenha(const AIdUsuario: integer; ASenha: String): Boolean;
 var

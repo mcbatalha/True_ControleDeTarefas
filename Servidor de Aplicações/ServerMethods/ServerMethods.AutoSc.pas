@@ -11,15 +11,29 @@ uses
   Datasnap.DSAuth,
   Datasnap.DSProviderDataModuleAdapter,
 
-  Libs.Constantes, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, uTTransacao, Libs.TFiltros, Libs.TFuncoesJSON;
+
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+
+  Data.DB,
+
+  Libs.Constantes,
+  Libs.TTransacao,
+  Libs.TFiltros,
+  Libs.TFuncoesJSON, Utils.TFuncoesServer;
 
 type
   TSMAutoSC = class(TDSServerModule)
     qryAux: TFDQuery;
-    qryTiposAuditoria: TFDQuery;
-    qryTiposAuditoriaid: TFDAutoIncField;
-    qryTiposAuditoriaTipo_Auditoria: TStringField;
     qryTiposPrazo: TFDQuery;
     qryTiposPrazoHoje: TFDQuery;
     qryTiposProcesso: TFDQuery;
@@ -95,6 +109,19 @@ type
     qryAutoScHistoricoid_Tipo_Prazo_ANS: TIntegerField;
     qryPainelAutoScQtd_Historicos: TIntegerField;
     qryPainelAutoScQtd_Designacoes: TIntegerField;
+    qryPainelAutoScQtd_Observacoes: TIntegerField;
+    qryTiposPrazoAUTOSC: TIntegerField;
+    qryTiposPrazoSIAGS: TIntegerField;
+    qryTiposPrazoCONTROLPC: TIntegerField;
+    qryTiposPrazoHojeAUTOSC: TIntegerField;
+    qryTiposPrazoHojeSIAGS: TIntegerField;
+    qryTiposPrazoHojeCONTROLPC: TIntegerField;
+    qryTiposAuditoria: TFDQuery;
+    qryTiposAuditoriaid: TFDAutoIncField;
+    qryTiposAuditoriaTipo_Auditoria: TStringField;
+    qryTiposAuditoriaAUTOSC: TIntegerField;
+    qryTiposAuditoriaSIAGS: TIntegerField;
+    qryTiposAuditoriaCONTROLPC: TIntegerField;
   private
     { Private declarations }
 
@@ -144,7 +171,18 @@ type
                       const AIdSetor, AIdUsuario, AIdUsuarioResponsavel : integer;
                       const AIdProcesso : LongInt ): Boolean;
 
+    function RegistrarObservacao(const AIdProcesso : LongInt;
+                                 const AObservacao: String;
+                                 const AIdUsuarioResponsavel : integer;
+                                 out ADataHora : TDateTime): Boolean;
+
+    function EncerrarProcesso(const AIdProcesso : LongInt;
+                              const AJustificativa: String;
+                              const AIdUsuarioResponsavel : integer): Boolean;
+
     function HistoricoDeDesignacoes(const AIdProcesso : LongInt) : TJSONArray;
+    function HistoricoDeAtualizacoes(const AIdProcesso : LongInt) : TJSONArray;
+    function ObservacoesDoProcesso(const AIdProcesso : LongInt) : TJSONArray;
 
 
     function TiposDeAuditoria : TJSONArray;
@@ -174,8 +212,15 @@ begin
       begin
       qryTiposAuditoria.Append;
       qryTiposAuditoriaTipo_Auditoria.AsString := AValor;
+      qryTiposAuditoriaAUTOSC.AsInteger        := 1;
+      qryTiposAuditoria.Post;
+   end else if qryTiposAuditoriaAUTOSC.AsInteger = 0 then
+      begin
+      qryTiposAuditoria.Edit;
+      qryTiposAuditoriaAUTOSC.AsInteger := 1;
       qryTiposAuditoria.Post;
    end;
+
    Result := qryTiposAuditoriaid.AsInteger
 end;
 
@@ -185,8 +230,15 @@ begin
       begin
       qryTiposPrazo.Append;
       qryTiposPrazoTipo_Prazo_Caixa.AsString := AValor;
+      qryTiposPrazoAUTOSC.AsInteger          := 1;
+      qryTiposPrazo.Post;
+   end else if qryTiposPrazoAUTOSC.AsInteger = 0 then
+      begin
+      qryTiposPrazo.Edit;
+      qryTiposPrazoAUTOSC.AsInteger := 1;
       qryTiposPrazo.Post;
    end;
+
    Result := qryTiposPrazoid.AsInteger
 end;
 
@@ -197,9 +249,36 @@ begin
       begin
       qryTiposPrazoHoje.Append;
       qryTiposPrazoHojeTipo_Prazo_Caixa_Hoje.AsString := AValor;
+      qryTiposPrazoHojeAUTOSC.AsInteger               := 1;
+      qryTiposPrazoHoje.Post;
+   end else if qryTiposPrazoHojeAUTOSC.AsInteger = 0 then
+      begin
+      qryTiposPrazoHoje.Edit;
+      qryTiposPrazoHojeAUTOSC.AsInteger := 1;
       qryTiposPrazoHoje.Post;
    end;
    Result := qryTiposPrazoHojeid.AsInteger
+end;
+
+function TSMAutoSC.ObservacoesDoProcesso(const AIdProcesso: LongInt): TJSONArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select ');
+   qryAux.Sql.Add('   a.Data_Hora, a.Observacao, ');
+   qryAux.Sql.Add('   b.Nome_Usuario ');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   AutoSC_Observacoes a ');
+   qryAux.Sql.Add('   INNER JOIN Usuarios b on b.id = a.id_Usuario ');
+   qryAux.Sql.Add('Where ');
+   qryAux.Sql.Add('   a.id_AutoSC = :pIdAutoSC');
+   qryAux.Sql.Add('Order by ');
+   qryAux.Sql.Add('   a.Data_Hora desc ');
+
+   qryAux.ParamByName('pIdAutoSC').AsInteger := AIdProcesso;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+
 end;
 
 function TSMAutoSC.ObterIdProcesso(const AValor: String): LongInt;
@@ -218,6 +297,48 @@ begin
 end;
 
 
+function TSMAutoSC.RegistrarObservacao(
+   const AIdProcesso: LongInt;
+   const AObservacao: String;
+   const AIdUsuarioResponsavel: integer;
+   out ADataHora : TDateTime): Boolean;
+begin
+   Result := False;
+
+   try
+      TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+
+      ADataHora := Now;
+      try
+         qryAux.Close;
+         qryAux.Sql.Clear;
+         qryAux.Sql.Add('Insert into AutoSC_Observacoes');
+         qryAux.Sql.Add('   (id_AutoSC, id_Usuario, Data_Hora, Observacao)');
+         qryAux.Sql.Add('Values ');
+         qryAux.Sql.Add('   (:pIdAutoSC, :pIdUsuario, :pDataHora, :pObservacao)');
+         qryAux.ParamByName('pIdAutoSC').AsInteger  := AIdProcesso;
+         qryAux.ParamByName('pIdUsuario').AsInteger := AIdUsuarioResponsavel;
+         qryAux.ParamByName('pDataHora').AsDateTime := ADataHora;
+         qryAux.ParamByName('pObservacao').AsString := AObservacao;
+         qryAux.ExecSQL;
+
+         if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
+            Result := True;
+      except
+         begin
+         Result := False;
+         TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+         Exit;
+         end;
+      end;
+
+   finally
+      qryAutoScLog.Close;
+      qryAutoScHistorico.Close;
+      qryAutoSc.Close;
+   end;
+end;
+
 function TSMAutoSC.Setores: TJSONArray;
 begin
   Result := TFuncoesJSON.MontarJSON(qrySetores);
@@ -225,17 +346,26 @@ end;
 
 function TSMAutoSC.TiposDeAuditoria: TJSONArray;
 begin
-  Result := TFuncoesJSON.MontarJSON(qryTiposAuditoria);
+   qryTiposAuditoria.Close;
+   qryTiposAuditoria.ParamByName('AUTOSC').AsInteger := 1;
+
+   Result := TFuncoesJSON.MontarJSON(qryTiposAuditoria);
 end;
 
 function TSMAutoSC.TiposDePrazo: TJSONArray;
 begin
-  Result := TFuncoesJSON.MontarJSON(qryTiposPrazo);
+   qryTiposPrazo.Close;
+   qryTiposPrazo.ParamByName('AUTOSC').AsInteger := 1;
+
+   Result := TFuncoesJSON.MontarJSON(qryTiposPrazo);
 end;
 
 function TSMAutoSC.TiposDePrazoHoje: TJSONArray;
 begin
-  Result := TFuncoesJSON.MontarJSON(qryTiposPrazoHoje);
+   qryTiposPrazoHoje.Close;
+   qryTiposPrazoHoje.ParamByName('AUTOSC').AsInteger := 1;
+
+   Result := TFuncoesJSON.MontarJSON(qryTiposPrazoHoje);
 end;
 
 function TSMAutoSC.TiposDeProcesso: TJSONArray;
@@ -302,6 +432,19 @@ end;
 
 procedure TSMAutoSC.AbrirTabelasDeCadastro;
 begin
+   qryTiposAuditoria.Close;
+   qryTiposPrazo.Close;
+   qryTiposPrazoHoje.Close;
+   qryTiposProcesso.Close;
+   qryTiposProcessoE.Close;
+   qryTiposStatus.Close;
+   qryTiposAuditoria.Close;
+
+   qryTiposAuditoria.ParamByName('AUTOSC').AsInteger := 9;
+   qryTiposPrazo.ParamByName('AUTOSC').AsInteger     := 9;
+   qryTiposPrazoHoje.ParamByName('AUTOSC').AsInteger := 9;
+
+
    qryTiposAuditoria.Open;
    qryTiposPrazo.Open;
    qryTiposPrazoHoje.Open;
@@ -317,7 +460,6 @@ function TSMAutoSC.Designar(
    const AIdProcesso : LongInt ): Boolean;
 begin
    Result := False;
-
 
    try
       FIdUsuarioResponsavel := AIdUsuarioResponsavel;
@@ -364,6 +506,8 @@ begin
          qryAutoScJustificativa_Designacao.AsString   := AJustificativa;
          qryAutoSc.Post;
 
+         if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
+            Result := True;
       except
          begin
          Result := False;
@@ -372,8 +516,46 @@ begin
          end;
       end;
 
-      if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
-         Result := True;
+   finally
+      qryAutoScLog.Close;
+      qryAutoScHistorico.Close;
+      qryAutoSc.Close;
+   end;
+end;
+
+function TSMAutoSC.EncerrarProcesso(const AIdProcesso: LongInt; const AJustificativa: String; const AIdUsuarioResponsavel: integer): Boolean;
+begin
+   Result := False;
+
+   try
+      TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+      try
+         qryAutoSc.Close;
+         qryAutoSc.Sql.Clear;
+         qryAutoSc.Sql.Add('Select * from AutoSC');
+         qryAutoSc.Sql.Add('where id = :pIProcesso');
+         qryAutoSc.ParamByName('pIProcesso').AsInteger := AIdProcesso;
+         qryAutoSc.Open;
+
+         if qryAutoSc.isEmpty then
+            Exit;
+
+         qryAutoSc.Edit;
+         qryAutoScid_Usuario_Encerramento.AsInteger   := AIdUsuarioResponsavel;
+         qryAutoScData_Hora_Encerramento.AsDateTime   := Now;
+         qryAutoScJustificativa_Encerramento.AsString := AJustificativa;
+         qryAutoSc.Post;
+
+         if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
+            Result := True;
+      except
+         begin
+         Result := False;
+         TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+         Exit;
+         end;
+      end;
+
    finally
       qryAutoScLog.Close;
       qryAutoScHistorico.Close;
@@ -587,6 +769,34 @@ begin
    end;
 end;
 
+function TSMAutoSC.HistoricoDeAtualizacoes(const AIdProcesso: LongInt): TJSONArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select ');
+   qryAux.Sql.Add('   ah.Data_Hora_Historico, ');
+   qryAux.Sql.Add('   tpc.Tipo_Prazo_Caixa, ');
+   qryAux.Sql.Add('   tph.Tipo_Prazo_Caixa_Hoje, ');
+   qryAux.Sql.Add('   tpa.Tipo_Prazo_Caixa as Tipo_Prazo_ANS, ');
+   qryAux.Sql.Add('   ts.Tipo_Status, ');
+   qryAux.Sql.Add('   us.Nome_Usuario ');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   AutoSc_Historico ah ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Prazo tpc on tpc.id = ah.id_Tipo_Prazo_Caixa ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Prazo_Hoje tph on tph.id = ah.id_Tipo_Prazo_Caixa_Hoje ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Prazo tpa on tpa.id = ah.id_Tipo_Prazo_Caixa_Hoje ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Status ts on ts.id = ah.id_Tipo_Status ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Usuarios us on us.id = ah.id_Usuario_Responsavel ');
+   qryAux.Sql.Add('where ');
+   qryAux.Sql.Add('   ah.id_AutoSC = :pIdProcesso');
+   qryAux.Sql.Add('Order by ');
+   qryAux.Sql.Add('   ah.Data_Hora_Historico desc ');
+   qryAux.ParamByName('pIdProcesso').AsInteger := AIdProcesso;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+
+end;
+
 function TSMAutoSC.HistoricoDeDesignacoes(const AIdProcesso: LongInt): TJSONArray;
 begin
    qryAux.Close;
@@ -650,6 +860,18 @@ begin
             GravarProcesso;
 
          end;
+         TFuncoesServer.RegistrarImportacao(C_TIPO_AUTOSC, FDataHora, AIdUsuario, FTotalRegistros, FTotalNovos, FTotalAtualizados);
+
+         if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
+            begin
+            Result.AddPair('importou',TJSONBool.Create(True));
+            Result.AddPair('totalRegistros',TJSONNumber.Create(FTotalRegistros));
+            Result.AddPair('totalNovos',TJSONNumber.Create(FTotalNovos));
+            Result.AddPair('totalAtualizados',TJSONNumber.Create(FTotalAtualizados));
+            Result.AddPair('totalNaoAtualizados',TJSONNumber.Create(FTotalNaoAtualizados));
+         end else
+            Result.AddPair('importou',TJSONBool.Create(False));
+
       except
          begin
          Result.AddPair('importou',TJSONBool.Create(False));
@@ -657,15 +879,6 @@ begin
          end;
       end;
 
-      if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
-         begin
-         Result.AddPair('importou',TJSONBool.Create(True));
-         Result.AddPair('totalRegistros',TJSONNumber.Create(FTotalRegistros));
-         Result.AddPair('totalNovos',TJSONNumber.Create(FTotalNovos));
-         Result.AddPair('totalAtualizados',TJSONNumber.Create(FTotalAtualizados));
-         Result.AddPair('totalNaoAtualizados',TJSONNumber.Create(FTotalNaoAtualizados));
-      end else
-         Result.AddPair('importou',TJSONBool.Create(False));
    finally
       FecharTabelasDeCadastro;
    end;
@@ -692,8 +905,11 @@ begin
       Sql.Add('           From AutoSc_Historico ah ');
       Sql.Add('           where ah.id_AutoSC = a.id),0) as Qtd_Historicos,');
       Sql.Add('   IsNull((Select count(*) ');
-      Sql.Add('           From AutoSc_Log ah ');
-      Sql.Add('           where ah.id_AutoSC = a.id),0) as Qtd_Designacoes ');
+      Sql.Add('           From AutoSc_Log al ');
+      Sql.Add('           where al.id_AutoSC = a.id),0) as Qtd_Designacoes, ');
+      Sql.Add('   IsNull((Select count(*) ');
+      Sql.Add('           From AutoSC_Observacoes ao ');
+      Sql.Add('           where ao.id_AutoSC = a.id),0) as Qtd_Observacoes');
       Sql.Add('From ');
       Sql.Add('   AutoSc a ');
       Sql.Add('   INNER JOIN Tipos_Auditoria b on b.id = a.id_Tipo_Auditoria ');

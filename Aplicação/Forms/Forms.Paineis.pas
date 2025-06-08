@@ -110,22 +110,69 @@ type
     VerHistricodealteraes1: TMenuItem;
     TabSheet3: TTabSheet;
     pnlHistoricoDesignacoes: TPanel;
-    lblTituloHistoricoDesignacoes: TLabel;
     Panel3: TPanel;
     Panel5: TPanel;
     btnFecharHistoricoDesignacao: TBitBtn;
     dbnHistoricoDesignacoes: TDBNavigator;
     Label15: TLabel;
-    DBEdit1: TDBEdit;
+    edtDataHoraDesignacao: TDBEdit;
     Label16: TLabel;
-    DBEdit2: TDBEdit;
+    edtResponsavelDesignacao: TDBEdit;
     Label17: TLabel;
-    DBEdit3: TDBEdit;
+    edtSetorDesignacao: TDBEdit;
     Label18: TLabel;
-    DBEdit4: TDBEdit;
-    DBMemo1: TDBMemo;
+    edtUsuarioDesignacao: TDBEdit;
+    memJustificativaDesignacao: TDBMemo;
     Label19: TLabel;
     btnEncerrar: TSpeedButton;
+    TabSheet4: TTabSheet;
+    pnlHistoricoAtualizacoes: TPanel;
+    lblTituloHistoricoAtualizacoesAUTOSC: TLabel;
+    Panel6: TPanel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    Panel7: TPanel;
+    btnFecharHistoricoAtualizacoes: TBitBtn;
+    dbnHistoricoAtualizacoes: TDBNavigator;
+    DBEdit5: TDBEdit;
+    DBEdit6: TDBEdit;
+    DBEdit7: TDBEdit;
+    DBEdit8: TDBEdit;
+    btnHistoricoAtualizacoes: TSpeedButton;
+    DBEdit9: TDBEdit;
+    Label25: TLabel;
+    DBEdit10: TDBEdit;
+    Label26: TLabel;
+    lblTituloHistoricoDesignacoes: TLabel;
+    TabSheet5: TTabSheet;
+    pnlEncerramento: TPanel;
+    lblTituloEncerramento: TLabel;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Panel11: TPanel;
+    Label28: TLabel;
+    memJustificativaEncerramento: TMemo;
+    TabSheet6: TTabSheet;
+    pnlObservacoesProcesso: TPanel;
+    lblTituloObservacoesProcesso: TLabel;
+    Panel10: TPanel;
+    Panel12: TPanel;
+    Label27: TLabel;
+    dbnObservacoes: TDBNavigator;
+    btnIncluirObservacao: TSpeedButton;
+    btnGravarObservacao: TSpeedButton;
+    btnCancelarObservacao: TSpeedButton;
+    memObservacao: TDBMemo;
+    Label20: TLabel;
+    edtDataHoraObservacao: TDBEdit;
+    edtUsuarioObservacao: TDBEdit;
+    Label29: TLabel;
+    btnFecharObservacao: TBitBtn;
+    btnObservacoes: TSpeedButton;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -145,19 +192,29 @@ type
     procedure btnHistoricoDesignacoesClick(Sender: TObject);
     procedure dbgAutoSCRowChanged(Sender: TObject);
     procedure btnFecharHistoricoDesignacaoClick(Sender: TObject);
+    procedure btnHistoricoAtualizacoesClick(Sender: TObject);
+    procedure btnFecharHistoricoAtualizacoesClick(Sender: TObject);
+    procedure btnEncerrarClick(Sender: TObject);
+    procedure btnObservacoesClick(Sender: TObject);
+    procedure btnIncluirObservacaoClick(Sender: TObject);
+    procedure btnFecharObservacaoClick(Sender: TObject);
+    procedure btnGravarObservacaoClick(Sender: TObject);
+    procedure btnCancelarObservacaoClick(Sender: TObject);
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
 
     Fdm            : TdtmPaineisConexao;
 
-
+    procedure ConfigurarObservacoes;
+    procedure ConfigurarHistoricoDeDesignacao;
     procedure ConfigurarTabSheets;
     procedure ConfigurarBotoes;
     procedure ConfigurarBotoesDeOperacao;
     procedure FiltrosAutoSC;
     function AplicarFiltrosAutoSC : Boolean;
     procedure OrdenarGrid(const AFieldName : String);
+    procedure BotoesObservacao(const AHabilitar : Boolean);
 
   public
     { Public declarations }
@@ -208,7 +265,6 @@ end;
 
 procedure TfrmPaineis.BotoesDeEdicao(const AHabilitar: Boolean);
 begin
-
    btnDesignar.Enabled := not AHabilitar;
    btnExportar.Enabled := not AHabilitar;
    btnExportar.Enabled := not AHabilitar;
@@ -216,12 +272,28 @@ begin
    btnSair.Enabled     := not AHabilitar;
 end;
 
+procedure TfrmPaineis.BotoesObservacao(const AHabilitar: Boolean);
+begin
+   dbnObservacoes.Enabled        := not AHabilitar;
+   btnIncluirObservacao.Enabled  := not AHabilitar;
+   memObservacao.ReadOnly        := not AHabilitar;
+   btnFecharObservacao.Enabled   := not AHabilitar;
+
+   btnGravarObservacao.Enabled   := AHabilitar;
+   btnCancelarObservacao.Enabled := AHabilitar;
+
+   if memObservacao.ReadOnly then
+      memObservacao.Color := clBtnFace
+   else
+      memObservacao.Color := clWhite;
+end;
+
 procedure TfrmPaineis.FiltrosAutoSC;
 var
    LFiltro : TFiltrosAutoSc;
 begin
    pnlSelecaoDesignacao.Parent := pnlCamposFiltroAutoSc;
-   fraPesquisaUsuario.setDataSet(FServiceAutoSC.ConfigurarPesquisaDeUsuario);
+   fraPesquisaUsuario.setDataSet(FServiceAutoSC.DataSetPesquisaDeUsuario);
 
    LFiltro := FFiltroAutoSC.getFiltrosAutoSCAsRecord;
 
@@ -326,6 +398,11 @@ begin
    HabilitarEdicaoDoPainel(Self, pnlFiltrosAutoSC, False);
 end;
 
+procedure TfrmPaineis.btnCancelarObservacaoClick(Sender: TObject);
+begin
+   FServiceAutoSC.CancelarObservacao;
+end;
+
 procedure TfrmPaineis.btnConfirmarDesignacaoAutoSCClick(Sender: TObject);
 begin
    if FServiceAutoSC.Designar(memJustificativa.Text,
@@ -363,13 +440,29 @@ begin
 end;
 
 
+procedure TfrmPaineis.btnHistoricoAtualizacoesClick(Sender: TObject);
+var
+   LProcesso : String;
+begin
+   if not btnHistoricoAtualizacoes.Enabled then exit;
+
+   LProcesso := FServiceAutoSC.HistoricoDeAtualizacoes;
+
+   lblTituloHistoricoAtualizacoesAUTOSC.Caption := 'Atualizações do Processo - AUTOSC - ' + LProcesso;
+   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoes, True);
+end;
+
 procedure TfrmPaineis.btnHistoricoDesignacoesClick(Sender: TObject);
 begin
    if not btnHistoricoDesignacoes.Enabled then exit;
 
-   FServiceAutoSC.HistoricoDeDesignacoes;
+   ConfigurarHistoricoDeDesignacao;
    HabilitarEdicaoDoPainel(Self, pnlHistoricoDesignacoes, True);
+end;
 
+procedure TfrmPaineis.btnEncerrarClick(Sender: TObject);
+begin
+   FServiceAutoSC.Encerrar(memJustificativaEncerramento.Text);
 end;
 
 procedure TfrmPaineis.btnExportarClick(Sender: TObject);
@@ -377,9 +470,19 @@ begin
    InformationMessage('Em desenvolvimento','Status');
 end;
 
+procedure TfrmPaineis.btnFecharHistoricoAtualizacoesClick(Sender: TObject);
+begin
+   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoes, false);
+end;
+
 procedure TfrmPaineis.btnFecharHistoricoDesignacaoClick(Sender: TObject);
 begin
    HabilitarEdicaoDoPainel(Self, pnlHistoricoDesignacoes, false);
+end;
+
+procedure TfrmPaineis.btnFecharObservacaoClick(Sender: TObject);
+begin
+   HabilitarEdicaoDoPainel(Self, pnlObservacoesProcesso, false);
 end;
 
 procedure TfrmPaineis.btnFiltrarAutoSCClick(Sender: TObject);
@@ -398,9 +501,33 @@ begin
       FiltrosAutoSC;
 end;
 
+procedure TfrmPaineis.btnGravarObservacaoClick(Sender: TObject);
+begin
+
+   if FServiceAutoSC.GravarObservacao(memObservacao.Text) then
+      begin
+      BotoesObservacao(False);
+   end;
+end;
+
 procedure TfrmPaineis.btnImprimirClick(Sender: TObject);
 begin
    InformationMessage('Em desenvolvimento','Status');
+end;
+
+procedure TfrmPaineis.btnIncluirObservacaoClick(Sender: TObject);
+begin
+   FServiceAutoSC.IncluirObservacao;
+   BotoesObservacao(True);
+   HabilitarEdicaoDoPainel(self, pnlObservacoesProcesso, True);
+end;
+
+procedure TfrmPaineis.btnObservacoesClick(Sender: TObject);
+begin
+   BotoesObservacao(False);
+   ConfigurarObservacoes;
+   FServiceAutoSC.ObservacoesDoProcesso;
+   HabilitarEdicaoDoPainel(Self, pnlObservacoesProcesso, True);
 end;
 
 procedure TfrmPaineis.btnSairClick(Sender: TObject);
@@ -414,8 +541,19 @@ begin
    btnExportar.Visible := True;
    btnImprimir.Visible := True;
    btnDesignar.Visible := True;
-   btnHistoricoDesignacoes.Visible := True;
    btnEncerrar.Visible := True;
+
+   btnHistoricoDesignacoes.Visible  := True;
+   btnHistoricoAtualizacoes.Visible := True;
+   btnObservacoes.Visible           := True;
+
+   btnHistoricoDesignacoes.Enabled  := False;
+   btnHistoricoAtualizacoes.Enabled := False;
+   btnObservacoes.Enabled           := False;
+   btnEncerrar.Enabled              := False;
+   btnExportar.Enabled              := False;
+   btnImprimir.Enabled              := False;
+   btnDesignar.Enabled              := False;
 end;
 
 procedure TfrmPaineis.ConfigurarBotoesDeOperacao;
@@ -423,13 +561,42 @@ var
    LHabilitar : Boolean;
 begin
    case pgcPaineis.ActivePageIndex of
-      C_TIPO_AUTOSC : LHabilitar := FServiceAutoSC.TemRegistros;
+      C_CODIGO_AUTOSC : LHabilitar := FServiceAutoSC.TemRegistros;
    end;
 
    btnImprimir.Enabled := LHabilitar;
    btnDesignar.Enabled := LHabilitar;
    btnExportar.Enabled := LHabilitar;
    btnEncerrar.Enabled := LHabilitar;
+end;
+
+procedure TfrmPaineis.ConfigurarHistoricoDeDesignacao;
+begin
+   case pgcPaineis.ActivePageIndex of
+      C_CODIGO_AUTOSC : begin
+          dbnHistoricoDesignacoes.DataSource    := FServiceAutoSC.DataSourceDesignacao;
+          edtDataHoraDesignacao.DataSource      := FServiceAutoSC.DataSourceDesignacao;
+          edtResponsavelDesignacao.DataSource   := FServiceAutoSC.DataSourceDesignacao;
+          edtSetorDesignacao.DataSource         := FServiceAutoSC.DataSourceDesignacao;
+          edtUsuarioDesignacao.DataSource       := FServiceAutoSC.DataSourceDesignacao;
+          memJustificativaDesignacao.DataSource := FServiceAutoSC.DataSourceDesignacao;
+
+          lblTituloHistoricoDesignacoes.Caption := 'Designações do Processo - AUTOSC - ' + FServiceAutoSC.HistoricoDeDesignacoes;
+      end;
+   end;
+end;
+
+procedure TfrmPaineis.ConfigurarObservacoes;
+begin
+   case pgcPaineis.ActivePageIndex of
+      C_CODIGO_AUTOSC : begin
+         edtDataHoraObservacao.DataSource := FServiceAutoSC.DataSourceObservacao;
+         edtUsuarioObservacao.DataSource  := FServiceAutoSC.DataSourceObservacao;
+         memObservacao.DataSource         := FServiceAutoSC.DataSourceObservacao;
+
+         lblTituloObservacoesProcesso.Caption := 'Observações do Processo - AUTOSC - ' +FServiceAutoSC.NumeroDoProcesso;
+      end;
+   end;
 end;
 
 procedure TfrmPaineis.ConfigurarTabSheets;
@@ -452,9 +619,8 @@ begin
    if tbsAutoSC.TabVisible then
       begin
       FServiceAutoSC := TSrvAutoSC.create(Fdm.SQLConnection);
-      FFiltroAutoSC := TFiltros.create(C_TIPO_AUTOSC);
+      FFiltroAutoSC := TFiltros.create(C_CODIGO_AUTOSC);
    end;
-
 
    if tbsAutoSC.TabVisible then
       pgcPaineis.ActivePage := tbsAutoSC
@@ -472,7 +638,13 @@ end;
 
 procedure TfrmPaineis.dbgAutoSCRowChanged(Sender: TObject);
 begin
-   btnHistoricoDesignacoes.Enabled := FServiceAutoSC.TemDesignacoes;
+   btnHistoricoDesignacoes.Enabled  := FServiceAutoSC.TemDesignacoes;
+   btnHistoricoAtualizacoes.Enabled := FServiceAutoSC.TemAtualizacoes;
+   btnImprimir.Enabled              := FServiceAutoSC.TemRegistros;
+   btnExportar.Enabled              := FServiceAutoSC.TemRegistros;
+   btnObservacoes.Enabled           := FServiceAutoSC.TemRegistros;
+   btnDesignar.Enabled              := FServiceAutoSC.TemRegistros;
+   btnEncerrar.Enabled              := FServiceAutoSC.TemRegistros;
 end;
 
 procedure TfrmPaineis.dbgAutoSCTitleButtonClick(Sender: TObject; AFieldName: string);

@@ -42,10 +42,6 @@ object frmPaineis: TfrmPaineis
     Padding.Bottom = 5
     ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 152
-    ExplicitTop = 13
-    ExplicitWidth = 1127
-    ExplicitHeight = 696
     object pnlBotoes: TPanel
       Left = 7
       Top = 7
@@ -56,8 +52,6 @@ object frmPaineis: TfrmPaineis
       Color = 16772846
       ParentBackground = False
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = -4
       object btnFiltrar: TSpeedButton
         AlignWithMargins = True
         Left = 5
@@ -219,14 +213,14 @@ object frmPaineis: TfrmPaineis
       end
       object btnHistoricoDesignacoes: TSpeedButton
         AlignWithMargins = True
-        Left = 405
+        Left = 526
         Top = 3
-        Width = 172
+        Width = 175
         Height = 35
         Margins.Left = 5
         Margins.Right = 0
         Align = alLeft
-        Caption = 'Hist'#243'rio de Designa'#231#245'es'
+        Caption = 'Hist'#243'rico de Designa'#231#245'es'
         Flat = True
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
@@ -244,10 +238,11 @@ object frmPaineis: TfrmPaineis
         NumGlyphs = 2
         Visible = False
         OnClick = btnHistoricoDesignacoesClick
+        ExplicitLeft = 405
       end
       object btnEncerrar: TSpeedButton
         AlignWithMargins = True
-        Left = 582
+        Left = 886
         Top = 3
         Width = 95
         Height = 35
@@ -271,9 +266,66 @@ object frmPaineis: TfrmPaineis
           5555555555555555555555555555555555555555555555555555}
         NumGlyphs = 2
         Visible = False
-        OnClick = btnHistoricoDesignacoesClick
+        OnClick = btnEncerrarClick
         ExplicitLeft = 619
         ExplicitTop = 0
+      end
+      object btnHistoricoAtualizacoes: TSpeedButton
+        AlignWithMargins = True
+        Left = 706
+        Top = 3
+        Width = 175
+        Height = 35
+        Margins.Left = 5
+        Margins.Right = 0
+        Align = alLeft
+        Caption = 'Hist'#243'rico de Atualiza'#231#245'es'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+          003337777777777777F330FFFFFFFFFFF03337F3333FFF3337F330FFFF000FFF
+          F03337F33377733337F330FFFFF0FFFFF03337F33337F33337F330FFFF00FFFF
+          F03337F33377F33337F330FFFFF0FFFFF03337F33337333337F330FFFFFFFFFF
+          F03337FFF3F3F3F3F7F33000F0F0F0F0F0333777F7F7F7F7F7F330F0F000F070
+          F03337F7F777F777F7F330F0F0F0F070F03337F7F7373777F7F330F0FF0FF0F0
+          F03337F733733737F7F330FFFFFFFF00003337F33333337777F330FFFFFFFF0F
+          F03337FFFFFFFF7F373330999999990F033337777777777F733330FFFFFFFF00
+          333337FFFFFFFF77333330000000000333333777777777733333}
+        NumGlyphs = 2
+        Visible = False
+        OnClick = btnHistoricoAtualizacoesClick
+        ExplicitLeft = 585
+      end
+      object btnObservacoes: TSpeedButton
+        AlignWithMargins = True
+        Left = 405
+        Top = 3
+        Width = 116
+        Height = 35
+        Margins.Left = 5
+        Margins.Right = 0
+        Align = alLeft
+        Caption = 'Observa'#231#245'es'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+          003337777777777777F330FFFFFFFFFFF03337F3333FFF3337F330FFFF000FFF
+          F03337F33377733337F330FFFFF0FFFFF03337F33337F33337F330FFFF00FFFF
+          F03337F33377F33337F330FFFFF0FFFFF03337F33337333337F330FFFFFFFFFF
+          F03337FFF3F3F3F3F7F33000F0F0F0F0F0333777F7F7F7F7F7F330F0F000F070
+          F03337F7F777F777F7F330F0F0F0F070F03337F7F7373777F7F330F0FF0FF0F0
+          F03337F733733737F7F330FFFFFFFF00003337F33333337777F330FFFFFFFF0F
+          F03337FFFFFFFF7F373330999999990F033337777777777F733330FFFFFFFF00
+          333337FFFFFFFF77333330000000000333333777777777733333}
+        NumGlyphs = 2
+        Visible = False
+        OnClick = btnObservacoesClick
       end
       object pnlSair: TPanel
         Left = 1254
@@ -283,7 +335,6 @@ object frmPaineis: TfrmPaineis
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 986
         object btnSair: TSpeedButton
           Tag = 1
           AlignWithMargins = True
@@ -365,10 +416,6 @@ object frmPaineis: TfrmPaineis
       TabHeight = 45
       TabOrder = 1
       TabWidth = 250
-      ExplicitLeft = 2
-      ExplicitTop = 43
-      ExplicitWidth = 1123
-      ExplicitHeight = 651
       object tbsAutoSC: TTabSheet
         Caption = 'AUTOSC'
         ImageIndex = 2
@@ -381,10 +428,6 @@ object frmPaineis: TfrmPaineis
           BevelInner = bvRaised
           BevelOuter = bvLowered
           TabOrder = 0
-          ExplicitLeft = 464
-          ExplicitTop = 280
-          ExplicitWidth = 185
-          ExplicitHeight = 41
           object dbgAutoSC: TwwDBGrid
             AlignWithMargins = True
             Left = 5
@@ -397,6 +440,7 @@ object frmPaineis: TfrmPaineis
               'Selecionado;CheckBox;1;0'
               'Prioridade;CustomEdit;Cb_Prioridade;F')
             Selected.Strings = (
+              'Qtd_Observacoes'#9'10'#9'Qtd_Observacoes'#9'F'
               'Tipo_Auditoria'#9'15'#9'Auditoria'#9'F'
               'Numero_Processo'#9'15'#9'Processo'#9'F'
               'Tipo_Status'#9'15'#9'Tipo'#9'F'#9'Status'
@@ -443,7 +487,6 @@ object frmPaineis: TfrmPaineis
             OnDblClick = dbgAutoSCDblClick
             FooterHeight = 20
             PaintOptions.AlternatingRowColor = 16053492
-            ExplicitLeft = 2
           end
           object pnlTituloAutoSC: TPanel
             Left = 2
@@ -463,9 +506,6 @@ object frmPaineis: TfrmPaineis
             ParentBackground = False
             ParentFont = False
             TabOrder = 1
-            ExplicitLeft = 5
-            ExplicitTop = 5
-            ExplicitWidth = 543
           end
         end
       end
@@ -483,7 +523,7 @@ object frmPaineis: TfrmPaineis
     Top = 83
     Width = 1138
     Height = 657
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     TabOrder = 1
     Visible = False
     object TabSheet1: TTabSheet
@@ -530,8 +570,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitTop = 41
-          ExplicitHeight = 496
           object pnlBotoesFiltroAutoSc: TPanel
             Left = 0
             Top = 432
@@ -900,8 +938,7 @@ object frmPaineis: TfrmPaineis
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
-          ExplicitLeft = 7
-          ExplicitTop = 7
+          ExplicitWidth = 308
         end
         object pnlCamposDesignacao: TPanel
           Left = 7
@@ -913,8 +950,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitTop = 41
-          ExplicitHeight = 496
           object pnlBotoesAutoSc: TPanel
             Left = 0
             Top = 245
@@ -922,7 +957,6 @@ object frmPaineis: TfrmPaineis
             Height = 72
             Align = alBottom
             TabOrder = 0
-            ExplicitTop = 421
             DesignSize = (
               611
               72)
@@ -1069,8 +1103,6 @@ object frmPaineis: TfrmPaineis
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 2
-            ExplicitTop = 8
-            ExplicitHeight = 421
             object Label8: TLabel
               Left = 40
               Top = 0
@@ -1093,8 +1125,7 @@ object frmPaineis: TfrmPaineis
               ParentBackground = False
               ParentColor = False
               TabOrder = 1
-              ExplicitLeft = -2
-              ExplicitTop = 131
+              ExplicitTop = 45
               ExplicitWidth = 611
               ExplicitHeight = 71
               inherited Label9: TLabel
@@ -1151,7 +1182,7 @@ object frmPaineis: TfrmPaineis
       end
     end
     object TabSheet3: TTabSheet
-      Caption = 'TabSheet3'
+      Caption = 'pnlHistoricoDesignacoes'
       ImageIndex = 2
       object pnlHistoricoDesignacoes: TPanel
         Left = 133
@@ -1176,14 +1207,14 @@ object frmPaineis: TfrmPaineis
           Margins.Bottom = 10
           Align = alTop
           Alignment = taCenter
-          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Caption = 'Designa'#231#245'es'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -20
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 308
+          ExplicitWidth = 113
         end
         object Panel3: TPanel
           Left = 7
@@ -1195,8 +1226,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 10
-          ExplicitTop = 47
           object Label15: TLabel
             Left = 21
             Top = 77
@@ -1239,7 +1268,6 @@ object frmPaineis: TfrmPaineis
             Height = 72
             Align = alBottom
             TabOrder = 0
-            ExplicitTop = 245
             DesignSize = (
               611
               72)
@@ -1262,9 +1290,14 @@ object frmPaineis: TfrmPaineis
             Height = 25
             DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+            Hints.Strings = (
+              'Primeiro'
+              'Anterior'
+              'Pr'#243'ximo'
+              #218'ltimo')
             TabOrder = 1
           end
-          object DBEdit1: TDBEdit
+          object edtDataHoraDesignacao: TDBEdit
             Left = 21
             Top = 94
             Width = 154
@@ -1276,7 +1309,7 @@ object frmPaineis: TfrmPaineis
             ReadOnly = True
             TabOrder = 2
           end
-          object DBEdit2: TDBEdit
+          object edtResponsavelDesignacao: TDBEdit
             Left = 215
             Top = 94
             Width = 377
@@ -1288,7 +1321,7 @@ object frmPaineis: TfrmPaineis
             ReadOnly = True
             TabOrder = 3
           end
-          object DBEdit3: TDBEdit
+          object edtSetorDesignacao: TDBEdit
             Left = 21
             Top = 158
             Width = 154
@@ -1300,7 +1333,7 @@ object frmPaineis: TfrmPaineis
             ReadOnly = True
             TabOrder = 4
           end
-          object DBEdit4: TDBEdit
+          object edtUsuarioDesignacao: TDBEdit
             Left = 215
             Top = 158
             Width = 377
@@ -1312,7 +1345,7 @@ object frmPaineis: TfrmPaineis
             ReadOnly = True
             TabOrder = 5
           end
-          object DBMemo1: TDBMemo
+          object memJustificativaDesignacao: TDBMemo
             Left = 21
             Top = 222
             Width = 572
@@ -1323,6 +1356,779 @@ object frmPaineis: TfrmPaineis
             DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             ReadOnly = True
             TabOrder = 6
+          end
+        end
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'pnlHistoricoAtualizacoes'
+      ImageIndex = 3
+      object pnlHistoricoAtualizacoes: TPanel
+        Left = 141
+        Top = 81
+        Width = 625
+        Height = 408
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloHistoricoAtualizacoesAUTOSC: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Atualiza'#231#245'es de Processo - AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 324
+        end
+        object Panel6: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 357
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitLeft = 10
+          ExplicitTop = 47
+          object Label21: TLabel
+            Left = 21
+            Top = 77
+            Width = 153
+            Height = 16
+            Caption = 'Data | Hora da atualiza'#231#227'o'
+          end
+          object Label22: TLabel
+            Left = 215
+            Top = 77
+            Width = 71
+            Height = 16
+            Caption = 'Respons'#225'vel'
+          end
+          object Label23: TLabel
+            Left = 21
+            Top = 141
+            Width = 67
+            Height = 16
+            Caption = 'Prazo Caixa'
+          end
+          object Label24: TLabel
+            Left = 21
+            Top = 205
+            Width = 60
+            Height = 16
+            Caption = 'Prazo ANS'
+          end
+          object Label25: TLabel
+            Left = 323
+            Top = 141
+            Width = 97
+            Height = 16
+            Caption = 'Prazo Caixa Hoje'
+          end
+          object Label26: TLabel
+            Left = 323
+            Top = 205
+            Width = 36
+            Height = 16
+            Caption = 'Status'
+          end
+          object Panel7: TPanel
+            Left = 0
+            Top = 285
+            Width = 611
+            Height = 72
+            Align = alBottom
+            TabOrder = 0
+            DesignSize = (
+              611
+              72)
+            object btnFecharHistoricoAtualizacoes: TBitBtn
+              Left = 246
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Fechar'
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFecharHistoricoAtualizacoesClick
+            end
+          end
+          object dbnHistoricoAtualizacoes: TDBNavigator
+            Left = 174
+            Top = 16
+            Width = 264
+            Height = 25
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+            Hints.Strings = (
+              'Primeiro'
+              'Anterior'
+              'Pr'#243'ximo'
+              #218'ltimo')
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+          end
+          object DBEdit5: TDBEdit
+            Left = 21
+            Top = 94
+            Width = 154
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Data_Hora_Historico'
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 2
+          end
+          object DBEdit6: TDBEdit
+            Left = 215
+            Top = 94
+            Width = 377
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Nome_Usuario'
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 3
+          end
+          object DBEdit7: TDBEdit
+            Left = 21
+            Top = 158
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Prazo_Caixa'
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 4
+          end
+          object DBEdit8: TDBEdit
+            Left = 21
+            Top = 222
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Prazo_ANS'
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 5
+          end
+          object DBEdit9: TDBEdit
+            Left = 323
+            Top = 158
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Prazo_Caixa_Hoje'
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 6
+          end
+          object DBEdit10: TDBEdit
+            Left = 323
+            Top = 222
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Status'
+            DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 7
+          end
+        end
+      end
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'pnlEncerramento'
+      ImageIndex = 4
+      object pnlEncerramento: TPanel
+        Left = 149
+        Top = 89
+        Width = 625
+        Height = 224
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloEncerramento: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 308
+        end
+        object Panel8: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 173
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitHeight = 317
+          object Panel9: TPanel
+            Left = 0
+            Top = 101
+            Width = 611
+            Height = 72
+            Align = alBottom
+            TabOrder = 0
+            ExplicitTop = 245
+            DesignSize = (
+              611
+              72)
+            object BitBtn1: TBitBtn
+              Left = 174
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Confirmar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                03030303030303030303030303030303030303030303FF030303030303030303
+                03030303030303040403030303030303030303030303030303F8F8FF03030303
+                03030303030303030303040202040303030303030303030303030303F80303F8
+                FF030303030303030303030303040202020204030303030303030303030303F8
+                03030303F8FF0303030303030303030304020202020202040303030303030303
+                0303F8030303030303F8FF030303030303030304020202FA0202020204030303
+                0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
+                040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
+                03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
+                FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
+                0303030303030303030303FA0202020403030303030303030303030303F8FF03
+                03F8FF03030303030303030303030303FA020202040303030303030303030303
+                0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
+                03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
+                030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
+                0202040303030303030303030303030303F8FF03F8FF03030303030303030303
+                03030303FA0202030303030303030303030303030303F8FFF803030303030303
+                030303030303030303FA0303030303030303030303030303030303F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnConfirmarDesignacaoAutoSCClick
+            end
+            object BitBtn2: TBitBtn
+              Left = 318
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Cancelar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303F8F80303030303030303030303030303030303FF03030303030303030303
+                0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
+                03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
+                030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
+                FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
+                030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
+                F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
+                010101F8030303030303030303F8FF030303030303FFF8030303030303030303
+                030101010101F80303030303030303030303F8FF0303030303F8030303030303
+                0303030303F901010101F8030303030303030303030303F8FF030303F8030303
+                0303030303030303F90101010101F8030303030303030303030303F803030303
+                F8FF030303030303030303F9010101F8010101F803030303030303030303F803
+                03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
+                03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
+                03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
+                0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
+                030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
+                03030303030303030303030303030303030303030303030303F8F8F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 1
+              OnClick = btnCancelarDesignacaoAutoSCClick
+            end
+          end
+          object Panel11: TPanel
+            Left = 0
+            Top = 0
+            Width = 611
+            Height = 121
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 1
+            object Label28: TLabel
+              Left = 53
+              Top = 24
+              Width = 65
+              Height = 16
+              Caption = 'Justificativa'
+            end
+            object memJustificativaEncerramento: TMemo
+              Left = 53
+              Top = 40
+              Width = 505
+              Height = 57
+              Lines.Strings = (
+                'memJustificativa')
+              MaxLength = 100
+              TabOrder = 0
+            end
+          end
+        end
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'pnlObservacoesProcesso'
+      ImageIndex = 5
+      object pnlObservacoesProcesso: TPanel
+        Left = 157
+        Top = 97
+        Width = 625
+        Height = 400
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloObservacoesProcesso: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 308
+        end
+        object Panel10: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 349
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitHeight = 317
+          object Label27: TLabel
+            Left = 41
+            Top = 133
+            Width = 65
+            Height = 16
+            Caption = 'Justificativa'
+          end
+          object btnIncluirObservacao: TSpeedButton
+            Left = 330
+            Top = 16
+            Width = 80
+            Height = 25
+            Caption = 'Incluir'
+            Glyph.Data = {
+              CE070000424DCE07000000000000360000002800000024000000120000000100
+              18000000000098070000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF
+              4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50
+              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C
+              50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFF
+              FFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFF
+              50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0646464E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C
+              50AF4C50AF4C50AF4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF
+              4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E064
+              6464E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF
+              50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF
+              4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0646464646464646464646464646464E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF
+              4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFF
+              FFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0646464E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF
+              4C50AF4C50AF4C50AF4C50AF4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0646464E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFF
+              FFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C
+              50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C
+              50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFF50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+            NumGlyphs = 2
+            OnClick = btnIncluirObservacaoClick
+          end
+          object btnGravarObservacao: TSpeedButton
+            Left = 410
+            Top = 16
+            Width = 80
+            Height = 25
+            Caption = 'Gravar'
+            Glyph.Data = {
+              BE060000424DBE06000000000000360400002800000024000000120000000100
+              0800000000008802000000000000000000000001000000000000000000000000
+              80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+              A400000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              03030303030303030303030303030303030303030303FF030303030303030303
+              03030303030303040403030303030303030303030303030303F8F8FF03030303
+              03030303030303030303040202040303030303030303030303030303F80303F8
+              FF030303030303030303030303040202020204030303030303030303030303F8
+              03030303F8FF0303030303030303030304020202020202040303030303030303
+              0303F8030303030303F8FF030303030303030304020202FA0202020204030303
+              0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
+              040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
+              03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
+              FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
+              0303030303030303030303FA0202020403030303030303030303030303F8FF03
+              03F8FF03030303030303030303030303FA020202040303030303030303030303
+              0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
+              03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
+              030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
+              0202040303030303030303030303030303F8FF03F8FF03030303030303030303
+              03030303FA0202030303030303030303030303030303F8FFF803030303030303
+              030303030303030303FA0303030303030303030303030303030303F803030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              0303}
+            NumGlyphs = 2
+            OnClick = btnGravarObservacaoClick
+          end
+          object btnCancelarObservacao: TSpeedButton
+            Left = 490
+            Top = 16
+            Width = 80
+            Height = 25
+            Caption = 'Cancelar'
+            Glyph.Data = {
+              BE060000424DBE06000000000000360400002800000024000000120000000100
+              0800000000008802000000000000000000000001000000000000000000000000
+              80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+              A400000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              0303F8F80303030303030303030303030303030303FF03030303030303030303
+              0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
+              03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
+              030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
+              FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
+              030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
+              F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
+              010101F8030303030303030303F8FF030303030303FFF8030303030303030303
+              030101010101F80303030303030303030303F8FF0303030303F8030303030303
+              0303030303F901010101F8030303030303030303030303F8FF030303F8030303
+              0303030303030303F90101010101F8030303030303030303030303F803030303
+              F8FF030303030303030303F9010101F8010101F803030303030303030303F803
+              03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
+              03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
+              03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
+              0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
+              030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
+              03030303030303030303030303030303030303030303030303F8F8F803030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              0303}
+            NumGlyphs = 2
+            OnClick = btnCancelarObservacaoClick
+          end
+          object Label20: TLabel
+            Left = 41
+            Top = 69
+            Width = 67
+            Height = 16
+            Caption = 'Data | Hora'
+          end
+          object Label29: TLabel
+            Left = 234
+            Top = 69
+            Width = 67
+            Height = 16
+            Caption = 'Data | Hora'
+          end
+          object Panel12: TPanel
+            Left = 0
+            Top = 277
+            Width = 611
+            Height = 72
+            Align = alBottom
+            TabOrder = 0
+            ExplicitTop = 101
+            DesignSize = (
+              611
+              72)
+            object btnFecharObservacao: TBitBtn
+              Left = 246
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Fechar'
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFecharObservacaoClick
+            end
+          end
+          object dbnObservacoes: TDBNavigator
+            Left = 41
+            Top = 16
+            Width = 248
+            Height = 25
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+            Hints.Strings = (
+              'Primeiro'
+              'Anterior'
+              'Pr'#243'ximo'
+              #218'ltimo'
+              'Incluir'
+              ''
+              ''
+              'Gravar'
+              'Cancelar')
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 4
+          end
+          object memObservacao: TDBMemo
+            Left = 41
+            Top = 155
+            Width = 529
+            Height = 112
+            DataField = 'Observacao'
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            TabOrder = 3
+          end
+          object edtDataHoraObservacao: TDBEdit
+            Left = 41
+            Top = 86
+            Width = 154
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Data_Hora'
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            ReadOnly = True
+            TabOrder = 1
+          end
+          object edtUsuarioObservacao: TDBEdit
+            Left = 234
+            Top = 86
+            Width = 336
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Nome_Usuario'
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            ReadOnly = True
+            TabOrder = 2
           end
         end
       end

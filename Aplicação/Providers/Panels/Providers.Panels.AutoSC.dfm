@@ -82,6 +82,9 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     object mtbPainelQtd_Designacoes: TIntegerField
       FieldName = 'Qtd_Designacoes'
     end
+    object mtbPainelQtd_Observacoes: TIntegerField
+      FieldName = 'Qtd_Observacoes'
+    end
   end
   inherited cdsPainel: TClientDataSet
     object cdsPainelid_Processo: TLargeintField
@@ -156,6 +159,9 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     object cdsPainelQtd_Designacoes: TIntegerField
       Alignment = taCenter
       FieldName = 'Qtd_Designacoes'
+    end
+    object cdsPainelQtd_Observacoes: TIntegerField
+      FieldName = 'Qtd_Observacoes'
     end
   end
   object mtbTiposAuditoria: TFDMemTable
@@ -474,6 +480,72 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   object dtsHistoricoDesignacoes: TDataSource
     DataSet = mtbHistoricoDesignacoes
     Left = 256
-    Top = 403
+    Top = 400
+  end
+  object mtbHistoricoAtualizacoes: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 64
+    Top = 480
+    object mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField
+      FieldName = 'Data_Hora_Historico'
+    end
+    object mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField
+      FieldName = 'Tipo_Prazo_Caixa'
+      Size = 15
+    end
+    object mtbHistoricoAtualizacoesTipo_Prazo_Caixa_Hoje: TStringField
+      FieldName = 'Tipo_Prazo_Caixa_Hoje'
+      Size = 15
+    end
+    object mtbHistoricoAtualizacoesTipo_Prazo_ANS: TStringField
+      FieldName = 'Tipo_Prazo_ANS'
+      Size = 15
+    end
+    object mtbHistoricoAtualizacoesTipo_Status: TStringField
+      FieldName = 'Tipo_Status'
+      Size = 15
+    end
+    object mtbHistoricoAtualizacoesNome_Usuario: TStringField
+      FieldName = 'Nome_Usuario'
+      Size = 100
+    end
+  end
+  object dtsHistoricoAtualizacoes: TDataSource
+    DataSet = mtbHistoricoAtualizacoes
+    Left = 256
+    Top = 480
+  end
+  object mtbObservacoesProcesso: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 64
+    Top = 552
+    object mtbObservacoesProcessoData_Hora: TDateTimeField
+      FieldName = 'Data_Hora'
+    end
+    object mtbObservacoesProcessoObservacao: TStringField
+      FieldName = 'Observacao'
+      Size = 500
+    end
+    object mtbObservacoesProcessoNome_Usuario: TStringField
+      FieldName = 'Nome_Usuario'
+      Size = 100
+    end
+  end
+  object dtsObservacoesProcesso: TDataSource
+    DataSet = mtbObservacoesProcesso
+    Left = 256
+    Top = 552
   end
 end

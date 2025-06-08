@@ -7,31 +7,25 @@ object SMAutoSC: TSMAutoSC
     Left = 1112
     Top = 24
   end
-  object qryTiposAuditoria: TFDQuery
-    Connection = ServerContainer.FDConnection
-    SQL.Strings = (
-      'select * from Tipos_Auditoria'
-      'Order by Tipo_Auditoria')
-    Left = 80
-    Top = 24
-    object qryTiposAuditoriaid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposAuditoriaTipo_Auditoria: TStringField
-      FieldName = 'Tipo_Auditoria'
-      Origin = 'Tipo_Auditoria'
-      Size = 15
-    end
-  end
   object qryTiposPrazo: TFDQuery
     Connection = ServerContainer.FDConnection
+    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
     SQL.Strings = (
-      'select * from Tipos_Prazo')
+      'Declare @AUTOSC int;'
+      'Set @AUTOSC = :AUTOSC;'
+      ''
+      'select * from Tipos_Prazo'
+      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      'Order by Tipo_Prazo_Caixa')
     Left = 80
     Top = 104
+    ParamData = <
+      item
+        Name = 'AUTOSC'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qryTiposPrazoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -43,14 +37,39 @@ object SMAutoSC: TSMAutoSC
       Origin = 'Tipo_Prazo_Caixa'
       Size = 15
     end
+    object qryTiposPrazoAUTOSC: TIntegerField
+      FieldName = 'AUTOSC'
+      Origin = 'AUTOSC'
+    end
+    object qryTiposPrazoSIAGS: TIntegerField
+      FieldName = 'SIAGS'
+      Origin = 'SIAGS'
+    end
+    object qryTiposPrazoCONTROLPC: TIntegerField
+      FieldName = 'CONTROLPC'
+      Origin = 'CONTROLPC'
+    end
   end
   object qryTiposPrazoHoje: TFDQuery
     Connection = ServerContainer.FDConnection
+    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo_Hoje'
     SQL.Strings = (
+      'Declare @AUTOSC int;'
+      'Set @AUTOSC = :AUTOSC;'
+      ''
       'select * from Tipos_Prazo_Hoje'
+      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      ''
       'order by Tipo_Prazo_Caixa_Hoje')
     Left = 80
     Top = 176
+    ParamData = <
+      item
+        Name = 'AUTOSC'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qryTiposPrazoHojeid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -61,6 +80,18 @@ object SMAutoSC: TSMAutoSC
       FieldName = 'Tipo_Prazo_Caixa_Hoje'
       Origin = 'Tipo_Prazo_Caixa_Hoje'
       Size = 15
+    end
+    object qryTiposPrazoHojeAUTOSC: TIntegerField
+      FieldName = 'AUTOSC'
+      Origin = 'AUTOSC'
+    end
+    object qryTiposPrazoHojeSIAGS: TIntegerField
+      FieldName = 'SIAGS'
+      Origin = 'SIAGS'
+    end
+    object qryTiposPrazoHojeCONTROLPC: TIntegerField
+      FieldName = 'CONTROLPC'
+      Origin = 'CONTROLPC'
     end
   end
   object qryTiposProcesso: TFDQuery
@@ -234,7 +265,7 @@ object SMAutoSC: TSMAutoSC
       'Select * from AutoSC_Historico'
       'where id_AutoSC = :pIdAutoSC')
     Left = 240
-    Top = 112
+    Top = 104
     ParamData = <
       item
         Name = 'PIDAUTOSC'
@@ -297,7 +328,8 @@ object SMAutoSC: TSMAutoSC
       '   h.Tipo_Prazo_Caixa as Tipo_Prazo_Ans,'
       '   i.Nome_Usuario as Usuario_Designado,'
       '   1 as Qtd_Historicos,'
-      '   1 as Qtd_Designacoes'
+      '   1 as Qtd_Designacoes,'
+      '   1 as Qtd_Observacoes'
       'From AutoSc a'
       '     INNER JOIN Tipos_Auditoria b on b.id = a.id_Tipo_Auditoria'
       #9' INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo_Caixa '
@@ -388,6 +420,12 @@ object SMAutoSC: TSMAutoSC
       ReadOnly = True
       Required = True
     end
+    object qryPainelAutoScQtd_Observacoes: TIntegerField
+      FieldName = 'Qtd_Observacoes'
+      Origin = 'Qtd_Observacoes'
+      ReadOnly = True
+      Required = True
+    end
   end
   object qrySetores: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -416,8 +454,8 @@ object SMAutoSC: TSMAutoSC
     SQL.Strings = (
       'Select * from AutoSc_Log'
       'where id_AutoSC = :pIdAutoSC')
-    Left = 232
-    Top = 192
+    Left = 240
+    Top = 176
     ParamData = <
       item
         Name = 'PIDAUTOSC'
@@ -456,6 +494,48 @@ object SMAutoSC: TSMAutoSC
     object qryAutoScLogData_Hora_Log: TDateTimeField
       FieldName = 'Data_Hora_Log'
       Origin = 'Data_Hora_Log'
+    end
+  end
+  object qryTiposAuditoria: TFDQuery
+    Connection = ServerContainer.FDConnection
+    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Auditoria'
+    SQL.Strings = (
+      'Declare @AUTOSC int;'
+      'Set @AUTOSC = :AUTOSC;'
+      ''
+      'select * from Tipos_Auditoria'
+      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      'Order by Tipo_Auditoria')
+    Left = 88
+    Top = 32
+    ParamData = <
+      item
+        Name = 'AUTOSC'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryTiposAuditoriaid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ReadOnly = True
+    end
+    object qryTiposAuditoriaTipo_Auditoria: TStringField
+      FieldName = 'Tipo_Auditoria'
+      Origin = 'Tipo_Auditoria'
+      Size = 15
+    end
+    object qryTiposAuditoriaAUTOSC: TIntegerField
+      FieldName = 'AUTOSC'
+      Origin = 'AUTOSC'
+    end
+    object qryTiposAuditoriaSIAGS: TIntegerField
+      FieldName = 'SIAGS'
+      Origin = 'SIAGS'
+    end
+    object qryTiposAuditoriaCONTROLPC: TIntegerField
+      FieldName = 'CONTROLPC'
+      Origin = 'CONTROLPC'
     end
   end
 end

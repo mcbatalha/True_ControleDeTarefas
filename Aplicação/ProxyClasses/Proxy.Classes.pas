@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/06/2025 20:51:24
+// 07/06/2025 21:37:11
 //
 
 unit Proxy.Classes;
@@ -69,7 +69,11 @@ type
     FImportarCommand: TDBXCommand;
     FFiltrarProcessosCommand: TDBXCommand;
     FDesignarCommand: TDBXCommand;
+    FRegistrarObservacaoCommand: TDBXCommand;
+    FEncerrarProcessoCommand: TDBXCommand;
     FHistoricoDeDesignacoesCommand: TDBXCommand;
+    FHistoricoDeAtualizacoesCommand: TDBXCommand;
+    FObservacoesDoProcessoCommand: TDBXCommand;
     FTiposDeAuditoriaCommand: TDBXCommand;
     FTiposDePrazoCommand: TDBXCommand;
     FTiposDePrazoHojeCommand: TDBXCommand;
@@ -85,7 +89,11 @@ type
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
     function FiltrarProcessos(AFiltros: TJSONObject): TJSONArray;
     function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProcesso: Integer): Boolean;
+    function RegistrarObservacao(AIdProcesso: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
+    function EncerrarProcesso(AIdProcesso: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
     function HistoricoDeDesignacoes(AIdProcesso: Integer): TJSONArray;
+    function HistoricoDeAtualizacoes(AIdProcesso: Integer): TJSONArray;
+    function ObservacoesDoProcesso(AIdProcesso: Integer): TJSONArray;
     function TiposDeAuditoria: TJSONArray;
     function TiposDePrazo: TJSONArray;
     function TiposDePrazoHoje: TJSONArray;
@@ -420,6 +428,39 @@ begin
   Result := FDesignarCommand.Parameters[5].Value.GetBoolean;
 end;
 
+function TSMAutoSCClient.RegistrarObservacao(AIdProcesso: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
+begin
+  if FRegistrarObservacaoCommand = nil then
+  begin
+    FRegistrarObservacaoCommand := FDBXConnection.CreateCommand;
+    FRegistrarObservacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRegistrarObservacaoCommand.Text := 'TSMAutoSC.RegistrarObservacao';
+    FRegistrarObservacaoCommand.Prepare;
+  end;
+  FRegistrarObservacaoCommand.Parameters[0].Value.SetInt32(AIdProcesso);
+  FRegistrarObservacaoCommand.Parameters[1].Value.SetWideString(AObservacao);
+  FRegistrarObservacaoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FRegistrarObservacaoCommand.ExecuteUpdate;
+  ADataHora := FRegistrarObservacaoCommand.Parameters[3].Value.AsDateTime;
+  Result := FRegistrarObservacaoCommand.Parameters[4].Value.GetBoolean;
+end;
+
+function TSMAutoSCClient.EncerrarProcesso(AIdProcesso: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+begin
+  if FEncerrarProcessoCommand = nil then
+  begin
+    FEncerrarProcessoCommand := FDBXConnection.CreateCommand;
+    FEncerrarProcessoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FEncerrarProcessoCommand.Text := 'TSMAutoSC.EncerrarProcesso';
+    FEncerrarProcessoCommand.Prepare;
+  end;
+  FEncerrarProcessoCommand.Parameters[0].Value.SetInt32(AIdProcesso);
+  FEncerrarProcessoCommand.Parameters[1].Value.SetWideString(AJustificativa);
+  FEncerrarProcessoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FEncerrarProcessoCommand.ExecuteUpdate;
+  Result := FEncerrarProcessoCommand.Parameters[3].Value.GetBoolean;
+end;
+
 function TSMAutoSCClient.HistoricoDeDesignacoes(AIdProcesso: Integer): TJSONArray;
 begin
   if FHistoricoDeDesignacoesCommand = nil then
@@ -432,6 +473,34 @@ begin
   FHistoricoDeDesignacoesCommand.Parameters[0].Value.SetInt32(AIdProcesso);
   FHistoricoDeDesignacoesCommand.ExecuteUpdate;
   Result := TJSONArray(FHistoricoDeDesignacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.HistoricoDeAtualizacoes(AIdProcesso: Integer): TJSONArray;
+begin
+  if FHistoricoDeAtualizacoesCommand = nil then
+  begin
+    FHistoricoDeAtualizacoesCommand := FDBXConnection.CreateCommand;
+    FHistoricoDeAtualizacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FHistoricoDeAtualizacoesCommand.Text := 'TSMAutoSC.HistoricoDeAtualizacoes';
+    FHistoricoDeAtualizacoesCommand.Prepare;
+  end;
+  FHistoricoDeAtualizacoesCommand.Parameters[0].Value.SetInt32(AIdProcesso);
+  FHistoricoDeAtualizacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FHistoricoDeAtualizacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.ObservacoesDoProcesso(AIdProcesso: Integer): TJSONArray;
+begin
+  if FObservacoesDoProcessoCommand = nil then
+  begin
+    FObservacoesDoProcessoCommand := FDBXConnection.CreateCommand;
+    FObservacoesDoProcessoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FObservacoesDoProcessoCommand.Text := 'TSMAutoSC.ObservacoesDoProcesso';
+    FObservacoesDoProcessoCommand.Prepare;
+  end;
+  FObservacoesDoProcessoCommand.Parameters[0].Value.SetInt32(AIdProcesso);
+  FObservacoesDoProcessoCommand.ExecuteUpdate;
+  Result := TJSONArray(FObservacoesDoProcessoCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMAutoSCClient.TiposDeAuditoria: TJSONArray;
@@ -553,7 +622,11 @@ begin
   FImportarCommand.DisposeOf;
   FFiltrarProcessosCommand.DisposeOf;
   FDesignarCommand.DisposeOf;
+  FRegistrarObservacaoCommand.DisposeOf;
+  FEncerrarProcessoCommand.DisposeOf;
   FHistoricoDeDesignacoesCommand.DisposeOf;
+  FHistoricoDeAtualizacoesCommand.DisposeOf;
+  FObservacoesDoProcessoCommand.DisposeOf;
   FTiposDeAuditoriaCommand.DisposeOf;
   FTiposDePrazoCommand.DisposeOf;
   FTiposDePrazoHojeCommand.DisposeOf;

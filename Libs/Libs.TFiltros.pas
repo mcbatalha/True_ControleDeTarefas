@@ -59,7 +59,7 @@ uses Libs.Constantes;
 constructor TFiltros.create(const ATipo : Integer);
 begin
    case ATipo of
-      C_TIPO_AUTOSC : LimparFiltrosAutoSc;
+      C_CODIGO_AUTOSC : LimparFiltrosAutoSc;
    end;
 end;
 
