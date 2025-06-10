@@ -11,20 +11,18 @@ object SMSiags: TSMSiags
     Connection = ServerContainer.FDConnection
     UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
     SQL.Strings = (
-      'Declare @AUTOSC int;'
-      'Set @AUTOSC = :AUTOSC;'
+      'Declare @SIAGS int;'
+      'Set @SIAGS = :SIAGS;'
       ''
       'select * from Tipos_Prazo'
-      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      'where @SIAGS = 9 or SIAGS = @SIAGS'
       'Order by Tipo_Prazo_Caixa')
-    Left = 80
-    Top = 160
+    Left = 248
+    Top = 180
     ParamData = <
       item
-        Name = 'AUTOSC'
-        DataType = ftInteger
+        Name = 'SIAGS'
         ParamType = ptInput
-        Value = Null
       end>
     object qryTiposPrazoid: TFDAutoIncField
       FieldName = 'id'
@@ -50,57 +48,13 @@ object SMSiags: TSMSiags
       Origin = 'CONTROLPC'
     end
   end
-  object qryTiposPrazoHoje: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo_Hoje'
-    SQL.Strings = (
-      'Declare @AUTOSC int;'
-      'Set @AUTOSC = :AUTOSC;'
-      ''
-      'select * from Tipos_Prazo_Hoje'
-      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
-      ''
-      'order by Tipo_Prazo_Caixa_Hoje')
-    Left = 80
-    Top = 232
-    ParamData = <
-      item
-        Name = 'AUTOSC'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qryTiposPrazoHojeid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposPrazoHojeTipo_Prazo_Caixa_Hoje: TStringField
-      FieldName = 'Tipo_Prazo_Caixa_Hoje'
-      Origin = 'Tipo_Prazo_Caixa_Hoje'
-      Size = 15
-    end
-    object qryTiposPrazoHojeAUTOSC: TIntegerField
-      FieldName = 'AUTOSC'
-      Origin = 'AUTOSC'
-    end
-    object qryTiposPrazoHojeSIAGS: TIntegerField
-      FieldName = 'SIAGS'
-      Origin = 'SIAGS'
-    end
-    object qryTiposPrazoHojeCONTROLPC: TIntegerField
-      FieldName = 'CONTROLPC'
-      Origin = 'CONTROLPC'
-    end
-  end
   object qryTiposAutorizacao: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'select * from Tipos_Autorizacao'
       'order by Tipo_Autorizacao')
-    Left = 80
-    Top = 312
+    Left = 248
+    Top = 264
     object qryTiposAutorizacaoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -118,8 +72,8 @@ object SMSiags: TSMSiags
     SQL.Strings = (
       'select * from Tipos_Atendimento'
       'Order by Tipo_Atendimento')
-    Left = 80
-    Top = 368
+    Left = 248
+    Top = 338
     object qryTiposAtendimentoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -137,8 +91,8 @@ object SMSiags: TSMSiags
     SQL.Strings = (
       'select * from Tipos_Situacao_Autorizacao'
       'Order by Tipo_Situacao_Autorizacao')
-    Left = 80
-    Top = 432
+    Left = 248
+    Top = 412
     object qryTiposSituacaoAutorizacaoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -268,9 +222,9 @@ object SMSiags: TSMSiags
       FieldName = 'id_Setor_Designado'
       Origin = 'id_Setor_Designado'
     end
-    object qrySiagsid_Usuario_Desiginado: TIntegerField
-      FieldName = 'id_Usuario_Desiginado'
-      Origin = 'id_Usuario_Desiginado'
+    object qrySiagsid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      Origin = 'id_Usuario_Designado'
     end
     object qrySiagsid_Responsavel_Designacao: TIntegerField
       FieldName = 'id_Responsavel_Designacao'
@@ -577,10 +531,10 @@ object SMSiags: TSMSiags
       'Select id, Nome_Setor'
       'from Setores'
       'where Ativo = '#39'Sim'#39
-      '      and AutoSC = '#39'Sim'#39
+      '      and Siags = '#39'Sim'#39
       'Order by Nome_Setor')
-    Left = 88
-    Top = 24
+    Left = 248
+    Top = 32
     object qrySetoresid: TIntegerField
       FieldName = 'id'
       Origin = 'id'
@@ -644,20 +598,18 @@ object SMSiags: TSMSiags
     Connection = ServerContainer.FDConnection
     UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Auditoria'
     SQL.Strings = (
-      'Declare @AUTOSC int;'
-      'Set @AUTOSC = :AUTOSC;'
+      'Declare @SIAGS int;'
+      'Set @SIAGS = :SIAGS;'
       ''
       'select * from Tipos_Auditoria'
-      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      'where @SIAGS = 9 or SIAGS = @SIAGS '
       'Order by Tipo_Auditoria')
-    Left = 88
-    Top = 88
+    Left = 248
+    Top = 106
     ParamData = <
       item
-        Name = 'AUTOSC'
-        DataType = ftInteger
+        Name = 'SIAGS'
         ParamType = ptInput
-        Value = Null
       end>
     object qryTiposAuditoriaid: TFDAutoIncField
       FieldName = 'id'
@@ -687,8 +639,8 @@ object SMSiags: TSMSiags
     SQL.Strings = (
       'select * from Tipos_Ultima_Anotacao'
       'Order by Tipo_Ultima_Anotacao')
-    Left = 80
-    Top = 512
+    Left = 248
+    Top = 486
     object qryTiposUltimaAnotacaoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -706,8 +658,8 @@ object SMSiags: TSMSiags
     SQL.Strings = (
       'select * from Beneficiarios'
       'Order by Nome_Beneficiario')
-    Left = 72
-    Top = 584
+    Left = 248
+    Top = 560
     object qryBeneficiariosid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'

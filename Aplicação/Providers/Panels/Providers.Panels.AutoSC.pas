@@ -6,8 +6,6 @@ uses
   System.SysUtils,
   System.Classes,
 
-  Providers.Panels,
-
   Data.DBXDataSnap,
   Data.DBXCommon,
   Data.DB,
@@ -27,7 +25,11 @@ uses
   Datasnap.Provider,
   Datasnap.DBClient,
   Datasnap.DSConnect,
-  Proxy.Classes, Providers.Connection;
+
+  Proxy.Classes,
+
+  Providers.Panels,
+  Providers.Connection;
 
 type
   TdtmPainelAutoSC = class(TdtmPainel)

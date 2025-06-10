@@ -28,6 +28,9 @@ uses
 
   Services.Importacao.AutoSc,
   Services.Panels.AutoSC,
+
+  Services.Importacao.Siags,
+  Services.Panels.Siags,
   Funcoes,
 //
 //  Data.DBXDataSnap,
@@ -83,16 +86,16 @@ type
     Label11: TLabel;
     Label12: TLabel;
     Label14: TLabel;
-    cmbAuditorias: TDBLookupComboBox;
-    cmbPrazosCaixa: TDBLookupComboBox;
-    cmbPrazosCaixaHoje: TDBLookupComboBox;
-    cmbTipoProcesso: TDBLookupComboBox;
-    cmbTipoProcessoE: TDBLookupComboBox;
-    cmbStatus: TDBLookupComboBox;
+    cmbAuditoriasAutoSc: TDBLookupComboBox;
+    cmbPrazosCaixaAutoSc: TDBLookupComboBox;
+    cmbPrazosCaixaHojeAutoSc: TDBLookupComboBox;
+    cmbTipoProcessoAutoSc: TDBLookupComboBox;
+    cmbTipoProcessoEAutoSc: TDBLookupComboBox;
+    cmbStatusAutoSc: TDBLookupComboBox;
     edtDataInicio: TMaskEdit;
     edtDataFim: TMaskEdit;
-    cmbPrazosAns: TDBLookupComboBox;
-    cmbUF: TDBLookupComboBox;
+    cmbPrazosAnsAutoSc: TDBLookupComboBox;
+    cmbUFAutoSc: TDBLookupComboBox;
     Label9: TLabel;
     pnlSelecaoDesignacao: TPanel;
     Label8: TLabel;
@@ -173,6 +176,33 @@ type
     Label29: TLabel;
     btnFecharObservacao: TBitBtn;
     btnObservacoes: TSpeedButton;
+    pnlGridSiags: TPanel;
+    dbgGridSiags: TwwDBGrid;
+    pnlTituloSiags: TPanel;
+    TabSheet7: TTabSheet;
+    pnlFiltrosSiags: TPanel;
+    Label30: TLabel;
+    pnlCamposFiltroSiags: TPanel;
+    Panel14: TPanel;
+    btnFiltrarSiags: TBitBtn;
+    btnCancelarFiltroSiags: TBitBtn;
+    Panel15: TPanel;
+    Label31: TLabel;
+    Label32: TLabel;
+    Label39: TLabel;
+    Label41: TLabel;
+    cmbAuditoriasSiags: TDBLookupComboBox;
+    cmbPrazosCaixaSiags: TDBLookupComboBox;
+    cmbPrazosANSSiags: TDBLookupComboBox;
+    cmbUFSiags: TDBLookupComboBox;
+    cmbAutorizacoesSiags: TDBLookupComboBox;
+    Label33: TLabel;
+    Label42: TLabel;
+    cmbAtendimentosSiags: TDBLookupComboBox;
+    Label43: TLabel;
+    cmbSituacoesSiags: TDBLookupComboBox;
+    cmbUltimasAnotacoesSiags: TDBLookupComboBox;
+    Label44: TLabel;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -200,9 +230,15 @@ type
     procedure btnFecharObservacaoClick(Sender: TObject);
     procedure btnGravarObservacaoClick(Sender: TObject);
     procedure btnCancelarObservacaoClick(Sender: TObject);
+    procedure btnCancelarFiltroSiagsClick(Sender: TObject);
+    procedure btnFiltrarSiagsClick(Sender: TObject);
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
+
+    FServiceSiags : TSrvSiags;
+    FFiltroSiags  : TFiltros;
+
 
     Fdm            : TdtmPaineisConexao;
 
@@ -212,7 +248,9 @@ type
     procedure ConfigurarBotoes;
     procedure ConfigurarBotoesDeOperacao;
     procedure FiltrosAutoSC;
+    procedure FiltrosSiags;
     function AplicarFiltrosAutoSC : Boolean;
+    function AplicarFiltrosSiags : Boolean;
     procedure OrdenarGrid(const AFieldName : String);
     procedure BotoesObservacao(const AHabilitar : Boolean);
 
@@ -229,7 +267,11 @@ implementation
 
 {$R *.dfm}
 
-uses Providers.Importacoes, Providers.Panels.AutoSC, Libs.Constantes;
+uses
+   Providers.Importacoes,
+   Providers.Panels.AutoSC,
+   Providers.Panels.Siags,
+   Libs.Constantes;
 
 function TfrmPaineis.AplicarFiltrosAutoSC: Boolean;
 var
@@ -247,20 +289,42 @@ begin
    end else
       LFiltro.usaDataStatus := False;
 
-    LFiltro.idTipoAuditoria        := cmbAuditorias.KeyValue;
-    LFiltro.idTipoPrazoCaixa       := cmbPrazosCaixa.KeyValue;
-    LFiltro.idTipoPrazoCaixaHoje   := cmbPrazosCaixaHoje.KeyValue;
-    LFiltro.idTipoProcesso         := cmbTipoProcesso.KeyValue;
-    LFiltro.idTipoProcessoE        := cmbTipoProcessoE.KeyValue;
-    LFiltro.idTipoPrazoANS         := cmbPrazosAns.KeyValue;
-    LFiltro.UF                     := cmbUF.KeyValue;
-    LFiltro.idTipoStatus           := cmbStatus.KeyValue;
+    LFiltro.idTipoAuditoria        := cmbAuditoriasAutoSc.KeyValue;
+    LFiltro.idTipoPrazoCaixa       := cmbPrazosCaixaAutoSc.KeyValue;
+    LFiltro.idTipoPrazoCaixaHoje   := cmbPrazosCaixaHojeAutoSc.KeyValue;
+    LFiltro.idTipoProcesso         := cmbTipoProcessoAutoSc.KeyValue;
+    LFiltro.idTipoProcessoE        := cmbTipoProcessoEAutoSc.KeyValue;
+    LFiltro.idTipoPrazoANS         := cmbPrazosAnsAutoSc.KeyValue;
+    LFiltro.UF                     := cmbUFAutoSc.KeyValue;
+    LFiltro.idTipoStatus           := cmbStatusAutoSc.KeyValue;
     LFiltro.idSetorDesignado       := cmbSetores.KeyValue;
     LFiltro.idUsuarioDesignado     := fraPesquisaUsuario.getIdUsuario;
 
     FFiltroAutoSC.setFiltrosAutoSC(LFiltro);
     Result := True;
+end;
 
+function TfrmPaineis.AplicarFiltrosSiags: Boolean;
+var
+   LFiltro : TFiltrosSiags;
+begin
+   Result := False;
+
+    LFiltro.idTipoAuditoria        := cmbAuditoriasSiags.KeyValue;
+    LFiltro.UF                     := cmbUFSiags.KeyValue;
+
+
+    LFiltro.idTipoAutorizacao         := cmbAutorizacoesSiags.KeyValue;
+    LFiltro.idTipoAtendimento         := cmbAtendimentosSiags.KeyValue;
+    LFiltro.idTipoSituacaoAutorizacao := cmbSituacoesSiags.KeyValue;
+    LFiltro.idTipoUltimaAnotacao      := cmbUltimasAnotacoesSiags.KeyValue;
+    LFiltro.idTipoPrazoCaixa          := cmbPrazosCaixaSiags.KeyValue;
+    LFiltro.idTipoPrazoANS            := cmbPrazosAnsSiags.KeyValue;
+    LFiltro.idSetorDesignado          := cmbSetores.KeyValue;
+    LFiltro.idUsuarioDesignado        := fraPesquisaUsuario.getIdUsuario;
+
+    FFiltroSiags.setFiltrosSiags(LFiltro);
+    Result := True;
 end;
 
 procedure TfrmPaineis.BotoesDeEdicao(const AHabilitar: Boolean);
@@ -297,15 +361,15 @@ begin
 
    LFiltro := FFiltroAutoSC.getFiltrosAutoSCAsRecord;
 
-   cmbAuditorias.KeyValue      := LFiltro.idTipoAuditoria;
-   cmbPrazosCaixa.KeyValue     := LFiltro.idTipoPrazoCaixa;
-   cmbPrazosCaixaHoje.KeyValue := LFiltro.idTipoPrazoCaixaHoje;
-   cmbPrazosAns.KeyValue       := LFiltro.idTipoPrazoANS;
-   cmbUF.KeyValue              := LFiltro.UF;
-   cmbTipoProcesso.KeyValue    := LFiltro.idTipoProcesso;
-   cmbTipoProcessoE.KeyValue   := LFiltro.idTipoProcessoE;
-   cmbStatus.KeyValue          := LFiltro.idTipoStatus;
-   cmbSetores.KeyValue         := LFiltro.idSetorDesignado;
+   cmbAuditoriasAutoSc.KeyValue      := LFiltro.idTipoAuditoria;
+   cmbPrazosCaixaAutoSc.KeyValue     := LFiltro.idTipoPrazoCaixa;
+   cmbPrazosCaixaHojeAutoSc.KeyValue := LFiltro.idTipoPrazoCaixaHoje;
+   cmbPrazosAnsAutoSc.KeyValue       := LFiltro.idTipoPrazoANS;
+   cmbUFAutoSc.KeyValue              := LFiltro.UF;
+   cmbTipoProcessoAutoSc.KeyValue    := LFiltro.idTipoProcesso;
+   cmbTipoProcessoEAutoSc.KeyValue   := LFiltro.idTipoProcessoE;
+   cmbStatusAutoSc.KeyValue          := LFiltro.idTipoStatus;
+   cmbSetores.KeyValue               := LFiltro.idSetorDesignado;
    fraPesquisaUsuario.setIdUsuario(LFiltro.idUsuarioDesignado);
 
    if LFiltro.usaDataStatus then
@@ -320,6 +384,30 @@ begin
 
    HabilitarEdicaoDoPainel(Self, pnlFiltrosAutoSC, True);
 
+end;
+
+procedure TfrmPaineis.FiltrosSiags;
+var
+   LFiltro : TFiltrosSiags;
+begin
+   pnlSelecaoDesignacao.Parent := pnlCamposFiltroSiags;
+   fraPesquisaUsuario.setDataSet(FServiceSiags.DataSetPesquisaDeUsuario);
+
+   LFiltro := FFiltroSiags.getFiltrosSiagsAsRecord;
+
+   cmbAuditoriasSiags.KeyValue       := LFiltro.idTipoAuditoria;
+   cmbUFSiags.KeyValue               := LFiltro.UF;
+   cmbAutorizacoesSiags.KeyValue     := LFiltro.idTipoAutorizacao;
+   cmbAtendimentosSiags.KeyValue     := LFiltro.idTipoAtendimento;
+   cmbSituacoesSiags.KeyValue        := LFiltro.idTipoSituacaoAutorizacao;
+   cmbUltimasAnotacoesSiags.KeyValue := LFiltro.idTipoUltimaAnotacao;
+   cmbPrazosCaixaSiags.KeyValue      := LFiltro.idTipoPrazoCaixa;
+   cmbPrazosAnsSiags.KeyValue        := LFiltro.idTipoPrazoANS;
+   cmbSetores.KeyValue               := LFiltro.idSetorDesignado;
+
+   fraPesquisaUsuario.setIdUsuario(LFiltro.idUsuarioDesignado);
+
+   HabilitarEdicaoDoPainel(Self, pnlFiltrosSiags, True);
 end;
 
 procedure TfrmPaineis.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -340,6 +428,9 @@ procedure TfrmPaineis.FormDestroy(Sender: TObject);
 begin
    FreeAndNil(FFiltroAutoSC);
    FreeAndNil(FServiceAutoSC);
+   FreeAndNil(FFiltroSiags);
+   FreeAndNil(FServiceSiags);
+
    FreeAndNil(Fdm);
 end;
 
@@ -396,6 +487,11 @@ end;
 procedure TfrmPaineis.btnCancelarFiltroAutoSCClick(Sender: TObject);
 begin
    HabilitarEdicaoDoPainel(Self, pnlFiltrosAutoSC, False);
+end;
+
+procedure TfrmPaineis.btnCancelarFiltroSiagsClick(Sender: TObject);
+begin
+   HabilitarEdicaoDoPainel(Self, pnlFiltrosSiags, False);
 end;
 
 procedure TfrmPaineis.btnCancelarObservacaoClick(Sender: TObject);
@@ -498,7 +594,19 @@ end;
 procedure TfrmPaineis.btnFiltrarClick(Sender: TObject);
 begin
    if pgcPaineis.ActivePage = tbsAutoSC then
-      FiltrosAutoSC;
+      FiltrosAutoSC
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FiltrosSiags
+end;
+
+procedure TfrmPaineis.btnFiltrarSiagsClick(Sender: TObject);
+begin
+   if AplicarFiltrosSiags then
+      begin
+      FServiceSiags.Filtrar(FFiltroSiags.getFiltrosSiagsAsJSON);
+
+      HabilitarEdicaoDoPainel(Self, pnlFiltrosSiags, False);
+   end;
 end;
 
 procedure TfrmPaineis.btnGravarObservacaoClick(Sender: TObject);
@@ -562,6 +670,7 @@ var
 begin
    case pgcPaineis.ActivePageIndex of
       C_CODIGO_AUTOSC : LHabilitar := FServiceAutoSC.TemRegistros;
+      C_CODIGO_SIAGS  : LHabilitar := FServiceSiags.TemRegistros;
    end;
 
    btnImprimir.Enabled := LHabilitar;
@@ -583,6 +692,17 @@ begin
 
           lblTituloHistoricoDesignacoes.Caption := 'Designações do Processo - AUTOSC - ' + FServiceAutoSC.HistoricoDeDesignacoes;
       end;
+
+      C_CODIGO_SIAGS : begin
+          dbnHistoricoDesignacoes.DataSource    := FServiceSiags.DataSourceDesignacao;
+          edtDataHoraDesignacao.DataSource      := FServiceSiags.DataSourceDesignacao;
+          edtResponsavelDesignacao.DataSource   := FServiceSiags.DataSourceDesignacao;
+          edtSetorDesignacao.DataSource         := FServiceSiags.DataSourceDesignacao;
+          edtUsuarioDesignacao.DataSource       := FServiceSiags.DataSourceDesignacao;
+          memJustificativaDesignacao.DataSource := FServiceSiags.DataSourceDesignacao;
+
+          lblTituloHistoricoDesignacoes.Caption := 'Designações do Processo - SIAGS - ' + FServiceSiags.HistoricoDeDesignacoes;
+      end;
    end;
 end;
 
@@ -596,6 +716,15 @@ begin
 
          lblTituloObservacoesProcesso.Caption := 'Observações do Processo - AUTOSC - ' +FServiceAutoSC.NumeroDoProcesso;
       end;
+
+      C_CODIGO_SIAGS : begin
+         edtDataHoraObservacao.DataSource := FServiceSiags.DataSourceObservacao;
+         edtUsuarioObservacao.DataSource  := FServiceSiags.DataSourceObservacao;
+         memObservacao.DataSource         := FServiceSiags.DataSourceObservacao;
+
+         lblTituloObservacoesProcesso.Caption := 'Observações do Processo - AUTOSC - ' +FServiceAutoSC.NumeroDoProcesso;
+      end;
+
    end;
 end;
 
@@ -611,8 +740,8 @@ begin
    tbsSiags.TabVisible := Seguranca.PodeSIAGS;
    if tbsSiags.TabVisible then
       begin
-//      FServiceAutoSC := TSrvAutoSC.create(Fdm.SQLConnection);
-//      FFiltroAutoSC := TFiltros.create(C_FILTRO_AUTOSC);
+      FServiceSiags := TSrvSiags.create(Fdm.SQLConnection);
+      FFiltroSiags := TFiltros.create(C_CODIGO_SIAGS);
    end;
 
    tbsAutoSC.TabVisible := Seguranca.PodeAUTOSC;

@@ -20,7 +20,7 @@ uses
 
 type
 
-  TSrvImportacaoAutoAc = class
+  TSrvImportacaoAutoSc = class
   private
      Fdm            : TdtmImportacoesAutoSC;
      FPxyImportacao : TSMAutoSCClient;
@@ -50,7 +50,7 @@ uses Forms.Importacoes.AutoSc;
 
 { TSrvImportacaoAutoAc }
 
-function TSrvImportacaoAutoAc.Analisar(ALblGauge : TLabel; AGauge : TGauge; const ASheet : Variant) : Boolean;
+function TSrvImportacaoAutoSc.Analisar(ALblGauge : TLabel; AGauge : TGauge; const ASheet : Variant) : Boolean;
 var
    i       : integer;
    LDado   : TJSONObject;
@@ -117,14 +117,14 @@ begin
 //   Result := Trim(RemoveAspas(FColunas[PosicaoColuna(AColuna)])));
 end;
 
-constructor TSrvImportacaoAutoAc.Create;
+constructor TSrvImportacaoAutoSc.Create;
 begin
    Application.CreateForm(TdtmImportacoesAutoSC, Fdm);
    FPxyImportacao := TSMAutoSCClient.Create(Fdm.SQLConnection.DBXConnection);
 end;
 
 
-function TSrvImportacaoAutoAc.DadoDaColuna(const ASheet : Variant; const AColuna : String; const ALinha : integer) : String;
+function TSrvImportacaoAutoSc.DadoDaColuna(const ASheet : Variant; const AColuna : String; const ALinha : integer) : String;
 var
    LAux : String;
 begin
@@ -132,7 +132,7 @@ begin
    Result := Trim(RemoveAspas(LAux));
 end;
 
-destructor TSrvImportacaoAutoAc.Destroy;
+destructor TSrvImportacaoAutoSc.Destroy;
 begin
    FreeAndNil(FPxyImportacao);
    FreeAndNil(Fdm);
@@ -144,7 +144,7 @@ begin
    inherited;
 end;
 
-function TSrvImportacaoAutoAc.ImportarDados: Boolean;
+function TSrvImportacaoAutoSc.ImportarDados: Boolean;
 var
    LRetorno  : TJSONObject;
    LImportou : Boolean;
@@ -157,6 +157,7 @@ var
 begin
 
    frmMensagem.btnMensagem.Caption := 'Aguarde, efetivando importação';
+   frmMensagem.Show;
    frmMensagem.Refresh;
    Application.ProcessMessages;
    LRetorno := FPxyImportacao.Importar(FDados, Seguranca.id);
@@ -184,7 +185,7 @@ begin
       InformationMessage('Ocorreu um erro na tentativa de gravar os dados.',C_TITULO_MENSAGENS)
 end;
 
-function TSrvImportacaoAutoAc.PosicaoColuna(const AColuna : String): integer;
+function TSrvImportacaoAutoSc.PosicaoColuna(const AColuna : String): integer;
 var
    LColuna : String;
 begin
@@ -217,7 +218,7 @@ begin
 
 end;
 
-function TSrvImportacaoAutoAc.Validar(const ASheet : Variant) : Boolean;
+function TSrvImportacaoAutoSc.Validar(const ASheet : Variant) : Boolean;
 var
    LMensagem : String;
 begin

@@ -411,7 +411,7 @@ object frmPaineis: TfrmPaineis
       Top = 48
       Width = 1391
       Height = 701
-      ActivePage = tbsAutoSC
+      ActivePage = tbsSiags
       Align = alClient
       TabHeight = 45
       TabOrder = 1
@@ -440,7 +440,6 @@ object frmPaineis: TfrmPaineis
               'Selecionado;CheckBox;1;0'
               'Prioridade;CustomEdit;Cb_Prioridade;F')
             Selected.Strings = (
-              'Qtd_Observacoes'#9'10'#9'Qtd_Observacoes'#9'F'
               'Tipo_Auditoria'#9'15'#9'Auditoria'#9'F'
               'Numero_Processo'#9'15'#9'Processo'#9'F'
               'Tipo_Status'#9'15'#9'Tipo'#9'F'#9'Status'
@@ -454,7 +453,8 @@ object frmPaineis: TfrmPaineis
               'Setor_Designado'#9'50'#9'Setor'#9'F'#9'Designa'#231#227'o'
               'Usuario_Designado'#9'50'#9'Usu'#225'rio'#9'F'#9'Designa'#231#227'o'
               'Qtd_Designacoes'#9'10'#9'Qtd de~Designa'#231#245'es'#9'F'
-              'Qtd_Historicos'#9'10'#9'Qtd de~Altera'#231#245'es'#9'F')
+              'Qtd_Historicos'#9'10'#9'Qtd de~Altera'#231#245'es'#9'F'
+              'Qtd_Observacoes'#9'10'#9'Qtd de~Observa'#231#245'es'#9'F')
             IniAttributes.Delimiter = ';;'
             IniAttributes.UnicodeIniFile = False
             TitleColor = clBtnFace
@@ -511,6 +511,106 @@ object frmPaineis: TfrmPaineis
       end
       object tbsSiags: TTabSheet
         Caption = 'SIAGS'
+        object pnlGridSiags: TPanel
+          Left = 0
+          Top = 0
+          Width = 1383
+          Height = 646
+          Align = alClient
+          BevelInner = bvRaised
+          BevelOuter = bvLowered
+          TabOrder = 0
+          object dbgGridSiags: TwwDBGrid
+            AlignWithMargins = True
+            Left = 5
+            Top = 37
+            Width = 1373
+            Height = 604
+            Margins.Top = 0
+            ControlType.Strings = (
+              'Codigo_Produto;CustomEdit;ExpB_Produto;F'
+              'Selecionado;CheckBox;1;0'
+              'Prioridade;CustomEdit;Cb_Prioridade;F')
+            Selected.Strings = (
+              'uf'#9'5'#9'UF do~Prestador'#9'F'
+              'Tipo_Autorizacao'#9'50'#9'Tipo de~Autoriza'#231#227'o'#9'F'
+              'Numero_Autorizacao'#9'15'#9'N'#250'mero~da Autoriza'#231#227'o'#9'F'
+              'Tipo_Atendimento'#9'30'#9'Tipo do~Atendimento'#9'F'
+              'Anexo_Opme'#9'3'#9'OPEM'#9'F'#9'Anexos'
+              'Anexo_Quimio'#9'3'#9'Quimio'#9'F'#9'Anexos'
+              'Anexo_Radio'#9'3'#9'Radio'#9'F'#9'Anexos'
+              'Numero_Beneficiario'#9'15'#9'N'#250'mero'#9'F'#9'Benefici'#225'rio'
+              'Nome_Beneficiario'#9'50'#9'Nome'#9'F'#9'Benefici'#225'rio'
+              'Tipo_Situacao_Autorizacao'#9'30'#9'Situa'#231#227'o~da Autoriza'#231#227'o'#9'F'
+              'Tipo_Ultima_Anotacao'#9'30'#9#218'ltima Anota'#231#227'o~ADM'#9'F'
+              'Tipo_Auditoria'#9'15'#9'Auditoria'#9'F'
+              'Dia_Inclusao'#9'10'#9'Dia da~Inclus'#227'o'#9'F'
+              'Dias_Corridos_Base'#9'10'#9'Dias Corridos~Base'#9'F'
+              'Dias_Uteis_Base'#9'10'#9'Dias '#218'teis~Base'#9'F'
+              'Data_Prazo_Caixa'#9'18'#9'Data'#9'F'#9'Prazo Caixa'
+              'Tipo_Prazo_Caixa'#9'15'#9'Situa'#231#227'o'#9'F'#9'Prazo Caixa'
+              'Dias_Prazo_Caixa'#9'10'#9'Dias'#9'F'#9'Prazo Caixa'
+              'Data_Prazo_ANS'#9'18'#9'Data'#9'F'#9'Prazo ANS'
+              'Dias_Prazo_ANS'#9'10'#9'Dias'#9'F'#9'Prazo ANS'
+              'Tipo_Prazo_Ans'#9'15'#9'Status'#9'F'#9'Prazo ANS'
+              'Usuario_Designado'#9'50'#9'Usu'#225'rio'#9'F'#9'Designa'#231#227'o'
+              'Setor_Designado'#9'50'#9'Setor'#9'F'#9'Designa'#231#227'o'
+              'Qtd_Designacoes'#9'10'#9'Qtd de~Designa'#231#245'es'#9'F'
+              'Qtd_Historicos'#9'10'#9'Qtd de~Altera'#231#245'es'#9'F'
+              'Qtd_Observacoes'#9'10'#9'Qtd de~Observa'#231#245'es'#9'F')
+            IniAttributes.Delimiter = ';;'
+            IniAttributes.UnicodeIniFile = False
+            TitleColor = clBtnFace
+            OnRowChanged = dbgAutoSCRowChanged
+            FixedCols = 0
+            ShowHorzScrollBar = True
+            Align = alClient
+            DataSource = dtmPainelSiags.dtsPainel
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Roboto'
+            Font.Style = []
+            KeyOptions = []
+            Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgWordWrap, dgShowFooter, dgFooter3DCells]
+            ParentFont = False
+            PopupMenu = ppmAutoSc
+            RowHeightPercent = 120
+            TabOrder = 0
+            TitleAlignment = taCenter
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'Roboto'
+            TitleFont.Style = [fsBold]
+            TitleLines = 3
+            TitleButtons = True
+            UseTFields = False
+            OnTitleButtonClick = dbgAutoSCTitleButtonClick
+            OnDblClick = dbgAutoSCDblClick
+            FooterHeight = 20
+            PaintOptions.AlternatingRowColor = 16053492
+          end
+          object pnlTituloSiags: TPanel
+            Left = 2
+            Top = 2
+            Width = 1379
+            Height = 35
+            Margins.Bottom = 0
+            Align = alTop
+            BevelOuter = bvNone
+            Caption = 'Processos SIAGS'
+            Color = 8404992
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -20
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentBackground = False
+            ParentFont = False
+            TabOrder = 1
+          end
+        end
       end
       object tbsControlPc: TTabSheet
         Caption = 'CONTROLPC'
@@ -519,11 +619,11 @@ object frmPaineis: TfrmPaineis
     end
   end
   object pgcPaineisConteiner: TPageControl
-    Left = 212
-    Top = 83
+    Left = 195
+    Top = 67
     Width = 1138
     Height = 657
-    ActivePage = TabSheet1
+    ActivePage = TabSheet7
     TabOrder = 1
     Visible = False
     object TabSheet1: TTabSheet
@@ -801,7 +901,7 @@ object frmPaineis: TfrmPaineis
               Height = 16
               Caption = 'UF'
             end
-            object cmbAuditorias: TDBLookupComboBox
+            object cmbAuditoriasAutoSc: TDBLookupComboBox
               Left = 40
               Top = 37
               Width = 239
@@ -811,7 +911,7 @@ object frmPaineis: TfrmPaineis
               ListSource = dtmPainelAutoSC.dtsTiposAuditoria
               TabOrder = 0
             end
-            object cmbPrazosCaixa: TDBLookupComboBox
+            object cmbPrazosCaixaAutoSc: TDBLookupComboBox
               Left = 40
               Top = 96
               Width = 239
@@ -821,7 +921,7 @@ object frmPaineis: TfrmPaineis
               ListSource = dtmPainelAutoSC.dtsTiposPrazo
               TabOrder = 1
             end
-            object cmbPrazosCaixaHoje: TDBLookupComboBox
+            object cmbPrazosCaixaHojeAutoSc: TDBLookupComboBox
               Left = 328
               Top = 96
               Width = 239
@@ -831,7 +931,7 @@ object frmPaineis: TfrmPaineis
               ListSource = dtmPainelAutoSC.dtsTiposPrazoHoje
               TabOrder = 2
             end
-            object cmbTipoProcesso: TDBLookupComboBox
+            object cmbTipoProcessoAutoSc: TDBLookupComboBox
               Left = 40
               Top = 218
               Width = 239
@@ -841,7 +941,7 @@ object frmPaineis: TfrmPaineis
               ListSource = dtmPainelAutoSC.dtsTiposProcesso
               TabOrder = 5
             end
-            object cmbTipoProcessoE: TDBLookupComboBox
+            object cmbTipoProcessoEAutoSc: TDBLookupComboBox
               Left = 328
               Top = 214
               Width = 239
@@ -851,7 +951,7 @@ object frmPaineis: TfrmPaineis
               ListSource = dtmPainelAutoSC.dtsTiposProcessoE
               TabOrder = 6
             end
-            object cmbStatus: TDBLookupComboBox
+            object cmbStatusAutoSc: TDBLookupComboBox
               Left = 40
               Top = 273
               Width = 239
@@ -881,7 +981,7 @@ object frmPaineis: TfrmPaineis
               TabOrder = 9
               Text = '  /  /    '
             end
-            object cmbPrazosAns: TDBLookupComboBox
+            object cmbPrazosAnsAutoSc: TDBLookupComboBox
               Left = 40
               Top = 155
               Width = 241
@@ -891,7 +991,7 @@ object frmPaineis: TfrmPaineis
               ListSource = dtmPainelAutoSC.dtsTiposPrazoANS
               TabOrder = 3
             end
-            object cmbUF: TDBLookupComboBox
+            object cmbUFAutoSc: TDBLookupComboBox
               Left = 328
               Top = 155
               Width = 81
@@ -1405,8 +1505,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 10
-          ExplicitTop = 47
           object Label21: TLabel
             Left = 21
             Top = 77
@@ -1607,7 +1705,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 317
           object Panel9: TPanel
             Left = 0
             Top = 101
@@ -1615,7 +1712,6 @@ object frmPaineis: TfrmPaineis
             Height = 72
             Align = alBottom
             TabOrder = 0
-            ExplicitTop = 245
             DesignSize = (
               611
               72)
@@ -1828,7 +1924,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 317
           object Label27: TLabel
             Left = 41
             Top = 133
@@ -2060,7 +2155,6 @@ object frmPaineis: TfrmPaineis
             Height = 72
             Align = alBottom
             TabOrder = 0
-            ExplicitTop = 101
             DesignSize = (
               611
               72)
@@ -2129,6 +2223,346 @@ object frmPaineis: TfrmPaineis
             DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
             ReadOnly = True
             TabOrder = 2
+          end
+        end
+      end
+    end
+    object TabSheet7: TTabSheet
+      Caption = 'pnlFiltrosSiags'
+      ImageIndex = 6
+      object pnlFiltrosSiags: TPanel
+        Left = 75
+        Top = 82
+        Width = 625
+        Height = 544
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object Label30: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Filtros SIAGS'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 118
+        end
+        object pnlCamposFiltroSiags: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 493
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          object Panel14: TPanel
+            Left = 0
+            Top = 432
+            Width = 611
+            Height = 61
+            Align = alBottom
+            BevelOuter = bvNone
+            TabOrder = 0
+            DesignSize = (
+              611
+              61)
+            object btnFiltrarSiags: TBitBtn
+              Left = 174
+              Top = 14
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Filtrar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                03030303030303030303030303030303030303030303FF030303030303030303
+                03030303030303040403030303030303030303030303030303F8F8FF03030303
+                03030303030303030303040202040303030303030303030303030303F80303F8
+                FF030303030303030303030303040202020204030303030303030303030303F8
+                03030303F8FF0303030303030303030304020202020202040303030303030303
+                0303F8030303030303F8FF030303030303030304020202FA0202020204030303
+                0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
+                040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
+                03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
+                FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
+                0303030303030303030303FA0202020403030303030303030303030303F8FF03
+                03F8FF03030303030303030303030303FA020202040303030303030303030303
+                0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
+                03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
+                030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
+                0202040303030303030303030303030303F8FF03F8FF03030303030303030303
+                03030303FA0202030303030303030303030303030303F8FFF803030303030303
+                030303030303030303FA0303030303030303030303030303030303F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFiltrarSiagsClick
+            end
+            object btnCancelarFiltroSiags: TBitBtn
+              Left = 318
+              Top = 14
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Cancelar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303F8F80303030303030303030303030303030303FF03030303030303030303
+                0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
+                03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
+                030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
+                FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
+                030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
+                F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
+                010101F8030303030303030303F8FF030303030303FFF8030303030303030303
+                030101010101F80303030303030303030303F8FF0303030303F8030303030303
+                0303030303F901010101F8030303030303030303030303F8FF030303F8030303
+                0303030303030303F90101010101F8030303030303030303030303F803030303
+                F8FF030303030303030303F9010101F8010101F803030303030303030303F803
+                03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
+                03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
+                03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
+                0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
+                030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
+                03030303030303030303030303030303030303030303030303F8F8F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 1
+              OnClick = btnCancelarFiltroSiagsClick
+            end
+          end
+          object Panel15: TPanel
+            Left = 0
+            Top = 0
+            Width = 611
+            Height = 316
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 1
+            ExplicitTop = 3
+            object Label31: TLabel
+              Left = 40
+              Top = 20
+              Width = 51
+              Height = 16
+              Caption = 'Auditoria'
+            end
+            object Label32: TLabel
+              Left = 40
+              Top = 255
+              Width = 67
+              Height = 16
+              Caption = 'Prazo Caixa'
+            end
+            object Label39: TLabel
+              Left = 328
+              Top = 255
+              Width = 60
+              Height = 16
+              Caption = 'Prazo ANS'
+            end
+            object Label41: TLabel
+              Left = 328
+              Top = 20
+              Width = 15
+              Height = 16
+              Caption = 'UF'
+            end
+            object Label33: TLabel
+              Left = 40
+              Top = 97
+              Width = 114
+              Height = 16
+              Caption = 'Tipo de Autoriza'#231#227'o'
+            end
+            object Label42: TLabel
+              Left = 328
+              Top = 97
+              Width = 119
+              Height = 16
+              Caption = 'Tipo de Atendimento'
+            end
+            object Label43: TLabel
+              Left = 40
+              Top = 176
+              Width = 138
+              Height = 16
+              Caption = 'Situa'#231#227'o da Autoriza'#231#227'o'
+            end
+            object Label44: TLabel
+              Left = 328
+              Top = 176
+              Width = 93
+              Height = 16
+              Caption = 'Ultima Anota'#231#227'o'
+            end
+            object cmbAuditoriasSiags: TDBLookupComboBox
+              Left = 40
+              Top = 37
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Auditoria'
+              ListSource = dtmPainelSiags.dtsTiposAuditoria
+              TabOrder = 0
+            end
+            object cmbPrazosCaixaSiags: TDBLookupComboBox
+              Left = 40
+              Top = 273
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Prazo_Caixa'
+              ListSource = dtmPainelAutoSC.dtsTiposPrazo
+              TabOrder = 1
+            end
+            object cmbPrazosANSSiags: TDBLookupComboBox
+              Left = 328
+              Top = 273
+              Width = 241
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Prazo_Caixa'
+              ListSource = dtmPainelAutoSC.dtsTiposPrazoANS
+              TabOrder = 2
+            end
+            object cmbUFSiags: TDBLookupComboBox
+              Left = 328
+              Top = 37
+              Width = 81
+              Height = 24
+              KeyField = 'Sigla'
+              ListField = 'Sigla'
+              ListSource = dtmPainelAutoSC.dtsUF
+              TabOrder = 3
+            end
+            object cmbAutorizacoesSiags: TDBLookupComboBox
+              Left = 40
+              Top = 115
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Autorizacao'
+              ListSource = dtmPainelSiags.dtsTiposAutorizacao
+              TabOrder = 4
+            end
+            object cmbAtendimentosSiags: TDBLookupComboBox
+              Left = 328
+              Top = 115
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Atendimento'
+              ListSource = dtmPainelSiags.dtsTiposAtendimento
+              TabOrder = 5
+            end
+            object cmbSituacoesSiags: TDBLookupComboBox
+              Left = 40
+              Top = 194
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Situacao_Autorizacao'
+              ListSource = dtmPainelSiags.dtsTiposSituacaoAutorizacao
+              TabOrder = 6
+            end
+            object cmbUltimasAnotacoesSiags: TDBLookupComboBox
+              Left = 328
+              Top = 194
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Ultima_Anotacao'
+              ListSource = dtmPainelSiags.dtsTiposUltimaAnotacao
+              TabOrder = 7
+            end
           end
         end
       end

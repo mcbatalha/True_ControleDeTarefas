@@ -10,23 +10,26 @@ uses
   System.Classes,
   System.JSON,
 
-  Providers.Seguranca,
   Proxy.Classes,
   Funcoes,
-  Libs.Constantes,
+
+  Providers.Seguranca,
   Providers.Panels.AutoSC,
+  Providers.Panels.Siags,
+
   Forms.Mensagem,
+  Libs.Constantes,
   Libs.TSeguranca;
 
 type
 
-  TSrvImportacaoAutoAc = class
+  TSrvPanels = class
   private
-     Fdm            : TdtmPainelAutoSC;
+     FdmAutoSc      : TdtmPainelAutoSC;
      FPxyAutoSC     : TSMAutoSCClient;
 
-     const
-        C_TITULO_MENSAGENS = 'Importação de Planilha AUTOSC';
+     FdmSiags      : TdtmPainelSiags;
+     FPxySiags     : TSMSiagsClient;
   public
      constructor Create();
      destructor Destroy();
@@ -39,16 +42,22 @@ implementation
 
 { TSrvImportacaoAutoAc }
 
-constructor TSrvImportacaoAutoAc.Create;
+constructor TSrvPanels.Create;
 begin
-   Application.CreateForm(TdtmPainelAutoSC, Fdm);
-   FPxyAutoSC := TSMAutoSCClient.Create(Fdm.SQLConnection.DBXConnection);
+   Application.CreateForm(TdtmPainelAutoSC, FdmAutoSc);
+   FPxyAutoSC := TSMAutoSCClient.Create(FdmAutoSc.SQLConnection.DBXConnection);
+
+   Application.CreateForm(TdtmPainelSiags, FdmSiags);
+   FPxySiags := TSMSiagsClient.Create(FdmSiags.SQLConnection.DBXConnection);
 end;
 
-destructor TSrvImportacaoAutoAc.Destroy;
+destructor TSrvPanels.Destroy;
 begin
    FreeAndNil(FPxyAutoSC);
-   FreeAndNil(Fdm);
+   FreeAndNil(FdmAutoSc);
+
+   FreeAndNil(FPxySiags);
+   FreeAndNil(FdmSiags);
 
    inherited;
 end;

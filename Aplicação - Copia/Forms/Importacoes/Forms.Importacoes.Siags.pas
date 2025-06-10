@@ -1,4 +1,4 @@
-unit Forms.Importacoes.AutoSc;
+unit Forms.Importacoes.Siags;
 
 interface
 
@@ -23,11 +23,11 @@ uses
   Proxy.Classes,
   Funcoes,
 
-  Services.Importacao.AutoSc,
+  Services.Importacao.Siags,
   Libs.TSeguranca;
 
 type
-  TfrmImportacoesAutoSc = class(TfrmImportacoes)
+  TfrmImportacoesSiags = class(TfrmImportacoes)
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnLocalizarArquivoClick(Sender: TObject);
@@ -36,12 +36,12 @@ type
   private
     { Private declarations }
 
-    FService  : TSrvImportacaoAutoAc;
+    FService  : TSrvImportacaoSiags;
 
     function ValidarPlanilha : Boolean; override;
 
     const
-       C_TITULO_MENSAGENS = 'Importação de Planilha AUTOSC';
+       C_TITULO_MENSAGENS = 'Importação de Planilha Siags';
 
 
   public
@@ -50,14 +50,14 @@ type
 
 (*
 var
-  frmImportacoesAutoSc: TfrmImportacoesAutoSc;
+  frmImportacoesSiags: TfrmImportacoesSiags;
 *)
 
 implementation
 
 {$R *.dfm}
 
-procedure TfrmImportacoesAutoSc.btnAnalisarDadosClick(Sender: TObject);
+procedure TfrmImportacoesSiags.btnAnalisarDadosClick(Sender: TObject);
 begin
    inherited;
 
@@ -66,7 +66,7 @@ begin
    btnAnalisarDados.Enabled := False;
 end;
 
-procedure TfrmImportacoesAutoSc.btnEfetivarImportacaoClick(Sender: TObject);
+procedure TfrmImportacoesSiags.btnEfetivarImportacaoClick(Sender: TObject);
 begin
    if FService.ImportarDados then
       begin
@@ -75,20 +75,20 @@ begin
    end;
 end;
 
-procedure TfrmImportacoesAutoSc.btnLocalizarArquivoClick(Sender: TObject);
+procedure TfrmImportacoesSiags.btnLocalizarArquivoClick(Sender: TObject);
 begin
   inherited;
 
   FService.TotalLinhas := FTotalLinhas;
 end;
 
-procedure TfrmImportacoesAutoSc.FormCreate(Sender: TObject);
+procedure TfrmImportacoesSiags.FormCreate(Sender: TObject);
 begin
    inherited;
-   FService := TSrvImportacaoAutoAc.Create;
+   FService := TSrvImportacaoSiags.Create;
 end;
 
-procedure TfrmImportacoesAutoSc.FormDestroy(Sender: TObject);
+procedure TfrmImportacoesSiags.FormDestroy(Sender: TObject);
 begin
    FreeAndNil(FService);
 
@@ -96,7 +96,7 @@ begin
 end;
 
 
-function TfrmImportacoesAutoSc.ValidarPlanilha: Boolean;
+function TfrmImportacoesSiags.ValidarPlanilha: Boolean;
 begin
    Result := FService.Validar(FSheet);
 

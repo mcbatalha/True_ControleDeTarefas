@@ -29,7 +29,8 @@ uses
   Libs.Constantes,
   Libs.TTransacao,
   Libs.TFiltros,
-  Libs.TFuncoesJSON, Utils.TFuncoesServer;
+  Libs.TFuncoesJSON,
+  Utils.TFuncoesServer;
 
 type
   TSMAutoSC = class(TDSServerModule)
@@ -438,12 +439,10 @@ begin
    qryTiposProcesso.Close;
    qryTiposProcessoE.Close;
    qryTiposStatus.Close;
-   qryTiposAuditoria.Close;
 
    qryTiposAuditoria.ParamByName('AUTOSC').AsInteger := 9;
    qryTiposPrazo.ParamByName('AUTOSC').AsInteger     := 9;
    qryTiposPrazoHoje.ParamByName('AUTOSC').AsInteger := 9;
-
 
    qryTiposAuditoria.Open;
    qryTiposPrazo.Open;
@@ -451,7 +450,6 @@ begin
    qryTiposProcesso.Open;
    qryTiposProcessoE.Open;
    qryTiposStatus.Open;
-   qryTiposAuditoria.Open;
 end;
 
 function TSMAutoSC.Designar(
@@ -691,12 +689,11 @@ begin
       qryAutoScHistoricoid_Tipo_Status.AsInteger           := qryAutoScid_Tipo_Status.AsInteger;
       qryAutoScHistoricoid_Usuario_Responsavel.AsInteger   := qryAutoScid_Usuario_Importacao.AsInteger;
       qryAutoScHistoricoData_Status.AsDateTime             := qryAutoScData_Status.AsDateTime;
-      qryAutoScHistoricoid_Usuario_Responsavel.AsInteger   := FIdUsuarioResponsavel;
+//      qryAutoScHistoricoid_Usuario_Responsavel.AsInteger   := FIdUsuarioResponsavel;
       qryAutoScHistoricoData_Hora_Historico.AsDateTime     := FDataHora;
       qryAutoScHistorico.Post;
    finally
       qryAutoScHistorico.Close;
-
    end;
 end;
 
@@ -794,7 +791,6 @@ begin
    qryAux.ParamByName('pIdProcesso').AsInteger := AIdProcesso;
 
    Result := TFuncoesJSON.MontarJSON(qryAux);
-
 end;
 
 function TSMAutoSC.HistoricoDeDesignacoes(const AIdProcesso: LongInt): TJSONArray;
@@ -901,6 +897,7 @@ begin
       Sql.Add('   g.Tipo_Processo_E, ');
       Sql.Add('   h.Tipo_Prazo_Caixa as Tipo_Prazo_Ans, ');
       Sql.Add('   i.Nome_Usuario as Usuario_Designado, ');
+      Sql.Add('   j.Nome_Setor as Setor_Designado, ');
       Sql.Add('   IsNull((Select count(*) ');
       Sql.Add('           From AutoSc_Historico ah ');
       Sql.Add('           where ah.id_AutoSC = a.id),0) as Qtd_Historicos,');

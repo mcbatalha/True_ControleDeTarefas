@@ -1,0 +1,2 @@
+inherited dtmImportacoesSiags: TdtmImportacoesSiags
+end

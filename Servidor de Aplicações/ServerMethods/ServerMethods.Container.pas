@@ -52,6 +52,7 @@ type
     dsscSetores: TDSServerClass;
     dsscUsuarios: TDSServerClass;
     dsscImportacaoAutoSC: TDSServerClass;
+    dsscImportacaoSiags: TDSServerClass;
     procedure dsscMetodosGerais(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure DSAuthenticationManagerUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean; UserRoles: TStrings);
@@ -61,6 +62,7 @@ type
     procedure dsscSetoresGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsscUsuariosGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsscImportacaoAutoSCGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsscImportacaoSiagsGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
   private
     { Private declarations }
   public
@@ -79,7 +81,8 @@ uses
   ServerMethods.MetodosGerais,
   ServerMethods.Cadastro.Usuarios,
   ServerMethods.Cadastro.Setores,
-  ServerMethods.AutoSc;
+  ServerMethods.AutoSc,
+  ServerMethods.Siags;
 
 procedure TServerContainer.DSAuthenticationManagerUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean; UserRoles: TStrings);
 begin
@@ -116,7 +119,11 @@ end;
 procedure TServerContainer.dsscImportacaoAutoSCGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethods.AutoSc.TSMAutoSC;
+end;
 
+procedure TServerContainer.dsscImportacaoSiagsGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := ServerMethods.Siags.TSMSiags;
 end;
 
 procedure TServerContainer.dsscMetodosGerais(

@@ -23,7 +23,7 @@ inherited dtmPainel: TdtmPainel
     Left = 64
     Top = 328
   end
-  object dspPainel: TDataSetProvider
+  object dsPainel: TDataSetProvider
     DataSet = mtbPainel
     Left = 64
     Top = 256
