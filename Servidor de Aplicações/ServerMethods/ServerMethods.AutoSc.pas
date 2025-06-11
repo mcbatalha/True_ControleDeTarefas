@@ -123,6 +123,9 @@ type
     qryTiposAuditoriaAUTOSC: TIntegerField;
     qryTiposAuditoriaSIAGS: TIntegerField;
     qryTiposAuditoriaCONTROLPC: TIntegerField;
+    qryTiposStatusAUTOSC: TIntegerField;
+    qryTiposStatusSIAGS: TIntegerField;
+    qryTiposStatusCONTROLPC: TIntegerField;
   private
     { Private declarations }
 
@@ -292,6 +295,12 @@ begin
       begin
       qryTiposStatus.Append;
       qryTiposStatusTipo_Status.AsString := AValor;
+      qryTiposStatusAUTOSC.AsInteger  := 1;
+      qryTiposStatus.Post;
+   end else if qryTiposStatusAUTOSC.AsInteger = 0 then
+      begin
+      qryTiposStatus.Edit;
+      qryTiposStatusAUTOSC.AsInteger := 1;
       qryTiposStatus.Post;
    end;
    Result := qryTiposStatusid.AsInteger

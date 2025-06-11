@@ -42,10 +42,6 @@ type
     dtsHistoricoDesignacoes: TDataSource;
     mtbHistoricoAtualizacoes: TFDMemTable;
     mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField;
-    mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField;
-    mtbHistoricoAtualizacoesTipo_Prazo_Caixa_Hoje: TStringField;
-    mtbHistoricoAtualizacoesTipo_Prazo_ANS: TStringField;
-    mtbHistoricoAtualizacoesTipo_Status: TStringField;
     mtbHistoricoAtualizacoesNome_Usuario: TStringField;
     dtsHistoricoAtualizacoes: TDataSource;
     mtbObservacoesProcesso: TFDMemTable;
@@ -87,7 +83,7 @@ type
     dtsTiposUltimaAnotacao: TDataSource;
     mtbTiposUltimaAnotacaoTipo_Ultima_Anotacao: TStringField;
     mtbTiposUltimaAnotacaoid: TIntegerField;
-    mtbPainelid_Processo: TLargeintField;
+    mtbPainelid_Autorizacao: TLargeintField;
     mtbPaineluf: TStringField;
     mtbPainelNumero_Autorizacao: TLargeintField;
     mtbPainelAnexo_Opme: TStringField;
@@ -110,10 +106,6 @@ type
     mtbPainelTipo_Prazo_Caixa: TStringField;
     mtbPainelTipo_Prazo_Ans: TStringField;
     mtbPainelUsuario_Designado: TStringField;
-    mtbPainelQtd_Historicos: TIntegerField;
-    mtbPainelQtd_Designacoes: TIntegerField;
-    mtbPainelQtd_Observacoes: TIntegerField;
-    cdsPainelid_Processo: TLargeintField;
     cdsPaineluf: TStringField;
     cdsPainelNumero_Autorizacao: TLargeintField;
     cdsPainelAnexo_Opme: TStringField;
@@ -136,9 +128,6 @@ type
     cdsPainelTipo_Prazo_Caixa: TStringField;
     cdsPainelTipo_Prazo_Ans: TStringField;
     cdsPainelUsuario_Designado: TStringField;
-    cdsPainelQtd_Historicos: TIntegerField;
-    cdsPainelQtd_Designacoes: TIntegerField;
-    cdsPainelQtd_Observacoes: TIntegerField;
     mtbPainelid_Setor_Designado: TIntegerField;
     mtbPainelSetor_Designado: TStringField;
     mtbPainelid_Usuario_Designado: TIntegerField;
@@ -150,6 +139,30 @@ type
     mtbTiposPrazoANSTipo_Prazo_Caixa: TStringField;
     dtsTiposPrazoANS: TDataSource;
     dtsPainel: TDataSource;
+    mtbPainelQtd_Historicos: TIntegerField;
+    mtbPainelQtd_Designacoes: TIntegerField;
+    mtbPainelQtd_Observacoes: TIntegerField;
+    cdsPainelQtd_Historicos: TIntegerField;
+    cdsPainelQtd_Designacoes: TIntegerField;
+    cdsPainelQtd_Observacoes: TIntegerField;
+    mtbHistoricoAtualizacoesAnexo_Opme: TStringField;
+    mtbHistoricoAtualizacoesAnexo_Quimio: TStringField;
+    mtbHistoricoAtualizacoesAnexo_Radio: TStringField;
+    mtbHistoricoAtualizacoesDias_Corridos_Base: TIntegerField;
+    mtbHistoricoAtualizacoesDias_Uteis_Base: TIntegerField;
+    mtbHistoricoAtualizacoesDias_Prazo_Caixa: TIntegerField;
+    mtbHistoricoAtualizacoesData_Prazo_Caixa: TDateTimeField;
+    mtbHistoricoAtualizacoesDias_Prazo_ANS: TIntegerField;
+    mtbHistoricoAtualizacoesData_Prazo_ANS: TDateTimeField;
+    mtbHistoricoAtualizacoesTipo_Autorizacao: TStringField;
+    mtbHistoricoAtualizacoesTipo_Atendimento: TStringField;
+    mtbHistoricoAtualizacoesTipo_Situacao_Autorizacao: TStringField;
+    mtbHistoricoAtualizacoesTipo_Ultima_Anotacao: TStringField;
+    mtbHistoricoAtualizacoesTipo_Auditoria: TStringField;
+    mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField;
+    mtbHistoricoAtualizacoesTipo_Prazo_Ans: TStringField;
+    cdsPainelid_Autorizacao: TLargeintField;
+    procedure cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
     { Private declarations }
   public
@@ -164,5 +177,15 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdtmPainelSiags.cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+   inherited;
+   if Sender.AsString = '' then
+      Text := 'Não designado'
+   else
+      Text := Sender.AsString;
+
+end;
 
 end.

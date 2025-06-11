@@ -42,8 +42,8 @@ end;
 
 procedure TdtmBase.DataModuleDestroy(Sender: TObject);
 begin
-   inherited;
    SQLConnection.Connected := False;
+   inherited;
 end;
 
 end.

@@ -5,11 +5,8 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   Width = 1466
   inherited mtbPainel: TFDMemTable
     StoreDefs = True
-    object mtbPainelid_Processo: TLargeintField
-      AutoGenerateValue = arAutoInc
-      FieldName = 'id_Processo'
-      Origin = 'id_Processo'
-      ProviderFlags = [pfInWhere]
+    object mtbPainelid_Autorizacao: TLargeintField
+      FieldName = 'id_Autorizacao'
     end
     object mtbPainelNumero_Processo: TLargeintField
       FieldName = 'Numero_Processo'
@@ -45,7 +42,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     object mtbPainelTipo_Status: TStringField
       FieldName = 'Tipo_Status'
       Origin = 'Tipo_Status'
-      Size = 15
+      Size = 30
     end
     object mtbPainelTipo_Processo: TStringField
       FieldName = 'Tipo_Processo'
@@ -77,18 +74,22 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 50
     end
     object mtbPainelQtd_Historicos: TIntegerField
+      Alignment = taCenter
       FieldName = 'Qtd_Historicos'
     end
     object mtbPainelQtd_Designacoes: TIntegerField
+      Alignment = taCenter
       FieldName = 'Qtd_Designacoes'
+      MinValue = 445741836
     end
     object mtbPainelQtd_Observacoes: TIntegerField
+      Alignment = taCenter
       FieldName = 'Qtd_Observacoes'
     end
   end
   inherited cdsPainel: TClientDataSet
-    object cdsPainelid_Processo: TLargeintField
-      FieldName = 'id_Processo'
+    object cdsPainelid_Autorizacao: TLargeintField
+      FieldName = 'id_Autorizacao'
     end
     object cdsPainelNumero_Processo: TLargeintField
       Alignment = taCenter
@@ -122,7 +123,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     end
     object cdsPainelTipo_Status: TStringField
       FieldName = 'Tipo_Status'
-      Size = 15
+      Size = 30
     end
     object cdsPainelTipo_Processo: TStringField
       FieldName = 'Tipo_Processo'
@@ -161,6 +162,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       FieldName = 'Qtd_Designacoes'
     end
     object cdsPainelQtd_Observacoes: TIntegerField
+      Alignment = taCenter
       FieldName = 'Qtd_Observacoes'
     end
   end
@@ -509,7 +511,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     end
     object mtbHistoricoAtualizacoesTipo_Status: TStringField
       FieldName = 'Tipo_Status'
-      Size = 15
+      Size = 30
     end
     object mtbHistoricoAtualizacoesNome_Usuario: TStringField
       FieldName = 'Nome_Usuario'

@@ -21,6 +21,7 @@ uses
   Vcl.Samples.Gauges,
 
   Forms.Base,
+  Forms.Mensagem,
   Proxy.Classes;
 
 type
@@ -39,7 +40,12 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure btnEfetivarImportacaoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
+
+    frmMensagem : TfrmMensagem;
+
     procedure AbrirPlanilha;
     function  ObterInformacoesDaPlanilha : Boolean;
 
@@ -71,7 +77,6 @@ implementation
 
 {$R *.dfm}
 
-uses Forms.Mensagem;
 
 procedure TfrmImportacoes.AbrirPlanilha;
 begin
@@ -99,26 +104,34 @@ procedure TfrmImportacoes.btnLocalizarArquivoClick(Sender: TObject);
 begin
    inherited;
 
-   Gauge.MinValue := 1;
-   Gauge.Progress := 1;
+   Application.CreateForm(TfrmMensagem, frmMensagem);
 
-   btnAnalisarDados.Enabled := false;
-   if not OpenDialog.Execute() then Exit;
+   try
+      Gauge.MinValue := 1;
+      Gauge.Progress := 1;
 
-   edtArquivo.Text := OpenDialog.FileName;
-   frmMensagem.btnMensagem.Caption := 'Aguarde, abrindo planilha.';
-   frmMensagem.Show;
-   Application.ProcessMessages;
 
-   AbrirPlanilha;
+      btnAnalisarDados.Enabled := false;
+      if not OpenDialog.Execute() then Exit;
 
-   if ObterInformacoesDaPlanilha then exit;
-      begin
-      Gauge.MaxValue := FTotalLinhas;
+      edtArquivo.Text := OpenDialog.FileName;
+      frmMensagem.btnMensagem.Caption := 'Aguarde, abrindo planilha.';
+      frmMensagem.GaugeVisible(False);
+      frmMensagem.Show;
+      Application.ProcessMessages;
+
+      AbrirPlanilha;
+
+      if ObterInformacoesDaPlanilha then exit;
+         begin
+         Gauge.MaxValue := FTotalLinhas;
+      end;
+
+      btnAnalisarDados.Enabled := FPlanilhaCarregada;
+      frmMensagem.Close;
+   finally
+      FreeAndNil(frmMensagem);
    end;
-
-   btnAnalisarDados.Enabled := FPlanilhaCarregada;
-   frmMensagem.Close;
 end;
 
 
@@ -139,6 +152,20 @@ begin
   inherited;
   if FPlanilhaCarregada then
      FecharPlanilha;
+end;
+
+procedure TfrmImportacoes.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Application.CreateForm(TfrmMensagem, frmMensagem);
+end;
+
+procedure TfrmImportacoes.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(frmMensagem);
+
+  inherited;
+
 end;
 
 procedure TfrmImportacoes.FormShow(Sender: TObject);

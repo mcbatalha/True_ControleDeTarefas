@@ -32,7 +32,7 @@ type
      FPxySiags     : TSMSiagsClient;
   public
      constructor Create();
-     destructor Destroy();
+     destructor Destroy(); virtual;
 
   end;
 

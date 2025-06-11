@@ -35,7 +35,7 @@ object SMAutoSC: TSMAutoSC
     object qryTiposPrazoTipo_Prazo_Caixa: TStringField
       FieldName = 'Tipo_Prazo_Caixa'
       Origin = 'Tipo_Prazo_Caixa'
-      Size = 15
+      Size = 30
     end
     object qryTiposPrazoAUTOSC: TIntegerField
       FieldName = 'AUTOSC'
@@ -79,7 +79,7 @@ object SMAutoSC: TSMAutoSC
     object qryTiposPrazoHojeTipo_Prazo_Caixa_Hoje: TStringField
       FieldName = 'Tipo_Prazo_Caixa_Hoje'
       Origin = 'Tipo_Prazo_Caixa_Hoje'
-      Size = 15
+      Size = 30
     end
     object qryTiposPrazoHojeAUTOSC: TIntegerField
       FieldName = 'AUTOSC'
@@ -134,10 +134,21 @@ object SMAutoSC: TSMAutoSC
   object qryTiposStatus: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Status'
+      'Declare @AUTOSC int;'
+      'Set @AUTOSC = :AUTOSC;'
+      ''
+      'Select * from Tipos_Status'
+      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
       'Order by Tipo_Status')
     Left = 80
     Top = 376
+    ParamData = <
+      item
+        Name = 'AUTOSC'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qryTiposStatusid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -147,7 +158,19 @@ object SMAutoSC: TSMAutoSC
     object qryTiposStatusTipo_Status: TStringField
       FieldName = 'Tipo_Status'
       Origin = 'Tipo_Status'
-      Size = 15
+      Size = 30
+    end
+    object qryTiposStatusAUTOSC: TIntegerField
+      FieldName = 'AUTOSC'
+      Origin = 'AUTOSC'
+    end
+    object qryTiposStatusSIAGS: TIntegerField
+      FieldName = 'SIAGS'
+      Origin = 'SIAGS'
+    end
+    object qryTiposStatusCONTROLPC: TIntegerField
+      FieldName = 'CONTROLPC'
+      Origin = 'CONTROLPC'
     end
   end
   object qryAutoSc: TFDQuery
@@ -377,17 +400,17 @@ object SMAutoSC: TSMAutoSC
     object qryPainelAutoScTipo_Prazo_Caixa: TStringField
       FieldName = 'Tipo_Prazo_Caixa'
       Origin = 'Tipo_Prazo_Caixa'
-      Size = 15
+      Size = 30
     end
     object qryPainelAutoScTipo_Prazo_Caixa_Hoje: TStringField
       FieldName = 'Tipo_Prazo_Caixa_Hoje'
       Origin = 'Tipo_Prazo_Caixa_Hoje'
-      Size = 15
+      Size = 30
     end
     object qryPainelAutoScTipo_Status: TStringField
       FieldName = 'Tipo_Status'
       Origin = 'Tipo_Status'
-      Size = 15
+      Size = 30
     end
     object qryPainelAutoScTipo_Processo: TStringField
       FieldName = 'Tipo_Processo'
@@ -401,7 +424,7 @@ object SMAutoSC: TSMAutoSC
     object qryPainelAutoScTipo_Prazo_Ans: TStringField
       FieldName = 'Tipo_Prazo_Ans'
       Origin = 'Tipo_Prazo_Ans'
-      Size = 15
+      Size = 30
     end
     object qryPainelAutoScUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'

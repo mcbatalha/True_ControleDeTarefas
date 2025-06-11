@@ -2,6 +2,7 @@ inherited frmImportacoes: TfrmImportacoes
   Caption = ''
   ClientHeight = 389
   ClientWidth = 633
+  OnDestroy = FormDestroy
   ExplicitWidth = 651
   ExplicitHeight = 436
   PixelsPerInch = 120
@@ -19,7 +20,7 @@ inherited frmImportacoes: TfrmImportacoes
       Caption = 'Arquivo'
     end
     object btnLocalizarArquivo: TSpeedButton [1]
-      Left = 567
+      Left = 561
       Top = 87
       Width = 23
       Height = 22

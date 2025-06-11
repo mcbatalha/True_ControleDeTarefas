@@ -129,7 +129,7 @@ type
     Label19: TLabel;
     btnEncerrar: TSpeedButton;
     TabSheet4: TTabSheet;
-    pnlHistoricoAtualizacoes: TPanel;
+    pnlHistoricoAtualizacoesAutoSc: TPanel;
     lblTituloHistoricoAtualizacoesAUTOSC: TLabel;
     Panel6: TPanel;
     Label21: TLabel;
@@ -154,8 +154,8 @@ type
     lblTituloEncerramento: TLabel;
     Panel8: TPanel;
     Panel9: TPanel;
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
+    btnConfirmaEncerramento: TBitBtn;
+    btnCancelaEncerramento: TBitBtn;
     Panel11: TPanel;
     Label28: TLabel;
     memJustificativaEncerramento: TMemo;
@@ -203,6 +203,51 @@ type
     cmbSituacoesSiags: TDBLookupComboBox;
     cmbUltimasAnotacoesSiags: TDBLookupComboBox;
     Label44: TLabel;
+    TabSheet8: TTabSheet;
+    pnlHistoricoAtualizacoesSiags: TPanel;
+    lblTituloHistoricoAtualizacoesSiags: TLabel;
+    Panel13: TPanel;
+    Label35: TLabel;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label38: TLabel;
+    Label40: TLabel;
+    Label45: TLabel;
+    Panel16: TPanel;
+    btnFecharHistoricoSiags: TBitBtn;
+    DBNavigator1: TDBNavigator;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    DBEdit4: TDBEdit;
+    DBEdit11: TDBEdit;
+    DBEdit12: TDBEdit;
+    Label46: TLabel;
+    Label47: TLabel;
+    DBEdit13: TDBEdit;
+    DBEdit14: TDBEdit;
+    Label48: TLabel;
+    DBEdit15: TDBEdit;
+    Label49: TLabel;
+    DBEdit16: TDBEdit;
+    Label50: TLabel;
+    Label51: TLabel;
+    DBEdit17: TDBEdit;
+    Label52: TLabel;
+    Label54: TLabel;
+    DBEdit19: TDBEdit;
+    Label53: TLabel;
+    DBEdit18: TDBEdit;
+    Label55: TLabel;
+    Label56: TLabel;
+    DBEdit20: TDBEdit;
+    Label57: TLabel;
+    DBEdit21: TDBEdit;
+    Label58: TLabel;
+    DBEdit22: TDBEdit;
+    Label59: TLabel;
+    Label60: TLabel;
+    DBEdit23: TDBEdit;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -224,7 +269,6 @@ type
     procedure btnFecharHistoricoDesignacaoClick(Sender: TObject);
     procedure btnHistoricoAtualizacoesClick(Sender: TObject);
     procedure btnFecharHistoricoAtualizacoesClick(Sender: TObject);
-    procedure btnEncerrarClick(Sender: TObject);
     procedure btnObservacoesClick(Sender: TObject);
     procedure btnIncluirObservacaoClick(Sender: TObject);
     procedure btnFecharObservacaoClick(Sender: TObject);
@@ -232,6 +276,12 @@ type
     procedure btnCancelarObservacaoClick(Sender: TObject);
     procedure btnCancelarFiltroSiagsClick(Sender: TObject);
     procedure btnFiltrarSiagsClick(Sender: TObject);
+    procedure dbgGridSiagsRowChanged(Sender: TObject);
+    procedure btnFecharHistoricoSiagsClick(Sender: TObject);
+    procedure dbgGridSiagsTitleButtonClick(Sender: TObject; AFieldName: string);
+    procedure btnConfirmaEncerramentoClick(Sender: TObject);
+    procedure btnEncerrarClick(Sender: TObject);
+    procedure btnCancelaEncerramentoClick(Sender: TObject);
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
@@ -242,6 +292,8 @@ type
 
     Fdm            : TdtmPaineisConexao;
 
+    procedure DesignarAutoSc;
+    procedure DesignarSiags;
     procedure ConfigurarObservacoes;
     procedure ConfigurarHistoricoDeDesignacao;
     procedure ConfigurarTabSheets;
@@ -251,7 +303,7 @@ type
     procedure FiltrosSiags;
     function AplicarFiltrosAutoSC : Boolean;
     function AplicarFiltrosSiags : Boolean;
-    procedure OrdenarGrid(const AFieldName : String);
+    procedure OrdenarGrid(const ADataSet : TDataSet; const AFieldName : String);
     procedure BotoesObservacao(const AHabilitar : Boolean);
 
   public
@@ -308,7 +360,7 @@ function TfrmPaineis.AplicarFiltrosSiags: Boolean;
 var
    LFiltro : TFiltrosSiags;
 begin
-   Result := False;
+    Result := False;
 
     LFiltro.idTipoAuditoria        := cmbAuditoriasSiags.KeyValue;
     LFiltro.UF                     := cmbUFSiags.KeyValue;
@@ -325,6 +377,11 @@ begin
 
     FFiltroSiags.setFiltrosSiags(LFiltro);
     Result := True;
+end;
+
+procedure TfrmPaineis.btnFecharHistoricoSiagsClick(Sender: TObject);
+begin
+   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesSiags, false);
 end;
 
 procedure TfrmPaineis.BotoesDeEdicao(const AHabilitar: Boolean);
@@ -451,37 +508,44 @@ begin
    LimparTela(Self);
 end;
 
-procedure TfrmPaineis.OrdenarGrid(const AFieldName : String);
+procedure TfrmPaineis.OrdenarGrid(const ADataSet : TDataSet; const AFieldName : String);
 var
    LIndice: string;
    LExiste: boolean;
 begin
-   if (dbgAutoSC.DataSource.DataSet as TClientDataSet).IndexFieldNames = AFieldName then
+   if (ADataSet as TClientDataSet).IndexFieldNames = AFieldName then
      begin
      LIndice := AnsiUpperCase(AFieldName+'_INV');
 
      try
-       (dbgAutoSC.DataSource.DataSet as TClientDataSet).IndexDefs.Find(LIndice);
+       (ADataSet as TClientDataSet).IndexDefs.Find(LIndice);
        LExiste := true;
      except
        LExiste := false;
      end;
 
      if not LExiste then
-       with (dbgAutoSC.DataSource.DataSet as TClientDataSet).IndexDefs.AddIndexDef do begin
+       with (ADataSet as TClientDataSet).IndexDefs.AddIndexDef do begin
          Name := LIndice;
          Fields := AFieldName;
          Options := [ixDescending];
        end;
-      (dbgAutoSC.DataSource.DataSet as TClientDataSet).IndexName := LIndice;
+      (ADataSet as TClientDataSet).IndexName := LIndice;
       end
    else
-     (dbgAutoSC.DataSource.DataSet as TClientDataSet).IndexFieldNames := AFieldName;
+     (ADataSet as TClientDataSet).IndexFieldNames := AFieldName;
+end;
+
+procedure TfrmPaineis.btnCancelaEncerramentoClick(Sender: TObject);
+begin
+   memJustificativaEncerramento.Text := '';
+   HabilitarEdicaoDoPainel(Self, pnlEncerramento, False);
 end;
 
 procedure TfrmPaineis.btnCancelarDesignacaoAutoSCClick(Sender: TObject);
 begin
    HabilitarEdicaoDoPainel(Self, pnlDesignacao, False);
+   memJustificativa.Text := '';
 end;
 
 procedure TfrmPaineis.btnCancelarFiltroAutoSCClick(Sender: TObject);
@@ -496,14 +560,43 @@ end;
 
 procedure TfrmPaineis.btnCancelarObservacaoClick(Sender: TObject);
 begin
-   FServiceAutoSC.CancelarObservacao;
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      FServiceAutoSC.CancelarObservacao
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FServiceSiags.CancelarObservacao;
+
+   BotoesObservacao(False);
+end;
+
+procedure TfrmPaineis.btnConfirmaEncerramentoClick(Sender: TObject);
+begin
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      FServiceAutoSC.Encerrar(memJustificativaEncerramento.Text)
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FServiceSiags.Encerrar(memJustificativaEncerramento.Text);
+
+   memJustificativaEncerramento.Text := '';
+   HabilitarEdicaoDoPainel(Self, pnlEncerramento, False);
 end;
 
 procedure TfrmPaineis.btnConfirmarDesignacaoAutoSCClick(Sender: TObject);
+var
+   LDesignou : Boolean;
 begin
-   if FServiceAutoSC.Designar(memJustificativa.Text,
-                              cmbSetores.KeyValue,
-                              fraPesquisaUsuario.getIdUsuario) then
+
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      begin
+      LDesignou := FServiceAutoSC.Designar(memJustificativa.Text,
+                                           cmbSetores.KeyValue,
+                                           fraPesquisaUsuario.getIdUsuario);
+   end else if pgcPaineis.ActivePage = tbsSiags then
+      begin
+      LDesignou := FServiceSiags.Designar(memJustificativa.Text,
+                                          cmbSetores.KeyValue,
+                                          fraPesquisaUsuario.getIdUsuario);
+   end;
+
+   if LDesignou then
       HabilitarEdicaoDoPainel(Self, pnlDesignacao, False);
 
 end;
@@ -513,26 +606,9 @@ begin
    if not btnDesignar.Enabled then Exit;
 
    if pgcPaineis.ActivePage = tbsAutoSC then
-      begin
-      FServiceAutoSC.DesignacaoExcluirTodos;
-
-      if not FServiceAutoSC.SetorDesignado > 0 then
-         cmbSetores.KeyValue := FServiceAutoSC.SetorDesignado
-      else
-         cmbSetores.KeyValue := C_CODIGO_NAO_DESIGNADO;
-
-      if not FServiceAutoSC.UsuarioDesignado > 0 then
-         fraPesquisaUsuario.setIdUsuario(FServiceAutoSC.UsuarioDesignado)
-      else
-         fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
-
-      lblTituloDesignacao.Caption := 'Designição de Processo - AUTOSC - ' + FServiceAutoSC.NumeroDoProcesso;
-      pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
-      memJustificativa.Text       := '';
-
-      HabilitarEdicaoDoPainel(Self, pnlDesignacao, True);
-      memJustificativa.SetFocus;
-   end;
+      DesignarAutoSc
+   else if pgcPaineis.ActivePage = tbsSiags  then
+      DesignarSiags
 end;
 
 
@@ -542,11 +618,17 @@ var
 begin
    if not btnHistoricoAtualizacoes.Enabled then exit;
 
-   LProcesso := FServiceAutoSC.HistoricoDeAtualizacoes;
-
-   lblTituloHistoricoAtualizacoesAUTOSC.Caption := 'Atualizações do Processo - AUTOSC - ' + LProcesso;
-   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoes, True);
-end;
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      begin
+      LProcesso := FServiceAutoSC.HistoricoDeAtualizacoes;
+      lblTituloHistoricoAtualizacoesAUTOSC.Caption := 'Atualizações do Processo - AUTOSC - ' + LProcesso;
+      HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesAutoSc, True);
+   end else if pgcPaineis.ActivePage = tbsSiags then
+      begin
+      LProcesso := FServiceSiags.HistoricoDeAtualizacoes;
+      lblTituloHistoricoAtualizacoesSiags.Caption := 'Atualizações do Processo - SIAGS - ' + LProcesso;
+      HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesSiags, True);
+   end end;
 
 procedure TfrmPaineis.btnHistoricoDesignacoesClick(Sender: TObject);
 begin
@@ -558,7 +640,14 @@ end;
 
 procedure TfrmPaineis.btnEncerrarClick(Sender: TObject);
 begin
-   FServiceAutoSC.Encerrar(memJustificativaEncerramento.Text);
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      lblTituloEncerramento.Caption := 'Encerramento de Processo - AUTOSC - ' + FServiceAutoSC.NumeroDoProcesso
+   else if pgcPaineis.ActivePage = tbsSiags then
+      lblTituloEncerramento.Caption := 'Encerramento de Autorização - SIAGS- ' + FServiceSiags.NumeroDaAutorizacao;
+
+   memJustificativaEncerramento.Text := '';
+   HabilitarEdicaoDoPainel(Self, pnlEncerramento, True);
+   memJustificativaEncerramento.SetFocus;
 end;
 
 procedure TfrmPaineis.btnExportarClick(Sender: TObject);
@@ -568,7 +657,7 @@ end;
 
 procedure TfrmPaineis.btnFecharHistoricoAtualizacoesClick(Sender: TObject);
 begin
-   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoes, false);
+   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesAutoSc, false);
 end;
 
 procedure TfrmPaineis.btnFecharHistoricoDesignacaoClick(Sender: TObject);
@@ -610,12 +699,17 @@ begin
 end;
 
 procedure TfrmPaineis.btnGravarObservacaoClick(Sender: TObject);
+var
+   LGravouObs : Boolean;
 begin
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      LGravouObs := FServiceAutoSC.GravarObservacao(memObservacao.Text)
+   else if pgcPaineis.ActivePage = tbsSiags then
+      LGravouObs := FServiceSiags.GravarObservacao(memObservacao.Text);
 
-   if FServiceAutoSC.GravarObservacao(memObservacao.Text) then
-      begin
+   if LGravouObs then
       BotoesObservacao(False);
-   end;
+
 end;
 
 procedure TfrmPaineis.btnImprimirClick(Sender: TObject);
@@ -625,7 +719,11 @@ end;
 
 procedure TfrmPaineis.btnIncluirObservacaoClick(Sender: TObject);
 begin
-   FServiceAutoSC.IncluirObservacao;
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      FServiceAutoSC.IncluirObservacao
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FServiceSiags.IncluirObservacao;
+
    BotoesObservacao(True);
    HabilitarEdicaoDoPainel(self, pnlObservacoesProcesso, True);
 end;
@@ -634,7 +732,11 @@ procedure TfrmPaineis.btnObservacoesClick(Sender: TObject);
 begin
    BotoesObservacao(False);
    ConfigurarObservacoes;
-   FServiceAutoSC.ObservacoesDoProcesso;
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      FServiceAutoSC.ObservacoesDoProcesso
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FServiceSiags.ObservacoesDaAutorizacao;
+
    HabilitarEdicaoDoPainel(Self, pnlObservacoesProcesso, True);
 end;
 
@@ -668,6 +770,8 @@ procedure TfrmPaineis.ConfigurarBotoesDeOperacao;
 var
    LHabilitar : Boolean;
 begin
+   LHabilitar := False;
+
    case pgcPaineis.ActivePageIndex of
       C_CODIGO_AUTOSC : LHabilitar := FServiceAutoSC.TemRegistros;
       C_CODIGO_SIAGS  : LHabilitar := FServiceSiags.TemRegistros;
@@ -701,7 +805,7 @@ begin
           edtUsuarioDesignacao.DataSource       := FServiceSiags.DataSourceDesignacao;
           memJustificativaDesignacao.DataSource := FServiceSiags.DataSourceDesignacao;
 
-          lblTituloHistoricoDesignacoes.Caption := 'Designações do Processo - SIAGS - ' + FServiceSiags.HistoricoDeDesignacoes;
+          lblTituloHistoricoDesignacoes.Caption := 'Designações da Autorização - SIAGS - ' + FServiceSiags.HistoricoDeDesignacoes;
       end;
    end;
 end;
@@ -713,6 +817,7 @@ begin
          edtDataHoraObservacao.DataSource := FServiceAutoSC.DataSourceObservacao;
          edtUsuarioObservacao.DataSource  := FServiceAutoSC.DataSourceObservacao;
          memObservacao.DataSource         := FServiceAutoSC.DataSourceObservacao;
+         dbnObservacoes.DataSource        := FServiceAutoSC.DataSourceObservacao;
 
          lblTituloObservacoesProcesso.Caption := 'Observações do Processo - AUTOSC - ' +FServiceAutoSC.NumeroDoProcesso;
       end;
@@ -721,8 +826,9 @@ begin
          edtDataHoraObservacao.DataSource := FServiceSiags.DataSourceObservacao;
          edtUsuarioObservacao.DataSource  := FServiceSiags.DataSourceObservacao;
          memObservacao.DataSource         := FServiceSiags.DataSourceObservacao;
+         dbnObservacoes.DataSource        := FServiceSiags.DataSourceObservacao;
 
-         lblTituloObservacoesProcesso.Caption := 'Observações do Processo - AUTOSC - ' +FServiceAutoSC.NumeroDoProcesso;
+         lblTituloObservacoesProcesso.Caption := 'Observações da Autorização - SIAGS - ' +FServiceSiags.NumeroDaAutorizacao;
       end;
 
    end;
@@ -778,7 +884,68 @@ end;
 
 procedure TfrmPaineis.dbgAutoSCTitleButtonClick(Sender: TObject; AFieldName: string);
 begin
-   OrdenarGrid(AFieldName);
+   OrdenarGrid(dbgAutoSC.DataSource.DataSet,AFieldName);
+end;
+
+procedure TfrmPaineis.dbgGridSiagsRowChanged(Sender: TObject);
+begin
+   btnHistoricoDesignacoes.Enabled  := FServiceSiags.TemDesignacoes;
+   btnHistoricoAtualizacoes.Enabled := FServiceSiags.TemAtualizacoes;
+   btnImprimir.Enabled              := FServiceSiags.TemRegistros;
+   btnExportar.Enabled              := FServiceSiags.TemRegistros;
+   btnObservacoes.Enabled           := FServiceSiags.TemRegistros;
+   btnDesignar.Enabled              := FServiceSiags.TemRegistros;
+   btnEncerrar.Enabled              := FServiceSiags.TemRegistros;
+end;
+
+procedure TfrmPaineis.dbgGridSiagsTitleButtonClick(Sender: TObject; AFieldName: string);
+begin
+   OrdenarGrid(dbgGridSiags.DataSource.DataSet, AFieldName);
+end;
+
+procedure TfrmPaineis.DesignarAutoSc;
+begin
+   FServiceAutoSC.DesignacaoExcluirTodos;
+
+   if not FServiceAutoSC.SetorDesignado > 0 then
+      cmbSetores.KeyValue := FServiceAutoSC.SetorDesignado
+   else
+      cmbSetores.KeyValue := C_CODIGO_NAO_DESIGNADO;
+
+   if not FServiceAutoSC.UsuarioDesignado > 0 then
+      fraPesquisaUsuario.setIdUsuario(FServiceAutoSC.UsuarioDesignado)
+   else
+      fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
+
+   lblTituloDesignacao.Caption := 'Designição de Processo - AUTOSC - ' + FServiceAutoSC.NumeroDoProcesso;
+   pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
+   memJustificativa.Text       := '';
+
+   memJustificativa.Text := '';
+   HabilitarEdicaoDoPainel(Self, pnlDesignacao, True);
+   memJustificativa.SetFocus;
+end;
+
+procedure TfrmPaineis.DesignarSiags;
+begin
+   FServiceSiags.DesignacaoExcluirTodos;
+
+   if not FServiceSiags.SetorDesignado > 0 then
+      cmbSetores.KeyValue := FServiceSiags.SetorDesignado
+   else
+      cmbSetores.KeyValue := C_CODIGO_NAO_DESIGNADO;
+
+   if not FServiceSiags.UsuarioDesignado > 0 then
+      fraPesquisaUsuario.setIdUsuario(FServiceSiags.UsuarioDesignado)
+   else
+      fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
+
+   lblTituloDesignacao.Caption := 'Designição de Processo - Siags - ' + FServiceSiags.NumeroDaAutorizacao;
+   pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
+   memJustificativa.Text       := '';
+
+   HabilitarEdicaoDoPainel(Self, pnlDesignacao, True);
+   memJustificativa.SetFocus;
 end;
 
 end.

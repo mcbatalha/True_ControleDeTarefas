@@ -3,12 +3,11 @@ inherited dtmPainelSiags: TdtmPainelSiags
   Width = 1472
   inherited mtbPainel: TFDMemTable
     StoreDefs = True
-    object mtbPainelid_Processo: TLargeintField
+    object mtbPainelid_Autorizacao: TLargeintField
       AutoGenerateValue = arAutoInc
-      FieldName = 'id_Processo'
+      FieldName = 'id_Autorizacao'
       Origin = 'id_Processo'
       ProviderFlags = [pfInWhere]
-      ReadOnly = True
     end
     object mtbPaineluf: TStringField
       FieldName = 'uf'
@@ -124,115 +123,128 @@ inherited dtmPainelSiags: TdtmPainelSiags
     end
     object mtbPainelQtd_Historicos: TIntegerField
       FieldName = 'Qtd_Historicos'
-      Origin = 'Qtd_Historicos'
-      ReadOnly = True
-      Required = True
     end
     object mtbPainelQtd_Designacoes: TIntegerField
       FieldName = 'Qtd_Designacoes'
-      Origin = 'Qtd_Designacoes'
-      ReadOnly = True
-      Required = True
     end
     object mtbPainelQtd_Observacoes: TIntegerField
       FieldName = 'Qtd_Observacoes'
-      Origin = 'Qtd_Observacoes'
-      ReadOnly = True
-      Required = True
     end
   end
   inherited cdsPainel: TClientDataSet
-    object cdsPainelid_Processo: TLargeintField
-      FieldName = 'id_Processo'
-      ReadOnly = True
+    object cdsPainelid_Autorizacao: TLargeintField
+      FieldName = 'id_Autorizacao'
     end
     object cdsPaineluf: TStringField
       Alignment = taCenter
       FieldName = 'uf'
+      Origin = 'uf'
       Size = 2
     end
     object cdsPainelNumero_Autorizacao: TLargeintField
       Alignment = taCenter
       FieldName = 'Numero_Autorizacao'
+      Origin = 'Numero_Autorizacao'
     end
     object cdsPainelAnexo_Opme: TStringField
       Alignment = taCenter
       FieldName = 'Anexo_Opme'
+      Origin = 'Anexo_Opme'
       Size = 3
     end
     object cdsPainelAnexo_Quimio: TStringField
       Alignment = taCenter
       FieldName = 'Anexo_Quimio'
+      Origin = 'Anexo_Quimio'
       Size = 3
     end
     object cdsPainelAnexo_Radio: TStringField
       Alignment = taCenter
       FieldName = 'Anexo_Radio'
+      Origin = 'Anexo_Radio'
       Size = 3
     end
     object cdsPainelDia_Inclusao: TIntegerField
       Alignment = taCenter
       FieldName = 'Dia_Inclusao'
+      Origin = 'Dia_Inclusao'
     end
     object cdsPainelDias_Corridos_Base: TIntegerField
       Alignment = taCenter
       FieldName = 'Dias_Corridos_Base'
+      Origin = 'Dias_Corridos_Base'
     end
     object cdsPainelDias_Uteis_Base: TIntegerField
       Alignment = taCenter
       FieldName = 'Dias_Uteis_Base'
+      Origin = 'Dias_Uteis_Base'
     end
     object cdsPainelDias_Prazo_Caixa: TIntegerField
       Alignment = taCenter
       FieldName = 'Dias_Prazo_Caixa'
+      Origin = 'Dias_Prazo_Caixa'
     end
     object cdsPainelData_Prazo_Caixa: TDateTimeField
       Alignment = taCenter
       FieldName = 'Data_Prazo_Caixa'
+      Origin = 'Data_Prazo_Caixa'
     end
     object cdsPainelDias_Prazo_ANS: TIntegerField
       Alignment = taCenter
       FieldName = 'Dias_Prazo_ANS'
+      Origin = 'Dias_Prazo_ANS'
     end
     object cdsPainelData_Prazo_ANS: TDateTimeField
       Alignment = taCenter
       FieldName = 'Data_Prazo_ANS'
+      Origin = 'Data_Prazo_ANS'
     end
     object cdsPainelTipo_Autorizacao: TStringField
       FieldName = 'Tipo_Autorizacao'
+      Origin = 'Tipo_Autorizacao'
       Size = 50
     end
     object cdsPainelTipo_Atendimento: TStringField
       FieldName = 'Tipo_Atendimento'
+      Origin = 'Tipo_Atendimento'
       Size = 30
     end
     object cdsPainelNumero_Beneficiario: TStringField
       FieldName = 'Numero_Beneficiario'
+      Origin = 'Numero_Beneficiario'
       Size = 15
     end
     object cdsPainelNome_Beneficiario: TStringField
-      Alignment = taCenter
       FieldName = 'Nome_Beneficiario'
+      Origin = 'Nome_Beneficiario'
       Size = 100
     end
     object cdsPainelTipo_Situacao_Autorizacao: TStringField
       FieldName = 'Tipo_Situacao_Autorizacao'
+      Origin = 'Tipo_Situacao_Autorizacao'
       Size = 30
     end
     object cdsPainelTipo_Ultima_Anotacao: TStringField
       FieldName = 'Tipo_Ultima_Anotacao'
+      Origin = 'Tipo_Ultima_Anotacao'
       Size = 30
     end
     object cdsPainelTipo_Auditoria: TStringField
+      Alignment = taCenter
       FieldName = 'Tipo_Auditoria'
+      Origin = 'Tipo_Auditoria'
       Size = 15
     end
     object cdsPainelTipo_Prazo_Caixa: TStringField
+      Alignment = taCenter
       FieldName = 'Tipo_Prazo_Caixa'
+      Origin = 'Tipo_Prazo_Caixa'
       Size = 15
     end
     object cdsPainelTipo_Prazo_Ans: TStringField
+      Alignment = taCenter
       FieldName = 'Tipo_Prazo_Ans'
+      Origin = 'Tipo_Prazo_Ans'
       Size = 15
     end
     object cdsPainelid_Usuario_Designado: TIntegerField
@@ -240,6 +252,8 @@ inherited dtmPainelSiags: TdtmPainelSiags
     end
     object cdsPainelUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'
+      Origin = 'Usuario_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
       Size = 100
     end
     object cdsPainelid_Setor_Designado: TIntegerField
@@ -247,25 +261,23 @@ inherited dtmPainelSiags: TdtmPainelSiags
     end
     object cdsPainelSetor_Designado: TStringField
       FieldName = 'Setor_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
       Size = 50
     end
     object cdsPainelQtd_Historicos: TIntegerField
       Alignment = taCenter
       FieldName = 'Qtd_Historicos'
-      ReadOnly = True
-      Required = True
+      ProviderFlags = []
     end
     object cdsPainelQtd_Designacoes: TIntegerField
       Alignment = taCenter
       FieldName = 'Qtd_Designacoes'
-      ReadOnly = True
-      Required = True
+      ProviderFlags = []
     end
     object cdsPainelQtd_Observacoes: TIntegerField
       Alignment = taCenter
       FieldName = 'Qtd_Observacoes'
-      ReadOnly = True
-      Required = True
+      ProviderFlags = []
     end
   end
   object mtbHistoricoDesignacoes: TFDMemTable
@@ -314,28 +326,86 @@ inherited dtmPainelSiags: TdtmPainelSiags
     UpdateOptions.AutoCommitUpdates = True
     Left = 64
     Top = 480
-    object mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField
-      FieldName = 'Data_Hora_Historico'
-    end
-    object mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField
-      FieldName = 'Tipo_Prazo_Caixa'
-      Size = 15
-    end
-    object mtbHistoricoAtualizacoesTipo_Prazo_Caixa_Hoje: TStringField
-      FieldName = 'Tipo_Prazo_Caixa_Hoje'
-      Size = 15
-    end
-    object mtbHistoricoAtualizacoesTipo_Prazo_ANS: TStringField
-      FieldName = 'Tipo_Prazo_ANS'
-      Size = 15
-    end
-    object mtbHistoricoAtualizacoesTipo_Status: TStringField
-      FieldName = 'Tipo_Status'
-      Size = 15
-    end
     object mtbHistoricoAtualizacoesNome_Usuario: TStringField
       FieldName = 'Nome_Usuario'
       Size = 100
+    end
+    object mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField
+      FieldName = 'Data_Hora_Historico'
+    end
+    object mtbHistoricoAtualizacoesAnexo_Opme: TStringField
+      FieldName = 'Anexo_Opme'
+      Origin = 'Anexo_Opme'
+      Size = 3
+    end
+    object mtbHistoricoAtualizacoesAnexo_Quimio: TStringField
+      FieldName = 'Anexo_Quimio'
+      Origin = 'Anexo_Quimio'
+      Size = 3
+    end
+    object mtbHistoricoAtualizacoesAnexo_Radio: TStringField
+      FieldName = 'Anexo_Radio'
+      Origin = 'Anexo_Radio'
+      Size = 3
+    end
+    object mtbHistoricoAtualizacoesDias_Corridos_Base: TIntegerField
+      FieldName = 'Dias_Corridos_Base'
+      Origin = 'Dias_Corridos_Base'
+    end
+    object mtbHistoricoAtualizacoesDias_Uteis_Base: TIntegerField
+      FieldName = 'Dias_Uteis_Base'
+      Origin = 'Dias_Uteis_Base'
+    end
+    object mtbHistoricoAtualizacoesDias_Prazo_Caixa: TIntegerField
+      FieldName = 'Dias_Prazo_Caixa'
+      Origin = 'Dias_Prazo_Caixa'
+    end
+    object mtbHistoricoAtualizacoesData_Prazo_Caixa: TDateTimeField
+      FieldName = 'Data_Prazo_Caixa'
+      Origin = 'Data_Prazo_Caixa'
+    end
+    object mtbHistoricoAtualizacoesDias_Prazo_ANS: TIntegerField
+      FieldName = 'Dias_Prazo_ANS'
+      Origin = 'Dias_Prazo_ANS'
+    end
+    object mtbHistoricoAtualizacoesData_Prazo_ANS: TDateTimeField
+      FieldName = 'Data_Prazo_ANS'
+      Origin = 'Data_Prazo_ANS'
+    end
+    object mtbHistoricoAtualizacoesTipo_Autorizacao: TStringField
+      FieldName = 'Tipo_Autorizacao'
+      Origin = 'Tipo_Autorizacao'
+      Size = 50
+    end
+    object mtbHistoricoAtualizacoesTipo_Atendimento: TStringField
+      FieldName = 'Tipo_Atendimento'
+      Origin = 'Tipo_Atendimento'
+      Size = 30
+    end
+    object mtbHistoricoAtualizacoesTipo_Situacao_Autorizacao: TStringField
+      FieldName = 'Tipo_Situacao_Autorizacao'
+      Origin = 'Tipo_Situacao_Autorizacao'
+      Size = 30
+    end
+    object mtbHistoricoAtualizacoesTipo_Ultima_Anotacao: TStringField
+      FieldName = 'Tipo_Ultima_Anotacao'
+      Origin = 'Tipo_Ultima_Anotacao'
+      Size = 30
+    end
+    object mtbHistoricoAtualizacoesTipo_Auditoria: TStringField
+      FieldName = 'Tipo_Auditoria'
+      Origin = 'Tipo_Auditoria'
+      Size = 15
+    end
+    object mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField
+      FieldName = 'Tipo_Prazo_Caixa'
+      Origin = 'Tipo_Prazo_Caixa'
+      Size = 15
+    end
+    object mtbHistoricoAtualizacoesTipo_Prazo_Ans: TStringField
+      FieldName = 'Tipo_Prazo_Ans'
+      Origin = 'Tipo_Prazo_Ans'
+      Size = 15
     end
   end
   object dtsHistoricoAtualizacoes: TDataSource

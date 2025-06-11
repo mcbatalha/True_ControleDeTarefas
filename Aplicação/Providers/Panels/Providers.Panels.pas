@@ -10,7 +10,7 @@ type
   TdtmPainel = class(TdtmConexao)
     mtbPainel: TFDMemTable;
     cdsPainel: TClientDataSet;
-    dsPainel: TDataSetProvider;
+    dspPainel: TDataSetProvider;
   private
     { Private declarations }
   public

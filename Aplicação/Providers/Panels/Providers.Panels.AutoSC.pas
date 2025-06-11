@@ -33,7 +33,6 @@ uses
 
 type
   TdtmPainelAutoSC = class(TdtmPainel)
-    mtbPainelid_Processo: TLargeintField;
     mtbPainelData_Status: TDateTimeField;
     mtbPainelQtd_Arquivos: TIntegerField;
     mtbPaineluf: TStringField;
@@ -45,7 +44,6 @@ type
     mtbPainelTipo_Processo_E: TStringField;
     mtbPainelTipo_Prazo_Ans: TStringField;
     mtbPainelUsuario_Designado: TStringField;
-    cdsPainelid_Processo: TLargeintField;
     cdsPainelNumero_Processo: TLargeintField;
     cdsPainelData_Status: TDateTimeField;
     cdsPainelQtd_Arquivos: TIntegerField;
@@ -104,10 +102,6 @@ type
     mtbPainelid_Setor_Designado: TIntegerField;
     cdsPainelid_Usuario_Designado: TIntegerField;
     cdsPainelid_Setor_Designado: TIntegerField;
-    mtbPainelQtd_Historicos: TIntegerField;
-    mtbPainelQtd_Designacoes: TIntegerField;
-    cdsPainelQtd_Historicos: TIntegerField;
-    cdsPainelQtd_Designacoes: TIntegerField;
     mtbHistoricoDesignacoes: TFDMemTable;
     mtbHistoricoDesignacoesJustificativa: TStringField;
     mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField;
@@ -128,7 +122,13 @@ type
     mtbObservacoesProcessoData_Hora: TDateTimeField;
     mtbObservacoesProcessoObservacao: TStringField;
     mtbObservacoesProcessoNome_Usuario: TStringField;
+    mtbPainelid_Autorizacao: TLargeintField;
+    cdsPainelid_Autorizacao: TLargeintField;
+    mtbPainelQtd_Historicos: TIntegerField;
+    mtbPainelQtd_Designacoes: TIntegerField;
     mtbPainelQtd_Observacoes: TIntegerField;
+    cdsPainelQtd_Historicos: TIntegerField;
+    cdsPainelQtd_Designacoes: TIntegerField;
     cdsPainelQtd_Observacoes: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);

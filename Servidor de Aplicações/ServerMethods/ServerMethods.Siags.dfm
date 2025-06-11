@@ -349,10 +349,9 @@ object SMSiags: TSMSiags
   object qryPainelSiags: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select '
       
-        '   a.id as id_Processo, a.uf, a.Numero_Autorizacao, a.Anexo_Opme' +
-        ', a.Anexo_Quimio, a.Anexo_Radio,'
+        'select a.id as id_Autorizacao, a.uf, a.Numero_Autorizacao, a.Ane' +
+        'xo_Opme, a.Anexo_Quimio, a.Anexo_Radio,'
       
         '   a.Dia_Inclusao, a.Dias_Corridos_Base, a.Dias_Uteis_Base, a.Di' +
         'as_Prazo_Caixa, a.Data_Prazo_Caixa,'
@@ -366,7 +365,7 @@ object SMSiags: TSMSiags
       '   h.Tipo_Prazo_Caixa,'
       '   i.Tipo_Prazo_Caixa as Tipo_Prazo_Ans,'
       '   j.Nome_Usuario as Usuario_Designado,'
-      '   k.Nome_Setor, '
+      '   k.Nome_Setor as Setor_Designado, '
       '   1 as Qtd_Historicos,'
       '   1 as Qtd_Designacoes,'
       '   1 as Qtd_Observacoes'
@@ -377,25 +376,25 @@ object SMSiags: TSMSiags
       
         '     INNER JOIN Tipos_Atendimento c on c.id = a.id_Tipo_Atendime' +
         'nto'
-      #9' INNER JOIN Beneficiarios d on d.id = a.id_Beneficiario'
+      '     INNER JOIN Beneficiarios d on d.id = a.id_Beneficiario'
       
-        #9' INNER JOIN Tipos_Situacao_Autorizacao e on e.id = a.id_Tipo_Si' +
-        'tuacao_Autorizacao'
+        '     INNER JOIN Tipos_Situacao_Autorizacao e on e.id = a.id_Tipo' +
+        '_Situacao_Autorizacao'
       
-        #9' INNER JOIN Tipos_Ultima_Anotacao f on f.id = a.id_Tipo_Ultima_' +
-        'Anotacao'
-      #9' INNER JOIN Tipos_Auditoria g on g.id = a.id_Tipo_Auditoria '
-      #9' INNER JOIN Tipos_Prazo h on h.id = a.id_Tipo_Prazo_Caixa '
-      #9' INNER JOIN Tipos_Prazo i on i.id = a.id_Tipo_Prazo_ANS'
-      #9' LEFT OUTER JOIN Usuarios j on j.id = a.id_Usuario_Designado'
-      #9' LEFT OUTER JOIN Setores k on k.id = a.id_Setor_Designado'
+        '     INNER JOIN Tipos_Ultima_Anotacao f on f.id = a.id_Tipo_Ulti' +
+        'ma_Anotacao'
+      '     INNER JOIN Tipos_Auditoria g on g.id = a.id_Tipo_Auditoria '
+      '     INNER JOIN Tipos_Prazo h on h.id = a.id_Tipo_Prazo_Caixa '
+      '     INNER JOIN Tipos_Prazo i on i.id = a.id_Tipo_Prazo_ANS'
+      '     LEFT OUTER JOIN Usuarios j on j.id = a.id_Usuario_Designado'
+      '     LEFT OUTER JOIN Setores k on k.id = a.id_Setor_Designado'
       'where 1 = 1')
     Left = 744
     Top = 24
-    object qryPainelSiagsid_Processo: TLargeintField
+    object qryPainelSiagsid_Autorizacao: TLargeintField
       AutoGenerateValue = arAutoInc
-      FieldName = 'id_Processo'
-      Origin = 'id_Processo'
+      FieldName = 'id_Autorizacao'
+      Origin = 'id_Autorizacao'
       ProviderFlags = [pfInWhere]
       ReadOnly = True
     end
@@ -501,8 +500,8 @@ object SMSiags: TSMSiags
       Origin = 'Usuario_Designado'
       Size = 100
     end
-    object qryPainelSiagsNome_Setor: TStringField
-      FieldName = 'Nome_Setor'
+    object qryPainelSiagsSetor_Designado: TStringField
+      FieldName = 'Setor_Designado'
       Origin = 'Nome_Setor'
       Size = 50
     end

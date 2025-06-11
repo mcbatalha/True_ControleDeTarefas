@@ -71,20 +71,17 @@ type
 
    end;
 
-
-
 implementation
-
-
 
 { TFitros }
 
-uses Libs.Constantes;
+uses Libs.Constantes, Libs.TSeguranca;
 
 constructor TFiltros.create(const ATipo : Integer);
 begin
    case ATipo of
       C_CODIGO_AUTOSC : LimparFiltrosAutoSc;
+      C_CODIGO_SIAGS  : LimparFiltrosSiags;
    end;
 end;
 
@@ -160,9 +157,14 @@ begin
    FFiltrosAutoSc.idTipoProcessoE      := 0;
    FFiltrosAutoSc.idTipoPrazoANS       := 0;
    FFiltrosAutoSc.idSetorDesignado     := 0;
-   FFiltrosAutoSc.idUsuarioDesignado   := 0;
    FFiltrosAutoSc.UF                   := C_TODOS;
+
+(*
+   FFiltrosAutoSc.idUsuarioDesignado   := 0;
    FFiltrosAutoSc.nomeUsuario          := C_TODOS;
+*)
+   FFiltrosAutoSc.idUsuarioDesignado   := Seguranca.Id;
+   FFiltrosAutoSc.nomeUsuario          := Seguranca.Nome;
    FFiltrosAutoSc.usaDataStatus        := False;
 end;
 
@@ -177,9 +179,14 @@ begin
    FFiltrosSiags.idTipoUltimaAnotacao      := 0;
    FFiltrosSiags.idBeneficiarios           := 0;
    FFiltrosSiags.idSetorDesignado          := 0;
-   FFiltrosSiags.idUsuarioDesignado        := 0;
    FFiltrosSiags.UF                        := C_TODOS;
+
+(*
+   FFiltrosSiags.idUsuarioDesignado        := 0;
    FFiltrosSiags.nomeUsuario               := C_TODOS;
+*)
+   FFiltrosSiags.idUsuarioDesignado   := Seguranca.Id;
+   FFiltrosSiags.nomeUsuario          := Seguranca.Nome;
 end;
 
 procedure TFiltros.setFiltrosAutoSC(const AFiltro: TFiltrosAutoSc);

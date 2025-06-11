@@ -20,7 +20,8 @@ uses
   Libs.TFuncoesJSON in '..\Libs\Libs.TFuncoesJSON.pas',
   Utils.TFuncoesServer in 'Utils\Utils.TFuncoesServer.pas',
   Libs.Constantes in '..\Libs\Libs.Constantes.pas',
-  ServerMethods.Siags in 'ServerMethods\ServerMethods.Siags.pas' {SMSiags: TDSServerModule};
+  ServerMethods.Siags in 'ServerMethods\ServerMethods.Siags.pas' {SMSiags: TDSServerModule},
+  ServerMethods.ControlPc in 'ServerMethods\ServerMethods.ControlPc.pas' {SMControlPc: TDSServerModule};
 
 {$R *.res}
 

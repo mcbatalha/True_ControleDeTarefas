@@ -3,7 +3,20 @@ unit Providers.Importacoes.AutoSc;
 interface
 
 uses
-  System.SysUtils, System.Classes, Providers.Importacoes, Data.DBXDataSnap, Data.DBXCommon, IPPeerClient, Data.DB, Datasnap.DBClient, Datasnap.DSConnect, Data.SqlExpr;
+  System.SysUtils,
+  System.Classes,
+
+  Providers.Importacoes,
+
+  Data.DBXDataSnap,
+  Data.DBXCommon,
+  Data.DB,
+
+  IPPeerClient,
+
+  Datasnap.DBClient,
+  Datasnap.DSConnect,
+  Data.SqlExpr;
 
 type
   TdtmImportacoesAutoSC = class(TdtmImportacoes)

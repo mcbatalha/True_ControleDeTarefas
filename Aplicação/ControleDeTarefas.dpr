@@ -59,6 +59,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TdtmConexao, dtmConexao);
-  Application.CreateForm(TfrmMensagem, frmMensagem);
   Application.Run;
 end.

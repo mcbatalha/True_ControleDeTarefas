@@ -2,8 +2,8 @@ object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
   Caption = 'True Auditoria - Controle de Tarefas'
-  ClientHeight = 565
-  ClientWidth = 1034
+  ClientHeight = 721
+  ClientWidth = 1170
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -986,7 +986,7 @@ object frmPrincipal: TfrmPrincipal
     AlignWithMargins = True
     Left = 3
     Top = 50
-    Width = 1028
+    Width = 1164
     Height = 28
     Margins.Top = 50
     Align = alTop
@@ -1012,8 +1012,8 @@ object frmPrincipal: TfrmPrincipal
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 546
-    Width = 1034
+    Top = 702
+    Width = 1170
     Height = 19
     Panels = <
       item
@@ -1028,6 +1028,8 @@ object frmPrincipal: TfrmPrincipal
         Alignment = taCenter
         Width = 60
       end>
+    ExplicitTop = 546
+    ExplicitWidth = 1034
   end
   object Timer: TTimer
     Left = 952

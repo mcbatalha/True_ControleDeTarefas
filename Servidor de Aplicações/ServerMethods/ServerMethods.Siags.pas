@@ -125,7 +125,6 @@ type
     qrySiagsLogid_Usuario_Responsavel: TIntegerField;
     qrySiagsLogJustificativa: TStringField;
     qrySiagsLogData_Hora_Log: TDateTimeField;
-    qryPainelSiagsid_Processo: TLargeintField;
     qryPainelSiagsuf: TStringField;
     qryPainelSiagsNumero_Autorizacao: TLargeintField;
     qryPainelSiagsAnexo_Opme: TStringField;
@@ -148,11 +147,12 @@ type
     qryPainelSiagsTipo_Prazo_Caixa: TStringField;
     qryPainelSiagsTipo_Prazo_Ans: TStringField;
     qryPainelSiagsUsuario_Designado: TStringField;
-    qryPainelSiagsNome_Setor: TStringField;
+    qryPainelSiagsSetor_Designado: TStringField;
     qryPainelSiagsQtd_Historicos: TIntegerField;
     qryPainelSiagsQtd_Designacoes: TIntegerField;
     qryPainelSiagsQtd_Observacoes: TIntegerField;
     qrySiagsid_Usuario_Designado: TIntegerField;
+    qryPainelSiagsid_Autorizacao: TLargeintField;
   private
     { Private declarations }
     FIdTipoAuditoria           : integer;
@@ -220,13 +220,13 @@ type
                                  const AIdUsuarioResponsavel : integer;
                                  out ADataHora : TDateTime): Boolean;
 
-    function EncerrarProcesso(const AIdAutorizacao : LongInt;
-                              const AJustificativa: String;
-                              const AIdUsuarioResponsavel : integer): Boolean;
+    function EncerrarAutorizacao(const AIdAutorizacao : LongInt;
+                                 const AJustificativa: String;
+                                 const AIdUsuarioResponsavel : integer): Boolean;
 
     function HistoricoDeDesignacoes(const AIdAutorizacao : LongInt) : TJSONArray;
     function HistoricoDeAtualizacoes(const AIdAutorizacao : LongInt) : TJSONArray;
-    function ObservacoesDoProcesso(const AIdAutorizacao : LongInt) : TJSONArray;
+    function ObservacoesDaAutorizacao(const AIdAutorizacao : LongInt) : TJSONArray;
 
 
     function TiposDeAuditoria           : TJSONArray;
@@ -245,7 +245,9 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses ServerMethods.Container, Funcoes, Libs.TFuncoesServer;
+uses ServerMethods.Container,
+     Funcoes,
+     Libs.TFuncoesServer;
 
 {$R *.dfm}
 
@@ -333,7 +335,7 @@ begin
    end;
 end;
 
-function TSMSiags.EncerrarProcesso(const AIdAutorizacao: LongInt; const AJustificativa: String; const AIdUsuarioResponsavel: integer): Boolean;
+function TSMSiags.EncerrarAutorizacao(const AIdAutorizacao: LongInt; const AJustificativa: String; const AIdUsuarioResponsavel: integer): Boolean;
 begin
    Result := False;
 
@@ -447,12 +449,13 @@ begin
       qryPainelSiags.ParamByName('pIdTipoUltimaAnotacao').AsInteger := LFiltros.idTipoUltimaAnotacao;
    end;
 
+(*
    if LFiltros.idBeneficiarios > 0 then
       begin
-      qryPainelSiags.Sql.Add(' and a.id_Beneficiarios = :pIdBeneficiarios');
+      qryPainelSiags.Sql.Add(' and a.id_Beneficiario = :pIdBeneficiarios');
       qryPainelSiags.ParamByName('pIdBeneficiarios').AsInteger := LFiltros.idBeneficiarios;
    end;
-
+*)
    if LFiltros.idSetorDesignado > 0 then
       begin
       qryPainelSiags.Sql.Add(' and a.id_Setor_Designado = :pIdSetorDesignado');
@@ -472,8 +475,13 @@ begin
 
    if LFiltros.UF <> C_TODOS then
       begin
-      qryPainelSiags.Sql.Add(' and a.UF = :pUF');
-      qryPainelSiags.ParamByName('pUF').AsString := LFiltros.UF;
+      if LFiltros.UF = '' then
+        qryPainelSiags.Sql.Add(' and a.UF = Null')
+      else
+        begin
+        qryPainelSiags.Sql.Add(' and a.UF = :pUF');
+        qryPainelSiags.ParamByName('pUF').AsString := LFiltros.UF;
+      end;
    end;
 
    qryPainelSiags.Open;
@@ -648,7 +656,7 @@ begin
    qryAux.Sql.Add('   Left Outer Join Usuarios ud on ud.id = al.id_Usuario_Designado ');
    qryAux.Sql.Add('   Left Outer Join Usuarios ur on ur.id = al.id_Usuario_Responsavel ');
    qryAux.Sql.Add('where ');
-   qryAux.Sql.Add('   al.id_Siags = :pIdProcesso');
+   qryAux.Sql.Add('   al.id_Siags = :pIdAutorizacao');
    qryAux.Sql.Add('Order by ');
    qryAux.Sql.Add('   al.Data_Hora_Log desc ');
    qryAux.ParamByName('pIdAutorizacao').AsInteger := AIdAutorizacao;
@@ -658,12 +666,12 @@ end;
 
 function TSMSiags.Importar(const ARegistros: TJSONArray; const AIdUsuario: integer): TJSONObject;
 var
-  I                   : Integer;
-  LData               : String;
-  LNomeBeneficiario   : String;
-  LNumeroBeneficiario : String;
+   I                   : Integer;
+   LData               : String;
+   LNomeBeneficiario   : String;
+   LNumeroBeneficiario : String;
 
-  LObject : TJSONObject;
+   LObject : TJSONObject;
 begin
    Result := TJSONObject.Create;
 
@@ -675,8 +683,9 @@ begin
    FDataHora  := Now;
 
    try
-      AbrirTabelasDeCadastro;
       TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+
+      AbrirTabelasDeCadastro;
       try
          for I := 0 to ARegistros.Count - 1 do
             begin
@@ -736,10 +745,10 @@ begin
       Close;
       Sql.Clear;
       Sql.Add('Select ');
-      Sql.Add('   a.UF, a.Numero_Autorizacao, a.Anexo_Opme, a.Anexo_Quimio, a.Anexo_Radio, ');
-      Sql.Add('   a.Dia_Inclusao, a.Dias_Corridos_Base, a.Dias_Uteis_Base, a.Dias_Prazo_ANS,  ');
-      Sql.Add('   a.Data_Prazo_Caixa,  a.Dias_Prazo_Caixa, a.Dias_Prazo_ANS, a.Data_Prazo_ANS, ');
-      Sql.Add('   a.id_Usuario_Designado,  a.id_Setor_Designado, ');
+      Sql.Add('   a.id as id_Autorizacao, a.UF, a.Numero_Autorizacao, a.Anexo_Opme, a.Anexo_Quimio,  ');
+      Sql.Add('   a.Anexo_Radio, a.Dia_Inclusao, a.Dias_Corridos_Base, a.Dias_Uteis_Base, ');
+      Sql.Add('   a.Dias_Prazo_ANS, a.Data_Prazo_Caixa,  a.Dias_Prazo_Caixa, a.Dias_Prazo_ANS, ');
+      Sql.Add('   a.Data_Prazo_ANS, a.id_Usuario_Designado,  a.id_Setor_Designado, ');
       Sql.Add('   b.Tipo_Autorizacao, ');
       Sql.Add('   c.Tipo_Atendimento, ');
       Sql.Add('   d.Tipo_Situacao_Autorizacao, ');
@@ -747,7 +756,7 @@ begin
       Sql.Add('   f.Tipo_Auditoria, ');
       Sql.Add('   g.Tipo_Prazo_Caixa, ');
       Sql.Add('   h.Tipo_Prazo_Caixa as Tipo_Prazo_ANS, ');
-      Sql.Add('   i.Numero_Beneficiario, i.Nome_Beneficiario ');
+      Sql.Add('   i.Numero_Beneficiario, i.Nome_Beneficiario, ');
       Sql.Add('   j.Nome_Usuario as Usuario_Designado, ');
       Sql.Add('   k.Nome_Setor as Setor_Designado, ');
       Sql.Add('   IsNull((Select count(*) ');
@@ -775,7 +784,7 @@ begin
    end;
 end;
 
-function TSMSiags.ObservacoesDoProcesso(const AIdAutorizacao: LongInt): TJSONArray;
+function TSMSiags.ObservacoesDaAutorizacao(const AIdAutorizacao: LongInt): TJSONArray;
 begin
    qryAux.Close;
    qryAux.Sql.Clear;

@@ -118,4 +118,10 @@ object ServerContainer: TServerContainer
     Left = 576
     Top = 91
   end
+  object dsscImportacaoControlPc: TDSServerClass
+    OnGetClass = dsscImportacaoControlPcGetClass
+    Server = DSServer
+    Left = 736
+    Top = 91
+  end
 end

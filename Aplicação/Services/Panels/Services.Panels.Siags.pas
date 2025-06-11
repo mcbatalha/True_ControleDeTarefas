@@ -38,7 +38,7 @@ type
      procedure TabelasDeDominio;
 
      const
-        C_TITULO_MENSAGENS = 'Designação de Processo SIAGS';
+        C_TITULO_MENSAGENS = 'Designação de Autorizações SIAGS';
   public
      constructor Create(ASqlConnection : TSQLConnection);
 
@@ -46,7 +46,7 @@ type
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
      function Filtrar(const AFiltros : TJSONObject) : Boolean;
-     function NumeroDoProcesso  : String;
+     function NumeroDaAutorizacao  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
@@ -61,7 +61,7 @@ type
 
      function HistoricoDeDesignacoes : String;
      function HistoricoDeAtualizacoes : String;
-     function ObservacoesDoProcesso : String;
+     function ObservacoesDaAutorizacao : String;
 
      procedure IncluirObservacao;
      function GravarObservacao(const AObservacao : String): Boolean;
@@ -80,7 +80,7 @@ implementation
 
 function TSrvSiags.DataSourceDesignacao: TDataSource;
 begin
-   Result := dtmPainelSiags.dtsHistoricoDesignacoes
+   Result := FdmSiags.dtsHistoricoDesignacoes
 end;
 
 function TSrvSiags.DataSourceObservacao: TDataSource;
@@ -128,7 +128,7 @@ function TSrvSiags.Designar(const AJustificativa: String; const AIdSetor, AIdUsu
 begin
    Result := False;
 
-   if not QuestionMessage('Confirma a designação do processo ? ',C_TITULO_MENSAGENS) then
+   if not QuestionMessage('Confirma a designação da autorização ? ',C_TITULO_MENSAGENS) then
       Exit;
 
    if Length(Trim(AJustificativa)) < 5 then
@@ -152,10 +152,10 @@ begin
    end;
 
    if not FPxySiags.Designar(AJustificativa,
-                          AIdSetor,
-                          AIdUsuario,
-                          Seguranca.id,
-                          FdmSiags.cdsPainelid_Processo.AsInteger ) then
+                             AIdSetor,
+                             AIdUsuario,
+                             Seguranca.id,
+                             FdmSiags.cdsPainelid_Autorizacao.AsInteger ) then
       begin
       InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
       Exit;
@@ -176,6 +176,8 @@ begin
       FdmSiags.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
       FdmSiags.cdsPainelUsuario_Designado.AsString     := FdmSiags.mtbUsuariosNome_Usuario.AsString;
    end;
+   FdmSiags.cdsPainelQtd_Designacoes.AsInteger := FdmSiags.cdsPainelQtd_Designacoes.AsInteger + 1;
+
    FdmSiags.cdsPainel.Post;
    Result := True;
 end;
@@ -195,10 +197,10 @@ begin
    if not QuestionMessage('Confirma o encerramento do autorização ' + FdmSiags.cdsPainelNumero_Autorizacao.AsString + ' ? ','Encerramento') then
       Exit;
 
-   if FPxySiags.EncerrarProcesso(FdmSiags.cdsPainelid_Processo.AsInteger, AJustificativa, Seguranca.id) then
+   if FPxySiags.EncerrarAutorizacao(FdmSiags.cdsPainelid_Autorizacao.AsInteger, AJustificativa, Seguranca.id) then
       begin
       FdmSiags.cdsPainel.Delete;
-      InformationMessage('Processo encerrado com sucesso !','Encerramento');
+      InformationMessage('Autorização encerrada com sucesso !','Encerramento');
       Result := True;
    end;
 end;
@@ -209,6 +211,7 @@ var
 begin
    Result := True;
 
+   FdmSiags.cdsPainel.Close;
    LDados := FPxySiags.FiltrarAutorizacoes(AFiltros);
    if LDados.Count > 0 then
       TFuncoesJSON.PopularTabela(FdmSiags.cdsPainel, LDados);
@@ -221,10 +224,10 @@ var
 begin
    Result := False;
 
-   if not QuestionMessage('Confirma o registro da observação para o processo ?','Observações') then
+   if not QuestionMessage('Confirma o registro da observação para a autorização ?','Observações') then
       exit;
 
-   Result := FPxySiags.RegistrarObservacao(FdmSiags.cdsPainelid_Processo.AsInteger,
+   Result := FPxySiags.RegistrarObservacao(FdmSiags.cdsPainelid_Autorizacao.AsInteger,
                                             AObservacao,
                                             Seguranca.id,
                                             LDataHora);
@@ -233,19 +236,23 @@ begin
       InformationMessage('Observação registrada com sucesso !','Observações');
       FdmSiags.mtbObservacoesProcessoData_Hora.AsDateTime := LDataHora;
       FdmSiags.mtbObservacoesProcesso.Post;
+
+      FdmSiags.cdsPainel.Edit;
+      FdmSiags.cdsPainelQtd_Historicos.AsInteger := FdmSiags.cdsPainelQtd_Historicos.AsInteger + 1;
+      FdmSiags.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
 end;
 
 function TSrvSiags.HistoricoDeAtualizacoes : String;
 begin
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbHistoricoAtualizacoes, FPxySiags.HistoricoDeAtualizacoes(FdmSiags.cdsPainelid_Processo.AsInteger));
+   TFuncoesJSON.PopularTabela(FdmSiags.mtbHistoricoAtualizacoes, FPxySiags.HistoricoDeAtualizacoes(FdmSiags.cdsPainelid_Autorizacao.AsInteger));
    Result := FdmSiags.cdsPainelNumero_Autorizacao.AsString;
 end;
 
 function TSrvSiags.HistoricoDeDesignacoes : String;
 begin
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbHistoricoDesignacoes, FPxySiags.HistoricoDeDesignacoes(FdmSiags.cdsPainelid_Processo.AsInteger));
+   TFuncoesJSON.PopularTabela(FdmSiags.mtbHistoricoDesignacoes, FPxySiags.HistoricoDeDesignacoes(FdmSiags.cdsPainelid_Autorizacao.AsInteger));
    Result := FdmSiags.cdsPainelNumero_Autorizacao.AsString;
 end;
 
@@ -256,16 +263,16 @@ begin
    FdmSiags.mtbObservacoesProcessoData_Hora.AsDateTime  := Now;
 end;
 
-function TSrvSiags.NumeroDoProcesso: String;
+function TSrvSiags.NumeroDaAutorizacao: String;
 begin
    Result := FdmSiags.cdsPainelNumero_Autorizacao.AsString;
 end;
 
-function TSrvSiags.ObservacoesDoProcesso: String;
+function TSrvSiags.ObservacoesDaAutorizacao: String;
 begin
    FdmSiags.mtbObservacoesProcesso.Close;
    if FdmSiags.cdsPainelQtd_Observacoes.AsInteger > 0 then
-      TFuncoesJSON.PopularTabela(FdmSiags.mtbObservacoesProcesso, FPxySiags.ObservacoesDoProcesso(FdmSiags.cdsPainelid_Processo.AsInteger))
+      TFuncoesJSON.PopularTabela(FdmSiags.mtbObservacoesProcesso, FPxySiags.ObservacoesDaAutorizacao(FdmSiags.cdsPainelid_Autorizacao.AsInteger))
    else
       FdmSiags.mtbObservacoesProcesso.Open;
    Result := FdmSiags.cdsPainelNumero_Autorizacao.AsString;

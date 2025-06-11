@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 08/06/2025 21:37:14
+// 10/06/2025 20:03:39
 //
 
 unit Proxy.Classes;
@@ -110,10 +110,10 @@ type
     FFiltrarAutorizacoesCommand: TDBXCommand;
     FDesignarCommand: TDBXCommand;
     FRegistrarObservacaoCommand: TDBXCommand;
-    FEncerrarProcessoCommand: TDBXCommand;
+    FEncerrarAutorizacaoCommand: TDBXCommand;
     FHistoricoDeDesignacoesCommand: TDBXCommand;
     FHistoricoDeAtualizacoesCommand: TDBXCommand;
-    FObservacoesDoProcessoCommand: TDBXCommand;
+    FObservacoesDaAutorizacaoCommand: TDBXCommand;
     FTiposDeAuditoriaCommand: TDBXCommand;
     FTiposDePrazoCommand: TDBXCommand;
     FTiposDeAutoriazacaoCommand: TDBXCommand;
@@ -130,10 +130,10 @@ type
     function FiltrarAutorizacoes(AFiltros: TJSONObject): TJSONArray;
     function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
     function RegistrarObservacao(AIdAutorizacao: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
-    function EncerrarProcesso(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+    function EncerrarAutorizacao(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
     function HistoricoDeDesignacoes(AIdAutorizacao: Integer): TJSONArray;
     function HistoricoDeAtualizacoes(AIdAutorizacao: Integer): TJSONArray;
-    function ObservacoesDoProcesso(AIdAutorizacao: Integer): TJSONArray;
+    function ObservacoesDaAutorizacao(AIdAutorizacao: Integer): TJSONArray;
     function TiposDeAuditoria: TJSONArray;
     function TiposDePrazo: TJSONArray;
     function TiposDeAutoriazacao: TJSONArray;
@@ -742,20 +742,20 @@ begin
   Result := FRegistrarObservacaoCommand.Parameters[4].Value.GetBoolean;
 end;
 
-function TSMSiagsClient.EncerrarProcesso(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+function TSMSiagsClient.EncerrarAutorizacao(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
 begin
-  if FEncerrarProcessoCommand = nil then
+  if FEncerrarAutorizacaoCommand = nil then
   begin
-    FEncerrarProcessoCommand := FDBXConnection.CreateCommand;
-    FEncerrarProcessoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FEncerrarProcessoCommand.Text := 'TSMSiags.EncerrarProcesso';
-    FEncerrarProcessoCommand.Prepare;
+    FEncerrarAutorizacaoCommand := FDBXConnection.CreateCommand;
+    FEncerrarAutorizacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FEncerrarAutorizacaoCommand.Text := 'TSMSiags.EncerrarAutorizacao';
+    FEncerrarAutorizacaoCommand.Prepare;
   end;
-  FEncerrarProcessoCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
-  FEncerrarProcessoCommand.Parameters[1].Value.SetWideString(AJustificativa);
-  FEncerrarProcessoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
-  FEncerrarProcessoCommand.ExecuteUpdate;
-  Result := FEncerrarProcessoCommand.Parameters[3].Value.GetBoolean;
+  FEncerrarAutorizacaoCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
+  FEncerrarAutorizacaoCommand.Parameters[1].Value.SetWideString(AJustificativa);
+  FEncerrarAutorizacaoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FEncerrarAutorizacaoCommand.ExecuteUpdate;
+  Result := FEncerrarAutorizacaoCommand.Parameters[3].Value.GetBoolean;
 end;
 
 function TSMSiagsClient.HistoricoDeDesignacoes(AIdAutorizacao: Integer): TJSONArray;
@@ -786,18 +786,18 @@ begin
   Result := TJSONArray(FHistoricoDeAtualizacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.ObservacoesDoProcesso(AIdAutorizacao: Integer): TJSONArray;
+function TSMSiagsClient.ObservacoesDaAutorizacao(AIdAutorizacao: Integer): TJSONArray;
 begin
-  if FObservacoesDoProcessoCommand = nil then
+  if FObservacoesDaAutorizacaoCommand = nil then
   begin
-    FObservacoesDoProcessoCommand := FDBXConnection.CreateCommand;
-    FObservacoesDoProcessoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FObservacoesDoProcessoCommand.Text := 'TSMSiags.ObservacoesDoProcesso';
-    FObservacoesDoProcessoCommand.Prepare;
+    FObservacoesDaAutorizacaoCommand := FDBXConnection.CreateCommand;
+    FObservacoesDaAutorizacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FObservacoesDaAutorizacaoCommand.Text := 'TSMSiags.ObservacoesDaAutorizacao';
+    FObservacoesDaAutorizacaoCommand.Prepare;
   end;
-  FObservacoesDoProcessoCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
-  FObservacoesDoProcessoCommand.ExecuteUpdate;
-  Result := TJSONArray(FObservacoesDoProcessoCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+  FObservacoesDaAutorizacaoCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
+  FObservacoesDaAutorizacaoCommand.ExecuteUpdate;
+  Result := TJSONArray(FObservacoesDaAutorizacaoCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMSiagsClient.TiposDeAuditoria: TJSONArray;
@@ -920,10 +920,10 @@ begin
   FFiltrarAutorizacoesCommand.DisposeOf;
   FDesignarCommand.DisposeOf;
   FRegistrarObservacaoCommand.DisposeOf;
-  FEncerrarProcessoCommand.DisposeOf;
+  FEncerrarAutorizacaoCommand.DisposeOf;
   FHistoricoDeDesignacoesCommand.DisposeOf;
   FHistoricoDeAtualizacoesCommand.DisposeOf;
-  FObservacoesDoProcessoCommand.DisposeOf;
+  FObservacoesDaAutorizacaoCommand.DisposeOf;
   FTiposDeAuditoriaCommand.DisposeOf;
   FTiposDePrazoCommand.DisposeOf;
   FTiposDeAutoriazacaoCommand.DisposeOf;

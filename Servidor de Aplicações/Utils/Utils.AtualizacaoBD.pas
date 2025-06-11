@@ -30,6 +30,7 @@ var
    procedure Atualizacao008;
    procedure Atualizacao009;
    procedure Atualizacao010;
+   procedure Atualizacao011;
 
 implementation
 
@@ -124,8 +125,188 @@ begin
    if FVersaoAtual =  7 then Atualizacao008;
    if FVersaoAtual =  8 then Atualizacao009;
    if FVersaoAtual =  9 then Atualizacao010;
+   if FVersaoAtual = 10 then Atualizacao011;
 end;
 
+
+procedure Atualizacao011;
+var LQuery : TFDQuery;
+begin
+   FAtualizou := False;
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+         LQuery := TFDQuery.Create(nil);
+         LQuery.Connection := ServerContainer.FDConnection;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Tecnicos ');
+         LQuery.SQL.Add('(id int identity(1,1), Nome_Tecnico varchar(50), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Tecnicos PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT IK_Tecnicos UNIQUE NONCLUSTERED (Nome_Tecnico))');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Tipos_Cliente ');
+         LQuery.SQL.Add('(id int identity(1,1), Tipo_Cliente varchar(50), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Tipos_Cliente PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT IK_Tipos_Cliente UNIQUE NONCLUSTERED (Tipo_Cliente))');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Tipos_Classificacao ');
+         LQuery.SQL.Add('(id int identity(1,1), ');
+         LQuery.SQL.Add(' Tipo_Classificacao varchar(350), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Tipos_Classificacao PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT IK_Tipos_Classificacao UNIQUE NONCLUSTERED (Tipo_Classificacao))');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE ControlPc ');
+         LQuery.SQL.Add('(id bigint identity(1,1), Protocolo varchar(50), id_Tipo_Status int, ');
+         LQuery.SQL.Add(' Data_Abertura smalldatetime, Data_Transferencia smalldatetime, ');
+         LQuery.SQL.Add(' Data_Fechamento smalldatetime, Previsao_Solucao smalldatetime, ');
+         LQuery.SQL.Add(' id_Tipo_Prazo int, id_Tecnico int, id_Tipo_Cliente int, id_Tipo_Classificacao int, ');
+         LQuery.SQL.Add(' Solicitacao_Cliente varchar(500), Tipo_Reclame varchar(3), Tipo_Nip varchar(3), ');
+         LQuery.SQL.Add(' Data_Hora_Importacao smalldatetime, ');
+         LQuery.SQL.Add(' id_Usuario_Importacao int, id_Setor_Designado int, ');
+         LQuery.SQL.Add(' id_Usuario_Designado int, id_Responsavel_Designacao int, ');
+         LQuery.SQL.Add(' Data_Hora_Designacao smalldatetime, Justificativa_Designacao varchar(100), ');
+         LQuery.SQL.Add(' Data_Hora_Encerramento smalldatetime, id_Usuario_Encerramento int, ');
+         LQuery.SQL.Add(' Justificativa_Encerramento varchar(100), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_CONTROLPC PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT IK_CONTROLPC UNIQUE NONCLUSTERED (Protocolo), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Tipos_Status FOREIGN KEY (id_Tipo_Status) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Status (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Tipos_Prazo FOREIGN KEY (id_Tipo_Prazo) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Prazo (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Tecnicos FOREIGN KEY (id_Tecnico) ');
+         LQuery.SQL.Add(' REFERENCES Tecnicos (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Tipos_Cliente FOREIGN KEY (id_Tipo_Cliente) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Cliente (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Tipos_Classificacao FOREIGN KEY (id_Tipo_Classificacao) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Classificacao (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Usuarios_Importacao FOREIGN KEY (id_Usuario_Importacao) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Setores FOREIGN KEY (id_Setor_Designado) ');
+         LQuery.SQL.Add(' REFERENCES Setores (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Usuarios FOREIGN KEY (id_Usuario_Designado) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Usuarios_Designador FOREIGN KEY (id_Responsavel_Designacao) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Usuarios_Encerramento FOREIGN KEY (id_Usuario_Encerramento) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id)) ');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE ControlPc_Historico ');
+         LQuery.SQL.Add('(id Bigint Identity(1,1), id_ControlPc bigint, id_Tipo_Status int, ');
+         LQuery.SQL.Add(' id_Tipo_Prazo int, id_Tecnico int, id_Tipo_Cliente int,  ');
+         LQuery.SQL.Add(' id_Tipo_Classifiacao int, ');
+         LQuery.SQL.Add(' id_Usuario_Responsavel int, Data_Hora_Historico smalldatetime, ');
+         LQuery.SQL.Add(' CONSTRAINT PK_ControlPc_Historico PRIMARY KEY (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_ControlPc FOREIGN KEY (id_ControlPc) ');
+         LQuery.SQL.Add(' REFERENCES ControlPc (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_Tipos_Status FOREIGN KEY (id_Tipo_Status) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Status (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_Tipos_Cliente FOREIGN KEY (id_Tipo_Cliente) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Cliente (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_Tipos_Prazo FOREIGN KEY (id_Tipo_Prazo) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Prazo (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_Tecnicos FOREIGN KEY (id_Tecnico) ');
+         LQuery.SQL.Add(' REFERENCES Tecnicos (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_Tipos_Classificacao FOREIGN KEY (id_Tipo_Classifiacao) ');
+         LQuery.SQL.Add(' REFERENCES Tipos_Classificacao (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Historico_Usuarios_Responsavel FOREIGN KEY (id_Usuario_Responsavel) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id)) ');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE ControlPc_Log ');
+         LQuery.SQL.Add('(id Bigint Identity(1,1), id_ControlPc bigint, id_Setor_Designado int, ');
+         LQuery.SQL.Add(' id_Usuario_Designado int, id_Usuario_Responsavel int, ');
+         LQuery.SQL.Add(' Justificativa varchar(100), Data_Hora_Log smalldatetime, ');
+         LQuery.SQL.Add(' CONSTRAINT PK_ControlPc_Log PRIMARY KEY (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Log_ControlPc FOREIGN KEY (id_ControlPc) ');
+         LQuery.SQL.Add(' REFERENCES ControlPc (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Log_Setores FOREIGN KEY (id_Setor_Designado) ');
+         LQuery.SQL.Add(' REFERENCES Setores (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Log_Usuario_Designado FOREIGN KEY (id_Usuario_Designado) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Log_Usuario_Responsavel FOREIGN KEY (id_Usuario_Responsavel) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id)) ');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE ControlPc_Observacoes ');
+         LQuery.SQL.Add('(id int identity(1,1), id_ControlPc bigint, id_Usuario int, ');
+         LQuery.SQL.Add(' Data_Hora smalldatetime, Observacao varchar(500), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_ControlPc_Observacoes PRIMARY KEY (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Observacoes_ControlPc FOREIGN KEY (id_ControlPc) ');
+         LQuery.SQL.Add(' REFERENCES ControlPc (id) ');
+         LQuery.SQL.Add(' ON DELETE CASCADE ');
+         LQuery.SQL.Add(' ON UPDATE CASCADE, ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Observacoes_Usuarios FOREIGN KEY (id_Usuario) ');
+         LQuery.SQL.Add(' REFERENCES Usuarios (id))');
+         LQuery.ExecSQL;
+
+         AtualizarVersao;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         FAtualizou := True;
+         Inc(FVersaoAtual);
+      except
+         on E: Exception do
+            begin
+            TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+            ShowMessage('Erro ao processar a atualização ' + IntToStrZero(VersaoAtual +1,3) + chr(13) + E.Message );
+         end;
+      end;
+   finally
+      LQuery.Close;
+      FreeAndNil(LQuery);
+   end;
+end;
 
 procedure Atualizacao010;
 var LQuery : TFDQuery;
@@ -254,8 +435,8 @@ begin
          LQuery.SQL.Add(' id_Usuario_Responsavel int, Data_Hora_Historico smalldatetime, ');
          LQuery.SQL.Add(' CONSTRAINT PK_Siags_Historico PRIMARY KEY (id), ');
 
-         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Historico_AutoSc FOREIGN KEY (id_Siags) ');
-         LQuery.SQL.Add(' REFERENCES AutoSc (id) ');
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Historico_Siags FOREIGN KEY (id_Siags) ');
+         LQuery.SQL.Add(' REFERENCES Siags (id) ');
          LQuery.SQL.Add(' ON DELETE CASCADE ');
          LQuery.SQL.Add(' ON UPDATE CASCADE, ');
 
@@ -291,8 +472,8 @@ begin
          LQuery.SQL.Add(' Justificativa varchar(100), Data_Hora_Log smalldatetime, ');
          LQuery.SQL.Add(' CONSTRAINT PK_Siags_Log PRIMARY KEY (id), ');
 
-         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Log_AutoSc FOREIGN KEY (id_Siags) ');
-         LQuery.SQL.Add(' REFERENCES AutoSc (id) ');
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Log_Siags FOREIGN KEY (id_Siags) ');
+         LQuery.SQL.Add(' REFERENCES Siags (id) ');
          LQuery.SQL.Add(' ON DELETE CASCADE ');
          LQuery.SQL.Add(' ON UPDATE CASCADE, ');
 
@@ -312,8 +493,8 @@ begin
          LQuery.SQL.Add(' Data_Hora smalldatetime, Observacao varchar(500), ');
          LQuery.SQL.Add(' CONSTRAINT PK_Siags_Observacoes PRIMARY KEY (id), ');
 
-         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Observacoes_AutoSC FOREIGN KEY (id_Siags) ');
-         LQuery.SQL.Add(' REFERENCES AutoSC (id) ');
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Observacoes_Siags FOREIGN KEY (id_Siags) ');
+         LQuery.SQL.Add(' REFERENCES Siags (id) ');
          LQuery.SQL.Add(' ON DELETE CASCADE ');
          LQuery.SQL.Add(' ON UPDATE CASCADE, ');
 
@@ -508,7 +689,7 @@ begin
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE Tipos_Prazo ');
-         LQuery.SQL.Add('(id int identity(1,1), Tipo_Prazo_Caixa varchar(15), ');
+         LQuery.SQL.Add('(id int identity(1,1), Tipo_Prazo_Caixa varchar(30), ');
          LQuery.SQL.Add(' AUTOSC int default(0), SIAGS int default(0), CONTROLPC int default(0),');
          LQuery.SQL.Add(' CONSTRAINT PK_Tipos_Prazo PRIMARY KEY (id)');
          LQuery.SQL.Add(')');
@@ -517,7 +698,7 @@ begin
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE Tipos_Prazo_Hoje ');
-         LQuery.SQL.Add('(id int identity(1,1), Tipo_Prazo_Caixa_Hoje varchar(15), ');
+         LQuery.SQL.Add('(id int identity(1,1), Tipo_Prazo_Caixa_Hoje varchar(30), ');
          LQuery.SQL.Add(' AUTOSC int default(0), SIAGS int default(0), CONTROLPC int default(0),');
          LQuery.SQL.Add(' CONSTRAINT PK_Tipos_Prazo_Hoje PRIMARY KEY (id)');
          LQuery.SQL.Add(')');
@@ -526,7 +707,8 @@ begin
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE Tipos_Status ');
-         LQuery.SQL.Add('(id int identity(1,1), Tipo_Status varchar(15), ');
+         LQuery.SQL.Add('(id int identity(1,1), Tipo_Status varchar(30), ');
+         LQuery.SQL.Add(' AUTOSC int default(0), SIAGS int default(0), CONTROLPC int default(0),');
          LQuery.SQL.Add(' CONSTRAINT PK_Tipos_Status PRIMARY KEY (id)');
          LQuery.SQL.Add(')');
          LQuery.ExecSQL;

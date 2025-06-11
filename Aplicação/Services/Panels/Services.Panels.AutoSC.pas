@@ -81,7 +81,7 @@ implementation
 
 function TSrvAutoSC.DataSourceDesignacao: TDataSource;
 begin
-   Result := dtmPainelAutoSC.dtsHistoricoDesignacoes
+   Result := FdmAutoSC.dtsHistoricoDesignacoes
 end;
 
 function TSrvAutoSC.DataSourceObservacao: TDataSource;
@@ -156,7 +156,7 @@ begin
                           AIdSetor,
                           AIdUsuario,
                           Seguranca.id,
-                          FdmAutoSC.cdsPainelid_Processo.AsInteger ) then
+                          FdmAutoSC.cdsPainelid_Autorizacao.AsInteger ) then
       begin
       InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
       Exit;
@@ -177,6 +177,9 @@ begin
       FdmAutoSC.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
       FdmAutoSC.cdsPainelUsuario_Designado.AsString     := FdmAutoSC.mtbUsuariosNome_Usuario.AsString;
    end;
+
+   FdmAutoSC.cdsPainelQtd_Designacoes.AsInteger := FdmAutoSC.cdsPainelQtd_Designacoes.AsInteger + 1;
+
    FdmAutoSC.cdsPainel.Post;
    Result := True;
 end;
@@ -196,7 +199,7 @@ begin
    if not QuestionMessage('Confirma o encerramento do processo ' + FdmAutoSC.cdsPainelNumero_Processo.AsString + ' ? ','Encerramento de Processo') then
       Exit;
 
-   if FPxyAutoSC.EncerrarProcesso(FdmAutoSC.cdsPainelid_Processo.AsInteger, AJustificativa, Seguranca.id) then
+   if FPxyAutoSC.EncerrarProcesso(FdmAutoSC.cdsPainelid_Autorizacao.AsInteger, AJustificativa, Seguranca.id) then
       begin
       FdmAutoSC.cdsPainel.Delete;
       InformationMessage('Processo encerrado com sucesso !','Encerramento de Processo');
@@ -210,6 +213,7 @@ var
 begin
    Result := True;
 
+   FdmAutoSC.cdsPainel.Close;
    LDados := FPxyAutoSC.FiltrarProcessos(AFiltros);
    if LDados.Count > 0 then
       TFuncoesJSON.PopularTabela(FdmAutoSC.cdsPainel, LDados);
@@ -225,7 +229,7 @@ begin
    if not QuestionMessage('Confirma o registro da observação para o processo ?','Observações') then
       exit;
 
-   Result := FPxyAutoSC.RegistrarObservacao(FdmAutoSC.cdsPainelid_Processo.AsInteger,
+   Result := FPxyAutoSC.RegistrarObservacao(FdmAutoSC.cdsPainelid_Autorizacao.AsInteger,
                                             AObservacao,
                                             Seguranca.id,
                                             LDataHora);
@@ -234,19 +238,23 @@ begin
       InformationMessage('Observação registrada com sucesso !','Observações');
       FdmAutoSC.mtbObservacoesProcessoData_Hora.AsDateTime := LDataHora;
       FdmAutoSC.mtbObservacoesProcesso.Post;
+
+      FdmAutoSC.cdsPainel.Edit;
+      FdmAutoSC.cdsPainelQtd_Historicos.AsInteger := FdmAutoSC.cdsPainelQtd_Historicos.AsInteger + 1;
+      FdmAutoSC.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
 end;
 
 function TSrvAutoSC.HistoricoDeAtualizacoes : String;
 begin
-   TFuncoesJSON.PopularTabela(FdmAutoSC.mtbHistoricoAtualizacoes, FPxyAutoSC.HistoricoDeAtualizacoes(FdmAutoSC.cdsPainelid_Processo.AsInteger));
+   TFuncoesJSON.PopularTabela(FdmAutoSC.mtbHistoricoAtualizacoes, FPxyAutoSC.HistoricoDeAtualizacoes(FdmAutoSC.cdsPainelid_Autorizacao.AsInteger));
    Result := FdmAutoSC.cdsPainelNumero_Processo.AsString;
 end;
 
 function TSrvAutoSC.HistoricoDeDesignacoes : String;
 begin
-   TFuncoesJSON.PopularTabela(FdmAutoSC.mtbHistoricoDesignacoes, FPxyAutoSC.HistoricoDeDesignacoes(FdmAutoSC.cdsPainelid_Processo.AsInteger));
+   TFuncoesJSON.PopularTabela(FdmAutoSC.mtbHistoricoDesignacoes, FPxyAutoSC.HistoricoDeDesignacoes(FdmAutoSC.cdsPainelid_Autorizacao.AsInteger));
    Result := FdmAutoSC.cdsPainelNumero_Processo.AsString;
 end;
 
@@ -266,7 +274,7 @@ function TSrvAutoSC.ObservacoesDoProcesso: String;
 begin
    FdmAutoSC.mtbObservacoesProcesso.Close;
    if FdmAutoSC.cdsPainelQtd_Observacoes.AsInteger > 0 then
-      TFuncoesJSON.PopularTabela(FdmAutoSC.mtbObservacoesProcesso, FPxyAutoSC.ObservacoesDoProcesso(FdmAutoSC.cdsPainelid_Processo.AsInteger))
+      TFuncoesJSON.PopularTabela(FdmAutoSC.mtbObservacoesProcesso, FPxyAutoSC.ObservacoesDoProcesso(FdmAutoSC.cdsPainelid_Autorizacao.AsInteger))
    else
       FdmAutoSC.mtbObservacoesProcesso.Open;
    Result := FdmAutoSC.cdsPainelNumero_Processo.AsString;

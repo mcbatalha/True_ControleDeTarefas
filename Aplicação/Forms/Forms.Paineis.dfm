@@ -238,7 +238,7 @@ object frmPaineis: TfrmPaineis
         NumGlyphs = 2
         Visible = False
         OnClick = btnHistoricoDesignacoesClick
-        ExplicitLeft = 405
+        ExplicitTop = 0
       end
       object btnEncerrar: TSpeedButton
         AlignWithMargins = True
@@ -411,7 +411,7 @@ object frmPaineis: TfrmPaineis
       Top = 48
       Width = 1391
       Height = 701
-      ActivePage = tbsSiags
+      ActivePage = tbsAutoSC
       Align = alClient
       TabHeight = 45
       TabOrder = 1
@@ -561,7 +561,7 @@ object frmPaineis: TfrmPaineis
             IniAttributes.Delimiter = ';;'
             IniAttributes.UnicodeIniFile = False
             TitleColor = clBtnFace
-            OnRowChanged = dbgAutoSCRowChanged
+            OnRowChanged = dbgGridSiagsRowChanged
             FixedCols = 0
             ShowHorzScrollBar = True
             Align = alClient
@@ -586,7 +586,7 @@ object frmPaineis: TfrmPaineis
             TitleLines = 3
             TitleButtons = True
             UseTFields = False
-            OnTitleButtonClick = dbgAutoSCTitleButtonClick
+            OnTitleButtonClick = dbgGridSiagsTitleButtonClick
             OnDblClick = dbgAutoSCDblClick
             FooterHeight = 20
             PaintOptions.AlternatingRowColor = 16053492
@@ -619,11 +619,11 @@ object frmPaineis: TfrmPaineis
     end
   end
   object pgcPaineisConteiner: TPageControl
-    Left = 195
-    Top = 67
+    Left = 156
+    Top = 278
     Width = 1138
     Height = 657
-    ActivePage = TabSheet7
+    ActivePage = TabSheet5
     TabOrder = 1
     Visible = False
     object TabSheet1: TTabSheet
@@ -1461,9 +1461,9 @@ object frmPaineis: TfrmPaineis
       end
     end
     object TabSheet4: TTabSheet
-      Caption = 'pnlHistoricoAtualizacoes'
+      Caption = 'pnlHistoricoAtualizacoesAutoSc'
       ImageIndex = 3
-      object pnlHistoricoAtualizacoes: TPanel
+      object pnlHistoricoAtualizacoesAutoSc: TPanel
         Left = 141
         Top = 81
         Width = 625
@@ -1715,9 +1715,9 @@ object frmPaineis: TfrmPaineis
             DesignSize = (
               611
               72)
-            object BitBtn1: TBitBtn
+            object btnConfirmaEncerramento: TBitBtn
               Left = 174
-              Top = 20
+              Top = 24
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
@@ -1780,11 +1780,11 @@ object frmPaineis: TfrmPaineis
                 0303}
               NumGlyphs = 2
               TabOrder = 0
-              OnClick = btnConfirmarDesignacaoAutoSCClick
+              OnClick = btnConfirmaEncerramentoClick
             end
-            object BitBtn2: TBitBtn
+            object btnCancelaEncerramento: TBitBtn
               Left = 318
-              Top = 20
+              Top = 24
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
@@ -1847,7 +1847,7 @@ object frmPaineis: TfrmPaineis
                 0303}
               NumGlyphs = 2
               TabOrder = 1
-              OnClick = btnCancelarDesignacaoAutoSCClick
+              OnClick = btnCancelaEncerramentoClick
             end
           end
           object Panel11: TPanel
@@ -2426,7 +2426,6 @@ object frmPaineis: TfrmPaineis
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 1
-            ExplicitTop = 3
             object Label31: TLabel
               Left = 40
               Top = 20
@@ -2520,7 +2519,7 @@ object frmPaineis: TfrmPaineis
               Height = 24
               KeyField = 'Sigla'
               ListField = 'Sigla'
-              ListSource = dtmPainelAutoSC.dtsUF
+              ListSource = dtmPainelSiags.dtsUF
               TabOrder = 3
             end
             object cmbAutorizacoesSiags: TDBLookupComboBox
@@ -2567,10 +2566,452 @@ object frmPaineis: TfrmPaineis
         end
       end
     end
+    object TabSheet8: TTabSheet
+      Caption = 'pnlHistoricoAtualizacoesSiags'
+      ImageIndex = 7
+      object pnlHistoricoAtualizacoesSiags: TPanel
+        Left = 69
+        Top = 58
+        Width = 932
+        Height = 495
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloHistoricoAtualizacoesSiags: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 912
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Atualiza'#231#245'es de Processo - SIAGS'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 303
+        end
+        object Panel13: TPanel
+          Left = 7
+          Top = 44
+          Width = 918
+          Height = 444
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitLeft = 10
+          ExplicitTop = 47
+          ExplicitHeight = 462
+          object Label35: TLabel
+            Left = 21
+            Top = 56
+            Width = 153
+            Height = 16
+            Caption = 'Data | Hora da atualiza'#231#227'o'
+          end
+          object Label36: TLabel
+            Left = 215
+            Top = 56
+            Width = 71
+            Height = 16
+            Caption = 'Respons'#225'vel'
+          end
+          object Label37: TLabel
+            Left = 21
+            Top = 120
+            Width = 114
+            Height = 16
+            Caption = 'Tipo de Autoriza'#231#227'o'
+          end
+          object Label38: TLabel
+            Left = 625
+            Top = 120
+            Width = 138
+            Height = 16
+            Caption = 'Situacao da Autoriza'#231#227'o'
+          end
+          object Label40: TLabel
+            Left = 323
+            Top = 120
+            Width = 119
+            Height = 16
+            Caption = 'Tipo de Atendimento'
+          end
+          object Label45: TLabel
+            Left = 21
+            Top = 184
+            Width = 123
+            Height = 16
+            Caption = #218'ltima Anota'#231#227'o ADM'
+          end
+          object Label46: TLabel
+            Left = 323
+            Top = 184
+            Width = 51
+            Height = 16
+            Caption = 'Auditoria'
+          end
+          object Label47: TLabel
+            Left = 625
+            Top = 184
+            Width = 123
+            Height = 16
+            Caption = #218'ltima Anota'#231#227'o ADM'
+          end
+          object Label48: TLabel
+            Left = 21
+            Top = 256
+            Width = 60
+            Height = 16
+            Caption = 'Dias Base:'
+          end
+          object Label49: TLabel
+            Left = 89
+            Top = 256
+            Width = 48
+            Height = 16
+            Caption = 'Corridos'
+          end
+          object Label50: TLabel
+            Left = 184
+            Top = 256
+            Width = 28
+            Height = 16
+            Caption = #218'teis'
+          end
+          object Label51: TLabel
+            Left = 119
+            Top = 327
+            Width = 24
+            Height = 16
+            Caption = 'Dias'
+          end
+          object Label52: TLabel
+            Left = 21
+            Top = 327
+            Width = 78
+            Height = 16
+            Caption = 'Prazos Caixa:'
+          end
+          object Label54: TLabel
+            Left = 168
+            Top = 327
+            Width = 32
+            Height = 16
+            Caption = 'Prazo'
+          end
+          object Label53: TLabel
+            Left = 579
+            Top = 327
+            Width = 24
+            Height = 16
+            Caption = 'Dias'
+          end
+          object Label55: TLabel
+            Left = 494
+            Top = 327
+            Width = 71
+            Height = 16
+            Caption = 'Prazos ANS:'
+          end
+          object Label56: TLabel
+            Left = 625
+            Top = 327
+            Width = 32
+            Height = 16
+            Caption = 'Prazo'
+          end
+          object Label57: TLabel
+            Left = 325
+            Top = 256
+            Width = 46
+            Height = 16
+            Caption = 'Anexos:'
+          end
+          object Label58: TLabel
+            Left = 390
+            Top = 256
+            Width = 33
+            Height = 16
+            Caption = 'OPME'
+          end
+          object Label59: TLabel
+            Left = 467
+            Top = 256
+            Width = 40
+            Height = 16
+            Caption = 'Quimio'
+          end
+          object Label60: TLabel
+            Left = 552
+            Top = 255
+            Width = 32
+            Height = 16
+            Caption = 'Radio'
+          end
+          object Panel16: TPanel
+            Left = 0
+            Top = 372
+            Width = 918
+            Height = 72
+            Align = alBottom
+            TabOrder = 18
+            ExplicitTop = 366
+            ExplicitWidth = 1022
+            DesignSize = (
+              918
+              72)
+            object btnFecharHistoricoSiags: TBitBtn
+              Left = 399
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Fechar'
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFecharHistoricoSiagsClick
+            end
+          end
+          object DBNavigator1: TDBNavigator
+            Left = 327
+            Top = 16
+            Width = 264
+            Height = 25
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+            Hints.Strings = (
+              'Primeiro'
+              'Anterior'
+              'Pr'#243'ximo'
+              #218'ltimo')
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+          end
+          object DBEdit1: TDBEdit
+            Left = 21
+            Top = 73
+            Width = 154
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Data_Hora_Historico'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 1
+          end
+          object DBEdit2: TDBEdit
+            Left = 215
+            Top = 73
+            Width = 377
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Nome_Usuario'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 2
+          end
+          object DBEdit3: TDBEdit
+            Left = 21
+            Top = 137
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Autorizacao'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 3
+          end
+          object DBEdit4: TDBEdit
+            Left = 625
+            Top = 137
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Situacao_Autorizacao'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 5
+          end
+          object DBEdit11: TDBEdit
+            Left = 323
+            Top = 137
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Atendimento'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 4
+          end
+          object DBEdit12: TDBEdit
+            Left = 21
+            Top = 201
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Ultima_Anotacao'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 6
+          end
+          object DBEdit13: TDBEdit
+            Left = 323
+            Top = 206
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Auditoria'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 7
+          end
+          object DBEdit14: TDBEdit
+            Left = 625
+            Top = 201
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Ultima_Anotacao'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 8
+          end
+          object DBEdit15: TDBEdit
+            Left = 89
+            Top = 273
+            Width = 48
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Dias_Corridos_Base'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 9
+          end
+          object DBEdit16: TDBEdit
+            Left = 174
+            Top = 273
+            Width = 48
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Dias_Uteis_Base'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 10
+          end
+          object DBEdit17: TDBEdit
+            Left = 111
+            Top = 344
+            Width = 43
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Dias_Prazo_Caixa'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 14
+          end
+          object DBEdit19: TDBEdit
+            Left = 169
+            Top = 344
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Prazo_Caixa'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 15
+          end
+          object DBEdit18: TDBEdit
+            Left = 571
+            Top = 344
+            Width = 43
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Dias_Prazo_ANS'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 16
+          end
+          object DBEdit20: TDBEdit
+            Left = 625
+            Top = 344
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Prazo_ANS'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 17
+          end
+          object DBEdit21: TDBEdit
+            Left = 382
+            Top = 273
+            Width = 48
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Anexo_Opme'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 11
+          end
+          object DBEdit22: TDBEdit
+            Left = 463
+            Top = 273
+            Width = 48
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Anexo_Quimio'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 12
+          end
+          object DBEdit23: TDBEdit
+            Left = 544
+            Top = 272
+            Width = 48
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Anexo_Radio'
+            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 13
+          end
+        end
+      end
+    end
   end
   object ppmAutoSc: TPopupMenu
-    Left = 184
-    Top = 312
+    Left = 1128
+    Top = 208
     object Designar1: TMenuItem
       Caption = 'Designar'
       OnClick = btnDesignarClick

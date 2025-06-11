@@ -140,7 +140,6 @@ begin
    if FJSonCarregado then
       FreeAndNil(FDados);
 
-
    inherited;
 end;
 
@@ -154,35 +153,43 @@ var
    LRegistrosNovos          : integer;
    LRegistrosAtualizados    : integer;
    LRegistrosNaoAtualizados : integer;
+
+   frmMensagem : TFrmMensagem;
 begin
 
-   frmMensagem.btnMensagem.Caption := 'Aguarde, efetivando importação';
-   frmMensagem.Show;
-   frmMensagem.Refresh;
-   Application.ProcessMessages;
-   LRetorno := FPxyImportacao.Importar(FDados, Seguranca.id);
-   frmMensagem.Close;
+   Application.CreateForm(TFrmMensagem, frmMensagem);
+   try
+      frmMensagem.btnMensagem.Caption := 'Aguarde, efetivando importação';
+      frmMensagem.GaugeVisible(False);
+      frmMensagem.Show;
+      frmMensagem.Refresh;
+      Application.ProcessMessages;
+      LRetorno := FPxyImportacao.Importar(FDados, Seguranca.id);
+      frmMensagem.Close;
 
-   Result   := LRetorno.Values['importou'].AsType<Boolean>;
+      Result   := LRetorno.Values['importou'].AsType<Boolean>;
 
-   FJSonCarregado := not Result;
+      FJSonCarregado := not Result;
 
-   if Result then
-      begin
-      LRegistrosProcessados    := LRetorno.Values['totalRegistros'].AsType<Integer>;
-      LRegistrosNovos          := LRetorno.Values['totalNovos'].AsType<Integer>;
-      LRegistrosAtualizados    := LRetorno.Values['totalAtualizados'].AsType<Integer>;
-      LRegistrosNaoAtualizados := LRetorno.Values['totalNaoAtualizados'].AsType<Integer>;
+      if Result then
+         begin
+         LRegistrosProcessados    := LRetorno.Values['totalRegistros'].AsType<Integer>;
+         LRegistrosNovos          := LRetorno.Values['totalNovos'].AsType<Integer>;
+         LRegistrosAtualizados    := LRetorno.Values['totalAtualizados'].AsType<Integer>;
+         LRegistrosNaoAtualizados := LRetorno.Values['totalNaoAtualizados'].AsType<Integer>;
 
 
-      LMensagem := 'Importação de dados finalizada com sucesso !' + chr(13) + chr(13) +
-                   ' - Total de registros processados: ' + IntToStr(LRegistrosProcessados) + chr(13) +
-                   ' - Total de registros novos: ' + IntToStr(LRegistrosNovos) + chr(13) +
-                   ' - Total de registros atualizados: ' + IntToStr(LRegistrosAtualizados) + chr(13) +
-                   ' - Total de registros não atualizados: ' + IntToStr(LRegistrosNaoAtualizados);
-      InformationMessage(LMensagem ,C_TITULO_MENSAGENS);
-   end else
-      InformationMessage('Ocorreu um erro na tentativa de gravar os dados.',C_TITULO_MENSAGENS)
+         LMensagem := 'Importação de dados finalizada com sucesso !' + chr(13) + chr(13) +
+                      ' - Total de registros processados: ' + IntToStr(LRegistrosProcessados) + chr(13) +
+                      ' - Total de registros novos: ' + IntToStr(LRegistrosNovos) + chr(13) +
+                      ' - Total de registros atualizados: ' + IntToStr(LRegistrosAtualizados) + chr(13) +
+                      ' - Total de registros não atualizados: ' + IntToStr(LRegistrosNaoAtualizados);
+         InformationMessage(LMensagem ,C_TITULO_MENSAGENS);
+      end else
+         InformationMessage('Ocorreu um erro na tentativa de gravar os dados.',C_TITULO_MENSAGENS)
+   finally
+      FreeAndNil(frmMensagem);
+   end;
 end;
 
 function TSrvImportacaoAutoSc.PosicaoColuna(const AColuna : String): integer;
