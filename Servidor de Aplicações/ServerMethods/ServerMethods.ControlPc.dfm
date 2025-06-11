@@ -27,17 +27,17 @@ object SMControlPc: TSMControlPc
   object qryTiposStatus: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'Declare @AUTOSC int;'
-      'Set @AUTOSC = :AUTOSC;'
+      'Declare @CONTROLPC int;'
+      'Set @CONTROLPC = :CONTROLPC;'
       ''
       'Select * from Tipos_Status'
-      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      'where @CONTROLPC = 9 or CONTROLPC = @CONTROLPC '
       'Order by Tipo_Status')
     Left = 80
     Top = 376
     ParamData = <
       item
-        Name = 'AUTOSC'
+        Name = 'CONTROLPC'
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
@@ -70,17 +70,17 @@ object SMControlPc: TSMControlPc
     Connection = ServerContainer.FDConnection
     UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
     SQL.Strings = (
-      'Declare @AUTOSC int;'
-      'Set @AUTOSC = :AUTOSC;'
+      'Declare @CONTROLPC int;'
+      'Set @CONTROLPC = :CONTROLPC;'
       ''
       'select * from Tipos_Prazo'
-      'where @AUTOSC = 9 or AUTOSC = @AUTOSC'
+      'where @CONTROLPC = 9 or CONTROLPC = @CONTROLPC '
       'Order by Tipo_Prazo_Caixa')
     Left = 80
     Top = 136
     ParamData = <
       item
-        Name = 'AUTOSC'
+        Name = 'CONTROLPC'
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
@@ -227,6 +227,10 @@ object SMControlPc: TSMControlPc
       FieldName = 'id_Tipo_Classificacao'
       Origin = 'id_Tipo_Classificacao'
     end
+    object qryControlPcid_Tecnico: TIntegerField
+      FieldName = 'id_Tecnico'
+      Origin = 'id_Tecnico'
+    end
     object qryControlPcSolicitacao_Cliente: TStringField
       FieldName = 'Solicitacao_Cliente'
       Origin = 'Solicitacao_Cliente'
@@ -353,6 +357,38 @@ object SMControlPc: TSMControlPc
         ParamType = ptInput
         Value = Null
       end>
+    object qryControlPcLogid: TLargeintField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryControlPcLogid_ControlPc: TLargeintField
+      FieldName = 'id_ControlPc'
+      Origin = 'id_ControlPc'
+    end
+    object qryControlPcLogid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+      Origin = 'id_Setor_Designado'
+    end
+    object qryControlPcLogid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      Origin = 'id_Usuario_Designado'
+    end
+    object qryControlPcLogid_Usuario_Responsavel: TIntegerField
+      FieldName = 'id_Usuario_Responsavel'
+      Origin = 'id_Usuario_Responsavel'
+    end
+    object qryControlPcLogJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Origin = 'Justificativa'
+      Size = 100
+    end
+    object qryControlPcLogData_Hora_Log: TDateTimeField
+      FieldName = 'Data_Hora_Log'
+      Origin = 'Data_Hora_Log'
+    end
   end
   object qryPainelControlPc: TFDQuery
     Connection = ServerContainer.FDConnection

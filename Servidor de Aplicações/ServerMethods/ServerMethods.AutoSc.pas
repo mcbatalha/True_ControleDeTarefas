@@ -385,12 +385,14 @@ end;
 
 function TSMAutoSC.TiposDeProcessoE: TJSONArray;
 begin
-  Result := TFuncoesJSON.MontarJSON(qryTiposProcessoE);
+   Result := TFuncoesJSON.MontarJSON(qryTiposProcessoE);
 end;
 
 function TSMAutoSC.TiposDeStatus: TJSONArray;
 begin
-  Result := TFuncoesJSON.MontarJSON(qryTiposStatus);
+   qryTiposStatus.Close;
+   qryTiposStatus.ParamByName('AUTOSC').AsInteger := 1;
+   Result := TFuncoesJSON.MontarJSON(qryTiposStatus);
 end;
 
 function TSMAutoSC.Usuarios: TJSONArray;
@@ -442,16 +444,12 @@ end;
 
 procedure TSMAutoSC.AbrirTabelasDeCadastro;
 begin
-   qryTiposAuditoria.Close;
-   qryTiposPrazo.Close;
-   qryTiposPrazoHoje.Close;
-   qryTiposProcesso.Close;
-   qryTiposProcessoE.Close;
-   qryTiposStatus.Close;
+   FecharTabelasDeCadastro;
 
    qryTiposAuditoria.ParamByName('AUTOSC').AsInteger := 9;
    qryTiposPrazo.ParamByName('AUTOSC').AsInteger     := 9;
    qryTiposPrazoHoje.ParamByName('AUTOSC').AsInteger := 9;
+   qryTiposStatus.ParamByName('AUTOSC').AsInteger    := 9;
 
    qryTiposAuditoria.Open;
    qryTiposPrazo.Open;
