@@ -56,9 +56,15 @@ begin
            {$endRegion}
 
            {$Region 'Importação de Planilhas'}
-           3000 : frmPrincipal.mngImportaoPlanilhas.Visible := True;
-           3001 : frmPrincipal.mniImportacaoAutoSC.Visible  := True;
-           3002 : frmPrincipal.mniImportacaoSiags.Visible   := True;
+           3000 : frmPrincipal.mngImportaoPlanilhas.Visible   := True;
+           3001 : frmPrincipal.mniImportacaoAutoSC.Visible    := True;
+           3002 : frmPrincipal.mniImportacaoSiags.Visible     := True;
+           3003 : frmPrincipal.mniImportacaoControlPc.Visible := True;
+           {$endRegion}
+
+           {$Region 'Paineis'}
+           4000 : frmPrincipal.mngPaineis.Visible              := True;
+           4001 : frmPrincipal.mniPainelAcompanhamento.Visible := True;
            {$endRegion}
         end;
      end;

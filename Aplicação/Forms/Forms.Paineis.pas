@@ -96,10 +96,6 @@ type
     cmbPrazosAnsAutoSc: TDBLookupComboBox;
     cmbUFAutoSc: TDBLookupComboBox;
     Label9: TLabel;
-    pnlSelecaoDesignacao: TPanel;
-    Label8: TLabel;
-    fraPesquisaUsuario: TfraPesquisaUsuario;
-    cmbSetores: TDBLookupComboBox;
     Panel1: TPanel;
     memJustificativa: TMemo;
     Label13: TLabel;
@@ -323,6 +319,17 @@ type
     DBEdit38: TDBEdit;
     DBEdit39: TDBEdit;
     DBEdit40: TDBEdit;
+    pnlSelecaoDesignacao: TPanel;
+    Label8: TLabel;
+    fraPesquisaUsuario: TfraPesquisaUsuario;
+    cmbSetores: TDBLookupComboBox;
+    TabSheet11: TTabSheet;
+    pnlExibirConteudo: TPanel;
+    lblTituloExibicaoConteudo: TLabel;
+    Panel17: TPanel;
+    Panel21: TPanel;
+    btnFecharExibicaoConteudo: TBitBtn;
+    memExibirConteudo: TMemo;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -361,6 +368,9 @@ type
     procedure dbgControlPcRowChanged(Sender: TObject);
     procedure btnFiltrarControlPcClick(Sender: TObject);
     procedure btnCancelarFiltroControlPcClick(Sender: TObject);
+    procedure edtDataAberturaExit(Sender: TObject);
+    procedure dbgControlPcDblClick(Sender: TObject);
+    procedure btnFecharExibicaoConteudoClick(Sender: TObject);
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
@@ -390,6 +400,8 @@ type
     procedure OrdenarGrid(const ADataSet : TDataSet; const AFieldName : String);
     procedure BotoesObservacao(const AHabilitar : Boolean);
     procedure AtualizarPainel(const AAtualizar : Boolean = True);
+
+    procedure ConfigurarDataSourcesControlPc;
 
   public
     { Public declarations }
@@ -605,6 +617,10 @@ procedure TfrmPaineis.FiltrosControlPc;
 var
    LFiltro : TFiltrosControlPc;
 begin
+
+
+
+
    pnlSelecaoDesignacao.Parent := pnlCamposFiltroControlPc;
    fraPesquisaUsuario.setDataSet(FServiceControlPc.DataSetPesquisaDeUsuario);
 
@@ -640,6 +656,8 @@ begin
       edtPrevisaoSolucao.Text := '';
 
    HabilitarEdicaoDoPainel(Self, pnlFiltrosControlPc, True);
+//   ConfigurarDataSourcesControlPc;
+
 end;
 
 procedure TfrmPaineis.FiltrosSiags;
@@ -684,8 +702,10 @@ procedure TfrmPaineis.FormDestroy(Sender: TObject);
 begin
    FreeAndNil(FFiltroAutoSC);
    FreeAndNil(FServiceAutoSC);
+
    FreeAndNil(FFiltroSiags);
    FreeAndNil(FServiceSiags);
+
    FreeAndNil(FFiltroControlPc);
    FreeAndNil(FServiceControlPc);
 
@@ -883,6 +903,11 @@ begin
    InformationMessage('Em desenvolvimento','Status');
 end;
 
+procedure TfrmPaineis.btnFecharExibicaoConteudoClick(Sender: TObject);
+begin
+   HabilitarEdicaoDoPainel(Self, pnlExibirConteudo, false);
+end;
+
 procedure TfrmPaineis.btnFecharHistoricoAtualizacoesClick(Sender: TObject);
 begin
    HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesAutoSc, false);
@@ -1022,6 +1047,15 @@ begin
    btnEncerrar.Enabled := LHabilitar;
 end;
 
+procedure TfrmPaineis.ConfigurarDataSourcesControlPc;
+begin
+   cmbTiposStatusControlPc.ListSource := FServiceControlPc.DataSourceTipoStatus;
+   cmbPrazos.ListSource               := FServiceControlPc.DataSourceTiposPrazo;
+   cmbTecnicos.ListSource             := FServiceControlPc.DataSourceTecnicos;
+   cmbTiposCliente.ListSource         := FServiceControlPc.DataSourceTiposCliente;
+   dbgControlPc.DataSource            := FServiceControlPc.DataSourcePainel;
+end;
+
 procedure TfrmPaineis.ConfigurarHistoricoDeDesignacao;
 begin
    case pgcPaineis.ActivePageIndex of
@@ -1112,7 +1146,9 @@ begin
    if tbsControlPc.TabVisible then
       begin
       FServiceControlPc := TSrvControlPc.create(Fdm.SQLConnection);
-      FFiltroControlPc := TFiltros.create(C_CODIGO_ControlPc);
+      FFiltroControlPc := TFiltros.create(C_CODIGO_CONTROLPC);
+
+      ConfigurarDataSourcesControlPc;
    end;
 
    if tbsAutoSC.TabVisible then
@@ -1143,6 +1179,31 @@ end;
 procedure TfrmPaineis.dbgAutoSCTitleButtonClick(Sender: TObject; AFieldName: string);
 begin
    OrdenarGrid(dbgAutoSC.DataSource.DataSet,AFieldName);
+end;
+
+procedure TfrmPaineis.dbgControlPcDblClick(Sender: TObject);
+var
+  LColuna : Integer;
+  LLinha  : Integer;
+  LPoint  : TGridCoord;
+  LCampo  : String;
+
+begin
+   LPoint := dbgControlPc.MouseCoord(Mouse.CursorPos.X - dbgControlPc.ClientOrigin.X,
+                                     Mouse.CursorPos.Y - dbgControlPc.ClientOrigin.Y);
+
+   LCampo := '';
+   if (LPoint.X > 0) and (LPoint.X <= dbgControlPc.GetColCount) then
+      LCampo := dbgControlPc.Columns[LPoint.X - 1].FieldName;
+
+   if (LCampo = 'Tipo_Classificacao') or (LCampo = 'Solicitacao_Cliente') then
+      begin
+      memExibirConteudo.Text := FServiceControlPc.Conteudo(LCampo);
+      lblTituloExibicaoConteudo.Caption := dbgControlPc.Columns[LPoint.X-1].DisplayLabel;
+
+      HabilitarEdicaoDoPainel(Self, pnlExibirConteudo, memExibirConteudo.Text <> '');
+   end else
+      btnDesignarClick(Self);
 end;
 
 procedure TfrmPaineis.dbgControlPcRowChanged(Sender: TObject);
@@ -1214,7 +1275,7 @@ begin
    else
       fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
 
-   lblTituloDesignacao.Caption := 'Designição de Processo - CONTROLPC - ' + FServiceControlPc.NumeroDoProtocolo;
+   lblTituloDesignacao.Caption := 'Designição de Protocolo - CONTROLPC - ' + FServiceControlPc.NumeroDoProtocolo;
    pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
    memJustificativa.Text       := '';
 
@@ -1236,12 +1297,20 @@ begin
    else
       fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
 
-   lblTituloDesignacao.Caption := 'Designição de Processo - Siags - ' + FServiceSiags.NumeroDaAutorizacao;
+   lblTituloDesignacao.Caption := 'Designição de Autorização - Siags - ' + FServiceSiags.NumeroDaAutorizacao;
    pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
    memJustificativa.Text       := '';
 
    HabilitarEdicaoDoPainel(Self, pnlDesignacao, True);
    memJustificativa.SetFocus;
+end;
+
+procedure TfrmPaineis.edtDataAberturaExit(Sender: TObject);
+begin
+   if (ActiveControl.Tag = 1) or ((Sender as TMaskEdit).Text = C_DATA_EM_BRANCO) then exit;
+
+   VerificarData((Sender as TMaskEdit));
+
 end;
 
 end.

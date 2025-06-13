@@ -3,8 +3,33 @@ unit Providers.Panels.ControlPc;
 interface
 
 uses
-  System.SysUtils, System.Classes, Providers.Panels, Data.DBXDataSnap, Data.DBXCommon, IPPeerClient, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, Datasnap.Provider, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.DB, Datasnap.DBClient, Datasnap.DSConnect, Data.SqlExpr;
+  System.SysUtils,
+  System.Classes,
+
+  Data.DBXDataSnap,
+  Data.DBXCommon,
+  Data.DB,
+  Data.SqlExpr,
+
+  IPPeerClient,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+
+  Datasnap.Provider,
+  Datasnap.DBClient,
+  Datasnap.DSConnect,
+
+  Proxy.Classes,
+
+  Providers.Panels,
+  Providers.Connection;
 
 type
   TdtmPainelControlPc = class(TdtmPainel)
@@ -34,10 +59,6 @@ type
     mtbHistoricoAtualizacoesNome_Usuario: TStringField;
     mtbHistoricoAtualizacoesTipo_Reclame: TStringField;
     mtbHistoricoAtualizacoesTipo_Nip: TStringField;
-    mtbTiposPrazo: TFDMemTable;
-    mtbTiposPrazoid: TIntegerField;
-    mtbTiposPrazoTipo_Prazo_Caixa: TStringField;
-    dtsTiposPrazo: TDataSource;
     mtbUsuarios: TFDMemTable;
     mtbUsuariosid: TIntegerField;
     mtbUsuariosNome_Usuario: TStringField;
@@ -87,6 +108,11 @@ type
     dtsPainel: TDataSource;
     mtbPainelTipo_Classificacao: TStringField;
     cdsPainelTipo_Classificacao: TStringField;
+    mtbTiposPrazo: TFDMemTable;
+    mtbTiposPrazoid: TIntegerField;
+    mtbTiposPrazoTipo_Prazo_Caixa: TStringField;
+    dtsTiposPrazo: TDataSource;
+    procedure cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
     { Private declarations }
   public
@@ -101,5 +127,15 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdtmPainelControlPc.cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+   inherited;
+   if Sender.AsString = '' then
+      Text := 'Não designado'
+   else
+      Text := Sender.AsString;
+
+end;
 
 end.

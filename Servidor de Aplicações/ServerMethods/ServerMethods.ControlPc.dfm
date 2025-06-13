@@ -346,8 +346,8 @@ object SMControlPc: TSMControlPc
     SQL.Strings = (
       'select '
       
-        '   a.id as id_Protocolo, a.Data_Abertura, a.Data_Transferencia, ' +
-        'a.Data_Fechamento,'
+        '   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, a.Data_Tr' +
+        'ansferencia, a.Data_Fechamento,'
       
         '   a.Previsao_Solucao, a.Solicitacao_Cliente, a.Tipo_Reclame, a.' +
         'Tipo_Nip,'
@@ -355,8 +355,9 @@ object SMControlPc: TSMControlPc
       '   c.Tipo_Prazo_Caixa,'
       '   d.Nome_Tecnico,'
       '   e.Tipo_Cliente,'
-      '   f.Nome_Usuario as Usuario_Designado,'
-      '   g.Nome_Setor as Setor_Designado,'
+      '   f.Tipo_Classificacao,'
+      '   g.Nome_Usuario as Usuario_Designado,'
+      '   h.Nome_Setor as Setor_Designado,'
       '   1 as Qtd_Historicos,'
       '   1 as Qtd_Designacoes,'
       '   1 as Qtd_Observacoes'
@@ -365,8 +366,11 @@ object SMControlPc: TSMControlPc
       '     INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo'
       '     INNER JOIN Tecnicos d on d.id = a.id_Tecnico'
       '     INNER JOIN Tipos_Cliente e on e.id = a.id_Tipo_Cliente'
-      '     LEFT OUTER JOIN Usuarios f on f.id = a.id_Usuario_Designado'
-      '     LEFT OUTER JOIN Setores g on g.id = a.id_Setor_Designado'
+      
+        '     INNER JOIN Tipos_Classificacao f on f.id = a.id_Tipo_Classi' +
+        'ficacao'
+      '     LEFT OUTER JOIN Usuarios g on g.id = a.id_Usuario_Designado'
+      '     LEFT OUTER JOIN Setores h on h.id = a.id_Setor_Designado'
       'where 1 = 1')
     Left = 448
     Top = 40
@@ -376,6 +380,11 @@ object SMControlPc: TSMControlPc
       Origin = 'id_Protocolo'
       ProviderFlags = [pfInWhere]
       ReadOnly = True
+    end
+    object qryPainelControlPcProtocolo: TStringField
+      FieldName = 'Protocolo'
+      Origin = 'Protocolo'
+      Size = 50
     end
     object qryPainelControlPcData_Abertura: TDateTimeField
       FieldName = 'Data_Abertura'
@@ -417,6 +426,11 @@ object SMControlPc: TSMControlPc
       FieldName = 'Tipo_Prazo_Caixa'
       Origin = 'Tipo_Prazo_Caixa'
       Size = 30
+    end
+    object qryPainelControlPcTipo_Classificacao: TStringField
+      FieldName = 'Tipo_Classificacao'
+      Origin = 'Tipo_Classificacao'
+      Size = 350
     end
     object qryPainelControlPcNome_Tecnico: TStringField
       FieldName = 'Nome_Tecnico'

@@ -32,6 +32,11 @@ type
     chbMenuImportacoes: TCheckBox;
     chbImportacaoAutoSC: TCheckBox;
     chbImportacaoSiags: TCheckBox;
+    chbImportacaoControlPc: TCheckBox;
+    tbsPaineis: TTabSheet;
+    pnlPaineis: TPanel;
+    chbMenuPaineis: TCheckBox;
+    chbPaineisAcompanhamento: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -45,6 +50,7 @@ type
     procedure btnMarcarTodosClick(Sender: TObject);
     procedure btnDesmarcarTodosClick(Sender: TObject);
     procedure chbMenuImportacoesClick(Sender: TObject);
+    procedure chbMenuPaineisClick(Sender: TObject);
 
   private
 
@@ -117,8 +123,15 @@ begin
    if chbMenuImportacoes.Checked then
       begin
       LItens.Add(3000);
-      if chbImportacaoAutoSC.Checked then LItens.Add(3001);
-      if chbImportacaoSiags.Checked  then LItens.Add(3002);
+      if chbImportacaoAutoSC.Checked    then LItens.Add(3001);
+      if chbImportacaoSiags.Checked     then LItens.Add(3002);
+      if chbImportacaoControlPc.Checked then LItens.Add(3003);
+   end;
+
+   if chbMenuPaineis.Checked then
+      begin
+      LItens.Add(4000);
+      if chbPaineisAcompanhamento.Checked then LItens.Add(4001);
    end;
 
    if not FService.Gravar(LItens) then
@@ -184,9 +197,9 @@ begin
       LMarcar := False;
       MarcarItensDoGrupo(False,3000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
    end;
-   chbImportacaoAutoSC.Enabled := LMarcar;
-   chbImportacaoSiags.Enabled  := LMarcar;
-
+   chbImportacaoAutoSC.Enabled    := LMarcar;
+   chbImportacaoSiags.Enabled     := LMarcar;
+   chbImportacaoControlPc.Enabled := LMarcar;
 end;
 
 procedure TfrmSeguranca.chbMenuManutencaoClick(Sender: TObject);
@@ -205,6 +218,22 @@ begin
    chbSeguranca.Enabled   := LMarcar;
 end;
 
+procedure TfrmSeguranca.chbMenuPaineisClick(Sender: TObject);
+var
+   LMarcar : Boolean;
+begin
+  inherited;
+
+   if chbMenuPaineis.Checked then
+      LMarcar := True
+   else
+      begin
+      LMarcar := False;
+      MarcarItensDoGrupo(False,4000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
+   end;
+   chbPaineisAcompanhamento.Enabled := LMarcar;
+end;
+
 procedure TfrmSeguranca.ConfigurarBotoes;
 begin
    btnConfirmar.Visible := True;
@@ -218,6 +247,7 @@ begin
    pnlCadastros.Enabled          := AHabilitar;
    pnlManutencao.Enabled         := AHabilitar;
    pnlImportacaoPlanihas.Enabled := AHabilitar;
+   pnlPaineis.Enabled            := AHabilitar;
 
    BotoesDeEdicao(AHabilitar);
 end;
@@ -264,6 +294,7 @@ begin
    inherited;
    ConfigurarBotoes;
    Editar(False);
+   MarcarItensDoGrupo(True);
    MarcarItensDoGrupo(False);
 
    if FLogin <> '' then
@@ -302,9 +333,15 @@ begin
         {$endRegion}
 
         {$Region 'Importações de Planilhas'}
-        3000 : chbMenuImportacoes.Checked  := True;
-        3001 : chbImportacaoAutoSC.Checked := True;
-        3002 : chbImportacaoSiags.Checked  := True;
+        3000 : chbMenuImportacoes.Checked     := True;
+        3001 : chbImportacaoAutoSC.Checked    := True;
+        3002 : chbImportacaoSiags.Checked     := True;
+        3003 : chbImportacaoControlPc.Checked := True;
+        {$endRegion}
+
+        {$Region 'Paineis'}
+        4000 : chbMenuPaineis.Checked           := True;
+        4001 : chbPaineisAcompanhamento.Checked := True;
         {$endRegion}
      end;
    end;
@@ -327,9 +364,16 @@ begin
 
    if (AGrupo = 0) or (AGrupo = 3000) then     // Importação de Planilhas ou Todos
       begin
-      chbMenuImportacoes.Checked  := AMarcar;
-      chbImportacaoAutoSC.Checked := AMarcar;
-      chbImportacaoSiags.Checked  := AMarcar;
+      chbMenuImportacoes.Checked     := AMarcar;
+      chbImportacaoAutoSC.Checked    := AMarcar;
+      chbImportacaoSiags.Checked     := AMarcar;
+      chbImportacaoControlPc.Checked := AMarcar;
+   end;
+
+   if (AGrupo = 0) or (AGrupo = 4000) then     // Paineis
+      begin
+      chbMenuPaineis.Checked           := AMarcar;
+      chbPaineisAcompanhamento.Checked := AMarcar;
    end;
 end;
 
@@ -341,6 +385,8 @@ begin
        MarcarItensDoGrupo(AMarcar, 2000)
     else if APainel = pnlImportacaoPlanihas  then
        MarcarItensDoGrupo(AMarcar, 3000)
+    else if APainel = pnlImportacaoPlanihas  then
+       MarcarItensDoGrupo(AMarcar, 4000)
 end;
 
 procedure TfrmSeguranca.ObterDados;
@@ -359,6 +405,8 @@ begin
      RealocarBotoesDeMarcacao(pnlManutencao)
   else if pgcSeguranca.ActivePage = tbsImportacoes then
      RealocarBotoesDeMarcacao(pnlImportacaoPlanihas)
+  else if pgcSeguranca.ActivePage = tbsPaineis then
+     RealocarBotoesDeMarcacao(pnlPaineis)
 
 end;
 

@@ -124,6 +124,8 @@ type
     qryClassificacaoTipo_Classificacao: TStringField;
     qryControlPcHistoricoTipo_Reclame: TStringField;
     qryControlPcHistoricoTipo_Nip: TStringField;
+    qryPainelControlPcProtocolo: TStringField;
+    qryPainelControlPcTipo_Classificacao: TStringField;
   private
 
     FIdTecnico            : integer;
@@ -354,9 +356,12 @@ begin
    LFiltros.usaDataFechamento    := AFiltros.GetValue<Boolean>('usaDataFechamento');
    LFiltros.usaDataTransferencia := AFiltros.GetValue<Boolean>('usaDataTransferencia');
    LFiltros.usaPrevisaoSolucao   := AFiltros.GetValue<Boolean>('usaPrevisaoSolucao');
+   LFiltros.tipoReclame          := AFiltros.GetValue<String>('tipoReclame');
+   LFiltros.tipoNip              := AFiltros.GetValue<String>('tipoNip');
 
    LFiltros.idSetorDesignado     := AFiltros.GetValue<integer>('idSetorDesignado');
    LFiltros.idUsuarioDesignado   := AFiltros.GetValue<integer>('idUsuarioDesignado');
+
    LFiltros.nomeUsuario          := AFiltros.GetValue<String>('nomeUsuario');
 
    if LFiltros.usaDataAbertura then
@@ -400,27 +405,40 @@ begin
 
    if LFiltros.usaDataAbertura then
       begin
-      qryPainelControlPc.Sql.Add(' and a.Data_Abertura = :pDataAbertura');
+      qryPainelControlPc.Sql.Add(' and cast(a.Data_Abertura as Date) = :pDataAbertura');
       qryPainelControlPc.ParamByName('pDataAbertura').AsDate := LFiltros.dataAbertura;
    end;
 
    if LFiltros.usaDataFechamento then
       begin
-      qryPainelControlPc.Sql.Add(' and a.Data_Fechamento = :pDataFechamento');
+      qryPainelControlPc.Sql.Add(' and cast(a.Data_Fechamento as Date) = :pDataFechamento');
       qryPainelControlPc.ParamByName('pDataFechamento').AsDate := LFiltros.dataFechamento;
    end;
 
    if LFiltros.usaDataTransferencia then
       begin
-      qryPainelControlPc.Sql.Add(' and a.Data_Transferencia = :pDataTransferencia');
+      qryPainelControlPc.Sql.Add(' and cast(a.Data_Transferencia as Date) = :pDataTransferencia');
       qryPainelControlPc.ParamByName('pDataTransferencia').AsDate := LFiltros.dataTransferencia;
    end;
 
    if LFiltros.usaPrevisaoSolucao then
       begin
-      qryPainelControlPc.Sql.Add(' and a.Previsao_Solucao = :pPrevisaoSolucao');
+      qryPainelControlPc.Sql.Add(' and cast(a.Previsao_Solucao  as Date)= :pPrevisaoSolucao');
       qryPainelControlPc.ParamByName('pPrevisaoSolucao').AsDate := LFiltros.previsaoSolucao;
    end;
+
+   if LFiltros.tipoReclame <> C_TODOS then
+      begin
+      qryPainelControlPc.Sql.Add(' and a.Tipo_Reclame = :pTipoReclame');
+      qryPainelControlPc.ParamByName('pTipoReclame').AsString := LFiltros.tipoReclame;
+   end;
+
+   if LFiltros.tipoNip <> C_TODOS then
+      begin
+      qryPainelControlPc.Sql.Add(' and a.Tipo_Nip = :pTipoNip');
+      qryPainelControlPc.ParamByName('pTipoNip').AsString := LFiltros.tipoNip;
+   end;
+
 
    if LFiltros.idSetorDesignado > 0 then
       begin
@@ -553,16 +571,14 @@ begin
    qryAux.Sql.Add('   c.Tipo_Prazo_Caixa, ');
    qryAux.Sql.Add('   d.Nome_Tecnico, ');
    qryAux.Sql.Add('   e.Tipo_Cliente, ');
-   qryAux.Sql.Add('   f.Tipo_Classificacao, ');
-   qryAux.Sql.Add('   g.Nome_Usuario ');
+   qryAux.Sql.Add('   f.Nome_Usuario ');
    qryAux.Sql.Add('From ');
    qryAux.Sql.Add('   ControlPc_Historico a ');
    qryAux.Sql.Add('   INNER JOIN Tipos_Status b on b.id = a.id_Tipo_Status ');
    qryAux.Sql.Add('   INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo ');
    qryAux.Sql.Add('   INNER JOIN Tecnicos d on d.id = a.id_Tecnico ');
    qryAux.Sql.Add('   INNER JOIN Tipos_Cliente e  on e.id = a.id_Tipo_Cliente ');
-   qryAux.Sql.Add('   INNER JOIN Tipos_Classificacao f  on f.id = a.id_Tipo_Classifiacao ');
-   qryAux.Sql.Add('   INNER JOIN Usuarios g on g.id = a.id_Usuario_Responsavel ');
+   qryAux.Sql.Add('   INNER JOIN Usuarios f on f.id = a.id_Usuario_Responsavel ');
    qryAux.Sql.Add('where ');
    qryAux.Sql.Add('   a.id_ControlPc = :pIdProtocolo');
    qryAux.Sql.Add('Order by ');
@@ -628,6 +644,8 @@ begin
             FIdTipoCliente        := ObterIdTipoCliente(LObject.Values['TIPO CLIENTE'].Value);
             FIdTipoClassificacao  := ObterIdTipoClassificacao(LObject.Values['CLASSIFICAÇÃO'].Value);
             FIdTipoStatus         := ObterIdTipoStatus(LObject.Values['STATUS'].Value);
+
+            FSolicitacaoCliente   := LObject.Values['SOLICITAÇÃO DO CLIENTE'].Value;
 
             LData                 := LObject.Values['DT. ABERTURA'].Value;
             if LData <> '' then
@@ -699,8 +717,9 @@ begin
       Sql.Add('   c.Tipo_Prazo_Caixa,');
       Sql.Add('   d.Nome_Tecnico,');
       Sql.Add('   e.Tipo_Cliente,');
-      Sql.Add('   f.Nome_Usuario as Usuario_Designado,');
-      Sql.Add('   g.Nome_Setor as Setor_Designado,');
+      Sql.Add('   f.Tipo_Classificacao,');
+      Sql.Add('   g.Nome_Usuario as Usuario_Designado,');
+      Sql.Add('   h.Nome_Setor as Setor_Designado,');
       Sql.Add('   IsNull((Select count(*) ');
       Sql.Add('           From ControlPc_Historico ah ');
       Sql.Add('           where ah.id_ControlPc = a.id),0) as Qtd_Historicos,');
@@ -716,8 +735,9 @@ begin
       Sql.Add('   INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo');
       Sql.Add('   INNER JOIN Tecnicos d on d.id = a.id_Tecnico');
       Sql.Add('   INNER JOIN Tipos_Cliente e on e.id = a.id_Tipo_Cliente');
-      Sql.Add('   LEFT OUTER JOIN Usuarios f on f.id = a.id_Usuario_Designado');
-      Sql.Add('   LEFT OUTER JOIN Setores g on g.id = a.id_Setor_Designado');
+      Sql.Add('   INNER JOIN Tipos_Classificacao f on f.id = a.id_Tipo_Classificacao');
+      Sql.Add('   LEFT OUTER JOIN Usuarios g on g.id = a.id_Usuario_Designado');
+      Sql.Add('   LEFT OUTER JOIN Setores h on h.id = a.id_Setor_Designado');
       Sql.Add('where 1 = 1');
    end;
 end;

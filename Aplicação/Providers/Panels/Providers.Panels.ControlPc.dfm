@@ -4,10 +4,9 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
   inherited mtbPainel: TFDMemTable
     StoreDefs = True
     object mtbPainelProtocolo: TStringField
-      FieldKind = fkCalculated
+      Alignment = taCenter
       FieldName = 'Protocolo'
       Size = 50
-      Calculated = True
     end
     object mtbPainelid_Protocolo: TLargeintField
       FieldName = 'id_Protocolo'
@@ -44,6 +43,7 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
       Size = 3
     end
     object mtbPainelTipo_Status: TStringField
+      Alignment = taCenter
       FieldName = 'Tipo_Status'
       Origin = 'Tipo_Status'
       Size = 30
@@ -94,8 +94,21 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     end
   end
   inherited cdsPainel: TClientDataSet
+    object cdsPainelProtocolo: TStringField
+      Alignment = taCenter
+      FieldName = 'Protocolo'
+      Size = 50
+    end
     object cdsPainelid_Protocolo: TLargeintField
       FieldName = 'id_Protocolo'
+    end
+    object cdsPainelid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
+    end
+    object cdsPainelid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
     end
     object cdsPainelData_Abertura: TDateTimeField
       Alignment = taCenter
@@ -149,10 +162,12 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     end
     object cdsPainelUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
       Size = 100
     end
     object cdsPainelSetor_Designado: TStringField
       FieldName = 'Setor_Designado'
+      OnGetText = cdsPainelUsuario_DesignadoGetText
       Size = 50
     end
     object cdsPainelQtd_Historicos: TIntegerField
@@ -166,18 +181,6 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     object cdsPainelQtd_Observacoes: TIntegerField
       Alignment = taCenter
       FieldName = 'Qtd_Observacoes'
-    end
-    object cdsPainelid_Usuario_Designado: TIntegerField
-      FieldName = 'id_Usuario_Designado'
-    end
-    object cdsPainelid_Setor_Designado: TIntegerField
-      FieldName = 'id_Setor_Designado'
-    end
-    object cdsPainelProtocolo: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'Protocolo'
-      Size = 50
-      Calculated = True
     end
   end
   inherited mtbHistoricoAtualizacoes: TFDMemTable
@@ -217,33 +220,6 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
       Size = 3
     end
   end
-  object mtbTiposPrazo: TFDMemTable
-    FieldDefs = <>
-    IndexDefs = <>
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    StoreDefs = True
-    Left = 1037
-    Top = 79
-    object mtbTiposPrazoid: TIntegerField
-      FieldName = 'id'
-    end
-    object mtbTiposPrazoTipo_Prazo_Caixa: TStringField
-      FieldName = 'Tipo_Prazo_Caixa'
-      Origin = 'Tipo_Prazo_Caixa'
-      Size = 15
-    end
-  end
-  object dtsTiposPrazo: TDataSource
-    DataSet = mtbTiposPrazo
-    Left = 832
-    Top = 79
-  end
   object mtbUsuarios: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
@@ -265,7 +241,7 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
   object dtsTiposStatus: TDataSource
     DataSet = mtbTiposStatus
     Left = 832
-    Top = 436
+    Top = 421
   end
   object mtbTiposStatus: TFDMemTable
     FieldDefs = <>
@@ -278,8 +254,8 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 1037
-    Top = 436
+    Left = 993
+    Top = 421
     object mtbTiposStatusid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -312,7 +288,7 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 1037
+    Left = 993
     Top = 507
     object mtbSetoresid: TIntegerField
       FieldName = 'id'
@@ -333,8 +309,8 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 1037
-    Top = 175
+    Left = 993
+    Top = 163
     object mtbTecnicosid: TIntegerField
       FieldName = 'id'
     end
@@ -345,7 +321,7 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
   object dtsTecnicos: TDataSource
     DataSet = mtbTecnicos
     Left = 832
-    Top = 175
+    Top = 163
   end
   object mtbTiposCliente: TFDMemTable
     FieldDefs = <>
@@ -358,8 +334,8 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 1037
-    Top = 247
+    Left = 993
+    Top = 249
     object mtbTiposClienteid: TIntegerField
       FieldName = 'id'
     end
@@ -372,7 +348,7 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
   object dtsTiposCliente: TDataSource
     DataSet = mtbTiposCliente
     Left = 832
-    Top = 247
+    Top = 249
   end
   object mtbTiposClassificacao: TFDMemTable
     FieldDefs = <>
@@ -385,7 +361,7 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 1037
+    Left = 993
     Top = 335
     object mtbTiposClassificacaoid: TIntegerField
       FieldName = 'id'
@@ -405,5 +381,32 @@ inherited dtmPainelControlPc: TdtmPainelControlPc
     DataSet = cdsPainel
     Left = 256
     Top = 328
+  end
+  object mtbTiposPrazo: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 993
+    Top = 78
+    object mtbTiposPrazoid: TIntegerField
+      FieldName = 'id'
+    end
+    object mtbTiposPrazoTipo_Prazo_Caixa: TStringField
+      FieldName = 'Tipo_Prazo_Caixa'
+      Origin = 'Tipo_Prazo_Caixa'
+      Size = 15
+    end
+  end
+  object dtsTiposPrazo: TDataSource
+    DataSet = mtbTiposPrazo
+    Left = 832
+    Top = 78
   end
 end

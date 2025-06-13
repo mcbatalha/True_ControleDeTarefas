@@ -18,7 +18,7 @@ inherited frmSeguranca: TfrmSeguranca
       Top = 111
       Width = 902
       Height = 421
-      ActivePage = tbsImportacoes
+      ActivePage = tbsCadastro
       Align = alClient
       TabOrder = 1
       OnChange = pgcSegurancaChange
@@ -34,27 +34,25 @@ inherited frmSeguranca: TfrmSeguranca
           BevelOuter = bvLowered
           TabOrder = 0
           object chbMenuCadastros: TCheckBox
-            Left = 33
-            Top = 40
+            Left = 55
+            Top = 55
             Width = 192
             Height = 17
             Caption = 'Acesso ao Menu Cadastros'
-            Checked = True
-            State = cbChecked
             TabOrder = 0
             OnClick = chbMenuCadastrosClick
           end
           object chbCadastroSetores: TCheckBox
-            Left = 57
-            Top = 67
+            Left = 80
+            Top = 85
             Width = 192
             Height = 17
             Caption = 'Setores'
             TabOrder = 1
           end
           object chbCadastroUsusarios: TCheckBox
-            Left = 57
-            Top = 95
+            Left = 80
+            Top = 115
             Width = 192
             Height = 17
             Caption = 'Usu'#225'rios'
@@ -75,31 +73,72 @@ inherited frmSeguranca: TfrmSeguranca
           BevelOuter = bvLowered
           TabOrder = 0
           object chbMenuImportacoes: TCheckBox
-            Left = 33
-            Top = 44
+            Left = 55
+            Top = 55
             Width = 288
             Height = 17
             Caption = 'Acesso ao Menu Importa'#231#227'o de Planilhas'
-            Checked = True
-            State = cbChecked
             TabOrder = 0
             OnClick = chbMenuImportacoesClick
           end
           object chbImportacaoAutoSC: TCheckBox
-            Left = 57
-            Top = 81
+            Left = 80
+            Top = 85
             Width = 192
             Height = 17
             Caption = 'AUTOSC'
             TabOrder = 1
           end
           object chbImportacaoSiags: TCheckBox
-            Left = 57
-            Top = 118
+            Left = 80
+            Top = 115
             Width = 192
             Height = 17
             Caption = 'SIAGS'
             TabOrder = 2
+          end
+          object chbImportacaoControlPc: TCheckBox
+            Left = 80
+            Top = 145
+            Width = 192
+            Height = 17
+            Caption = 'CONTROPC'
+            TabOrder = 3
+          end
+        end
+      end
+      object tbsPaineis: TTabSheet
+        Caption = 'Paineis'
+        ImageIndex = 3
+        object pnlPaineis: TPanel
+          Left = 0
+          Top = 0
+          Width = 894
+          Height = 390
+          Align = alClient
+          BevelInner = bvRaised
+          BevelOuter = bvLowered
+          TabOrder = 0
+          ExplicitLeft = 352
+          ExplicitTop = 176
+          ExplicitWidth = 185
+          ExplicitHeight = 41
+          object chbMenuPaineis: TCheckBox
+            Left = 55
+            Top = 55
+            Width = 260
+            Height = 17
+            Caption = 'Acesso ao Menu Paineis'
+            TabOrder = 0
+            OnClick = chbMenuPaineisClick
+          end
+          object chbPaineisAcompanhamento: TCheckBox
+            Left = 80
+            Top = 85
+            Width = 192
+            Height = 17
+            Caption = 'Paineis de Acompanhamento'
+            TabOrder = 1
           end
         end
       end
@@ -132,8 +171,8 @@ inherited frmSeguranca: TfrmSeguranca
             OnClick = btnDesmarcarTodosClick
           end
           object chbMenuManutencao: TCheckBox
-            Left = 33
-            Top = 40
+            Left = 55
+            Top = 55
             Width = 260
             Height = 17
             Caption = 'Acesso ao Menu Manuten'#231#227'o do Sistema'
@@ -141,8 +180,8 @@ inherited frmSeguranca: TfrmSeguranca
             OnClick = chbMenuManutencaoClick
           end
           object chbSeguranca: TCheckBox
-            Left = 57
-            Top = 67
+            Left = 80
+            Top = 85
             Width = 192
             Height = 17
             Caption = 'Seguran'#231'a'

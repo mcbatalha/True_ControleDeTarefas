@@ -23,16 +23,17 @@ type
     mngImportaoPlanilhas: TMenuItem;
     mniImportacaoAutoSC: TMenuItem;
     mniImportacaoSiags: TMenuItem;
-    PaineisdeAcompanhamento1: TMenuItem;
+    mniPainelAcompanhamento: TMenuItem;
     mniSair: TMenuItem;
     mniImportacaoControlPc: TMenuItem;
+    mngPaineis: TMenuItem;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mniSegurancaClick(Sender: TObject);
     procedure mniImportacaoAutoSCClick(Sender: TObject);
-    procedure PaineisdeAcompanhamento1Click(Sender: TObject);
+    procedure mniPainelAcompanhamentoClick(Sender: TObject);
     procedure mniSairClick(Sender: TObject);
     procedure mniImportacaoSiagsClick(Sender: TObject);
     procedure mniImportacaoControlPcClick(Sender: TObject);
@@ -94,7 +95,7 @@ begin
    FreeAndNil(LForm);
 end;
 
-procedure TfrmPrincipal.PaineisdeAcompanhamento1Click(Sender: TObject);
+procedure TfrmPrincipal.mniPainelAcompanhamentoClick(Sender: TObject);
 var
    LForm : TfrmPaineis;
 begin

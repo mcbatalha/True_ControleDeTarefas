@@ -42,6 +42,14 @@ type
   public
      constructor Create(ASqlConnection : TSQLConnection);
 
+     function DataSourcePainel       : TDataSource;
+     function DataSourceTiposPrazo   : TDataSource;
+     function DataSourceTecnicos     : TDataSource;
+     function DataSourceTiposCliente : TDataSource;
+     function DataSourceTipoStatus   : TDataSource;
+     function DataSourceTiposClassificacao : TDataSource;
+
+
      function DataSetPesquisaDeUsuario : TDataSet;
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
@@ -58,15 +66,15 @@ type
      function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
      function Encerrar(const AJustificativa : String) : Boolean;
 
-
-     function HistoricoDeDesignacoes : String;
-     function HistoricoDeAtualizacoes : String;
+     function HistoricoDeDesignacoes   : String;
+     function HistoricoDeAtualizacoes  : String;
      function ObservacoesDaAutorizacao : String;
 
      procedure IncluirObservacao;
      function GravarObservacao(const AObservacao : String): Boolean;
      procedure CancelarObservacao;
 
+     function Conteudo(const ACampo : String) : String;
 
      destructor Destroy(); override;
 
@@ -88,6 +96,36 @@ begin
    Result := FdmControlPc.dtsObservacoesProcesso;
 end;
 
+function TSrvControlPc.DataSourcePainel: TDataSource;
+begin
+   Result := FdmControlPc.dtsPainel;
+end;
+
+function TSrvControlPc.DataSourceTecnicos: TDataSource;
+begin
+   Result := FdmControlPc.dtsTecnicos;
+end;
+
+function TSrvControlPc.DataSourceTiposClassificacao: TDataSource;
+begin
+   Result := FdmControlPc.dtsTiposClassificacao;
+end;
+
+function TSrvControlPc.DataSourceTiposCliente: TDataSource;
+begin
+   Result := FdmControlPc.dtsTiposCliente;
+end;
+
+function TSrvControlPc.DataSourceTiposPrazo: TDataSource;
+begin
+   Result := FdmControlPc.dtsTiposPrazo;
+end;
+
+function TSrvControlPc.DataSourceTipoStatus: TDataSource;
+begin
+   Result := FdmControlPc.dtsTiposStatus;
+end;
+
 function TSrvControlPc.DataSetPesquisaDeUsuario : TDataSet;
 begin
    Result := FdmControlPc.mtbUsuarios;
@@ -98,10 +136,13 @@ begin
    FdmControlPc.mtbObservacoesProcesso.Cancel;
 end;
 
+function TSrvControlPc.Conteudo(const ACampo: String): String;
+begin
+   Result := FdmControlPc.cdsPainel.FieldByName(ACampo).AsString;
+end;
+
 constructor TSrvControlPc.Create(ASqlConnection : TSQLConnection);
 begin
-//   FPxyControlPc := TSMControlPcClient.Create(FdmControlPc.SQLConnection.DBXConnection);
-
    Application.CreateForm(TdtmPainelControlPc, FdmControlPc);
    FPxyControlPc := TSMControlPcClient.Create(ASqlConnection.DBXConnection);
 

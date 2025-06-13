@@ -42,6 +42,7 @@ object frmPaineis: TfrmPaineis
     Padding.Bottom = 5
     ParentBackground = False
     TabOrder = 0
+    ExplicitTop = -24
     object pnlBotoes: TPanel
       Left = 7
       Top = 7
@@ -636,19 +637,19 @@ object frmPaineis: TfrmPaineis
               'Selecionado;CheckBox;1;0'
               'Prioridade;CustomEdit;Cb_Prioridade;F')
             Selected.Strings = (
-              'Protocolo'#9'50'#9'Protocolo'#9'F'
+              'Protocolo'#9'30'#9'Protocolo'#9'F'
               'Tipo_Status'#9'30'#9'Status'#9'F'
-              'Data_Abertura'#9'18'#9'Data de~Abertura'#9'F'
-              'Data_Fechamento'#9'18'#9'Data de~Fechamento'#9'F'
-              'Data_Transferencia'#9'18'#9'Data de~Transferencia'#9'F'
-              'Previsao_Solucao'#9'18'#9'Previs'#227'o~de Solu'#231#227'o'#9'F'
+              'Data_Abertura'#9'20'#9'Data de~Abertura'#9'F'
+              'Data_Fechamento'#9'20'#9'Data de~Fechamento'#9'F'
+              'Data_Transferencia'#9'20'#9'Data de~Transferencia'#9'F'
+              'Previsao_Solucao'#9'28'#9'Previs'#227'o~de Solu'#231#227'o'#9'F'
               'Tipo_Prazo_Caixa'#9'15'#9'Prazo'#9'F'
               'Nome_Tecnico'#9'50'#9'T'#233'cnico'#9'F'
               'Tipo_Cliente'#9'50'#9'Tipo Cliente'#9'F'
               'Tipo_Classificacao'#9'100'#9'Classifica'#231#227'o'#9'F'
               'Solicitacao_Cliente'#9'100'#9'Solicita'#231#227'o do Cliente'#9'F'
-              'Tipo_Reclame'#9'5'#9'Tipo~Reclame'#9'F'
-              'Tipo_Nip'#9'5'#9'Tipo~Nip'#9'F'
+              'Tipo_Reclame'#9'10'#9'Tipo~Reclame'#9'F'
+              'Tipo_Nip'#9'10'#9'Tipo~Nip'#9'F'
               'Usuario_Designado'#9'50'#9'Usu'#225'rio'#9'F'#9'Designa'#231#227'o'
               'Setor_Designado'#9'50'#9'Setor'#9'F'#9'Designa'#231#227'o'
               'Qtd_Designacoes'#9'10'#9'Qtd de~Designa'#231#245'es'#9'F'
@@ -683,7 +684,7 @@ object frmPaineis: TfrmPaineis
             TitleButtons = True
             UseTFields = False
             OnTitleButtonClick = dbgControlPcTitleButtonClick
-            OnDblClick = dbgAutoSCDblClick
+            OnDblClick = dbgControlPcDblClick
             FooterHeight = 20
             PaintOptions.AlternatingRowColor = 16053492
           end
@@ -711,18 +712,19 @@ object frmPaineis: TfrmPaineis
     end
   end
   object pgcPaineisConteiner: TPageControl
-    Left = 52
-    Top = 357
+    Left = 84
+    Top = 309
     Width = 1345
     Height = 657
     ActivePage = TabSheet9
+    MultiLine = True
     TabOrder = 1
     Visible = False
     object TabSheet1: TTabSheet
       Caption = 'pnlFiltrosAutoSC'
       object pnlFiltrosAutoSC: TPanel
-        Left = 67
-        Top = 81
+        Left = 356
+        Top = 31
         Width = 625
         Height = 544
         BevelInner = bvRaised
@@ -1101,8 +1103,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlDesignacao'
       ImageIndex = 1
       object pnlDesignacao: TPanel
-        Left = 125
-        Top = 65
+        Left = 356
+        Top = 118
         Width = 625
         Height = 368
         BevelInner = bvRaised
@@ -1130,6 +1132,7 @@ object frmPaineis: TfrmPaineis
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
+          WordWrap = True
           ExplicitWidth = 308
         end
         object pnlCamposDesignacao: TPanel
@@ -1287,63 +1290,6 @@ object frmPaineis: TfrmPaineis
               OnClick = btnCancelarDesignacaoClick
             end
           end
-          object pnlSelecaoDesignacao: TPanel
-            Left = 0
-            Top = 121
-            Width = 611
-            Height = 124
-            Align = alClient
-            BevelOuter = bvNone
-            TabOrder = 2
-            object Label8: TLabel
-              Left = 40
-              Top = 0
-              Width = 31
-              Height = 16
-              Caption = 'Setor'
-            end
-            inline fraPesquisaUsuario: TfraPesquisaUsuario
-              AlignWithMargins = True
-              Left = 0
-              Top = 45
-              Width = 611
-              Height = 71
-              Margins.Left = 0
-              Margins.Top = 45
-              Margins.Right = 0
-              Margins.Bottom = 0
-              Align = alTop
-              Color = clWhite
-              ParentBackground = False
-              ParentColor = False
-              TabOrder = 1
-              ExplicitTop = 45
-              ExplicitWidth = 611
-              ExplicitHeight = 71
-              inherited Label9: TLabel
-                Left = 40
-                ExplicitLeft = 40
-              end
-              inherited btnPesquisarUsuario: TSpeedButton
-                Left = 544
-                ExplicitLeft = 544
-              end
-              inherited cmbUsuarios: TDBLookupComboBox
-                Left = 40
-                ExplicitLeft = 40
-              end
-            end
-            object cmbSetores: TDBLookupComboBox
-              Left = 40
-              Top = 19
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Nome_Setor'
-              ListSource = dtmPainelAutoSC.dtsSetores
-              TabOrder = 0
-            end
-          end
           object Panel1: TPanel
             Left = 0
             Top = 0
@@ -1377,8 +1323,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlHistoricoDesignacoes'
       ImageIndex = 2
       object pnlHistoricoDesignacoes: TPanel
-        Left = 133
-        Top = 73
+        Left = 356
+        Top = 98
         Width = 625
         Height = 408
         BevelInner = bvRaised
@@ -1556,8 +1502,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlHistoricoAtualizacoesAutoSc'
       ImageIndex = 3
       object pnlHistoricoAtualizacoesAutoSc: TPanel
-        Left = 141
-        Top = 81
+        Left = 356
+        Top = 98
         Width = 625
         Height = 408
         BevelInner = bvRaised
@@ -1756,8 +1702,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlEncerramento'
       ImageIndex = 4
       object pnlEncerramento: TPanel
-        Left = 149
-        Top = 89
+        Left = 356
+        Top = 190
         Width = 625
         Height = 224
         BevelInner = bvRaised
@@ -1975,8 +1921,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlObservacoesProcesso'
       ImageIndex = 5
       object pnlObservacoesProcesso: TPanel
-        Left = 157
-        Top = 97
+        Left = 356
+        Top = 102
         Width = 625
         Height = 400
         BevelInner = bvRaised
@@ -2323,8 +2269,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlFiltrosSiags'
       ImageIndex = 6
       object pnlFiltrosSiags: TPanel
-        Left = 75
-        Top = 82
+        Left = 356
+        Top = 31
         Width = 625
         Height = 544
         BevelInner = bvRaised
@@ -2662,8 +2608,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlHistoricoAtualizacoesSiags'
       ImageIndex = 7
       object pnlHistoricoAtualizacoesSiags: TPanel
-        Left = 69
-        Top = 58
+        Left = 202
+        Top = 55
         Width = 932
         Height = 495
         BevelInner = bvRaised
@@ -3099,10 +3045,10 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlFiltrosControlPc'
       ImageIndex = 8
       object pnlFiltrosControlPc: TPanel
-        Left = 367
-        Top = 26
+        Left = 356
+        Top = 30
         Width = 625
-        Height = 544
+        Height = 523
         BevelInner = bvRaised
         BevelOuter = bvLowered
         Color = 8404992
@@ -3134,20 +3080,22 @@ object frmPaineis: TfrmPaineis
           Left = 7
           Top = 44
           Width = 611
-          Height = 493
+          Height = 472
           Align = alClient
           BevelOuter = bvNone
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
+          ExplicitHeight = 493
           object Panel18: TPanel
             Left = 0
-            Top = 432
+            Top = 411
             Width = 611
             Height = 61
             Align = alBottom
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitTop = 432
             DesignSize = (
               611
               61)
@@ -3290,7 +3238,7 @@ object frmPaineis: TfrmPaineis
             Left = 0
             Top = 0
             Width = 611
-            Height = 316
+            Height = 293
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 1
@@ -3403,6 +3351,7 @@ object frmPaineis: TfrmPaineis
               MaxLength = 10
               TabOrder = 1
               Text = '  /  /    '
+              OnExit = edtDataAberturaExit
             end
             object cmbTiposCliente: TDBLookupComboBox
               Left = 40
@@ -3419,8 +3368,9 @@ object frmPaineis: TfrmPaineis
               Top = 247
               Width = 78
               Height = 24
+              Style = csOwnerDrawFixed
+              ItemHeight = 18
               TabOrder = 8
-              Text = 'cmbTipoReclame'
               Items.Strings = (
                 'Sim'
                 'N'#227'o'
@@ -3431,8 +3381,9 @@ object frmPaineis: TfrmPaineis
               Top = 247
               Width = 78
               Height = 24
+              Style = csOwnerDrawFixed
+              ItemHeight = 18
               TabOrder = 9
-              Text = 'cmbComboBox'
               Items.Strings = (
                 'Sim'
                 'N'#227'o'
@@ -3447,6 +3398,7 @@ object frmPaineis: TfrmPaineis
               MaxLength = 10
               TabOrder = 2
               Text = '  /  /    '
+              OnExit = edtDataAberturaExit
             end
             object edtDataTransferencia: TMaskEdit
               Left = 322
@@ -3457,6 +3409,7 @@ object frmPaineis: TfrmPaineis
               MaxLength = 10
               TabOrder = 3
               Text = '  /  /    '
+              OnExit = edtDataAberturaExit
             end
             object edtPrevisaoSolucao: TMaskEdit
               Left = 464
@@ -3467,6 +3420,66 @@ object frmPaineis: TfrmPaineis
               MaxLength = 10
               TabOrder = 4
               Text = '  /  /    '
+              OnExit = edtDataAberturaExit
+            end
+          end
+          object pnlSelecaoDesignacao: TPanel
+            Left = 0
+            Top = 293
+            Width = 611
+            Height = 118
+            Align = alClient
+            BevelOuter = bvNone
+            TabOrder = 2
+            ExplicitTop = 121
+            ExplicitHeight = 124
+            object Label8: TLabel
+              Left = 40
+              Top = 0
+              Width = 31
+              Height = 16
+              Caption = 'Setor'
+            end
+            inline fraPesquisaUsuario: TfraPesquisaUsuario
+              AlignWithMargins = True
+              Left = 0
+              Top = 45
+              Width = 611
+              Height = 71
+              Margins.Left = 0
+              Margins.Top = 45
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alTop
+              Color = clWhite
+              ParentBackground = False
+              ParentColor = False
+              TabOrder = 1
+              ExplicitTop = 45
+              ExplicitWidth = 611
+              ExplicitHeight = 71
+              inherited Label9: TLabel
+                Left = 40
+                ExplicitLeft = 40
+              end
+              inherited btnPesquisarUsuario: TSpeedButton
+                Left = 544
+                ExplicitLeft = 544
+              end
+              inherited cmbUsuarios: TDBLookupComboBox
+                Left = 40
+                ExplicitLeft = 40
+              end
+            end
+            object cmbSetores: TDBLookupComboBox
+              Left = 40
+              Top = 19
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Nome_Setor'
+              ListSource = dtmPainelAutoSC.dtsSetores
+              TabOrder = 0
             end
           end
         end
@@ -3476,8 +3489,8 @@ object frmPaineis: TfrmPaineis
       Caption = 'pnlHistoricoAtualizacoesControlPc'
       ImageIndex = 9
       object pnlHistoricoAtualizacoesControlPc: TPanel
-        Left = 77
-        Top = 34
+        Left = 202
+        Top = 55
         Width = 932
         Height = 495
         BevelInner = bvRaised
@@ -3905,6 +3918,89 @@ object frmPaineis: TfrmPaineis
             DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
             ReadOnly = True
             TabOrder = 13
+          end
+        end
+      end
+    end
+    object TabSheet11: TTabSheet
+      Caption = 'pnlExibirConteudo'
+      ImageIndex = 10
+      object pnlExibirConteudo: TPanel
+        Left = 364
+        Top = 110
+        Width = 625
+        Height = 275
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloExibicaoConteudo: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 308
+        end
+        object Panel17: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 224
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitHeight = 349
+          object Panel21: TPanel
+            Left = 0
+            Top = 152
+            Width = 611
+            Height = 72
+            Align = alBottom
+            TabOrder = 0
+            ExplicitTop = 277
+            DesignSize = (
+              611
+              72)
+            object btnFecharExibicaoConteudo: TBitBtn
+              Left = 246
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Fechar'
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFecharExibicaoConteudoClick
+            end
+          end
+          object memExibirConteudo: TMemo
+            Left = 41
+            Top = 32
+            Width = 520
+            Height = 117
+            Color = clBtnFace
+            Lines.Strings = (
+              'memExibirConteudo')
+            ReadOnly = True
+            TabOrder = 1
           end
         end
       end
