@@ -97,11 +97,17 @@ end;
 
 
 function TfrmImportacoesAutoSc.ValidarPlanilha: Boolean;
+var
+   LMensagem : String;
 begin
-   Result := FService.Validar(FSheet);
+   Result := FService.Validar(FSheet, LMensagem);
 
    if not Result then
+      begin
       FecharPlanilha;
+      frmMensagem.close;
+      InformationMessage(LMensagem, C_TITULO_MENSAGENS);
+   end;
 end;
 
 end.

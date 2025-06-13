@@ -1028,8 +1028,6 @@ object frmPrincipal: TfrmPrincipal
         Alignment = taCenter
         Width = 60
       end>
-    ExplicitTop = 546
-    ExplicitWidth = 1034
   end
   object Timer: TTimer
     Left = 952
@@ -1059,6 +1057,10 @@ object frmPrincipal: TfrmPrincipal
       object mniImportacaoSiags: TMenuItem
         Caption = 'SIAGS'
         OnClick = mniImportacaoSiagsClick
+      end
+      object mniImportacaoControlPc: TMenuItem
+        Caption = 'CONTROLPC'
+        OnClick = mniImportacaoControlPcClick
       end
     end
     object PaineisdeAcompanhamento1: TMenuItem

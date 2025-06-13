@@ -5,8 +5,8 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   Width = 1466
   inherited mtbPainel: TFDMemTable
     StoreDefs = True
-    object mtbPainelid_Autorizacao: TLargeintField
-      FieldName = 'id_Autorizacao'
+    object mtbPainelid_Processo: TLargeintField
+      FieldName = 'id_Processo'
     end
     object mtbPainelNumero_Processo: TLargeintField
       FieldName = 'Numero_Processo'
@@ -88,8 +88,8 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     end
   end
   inherited cdsPainel: TClientDataSet
-    object cdsPainelid_Autorizacao: TLargeintField
-      FieldName = 'id_Autorizacao'
+    object cdsPainelid_Processo: TLargeintField
+      FieldName = 'id_Processo'
     end
     object cdsPainelNumero_Processo: TLargeintField
       Alignment = taCenter
@@ -166,7 +166,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       FieldName = 'Qtd_Observacoes'
     end
   end
-  object mtbTiposAuditoria: TFDMemTable
+  object mtbTiposAuditoria: TFDMemTable [6]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -188,7 +188,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 15
     end
   end
-  object mtbTiposPrazoHoje: TFDMemTable
+  object mtbTiposPrazoHoje: TFDMemTable [7]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -210,7 +210,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 15
     end
   end
-  object mtbTiposProcesso: TFDMemTable
+  object mtbTiposProcesso: TFDMemTable [8]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -239,7 +239,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 50
     end
   end
-  object mtbTiposProcessoE: TFDMemTable
+  object mtbTiposProcessoE: TFDMemTable [9]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -267,7 +267,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Origin = 'Tipo_Processo_E'
     end
   end
-  object mtbTiposStatus: TFDMemTable
+  object mtbTiposStatus: TFDMemTable [10]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -296,7 +296,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 15
     end
   end
-  object mtbTiposPrazo: TFDMemTable
+  object mtbTiposPrazo: TFDMemTable [11]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -318,7 +318,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 15
     end
   end
-  object mtbSetores: TFDMemTable
+  object mtbSetores: TFDMemTable [12]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -339,42 +339,42 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 50
     end
   end
-  object dtsTiposAuditoria: TDataSource
+  object dtsTiposAuditoria: TDataSource [13]
     DataSet = mtbTiposAuditoria
     Left = 832
     Top = 8
   end
-  object dtsTiposPrazo: TDataSource
+  object dtsTiposPrazo: TDataSource [14]
     DataSet = mtbTiposPrazo
     Left = 832
     Top = 78
   end
-  object dtsTiposPrazoHoje: TDataSource
+  object dtsTiposPrazoHoje: TDataSource [15]
     DataSet = mtbTiposPrazoHoje
     Left = 832
     Top = 149
   end
-  object dtsTiposProcesso: TDataSource
+  object dtsTiposProcesso: TDataSource [16]
     DataSet = mtbTiposProcesso
     Left = 832
     Top = 295
   end
-  object dtsTiposProcessoE: TDataSource
+  object dtsTiposProcessoE: TDataSource [17]
     DataSet = mtbTiposProcessoE
     Left = 832
     Top = 365
   end
-  object dtsTiposStatus: TDataSource
+  object dtsTiposStatus: TDataSource [18]
     DataSet = mtbTiposStatus
     Left = 832
     Top = 436
   end
-  object dtsSetores: TDataSource
+  object dtsSetores: TDataSource [19]
     DataSet = mtbSetores
     Left = 832
     Top = 507
   end
-  object mtbTiposPrazoANS: TFDMemTable
+  object mtbTiposPrazoANS: TFDMemTable [20]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -396,17 +396,17 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 15
     end
   end
-  object dtsTiposPrazoANS: TDataSource
+  object dtsTiposPrazoANS: TDataSource [21]
     DataSet = mtbTiposPrazoANS
     Left = 833
     Top = 219
   end
-  object dtsPainel: TDataSource
+  object dtsPainel: TDataSource [22]
     DataSet = cdsPainel
     Left = 144
     Top = 179
   end
-  object mtbUsuarios: TFDMemTable
+  object mtbUsuarios: TFDMemTable [23]
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -424,7 +424,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 100
     end
   end
-  object mtbUF: TFDMemTable
+  object mtbUF: TFDMemTable [24]
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -443,57 +443,12 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       Size = 5
     end
   end
-  object dtsUF: TDataSource
+  object dtsUF: TDataSource [25]
     DataSet = mtbUF
     Left = 832
     Top = 579
   end
-  object mtbHistoricoDesignacoes: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 64
-    Top = 400
-    object mtbHistoricoDesignacoesJustificativa: TStringField
-      FieldName = 'Justificativa'
-      Size = 100
-    end
-    object mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField
-      Alignment = taCenter
-      FieldName = 'Data_Hora_Log'
-    end
-    object mtbHistoricoDesignacoesNome_Setor: TStringField
-      FieldName = 'Nome_Setor'
-      Size = 50
-    end
-    object mtbHistoricoDesignacoesUsuario_Designado: TStringField
-      FieldName = 'Usuario_Designado'
-      Size = 100
-    end
-    object mtbHistoricoDesignacoesUsuario_Responsavel: TStringField
-      FieldName = 'Usuario_Responsavel'
-      Size = 100
-    end
-  end
-  object dtsHistoricoDesignacoes: TDataSource
-    DataSet = mtbHistoricoDesignacoes
-    Left = 256
-    Top = 400
-  end
-  object mtbHistoricoAtualizacoes: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 64
-    Top = 480
+  inherited mtbHistoricoAtualizacoes: TFDMemTable
     object mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField
       FieldName = 'Data_Hora_Historico'
     end
@@ -517,37 +472,5 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       FieldName = 'Nome_Usuario'
       Size = 100
     end
-  end
-  object dtsHistoricoAtualizacoes: TDataSource
-    DataSet = mtbHistoricoAtualizacoes
-    Left = 256
-    Top = 480
-  end
-  object mtbObservacoesProcesso: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 64
-    Top = 552
-    object mtbObservacoesProcessoData_Hora: TDateTimeField
-      FieldName = 'Data_Hora'
-    end
-    object mtbObservacoesProcessoObservacao: TStringField
-      FieldName = 'Observacao'
-      Size = 500
-    end
-    object mtbObservacoesProcessoNome_Usuario: TStringField
-      FieldName = 'Nome_Usuario'
-      Size = 100
-    end
-  end
-  object dtsObservacoesProcesso: TDataSource
-    DataSet = mtbObservacoesProcesso
-    Left = 256
-    Top = 552
   end
 end

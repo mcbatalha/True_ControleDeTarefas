@@ -1,2 +1,0 @@
-inherited dtmImportacoes: TdtmImportacoes
-end

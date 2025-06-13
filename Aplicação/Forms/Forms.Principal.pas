@@ -25,6 +25,7 @@ type
     mniImportacaoSiags: TMenuItem;
     PaineisdeAcompanhamento1: TMenuItem;
     mniSair: TMenuItem;
+    mniImportacaoControlPc: TMenuItem;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
@@ -34,6 +35,7 @@ type
     procedure PaineisdeAcompanhamento1Click(Sender: TObject);
     procedure mniSairClick(Sender: TObject);
     procedure mniImportacaoSiagsClick(Sender: TObject);
+    procedure mniImportacaoControlPcClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,7 +53,7 @@ uses Forms.Cadastro.Setores,
      Forms.Cadastro.Usuarios,
      Libs.TSeguranca,
      Forms.Login,
-     Forms.Importacoes.AutoSc, Forms.Importacoes.Siags;
+     Forms.Importacoes.AutoSc, Forms.Importacoes.Siags, Forms.Importacoes.ControlPc;
 
 procedure TfrmPrincipal.FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
@@ -131,6 +133,15 @@ var
    LForm : TfrmImportacoesAutoSc;
 begin
    Application.CreateForm(TfrmImportacoesAutoSc, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.mniImportacaoControlPcClick(Sender: TObject);
+var
+   LForm : TfrmImportacoesControlPc;
+begin
+   Application.CreateForm(TfrmImportacoesControlPc, LForm);
    LForm.ShowModal;
    FreeAndNil(LForm);
 end;

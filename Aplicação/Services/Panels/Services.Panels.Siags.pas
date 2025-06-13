@@ -238,7 +238,7 @@ begin
       FdmSiags.mtbObservacoesProcesso.Post;
 
       FdmSiags.cdsPainel.Edit;
-      FdmSiags.cdsPainelQtd_Historicos.AsInteger := FdmSiags.cdsPainelQtd_Historicos.AsInteger + 1;
+      FdmSiags.cdsPainelQtd_Observacoes.AsInteger := FdmSiags.cdsPainelQtd_Observacoes.AsInteger + 1;
       FdmSiags.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');

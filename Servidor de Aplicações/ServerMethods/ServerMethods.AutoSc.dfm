@@ -133,6 +133,7 @@ object SMAutoSC: TSMAutoSC
   end
   object qryTiposStatus: TFDQuery
     Connection = ServerContainer.FDConnection
+    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Status'
     SQL.Strings = (
       'Declare @AUTOSC int;'
       'Set @AUTOSC = :AUTOSC;'

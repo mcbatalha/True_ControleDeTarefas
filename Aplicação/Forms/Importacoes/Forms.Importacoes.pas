@@ -44,12 +44,13 @@ type
     procedure FormDestroy(Sender: TObject);
   private
 
-    frmMensagem : TfrmMensagem;
 
     procedure AbrirPlanilha;
     function  ObterInformacoesDaPlanilha : Boolean;
 
   protected
+    frmMensagem : TfrmMensagem;
+
     FPlanilha : Variant;
     FWorkbook : Variant;
     FSheet    : Variant;
@@ -81,6 +82,10 @@ implementation
 procedure TfrmImportacoes.AbrirPlanilha;
 begin
    try
+      if FPlanilhaCarregada then
+         FecharPlanilha;
+
+
       FPlanilha := CreateOleObject('Excel.Application');
       FWorkbook := FPlanilha.Workbooks.Open(edtArquivo.Text);
       FSheet := FWorkbook.Sheets[1];
@@ -122,10 +127,10 @@ begin
 
       AbrirPlanilha;
 
-      if ObterInformacoesDaPlanilha then exit;
-         begin
-         Gauge.MaxValue := FTotalLinhas;
-      end;
+      if not ObterInformacoesDaPlanilha then
+         exit;
+
+      Gauge.MaxValue := FTotalLinhas;
 
       btnAnalisarDados.Enabled := FPlanilhaCarregada;
       frmMensagem.Close;
@@ -162,10 +167,10 @@ end;
 
 procedure TfrmImportacoes.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(frmMensagem);
+   if Assigned(frmMensagem) then
+      FreeAndNil(frmMensagem);
 
   inherited;
-
 end;
 
 procedure TfrmImportacoes.FormShow(Sender: TObject);
@@ -176,10 +181,14 @@ end;
 
 function TfrmImportacoes.ObterInformacoesDaPlanilha: Boolean;
 var
-   LValor : Variant;
+   LValor    : Variant;
+   LMensagem : String;
 begin
 
     Result := ValidarPlanilha;
+
+    FTotalLinhas  := 0;
+    FTotalColunas := 0;
 
     try
        if not Result then Exit;

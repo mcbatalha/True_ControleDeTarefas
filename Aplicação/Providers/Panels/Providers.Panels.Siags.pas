@@ -33,22 +33,6 @@ uses
 
 type
   TdtmPainelSiags = class(TdtmPainel)
-    mtbHistoricoDesignacoes: TFDMemTable;
-    mtbHistoricoDesignacoesJustificativa: TStringField;
-    mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField;
-    mtbHistoricoDesignacoesNome_Setor: TStringField;
-    mtbHistoricoDesignacoesUsuario_Designado: TStringField;
-    mtbHistoricoDesignacoesUsuario_Responsavel: TStringField;
-    dtsHistoricoDesignacoes: TDataSource;
-    mtbHistoricoAtualizacoes: TFDMemTable;
-    mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField;
-    mtbHistoricoAtualizacoesNome_Usuario: TStringField;
-    dtsHistoricoAtualizacoes: TDataSource;
-    mtbObservacoesProcesso: TFDMemTable;
-    mtbObservacoesProcessoData_Hora: TDateTimeField;
-    mtbObservacoesProcessoObservacao: TStringField;
-    mtbObservacoesProcessoNome_Usuario: TStringField;
-    dtsObservacoesProcesso: TDataSource;
     mtbTiposAuditoria: TFDMemTable;
     mtbTiposAuditoriaid: TIntegerField;
     mtbTiposAuditoriaTipo_Auditoria: TStringField;
@@ -145,6 +129,9 @@ type
     cdsPainelQtd_Historicos: TIntegerField;
     cdsPainelQtd_Designacoes: TIntegerField;
     cdsPainelQtd_Observacoes: TIntegerField;
+    cdsPainelid_Autorizacao: TLargeintField;
+    mtbHistoricoAtualizacoesNome_Usuario: TStringField;
+    mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField;
     mtbHistoricoAtualizacoesAnexo_Opme: TStringField;
     mtbHistoricoAtualizacoesAnexo_Quimio: TStringField;
     mtbHistoricoAtualizacoesAnexo_Radio: TStringField;
@@ -161,7 +148,6 @@ type
     mtbHistoricoAtualizacoesTipo_Auditoria: TStringField;
     mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField;
     mtbHistoricoAtualizacoesTipo_Prazo_Ans: TStringField;
-    cdsPainelid_Autorizacao: TLargeintField;
     procedure cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
     { Private declarations }

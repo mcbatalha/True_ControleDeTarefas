@@ -1,6 +1,5 @@
 inherited frmImportacoesAutoSc: TfrmImportacoesAutoSc
   Caption = 'Importa'#231#227'o de Planilhas - AUTOSC'
-  OnDestroy = FormDestroy
   PixelsPerInch = 120
   TextHeight = 16
   inherited pnlForm: TPanel

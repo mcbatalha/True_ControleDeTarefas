@@ -56,6 +56,9 @@ type
        usaPrevisaoSolucao   : Boolean;
        previsaoSolucao      : TDateTime;
 
+       tipoReclame          : String;
+       tipoNip              : String;
+
        idSetorDesignado     : integer;
        idUsuarioDesignado   : integer;
        nomeUsuario          : String;
@@ -108,8 +111,9 @@ uses Libs.Constantes, Libs.TSeguranca;
 constructor TFiltros.create(const ATipo : Integer);
 begin
    case ATipo of
-      C_CODIGO_AUTOSC : LimparFiltrosAutoSc;
-      C_CODIGO_SIAGS  : LimparFiltrosSiags;
+      C_CODIGO_AUTOSC    : LimparFiltrosAutoSc;
+      C_CODIGO_SIAGS     : LimparFiltrosSiags;
+      C_CODIGO_CONTROLPC : LimparFiltrosControlPc;
    end;
 end;
 
@@ -155,6 +159,9 @@ begin
    Result.AddPair('idTipoPrazo',          TJSONNumber.Create(FFiltrosControlPc.idTipoPrazo));
    Result.AddPair('idTecnico',            TJSONNumber.Create(FFiltrosControlPc.idTecnico));
    Result.AddPair('idTipoCliente',        TJSONNumber.Create(FFiltrosControlPc.idTipoCliente));
+   Result.AddPair('tipoReclame',          TJSONString.Create(FFiltrosControlPc.tipoReclame));
+   Result.AddPair('tipoNip',              TJSONString.Create(FFiltrosControlPc.tipoNip));
+
    Result.AddPair('usaDataAbertura',      TJSONBool.Create(FFiltrosControlPc.usaDataAbertura));
    Result.AddPair('usaDataFechamento',    TJSONBool.Create(FFiltrosControlPc.usaDataFechamento));
    Result.AddPair('usaDataTransferencia', TJSONBool.Create(FFiltrosControlPc.usaDataTransferencia));
@@ -229,6 +236,9 @@ begin
    FFiltrosControlPc.idTipoPrazo          := 0;
    FFiltrosControlPc.idTecnico            := 0;
    FFiltrosControlPc.idTipoCliente        := 0;
+   FFiltrosControlPc.tipoReclame          := C_TODOS;
+   FFiltrosControlPc.tipoNip              := C_TODOS;
+
    FFiltrosControlPc.usaDataAbertura      := False;
    FFiltrosControlPc.dataAbertura         := Date;
    FFiltrosControlPc.usaDataFechamento    := False;

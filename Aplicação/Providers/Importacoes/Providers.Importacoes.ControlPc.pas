@@ -1,4 +1,4 @@
-unit Providers.Importacoes.Siags;
+unit Providers.Importacoes.ControlPc;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, Providers.Importacoes, Data.DBXDataSnap, Data.DBXCommon, IPPeerClient, Data.DB, Datasnap.DBClient, Datasnap.DSConnect, Data.SqlExpr;
 
 type
-  TdtmImportacoesSiags = class(TdtmImportacoes)
+  TdtmImportacoesControlPc = class(TdtmImportacoes)
   private
     { Private declarations }
   public
@@ -14,7 +14,7 @@ type
   end;
 
 var
-  dtmImportacoesSiags: TdtmImportacoesSiags;
+  dtmImportacoesControlPc: TdtmImportacoesControlPc;
 
 implementation
 

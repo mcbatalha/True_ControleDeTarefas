@@ -48,15 +48,6 @@ type
     qryTiposPrazoAUTOSC: TIntegerField;
     qryTiposPrazoSIAGS: TIntegerField;
     qryTiposPrazoCONTROLPC: TIntegerField;
-    qryTecnicos: TFDQuery;
-    qryTecnicosid: TFDAutoIncField;
-    qryTecnicosNome_Tecnico: TStringField;
-    qryTiposCliente: TFDQuery;
-    qryTiposClienteid: TFDAutoIncField;
-    qryTiposClienteTipo_Cliente: TStringField;
-    qryTiposClassificacao: TFDQuery;
-    qryTiposClassificacaoid: TFDAutoIncField;
-    qryTiposClassificacaoTipo_Classificacao: TStringField;
     qryControlPc: TFDQuery;
     qryControlPcHistorico: TFDQuery;
     qryControlPcLog: TFDQuery;
@@ -119,6 +110,20 @@ type
     qryControlPcLogid_Usuario_Responsavel: TIntegerField;
     qryControlPcLogJustificativa: TStringField;
     qryControlPcLogData_Hora_Log: TDateTimeField;
+    qryTecnicos: TFDQuery;
+    qryTecnicosid: TFDAutoIncField;
+    qryTecnicosNome_Tecnico: TStringField;
+    qryTiposCliente: TFDQuery;
+    qryTiposClienteid: TFDAutoIncField;
+    qryTiposClienteTipo_Cliente: TStringField;
+    qryTiposClassificacao: TFDQuery;
+    qryTiposClassificacaoid: TFDAutoIncField;
+    qryTiposClassificacaoTipo_Classificacao: TStringField;
+    qryClassificacao: TFDQuery;
+    qryClassificacaoid: TFDAutoIncField;
+    qryClassificacaoTipo_Classificacao: TStringField;
+    qryControlPcHistoricoTipo_Reclame: TStringField;
+    qryControlPcHistoricoTipo_Nip: TStringField;
   private
 
     FIdTecnico            : integer;
@@ -212,8 +217,9 @@ begin
    qryTiposPrazo.ParamByName('CONTROLPC').AsInteger     := 9;
    qryTiposStatus.ParamByName('CONTROLPC').AsInteger    := 9;
 
-   qryTecnicos.Open;
    qryTiposPrazo.Open;
+   qryTiposStatus.Open;
+   qryTecnicos.Open;
    qryTiposCliente.Open;
    qryTiposClassificacao.Open;
 end;
@@ -327,8 +333,9 @@ end;
 
 procedure TSMControlPc.FecharTabelasDeCadastro;
 begin
-   qryTecnicos.Close;
    qryTiposPrazo.Close;
+   qryTiposStatus.Close;
+   qryTecnicos.Close;
    qryTiposCliente.Close;
    qryTiposClassificacao.Close;
 end;
@@ -450,6 +457,8 @@ begin
       qryControlPcHistoricoid_Tecnico.AsInteger             := qryControlPcid_Tecnico.AsInteger;
       qryControlPcHistoricoid_Tipo_Cliente.AsInteger        := qryControlPcid_Tipo_Cliente.AsInteger;
       qryControlPcHistoricoid_Tipo_Classifiacao.AsInteger   := qryControlPcid_Tipo_Classificacao.AsInteger;
+      qryControlPcHistoricoTipo_Reclame.AsString            := qryControlPcTipo_Reclame.AsString;
+      qryControlPcHistoricoTipo_Nip.AsString                := qryControlPcTipo_Nip.AsString;
       qryControlPcHistoricoid_Usuario_Responsavel.AsInteger := qryControlPcid_Usuario_Importacao.AsInteger;
       qryControlPcHistoricoData_Hora_Historico.AsDateTime   := FDataHora;
       qryControlPcHistorico.Post;
@@ -487,7 +496,9 @@ begin
             (qryControlPcid_Tipo_Prazo.AsInteger         <> FIdTipoPrazo) or
             (qryControlPcid_Tecnico.AsInteger            <> FIdTecnico) or
             (qryControlPcid_Tipo_Cliente.AsInteger       <> FIdTipoCliente) or
-            (qryControlPcid_Tipo_Classificacao.AsInteger <> FIdTipoClassificacao)then
+            (qryControlPcid_Tipo_Classificacao.AsInteger <> FIdTipoClassificacao) or
+            (qryControlPcTipo_Reclame.AsString           <> FTipoReclame) or
+            (qryControlPcTipo_Nip.AsString               <> FTipoNip) then
             begin
             LAtualizar := True;
             qryControlPc.Edit;
@@ -537,7 +548,7 @@ begin
    qryAux.Close;
    qryAux.Sql.Clear;
    qryAux.Sql.Add('Select ');
-   qryAux.Sql.Add('   a.Data_Hora_Historico, ');
+   qryAux.Sql.Add('   a.Data_Hora_Historico, a.Tipo_Reclame, a.Tipo_Nip, ');
    qryAux.Sql.Add('   b.Tipo_Status, ');
    qryAux.Sql.Add('   c.Tipo_Prazo_Caixa, ');
    qryAux.Sql.Add('   d.Nome_Tecnico, ');
@@ -600,8 +611,8 @@ begin
    FDataHora  := Now;
 
    try
-      AbrirTabelasDeCadastro;
       TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+      AbrirTabelasDeCadastro;
       try
          for I := 0 to ARegistros.Count - 1 do
             begin
@@ -622,25 +633,25 @@ begin
             if LData <> '' then
                begin
                FTemDataAbertura   := True;
-               FDataAbertura      := StrToDate(LData);
+               FDataAbertura      := StrToDateTime(LData);
             end;
             LData := LObject.Values['DT. TRANSFERÊNCIA'].Value;
             if LData <> '' then
                begin
                FTemDataFechamento := True;
-               FDataFechamento    := StrToDate(LData);
+               FDataFechamento    := StrToDateTime(LData);
             end;
             LData := LObject.Values['DT. FECHAMENTO'].Value;
             if LData <> '' then
                begin
                FTemDataTransferencia := True;
-               FDataTransferencia    := StrToDate(LData);
+               FDataTransferencia    := StrToDateTime(LData);
             end;
             LData := LObject.Values['PREVISÃO SOLUÇÃO'].Value;
             if LData <> '' then
                begin
                FTemPrevisaoSolucao := True;
-               FPrevisaoSolucao    := StrToDate(LData);
+               FPrevisaoSolucao    := StrToDateTime(LData);
             end;
 
             FTipoReclame     := LObject.Values['TIPO RECLAME'].AsType<String>;
@@ -681,8 +692,9 @@ begin
       Close;
       Sql.Clear;
       Sql.Add('Select ');
-      Sql.Add('   a.id as id_Protocolo, a.Data_Abertura, a.Data_Transferencia, a.Data_Fechamento, ');
-      Sql.Add('   a.Previsao_Solucao, a.Solicitacao_Cliente, a.Tipo_Reclame, a.Tipo_Nip,');
+      Sql.Add('   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, a.Data_Transferencia,  ');
+      Sql.Add('   a.Data_Fechamento,a.Previsao_Solucao, a.Solicitacao_Cliente, a.Tipo_Reclame, ');
+      Sql.Add('   a.Tipo_Nip,');
       Sql.Add('   b.Tipo_Status,');
       Sql.Add('   c.Tipo_Prazo_Caixa,');
       Sql.Add('   d.Nome_Tecnico,');
@@ -743,6 +755,8 @@ end;
 
 function TSMControlPc.ObterIdTipoClassificacao(const AValor: String): integer;
 begin
+
+(*
    if not qryTiposClassificacao.Locate('Tipo_Classificacao',AValor) then
       begin
       qryTiposClassificacao.Append;
@@ -750,6 +764,21 @@ begin
       qryTiposClassificacao.Post;
    end;
    Result := qryTiposClassificacaoid.AsInteger
+*)
+   qryClassificacao.Close;
+   qryClassificacao.ParamByName('pTipoClassificacao').AsString := AValor;
+   qryClassificacao.Open;
+   if qryClassificacao.IsEmpty then
+      begin
+      qryClassificacao.Append;
+      qryClassificacaoTipo_Classificacao.AsString := AValor;
+      qryClassificacao.Post;
+   end;
+   Result := qryClassificacaoid.AsInteger;
+   qryClassificacao.Close;
+
+
+
 end;
 
 function TSMControlPc.ObterIdTipoCliente(const AValor: String): integer;

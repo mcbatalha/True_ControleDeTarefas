@@ -34,7 +34,7 @@ type
        C_TITULO_MENSAGENS = 'Importação de Planilha SIAGS';
   public
      constructor Create();
-     function Validar(const ASheet : Variant) : Boolean;
+     function Validar(const ASheet : Variant; out AMensagem : String) : Boolean;
      function Analisar(ALblGauge : TLabel; AGauge : TGauge; const ASheet : Variant) : Boolean;
      function DadoDaColuna(const ASheet : Variant; const AColuna : String; const ALinha : integer) : String;
      function ImportarDados : Boolean;
@@ -214,7 +214,7 @@ begin
 
       Result   := LRetorno.Values['importou'].AsType<Boolean>;
 
-      FJSonCarregado := not Result;
+      FJSonCarregado := false;
 
       if Result then
          begin
@@ -291,85 +291,80 @@ begin
 
 end;
 
-function TSrvImportacaoSiags.Validar(const ASheet : Variant) : Boolean;
-var
-   LMensagem : String;
+function TSrvImportacaoSiags.Validar(const ASheet : Variant; out AMensagem : String) : Boolean;
 begin
    Result := True;
-   LMensagem := '';
+   AMensagem := '';
 
    if (trim(ASheet.Cells[1, PosicaoColuna('UF PRESTADOR')].Value) <> 'UF PRESTADOR') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('UF PRESTADOR'))+' - UF PRESTADOR'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('UF PRESTADOR'))+' - UF PRESTADOR'+ chr(13);
 
    if (trim(ASheet.Cells[1, PosicaoColuna('TIPO AUTORIZACAO')].Value) <> 'TIPO AUTORIZACAO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('TIPO AUTORIZACAO'))+' - TIPO AUTORIZACAO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO AUTORIZACAO'))+' - TIPO AUTORIZACAO'+ chr(13);
 
    if (trim(ASheet.Cells[1, PosicaoColuna('AUTORIZACAO')].Value) <> 'AUTORIZACAO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('AUTORIZACAO'))+' - AUTORIZACAO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('AUTORIZACAO'))+' - AUTORIZACAO'+ chr(13);
 
    if (trim(ASheet.Cells[1, PosicaoColuna('TIPO ATENDIMENTO')].Value) <> 'TIPO ATENDIMENTO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('TIPO ATENDIMENTO'))+' - TIPO ATENDIMENTO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO ATENDIMENTO'))+' - TIPO ATENDIMENTO'+ chr(13);
 
    if (trim(ASheet.Cells[1, PosicaoColuna('ANEXO OPME')].Value) <> 'ANEXO OPME') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('ANEXO OPME'))+' - ANEXO OPME'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ANEXO OPME'))+' - ANEXO OPME'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('ANEXO QUIMIO')].Value) <> 'ANEXO QUIMIO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('ANEXO QUIMIO'))+' - ANEXO QUIMIO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ANEXO QUIMIO'))+' - ANEXO QUIMIO'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('ANEXO RADIO')].Value) <> 'ANEXO RADIO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('ANEXO RADIO'))+' - ANEXO RADIO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ANEXO RADIO'))+' - ANEXO RADIO'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('BENEFICIARIO')].Value) <> 'BENEFICIARIO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('BENEFICIARIO'))+' - BENEFICIARIO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('BENEFICIARIO'))+' - BENEFICIARIO'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('NOME')].Value) <> 'NOME') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('NOME'))+' - NOME'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('NOME'))+' - NOME'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('SITUACAOAUTORIZ')].Value) <> 'SITUACAOAUTORIZ') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('SITUACAOAUTORIZ'))+' - SITUACAOAUTORIZ'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('SITUACAOAUTORIZ'))+' - SITUACAOAUTORIZ'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('ULT ANOTACAO ADM')].Value) <> 'ULT ANOTACAO ADM') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('ULT ANOTACAO ADM'))+' - ULT ANOTACAO ADM'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ULT ANOTACAO ADM'))+' - ULT ANOTACAO ADM'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('AUDITORIA')].Value) <> 'AUDITORIA') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('AUDITORIA'))+' - AUDITORIA'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('AUDITORIA'))+' - AUDITORIA'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DIAINCLUSAO')].Value) <> 'DIAINCLUSAO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DIAINCLUSAO'))+' - DIAINCLUSAO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIAINCLUSAO'))+' - DIAINCLUSAO'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DIASCORRIDOSABE')].Value) <> 'DIASCORRIDOSABE') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DIASCORRIDOSABE'))+' - DIASCORRIDOSABE'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASCORRIDOSABE'))+' - DIASCORRIDOSABE'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DIASUTEISABE')].Value) <> 'DIASUTEISABE') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DIASUTEISABE'))+' - DIASUTEISABE'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASUTEISABE'))+' - DIASUTEISABE'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DIASPRAZOCAX')].Value) <> 'DIASPRAZOCAX') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOCAX'))+' - DIASPRAZOCAX'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOCAX'))+' - DIASPRAZOCAX'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DATAPRAZOCAX')].Value) <> 'DATAPRAZOCAX') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DATAPRAZOCAX'))+' - DATAPRAZOCAX'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DATAPRAZOCAX'))+' - DATAPRAZOCAX'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('STATUSPZCAX')].Value) <> 'STATUSPZCAX') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('STATUSPZCAX'))+' - STATUSPZCAX'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('STATUSPZCAX'))+' - STATUSPZCAX'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DIASPRAZOANS')].Value) <> 'DIASPRAZOANS') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOANS'))+' - DIASPRAZOANS'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOANS'))+' - DIASPRAZOANS'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DATAPRAZOANS')].Value) <> 'DATAPRAZOANS') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DATAPRAZOANS'))+' - DATAPRAZOANS'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DATAPRAZOANS'))+' - DATAPRAZOANS'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('STATUSPZANS')].Value) <> 'STATUSPZANS') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('STATUSPZANS'))+' - STATUSPZANS'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('STATUSPZANS'))+' - STATUSPZANS'+ chr(13);
 
-   if LMensagem <> '' then
+   if AMensagem <> '' then
       begin
       Result := False;
 
-      frmMensagem.close;
-
-      LMensagem := 'A estrutura da planilha foi modificada. Não é possível prosseguir com a importação. ' + chr(13) + chr(13) +
-                   'Coluna(s) não localizada(s):' + chr(13) + LMensagem;
-      InformationMessage(LMensagem,C_TITULO_MENSAGENS);
+      AMensagem := 'A estrutura da planilha foi modificada. Não é possível prosseguir com a importação. ' + chr(13) + chr(13) +
+                   'Coluna(s) não localizada(s):' + chr(13) + AMensagem;
    end;
 end;
 

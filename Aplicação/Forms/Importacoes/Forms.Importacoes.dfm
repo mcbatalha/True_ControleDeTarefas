@@ -107,7 +107,7 @@ inherited frmImportacoes: TfrmImportacoes
       TabOrder = 3
     end
     object btnEfetivarImportacao: TBitBtn
-      Left = 225
+      Left = 229
       Top = 315
       Width = 173
       Height = 31

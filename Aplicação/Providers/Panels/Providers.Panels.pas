@@ -11,6 +11,20 @@ type
     mtbPainel: TFDMemTable;
     cdsPainel: TClientDataSet;
     dspPainel: TDataSetProvider;
+    mtbHistoricoDesignacoes: TFDMemTable;
+    mtbHistoricoDesignacoesJustificativa: TStringField;
+    mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField;
+    mtbHistoricoDesignacoesNome_Setor: TStringField;
+    mtbHistoricoDesignacoesUsuario_Designado: TStringField;
+    mtbHistoricoDesignacoesUsuario_Responsavel: TStringField;
+    dtsHistoricoDesignacoes: TDataSource;
+    mtbObservacoesProcesso: TFDMemTable;
+    mtbObservacoesProcessoData_Hora: TDateTimeField;
+    mtbObservacoesProcessoObservacao: TStringField;
+    mtbObservacoesProcessoNome_Usuario: TStringField;
+    dtsObservacoesProcesso: TDataSource;
+    mtbHistoricoAtualizacoes: TFDMemTable;
+    dtsHistoricoAtualizacoes: TDataSource;
   private
     { Private declarations }
   public

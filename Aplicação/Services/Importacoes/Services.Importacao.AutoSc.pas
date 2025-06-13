@@ -34,7 +34,7 @@ type
        C_TITULO_MENSAGENS = 'Importação de Planilha AUTOSC';
   public
      constructor Create();
-     function Validar(const ASheet : Variant) : Boolean;
+     function Validar(const ASheet : Variant; out AMensagem : String) : Boolean;
      function Analisar(ALblGauge : TLabel; AGauge : TGauge; const ASheet : Variant) : Boolean;
      function DadoDaColuna(const ASheet : Variant; const AColuna : String; const ALinha : integer) : String;
      function ImportarDados : Boolean;
@@ -169,7 +169,7 @@ begin
 
       Result   := LRetorno.Values['importou'].AsType<Boolean>;
 
-      FJSonCarregado := not Result;
+      FJSonCarregado := false;
 
       if Result then
          begin
@@ -225,54 +225,49 @@ begin
 
 end;
 
-function TSrvImportacaoAutoSc.Validar(const ASheet : Variant) : Boolean;
-var
-   LMensagem : String;
+function TSrvImportacaoAutoSc.Validar(const ASheet : Variant; out AMensagem : String) : Boolean;
 begin
    Result := True;
-   LMensagem := '';
+   AMensagem := '';
 
    if (trim(ASheet.Cells[1, PosicaoColuna('AUDITORIA')].Value) <> 'AUDITORIA') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('AUDITORIA'))+' - AUDITORIA'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('AUDITORIA'))+' - AUDITORIA'+ chr(13);
 
    if (trim(ASheet.Cells[1, 2].Value) <> 'PRAZOCAX') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('PRAZOCAX'))+' - PRAZOCAX'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PRAZOCAX'))+' - PRAZOCAX'+ chr(13);
 
    if (trim(ASheet.Cells[1, 3].Value) <> 'PRAZOCAXHJ') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('PRAZOCAXHJ'))+' - PRAZOCAXHJ'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PRAZOCAXHJ'))+' - PRAZOCAXHJ'+ chr(13);
 
    if (trim(ASheet.Cells[1, 4].Value) <> 'PROCESSO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('PROCESSO'))+' - PROCESSO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PROCESSO'))+' - PROCESSO'+ chr(13);
 
    if (trim(ASheet.Cells[1, 6].Value) <> 'STATUS') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('STATUS'))+' - STATUS'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('STATUS'))+' - STATUS'+ chr(13);
 
    if (trim(ASheet.Cells[1,12].Value) <> 'DATA ABERTURA') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('DATA ABERTURA'))+' - DATA ABERTURA'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DATA ABERTURA'))+' - DATA ABERTURA'+ chr(13);
 
    if (trim(ASheet.Cells[1,14].Value) <> 'QTD ARQUIVOS') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('QTD ARQUIVOS'))+' - QTD ARQUIVOS'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('QTD ARQUIVOS'))+' - QTD ARQUIVOS'+ chr(13);
 
    if (trim(ASheet.Cells[1,16].Value) <> 'UF') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('UF'))+' - UF'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('UF'))+' - UF'+ chr(13);
 
    if (trim(ASheet.Cells[1,18].Value) <> 'TIPOPROCESSO') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('TIPOPROCESSO'))+' - TIPOPROCESSO'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPOPROCESSO'))+' - TIPOPROCESSO'+ chr(13);
 
    if (trim(ASheet.Cells[1,19].Value) <> 'TIPOPROCESSOE') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('TIPOPROCESSOE'))+' - TIPOPROCESSOE'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPOPROCESSOE'))+' - TIPOPROCESSOE'+ chr(13);
 
    if (trim(ASheet.Cells[1,51].Value) <> 'PRAZOANS') then
-      LMensagem := LMensagem + ColunaExcel(PosicaoColuna('PRAZOANS'))+' - PRAZOANS'+ chr(13);
-   if LMensagem <> '' then
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PRAZOANS'))+' - PRAZOANS'+ chr(13);
+   if AMensagem <> '' then
       begin
       Result := False;
 
-      frmMensagem.close;
-
-      LMensagem := 'A estrutura da planilha foi modificada. Não é possível prosseguir com a importação. ' + chr(13) + chr(13) +
-                   'Coluna(s) não localizada(s):' + chr(13) + LMensagem;
-      InformationMessage(LMensagem,C_TITULO_MENSAGENS);
+      AMensagem := 'A estrutura da planilha foi modificada. Não é possível prosseguir com a importação. ' + chr(13) + chr(13) +
+                   'Coluna(s) não localizada(s):' + chr(13) + AMensagem;
    end;
 end;
 

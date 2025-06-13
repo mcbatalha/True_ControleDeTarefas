@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/06/2025 20:03:39
+// 11/06/2025 20:44:34
 //
 
 unit Proxy.Classes;
@@ -140,6 +140,44 @@ type
     function TiposDeAtendimento: TJSONArray;
     function TiposDeSituacaoAutorizacao: TJSONArray;
     function TiposDeUltimaAnotacao: TJSONArray;
+    function Setores: TJSONArray;
+    function Usuarios: TJSONArray;
+  end;
+
+  TSMControlPcClient = class(TDSAdminClient)
+  private
+    FImportarCommand: TDBXCommand;
+    FFiltrarProtocolosCommand: TDBXCommand;
+    FDesignarCommand: TDBXCommand;
+    FRegistrarObservacaoCommand: TDBXCommand;
+    FEncerrarProtocoloCommand: TDBXCommand;
+    FHistoricoDeDesignacoesCommand: TDBXCommand;
+    FHistoricoDeAtualizacoesCommand: TDBXCommand;
+    FObservacoesDoProtocoloCommand: TDBXCommand;
+    FTecnicosCommand: TDBXCommand;
+    FTiposDePrazoCommand: TDBXCommand;
+    FTiposDeClienteCommand: TDBXCommand;
+    FTiposDeClassificacaoCommand: TDBXCommand;
+    FTiposDeStatusCommand: TDBXCommand;
+    FSetoresCommand: TDBXCommand;
+    FUsuariosCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
+    function FiltrarProtocolos(AFiltros: TJSONObject): TJSONArray;
+    function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
+    function RegistrarObservacao(AIdProtocolo: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
+    function EncerrarProtocolo(AIdProtocolo: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+    function HistoricoDeDesignacoes(AIdProtocolo: Integer): TJSONArray;
+    function HistoricoDeAtualizacoes(AIdProtocolo: Integer): TJSONArray;
+    function ObservacoesDoProtocolo(AIdProtocolo: Integer): TJSONArray;
+    function Tecnicos: TJSONArray;
+    function TiposDePrazo: TJSONArray;
+    function TiposDeCliente: TJSONArray;
+    function TiposDeClassificacao: TJSONArray;
+    function TiposDeStatus: TJSONArray;
     function Setores: TJSONArray;
     function Usuarios: TJSONArray;
   end;
@@ -930,6 +968,249 @@ begin
   FTiposDeAtendimentoCommand.DisposeOf;
   FTiposDeSituacaoAutorizacaoCommand.DisposeOf;
   FTiposDeUltimaAnotacaoCommand.DisposeOf;
+  FSetoresCommand.DisposeOf;
+  FUsuariosCommand.DisposeOf;
+  inherited;
+end;
+
+function TSMControlPcClient.Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
+begin
+  if FImportarCommand = nil then
+  begin
+    FImportarCommand := FDBXConnection.CreateCommand;
+    FImportarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FImportarCommand.Text := 'TSMControlPc.Importar';
+    FImportarCommand.Prepare;
+  end;
+  FImportarCommand.Parameters[0].Value.SetJSONValue(ARegistros, FInstanceOwner);
+  FImportarCommand.Parameters[1].Value.SetInt32(AIdUsuario);
+  FImportarCommand.ExecuteUpdate;
+  Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.FiltrarProtocolos(AFiltros: TJSONObject): TJSONArray;
+begin
+  if FFiltrarProtocolosCommand = nil then
+  begin
+    FFiltrarProtocolosCommand := FDBXConnection.CreateCommand;
+    FFiltrarProtocolosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FFiltrarProtocolosCommand.Text := 'TSMControlPc.FiltrarProtocolos';
+    FFiltrarProtocolosCommand.Prepare;
+  end;
+  FFiltrarProtocolosCommand.Parameters[0].Value.SetJSONValue(AFiltros, FInstanceOwner);
+  FFiltrarProtocolosCommand.ExecuteUpdate;
+  Result := TJSONArray(FFiltrarProtocolosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
+begin
+  if FDesignarCommand = nil then
+  begin
+    FDesignarCommand := FDBXConnection.CreateCommand;
+    FDesignarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDesignarCommand.Text := 'TSMControlPc.Designar';
+    FDesignarCommand.Prepare;
+  end;
+  FDesignarCommand.Parameters[0].Value.SetWideString(AJustificativa);
+  FDesignarCommand.Parameters[1].Value.SetInt32(AIdSetor);
+  FDesignarCommand.Parameters[2].Value.SetInt32(AIdUsuario);
+  FDesignarCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
+  FDesignarCommand.Parameters[4].Value.SetInt32(AIdProtocolo);
+  FDesignarCommand.ExecuteUpdate;
+  Result := FDesignarCommand.Parameters[5].Value.GetBoolean;
+end;
+
+function TSMControlPcClient.RegistrarObservacao(AIdProtocolo: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
+begin
+  if FRegistrarObservacaoCommand = nil then
+  begin
+    FRegistrarObservacaoCommand := FDBXConnection.CreateCommand;
+    FRegistrarObservacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRegistrarObservacaoCommand.Text := 'TSMControlPc.RegistrarObservacao';
+    FRegistrarObservacaoCommand.Prepare;
+  end;
+  FRegistrarObservacaoCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FRegistrarObservacaoCommand.Parameters[1].Value.SetWideString(AObservacao);
+  FRegistrarObservacaoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FRegistrarObservacaoCommand.ExecuteUpdate;
+  ADataHora := FRegistrarObservacaoCommand.Parameters[3].Value.AsDateTime;
+  Result := FRegistrarObservacaoCommand.Parameters[4].Value.GetBoolean;
+end;
+
+function TSMControlPcClient.EncerrarProtocolo(AIdProtocolo: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+begin
+  if FEncerrarProtocoloCommand = nil then
+  begin
+    FEncerrarProtocoloCommand := FDBXConnection.CreateCommand;
+    FEncerrarProtocoloCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FEncerrarProtocoloCommand.Text := 'TSMControlPc.EncerrarProtocolo';
+    FEncerrarProtocoloCommand.Prepare;
+  end;
+  FEncerrarProtocoloCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FEncerrarProtocoloCommand.Parameters[1].Value.SetWideString(AJustificativa);
+  FEncerrarProtocoloCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FEncerrarProtocoloCommand.ExecuteUpdate;
+  Result := FEncerrarProtocoloCommand.Parameters[3].Value.GetBoolean;
+end;
+
+function TSMControlPcClient.HistoricoDeDesignacoes(AIdProtocolo: Integer): TJSONArray;
+begin
+  if FHistoricoDeDesignacoesCommand = nil then
+  begin
+    FHistoricoDeDesignacoesCommand := FDBXConnection.CreateCommand;
+    FHistoricoDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FHistoricoDeDesignacoesCommand.Text := 'TSMControlPc.HistoricoDeDesignacoes';
+    FHistoricoDeDesignacoesCommand.Prepare;
+  end;
+  FHistoricoDeDesignacoesCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FHistoricoDeDesignacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FHistoricoDeDesignacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.HistoricoDeAtualizacoes(AIdProtocolo: Integer): TJSONArray;
+begin
+  if FHistoricoDeAtualizacoesCommand = nil then
+  begin
+    FHistoricoDeAtualizacoesCommand := FDBXConnection.CreateCommand;
+    FHistoricoDeAtualizacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FHistoricoDeAtualizacoesCommand.Text := 'TSMControlPc.HistoricoDeAtualizacoes';
+    FHistoricoDeAtualizacoesCommand.Prepare;
+  end;
+  FHistoricoDeAtualizacoesCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FHistoricoDeAtualizacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FHistoricoDeAtualizacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.ObservacoesDoProtocolo(AIdProtocolo: Integer): TJSONArray;
+begin
+  if FObservacoesDoProtocoloCommand = nil then
+  begin
+    FObservacoesDoProtocoloCommand := FDBXConnection.CreateCommand;
+    FObservacoesDoProtocoloCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FObservacoesDoProtocoloCommand.Text := 'TSMControlPc.ObservacoesDoProtocolo';
+    FObservacoesDoProtocoloCommand.Prepare;
+  end;
+  FObservacoesDoProtocoloCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FObservacoesDoProtocoloCommand.ExecuteUpdate;
+  Result := TJSONArray(FObservacoesDoProtocoloCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.Tecnicos: TJSONArray;
+begin
+  if FTecnicosCommand = nil then
+  begin
+    FTecnicosCommand := FDBXConnection.CreateCommand;
+    FTecnicosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTecnicosCommand.Text := 'TSMControlPc.Tecnicos';
+    FTecnicosCommand.Prepare;
+  end;
+  FTecnicosCommand.ExecuteUpdate;
+  Result := TJSONArray(FTecnicosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.TiposDePrazo: TJSONArray;
+begin
+  if FTiposDePrazoCommand = nil then
+  begin
+    FTiposDePrazoCommand := FDBXConnection.CreateCommand;
+    FTiposDePrazoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDePrazoCommand.Text := 'TSMControlPc.TiposDePrazo';
+    FTiposDePrazoCommand.Prepare;
+  end;
+  FTiposDePrazoCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDePrazoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.TiposDeCliente: TJSONArray;
+begin
+  if FTiposDeClienteCommand = nil then
+  begin
+    FTiposDeClienteCommand := FDBXConnection.CreateCommand;
+    FTiposDeClienteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeClienteCommand.Text := 'TSMControlPc.TiposDeCliente';
+    FTiposDeClienteCommand.Prepare;
+  end;
+  FTiposDeClienteCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeClienteCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.TiposDeClassificacao: TJSONArray;
+begin
+  if FTiposDeClassificacaoCommand = nil then
+  begin
+    FTiposDeClassificacaoCommand := FDBXConnection.CreateCommand;
+    FTiposDeClassificacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeClassificacaoCommand.Text := 'TSMControlPc.TiposDeClassificacao';
+    FTiposDeClassificacaoCommand.Prepare;
+  end;
+  FTiposDeClassificacaoCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeClassificacaoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.TiposDeStatus: TJSONArray;
+begin
+  if FTiposDeStatusCommand = nil then
+  begin
+    FTiposDeStatusCommand := FDBXConnection.CreateCommand;
+    FTiposDeStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FTiposDeStatusCommand.Text := 'TSMControlPc.TiposDeStatus';
+    FTiposDeStatusCommand.Prepare;
+  end;
+  FTiposDeStatusCommand.ExecuteUpdate;
+  Result := TJSONArray(FTiposDeStatusCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.Setores: TJSONArray;
+begin
+  if FSetoresCommand = nil then
+  begin
+    FSetoresCommand := FDBXConnection.CreateCommand;
+    FSetoresCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FSetoresCommand.Text := 'TSMControlPc.Setores';
+    FSetoresCommand.Prepare;
+  end;
+  FSetoresCommand.ExecuteUpdate;
+  Result := TJSONArray(FSetoresCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.Usuarios: TJSONArray;
+begin
+  if FUsuariosCommand = nil then
+  begin
+    FUsuariosCommand := FDBXConnection.CreateCommand;
+    FUsuariosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUsuariosCommand.Text := 'TSMControlPc.Usuarios';
+    FUsuariosCommand.Prepare;
+  end;
+  FUsuariosCommand.ExecuteUpdate;
+  Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+constructor TSMControlPcClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSMControlPcClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSMControlPcClient.Destroy;
+begin
+  FImportarCommand.DisposeOf;
+  FFiltrarProtocolosCommand.DisposeOf;
+  FDesignarCommand.DisposeOf;
+  FRegistrarObservacaoCommand.DisposeOf;
+  FEncerrarProtocoloCommand.DisposeOf;
+  FHistoricoDeDesignacoesCommand.DisposeOf;
+  FHistoricoDeAtualizacoesCommand.DisposeOf;
+  FObservacoesDoProtocoloCommand.DisposeOf;
+  FTecnicosCommand.DisposeOf;
+  FTiposDePrazoCommand.DisposeOf;
+  FTiposDeClienteCommand.DisposeOf;
+  FTiposDeClassificacaoCommand.DisposeOf;
+  FTiposDeStatusCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
   FUsuariosCommand.DisposeOf;
   inherited;

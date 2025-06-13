@@ -1,4 +1,4 @@
-unit Forms.Importacoes.Siags;
+unit Forms.Importacoes.ControlPc;
 
 interface
 
@@ -23,11 +23,11 @@ uses
   Proxy.Classes,
   Funcoes,
 
-  Services.Importacao.Siags,
+  Services.Importacao.ControlPc,
   Libs.TSeguranca;
 
 type
-  TfrmImportacoesSiags = class(TfrmImportacoes)
+  TfrmImportacoesControlPc = class(TfrmImportacoes)
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnLocalizarArquivoClick(Sender: TObject);
@@ -36,12 +36,12 @@ type
   private
     { Private declarations }
 
-    FService  : TSrvImportacaoSiags;
+    FService  : TSrvImportacaoControlPc;
 
     function ValidarPlanilha : Boolean; override;
 
     const
-       C_TITULO_MENSAGENS = 'Importação de Planilha Siags';
+       C_TITULO_MENSAGENS = 'Importação de Planilha CONTROLPC';
 
 
   public
@@ -50,14 +50,14 @@ type
 
 (*
 var
-  frmImportacoesSiags: TfrmImportacoesSiags;
+  frmImportacoesControlPc: TfrmImportacoesControlPc;
 *)
 
 implementation
 
 {$R *.dfm}
 
-procedure TfrmImportacoesSiags.btnAnalisarDadosClick(Sender: TObject);
+procedure TfrmImportacoesControlPc.btnAnalisarDadosClick(Sender: TObject);
 begin
    inherited;
 
@@ -66,7 +66,7 @@ begin
    btnAnalisarDados.Enabled := False;
 end;
 
-procedure TfrmImportacoesSiags.btnEfetivarImportacaoClick(Sender: TObject);
+procedure TfrmImportacoesControlPc.btnEfetivarImportacaoClick(Sender: TObject);
 begin
    if FService.ImportarDados then
       begin
@@ -75,20 +75,20 @@ begin
    end;
 end;
 
-procedure TfrmImportacoesSiags.btnLocalizarArquivoClick(Sender: TObject);
+procedure TfrmImportacoesControlPc.btnLocalizarArquivoClick(Sender: TObject);
 begin
   inherited;
 
   FService.TotalLinhas := FTotalLinhas;
 end;
 
-procedure TfrmImportacoesSiags.FormCreate(Sender: TObject);
+procedure TfrmImportacoesControlPc.FormCreate(Sender: TObject);
 begin
    inherited;
-   FService := TSrvImportacaoSiags.Create;
+   FService := TSrvImportacaoControlPc.Create;
 end;
 
-procedure TfrmImportacoesSiags.FormDestroy(Sender: TObject);
+procedure TfrmImportacoesControlPc.FormDestroy(Sender: TObject);
 begin
    FreeAndNil(FService);
 
@@ -96,12 +96,18 @@ begin
 end;
 
 
-function TfrmImportacoesSiags.ValidarPlanilha: Boolean;
+function TfrmImportacoesControlPc.ValidarPlanilha: Boolean;
+var
+  LMensagem : String;
 begin
-   Result := FService.Validar(FSheet);
+   Result := FService.Validar(FSheet, LMensagem);
 
    if not Result then
+      begin
       FecharPlanilha;
+      frmMensagem.close;
+      InformationMessage(LMensagem, C_TITULO_MENSAGENS);
+   end;
 end;
 
 end.

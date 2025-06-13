@@ -26,6 +26,7 @@ object SMControlPc: TSMControlPc
   end
   object qryTiposStatus: TFDQuery
     Connection = ServerContainer.FDConnection
+    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Status'
     SQL.Strings = (
       'Declare @CONTROLPC int;'
       'Set @CONTROLPC = :CONTROLPC;'
@@ -107,66 +108,6 @@ object SMControlPc: TSMControlPc
     object qryTiposPrazoCONTROLPC: TIntegerField
       FieldName = 'CONTROLPC'
       Origin = 'CONTROLPC'
-    end
-  end
-  object qryTecnicos: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
-    SQL.Strings = (
-      'select * from Tecnicos'
-      'Order by Nome_Tecnico')
-    Left = 80
-    Top = 48
-    object qryTecnicosid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTecnicosNome_Tecnico: TStringField
-      FieldName = 'Nome_Tecnico'
-      Origin = 'Nome_Tecnico'
-      Size = 50
-    end
-  end
-  object qryTiposCliente: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
-    SQL.Strings = (
-      'select * from Tipos_Cliente'
-      'Order by Tipo_Cliente')
-    Left = 80
-    Top = 200
-    object qryTiposClienteid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposClienteTipo_Cliente: TStringField
-      FieldName = 'Tipo_Cliente'
-      Origin = 'Tipo_Cliente'
-      Size = 50
-    end
-  end
-  object qryTiposClassificacao: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
-    SQL.Strings = (
-      'select * from Tipos_Classificacao'
-      'Order by Tipo_Classificacao')
-    Left = 80
-    Top = 280
-    object qryTiposClassificacaoid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposClassificacaoTipo_Classificacao: TStringField
-      FieldName = 'Tipo_Classificacao'
-      Origin = 'Tipo_Classificacao'
-      Size = 350
     end
   end
   object qryControlPc: TFDQuery
@@ -333,6 +274,16 @@ object SMControlPc: TSMControlPc
     object qryControlPcHistoricoid_Tipo_Classifiacao: TIntegerField
       FieldName = 'id_Tipo_Classifiacao'
       Origin = 'id_Tipo_Classifiacao'
+    end
+    object qryControlPcHistoricoTipo_Reclame: TStringField
+      FieldName = 'Tipo_Reclame'
+      Origin = 'Tipo_Reclame'
+      Size = 3
+    end
+    object qryControlPcHistoricoTipo_Nip: TStringField
+      FieldName = 'Tipo_Nip'
+      Origin = 'Tipo_Nip'
+      Size = 3
     end
     object qryControlPcHistoricoid_Usuario_Responsavel: TIntegerField
       FieldName = 'id_Usuario_Responsavel'
@@ -510,5 +461,90 @@ object SMControlPc: TSMControlPc
     Connection = ServerContainer.FDConnection
     Left = 789
     Top = 32
+  end
+  object qryTecnicos: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'Select * from Tecnicos'
+      'Order by Nome_Tecnico')
+    Left = 80
+    Top = 72
+    object qryTecnicosid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryTecnicosNome_Tecnico: TStringField
+      FieldName = 'Nome_Tecnico'
+      Origin = 'Nome_Tecnico'
+      Size = 50
+    end
+  end
+  object qryTiposCliente: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'select * from Tipos_Cliente'
+      'Order by Tipo_Cliente')
+    Left = 80
+    Top = 208
+    object qryTiposClienteid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryTiposClienteTipo_Cliente: TStringField
+      FieldName = 'Tipo_Cliente'
+      Origin = 'Tipo_Cliente'
+      Size = 50
+    end
+  end
+  object qryTiposClassificacao: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'select * from Tipos_Classificacao'
+      'Order by Tipo_Classificacao')
+    Left = 80
+    Top = 296
+    object qryTiposClassificacaoid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryTiposClassificacaoTipo_Classificacao: TStringField
+      FieldName = 'Tipo_Classificacao'
+      Origin = 'Tipo_Classificacao'
+      Size = 350
+    end
+  end
+  object qryClassificacao: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'select * '
+      'from Tipos_Classificacao'
+      'where Tipo_Classificacao = :pTipoClassificacao'
+      'Order by Tipo_Classificacao')
+    Left = 224
+    Top = 304
+    ParamData = <
+      item
+        Name = 'PTIPOCLASSIFICACAO'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryClassificacaoid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryClassificacaoTipo_Classificacao: TStringField
+      FieldName = 'Tipo_Classificacao'
+      Origin = 'Tipo_Classificacao'
+      Size = 350
+    end
   end
 end

@@ -252,6 +252,22 @@
             <Form>frmImportacoesSiags</Form>
         </DCCReference>
         <DCCReference Include="Services\Importacoes\Services.Importacao.Siags.pas"/>
+        <DCCReference Include="Providers\Importacoes\Providers.Importacoes.ControlPc.pas">
+            <Form>dtmImportacoesControlPc</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Services\Importacoes\Services.Importacao.ControlPc.pas"/>
+        <DCCReference Include="Forms\Importacoes\Forms.Importacoes.ControlPc.pas">
+            <Form>frmImportacoesControlPc</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Providers\Panels\Providers.Panels.ControlPc.pas">
+            <Form>dtmPainelControlPc</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Services\Panels\Services.Panels.ControlPc.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

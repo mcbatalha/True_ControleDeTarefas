@@ -49,7 +49,12 @@ uses
   Providers.Importacoes.Siags in 'Providers\Importacoes\Providers.Importacoes.Siags.pas' {dtmImportacoesSiags: TDataModule},
   Providers.Panels.Siags in 'Providers\Panels\Providers.Panels.Siags.pas' {dtmPainelSiags: TDataModule},
   Forms.Importacoes.Siags in 'Forms\Importacoes\Forms.Importacoes.Siags.pas' {frmImportacoesSiags},
-  Services.Importacao.Siags in 'Services\Importacoes\Services.Importacao.Siags.pas';
+  Services.Importacao.Siags in 'Services\Importacoes\Services.Importacao.Siags.pas',
+  Providers.Importacoes.ControlPc in 'Providers\Importacoes\Providers.Importacoes.ControlPc.pas' {dtmImportacoesControlPc: TDataModule},
+  Services.Importacao.ControlPc in 'Services\Importacoes\Services.Importacao.ControlPc.pas',
+  Forms.Importacoes.ControlPc in 'Forms\Importacoes\Forms.Importacoes.ControlPc.pas' {frmImportacoesControlPc},
+  Providers.Panels.ControlPc in 'Providers\Panels\Providers.Panels.ControlPc.pas' {dtmPainelControlPc: TDataModule},
+  Services.Panels.ControlPc in 'Services\Panels\Services.Panels.ControlPc.pas';
 
 {$R *.res}
 
@@ -59,5 +64,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TdtmConexao, dtmConexao);
+  Application.CreateForm(TdtmPainelControlPc, dtmPainelControlPc);
   Application.Run;
 end.
