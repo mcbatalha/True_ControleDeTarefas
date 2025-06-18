@@ -1008,7 +1008,7 @@ object frmPrincipal: TfrmPrincipal
     Height = 25
     Caption = 'BitBtn1'
     TabOrder = 0
-    OnClick = mniPainelAcompanhamentoClick
+    OnClick = mniListagemDesignacoesClick
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -1068,6 +1068,13 @@ object frmPrincipal: TfrmPrincipal
       object mniPainelAcompanhamento: TMenuItem
         Caption = 'Paineis de Acompanhamento'
         OnClick = mniPainelAcompanhamentoClick
+      end
+    end
+    object mngListagens: TMenuItem
+      Caption = 'Listagens'
+      object mniListagemDesignacoes: TMenuItem
+        Caption = 'Designa'#231#245'es'
+        OnClick = mniListagemDesignacoesClick
       end
     end
     object mngManutencaoSistema: TMenuItem

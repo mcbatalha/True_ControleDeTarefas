@@ -14,7 +14,8 @@ type
     cmbUsuarios: TDBLookupComboBox;
   private
   public
-     function getIdUsuario : integer;
+     function getIdUsuario   : integer;
+     function getNomeUsuario : string;
      procedure setIdUsuario(const AIdUsuario : integer);
      procedure setDataSet(const ADataSet : TDataSet);
   end;
@@ -28,6 +29,11 @@ implementation
 function TfraPesquisaUsuario.getIdUsuario: integer;
 begin
    Result := cmbUsuarios.KeyValue;
+end;
+
+function TfraPesquisaUsuario.getNomeUsuario: string;
+begin
+   Result := cmbUsuarios.Text;
 end;
 
 procedure TfraPesquisaUsuario.setDataSet(const ADataSet: TDataSet);

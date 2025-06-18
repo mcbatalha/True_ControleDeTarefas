@@ -42,14 +42,6 @@ type
   public
      constructor Create(ASqlConnection : TSQLConnection);
 
-     function DataSourcePainel       : TDataSource;
-     function DataSourceTiposPrazo   : TDataSource;
-     function DataSourceTecnicos     : TDataSource;
-     function DataSourceTiposCliente : TDataSource;
-     function DataSourceTipoStatus   : TDataSource;
-     function DataSourceTiposClassificacao : TDataSource;
-
-
      function DataSetPesquisaDeUsuario : TDataSet;
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
@@ -91,40 +83,12 @@ begin
    Result := FdmControlPc.dtsHistoricoDesignacoes
 end;
 
+
 function TSrvControlPc.DataSourceObservacao: TDataSource;
 begin
    Result := FdmControlPc.dtsObservacoesProcesso;
 end;
 
-function TSrvControlPc.DataSourcePainel: TDataSource;
-begin
-   Result := FdmControlPc.dtsPainel;
-end;
-
-function TSrvControlPc.DataSourceTecnicos: TDataSource;
-begin
-   Result := FdmControlPc.dtsTecnicos;
-end;
-
-function TSrvControlPc.DataSourceTiposClassificacao: TDataSource;
-begin
-   Result := FdmControlPc.dtsTiposClassificacao;
-end;
-
-function TSrvControlPc.DataSourceTiposCliente: TDataSource;
-begin
-   Result := FdmControlPc.dtsTiposCliente;
-end;
-
-function TSrvControlPc.DataSourceTiposPrazo: TDataSource;
-begin
-   Result := FdmControlPc.dtsTiposPrazo;
-end;
-
-function TSrvControlPc.DataSourceTipoStatus: TDataSource;
-begin
-   Result := FdmControlPc.dtsTiposStatus;
-end;
 
 function TSrvControlPc.DataSetPesquisaDeUsuario : TDataSet;
 begin

@@ -235,10 +235,14 @@ type
     function TiposDeAtendimento         : TJSONArray;
     function TiposDeSituacaoAutorizacao : TJSONArray;
     function TiposDeUltimaAnotacao      : TJSONArray;
-
-
     function Setores          : TJSONArray;
     function Usuarios         : TJSONArray;
+
+    function ListagemDeDesignacoes(const AUsaDatas : Boolean;
+                                   const ADataInicial, ADataFinal : TDateTime;
+                                   const ANumeroAutorizacao : string;
+                                   const AIdUsuarioResponsavel : integer) : TJSONArray;
+
   end;
 
 implementation
@@ -391,6 +395,7 @@ var
    LFiltros : TFiltrosSiags;
 begin
 
+   LFiltros.numeroDaAutorizacao       := AFiltros.GetValue<String>('numeroDaAutorizacao');
    LFiltros.idTipoAuditoria           := AFiltros.GetValue<integer>('idTipoAuditoria');
    LFiltros.idTipoPrazoCaixa          := AFiltros.GetValue<integer>('idTipoPrazoCaixa');
    LFiltros.idTipoPrazoANS            := AFiltros.GetValue<integer>('idTipoPrazoANS');
@@ -407,6 +412,14 @@ begin
    MontarQueryPainel;
 
    qryPainelSiags.Sql.Add(' and a.Data_Hora_Encerramento is null');
+
+   if LFiltros.numeroDaAutorizacao <> '' then
+      begin
+//      qryPainelSiags.Sql.Add(' and cast(a.Numero_Autorizacao as varchar(50)) like :pNumeroDaAutorizacao');
+      qryPainelSiags.Sql.Add(' and a.Numero_Autorizacao like :pNumeroDaAutorizacao');
+      qryPainelSiags.ParamByName('pNumeroDaAutorizacao').AsString := '%' + LFiltros.numeroDaAutorizacao + '%';
+   end;
+
    if LFiltros.idTipoAuditoria > 0 then
       begin
       qryPainelSiags.Sql.Add(' and a.id_Tipo_Auditoria = :pIdTipoAuditoria');
@@ -736,6 +749,70 @@ begin
    finally
       FecharTabelasDeCadastro;
    end;
+end;
+
+function TSMSiags.ListagemDeDesignacoes(
+   const AUsaDatas: Boolean;
+   const ADataInicial, ADataFinal: TDateTime;
+   const ANumeroAutorizacao: string;
+   const AIdUsuarioResponsavel : integer) : TJSONArray;
+
+begin
+   qryAux.SQL.Clear;
+   qryAux.SQL.Add('SELECT                                                                   ');
+   qryAux.SQL.Add('   id_Siags as id,                                                       ');
+   qryAux.SQL.Add('   Usuario_Designado,                                                    ');
+   qryAux.SQL.Add('   Setor_Designado,                                                      ');
+   qryAux.SQL.Add('   Usuario_Responsavel,                                                  ');
+   qryAux.SQL.Add('   Justificativa,                                                        ');
+   qryAux.SQL.Add('   Numero_Autorizacao as Numero,                                         ');
+   qryAux.SQL.Add('   Data_hora_log AS Data_Hora_Inicial,                                   ');
+   qryAux.SQL.Add('   ISNULL(ProximaData, Null) AS Data_Hora_Final,                    ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, Data_hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('FROM (                                                                             ');
+   qryAux.SQL.Add('       SELECT                                                                      ');
+   qryAux.SQL.Add('          a.id_Siags,                                                             ');
+   qryAux.SQL.Add('          a.Data_hora_log,                                                         ');
+   qryAux.SQL.Add('          a.Justificativa,                                                         ');
+   qryAux.SQL.Add('          b.Nome_Usuario as Usuario_Designado,                                     ');
+   qryAux.SQL.Add('          c.Nome_Setor as Setor_Designado,                                         ');
+   qryAux.SQL.Add('          d.Nome_Usuario as Usuario_Responsavel,                                   ');
+   qryAux.SQL.Add('          e.Numero_Autorizacao,                                                       ');
+   qryAux.SQL.Add('          LEAD(Data_hora_log) OVER (PARTITION BY id_Siags ORDER BY Data_hora_log) AS ProximaData ');
+   qryAux.SQL.Add('       FROM                                                                                       ');
+   qryAux.SQL.Add('          Siags_Log a                                                                            ');
+   qryAux.SQL.Add('          left outer join Usuarios b on b.id = a.id_Usuario_Designado                             ');
+   qryAux.SQL.Add('          left outer join Setores c on c.id = a.id_Setor_Designado                                ');
+   qryAux.SQL.Add('          inner join Usuarios d on d.id = a.id_Usuario_Responsavel                                ');
+   qryAux.SQL.Add('          inner join Siags e on e.id = a.id_Siags                                               ');
+   qryAux.SQL.Add('       WHERE 1 = 1 ');
+
+   if AUsaDatas then
+      begin
+      qryAux.SQL.Add('       and cast(a.Data_Hora_Log as Date) between :pDataInicial and :pDataFinal');
+      qryAux.ParamByName('pDataInicial').AsDateTime := ADataInicial;
+      qryAux.ParamByName('pDataFinal').AsDateTime   := ADataFinal;
+   end;
+
+   if ANumeroAutorizacao <> '' then
+      begin
+      qryAux.SQL.Add('       and e.Numero_Autorizacao = :pNumeroAutorizacao');
+      qryAux.ParamByName('pNumeroAutorizacao').AsString := ANumeroAutorizacao;
+   end;
+
+   if AIdUsuarioResponsavel > 0 then
+      begin
+      qryAux.SQL.Add('       and a.id_Usuario_Responsavel = :pIdUsuarioResponsavel');
+      qryAux.ParamByName('pIdUsuarioResponsavel').AsInteger := AIdUsuarioResponsavel;
+   end;
+
+   qryAux.SQL.Add('     ) AS Logs ');
+   qryAux.SQL.Add('Order by Numero, Data_Hora_Inicial desc');
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+
 end;
 
 procedure TSMSiags.MontarQueryPainel;

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage,
-  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis, Funcoes;
+  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis, Funcoes, Forms.Listagens.Designacoes;
 
 type
   TfrmPrincipal = class(TForm)
@@ -27,6 +27,8 @@ type
     mniSair: TMenuItem;
     mniImportacaoControlPc: TMenuItem;
     mngPaineis: TMenuItem;
+    mngListagens: TMenuItem;
+    mniListagemDesignacoes: TMenuItem;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
@@ -37,6 +39,7 @@ type
     procedure mniSairClick(Sender: TObject);
     procedure mniImportacaoSiagsClick(Sender: TObject);
     procedure mniImportacaoControlPcClick(Sender: TObject);
+    procedure mniListagemDesignacoesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -152,6 +155,15 @@ var
    LForm : TfrmImportacoesSiags;
 begin
    Application.CreateForm(TfrmImportacoesSiags, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.mniListagemDesignacoesClick(Sender: TObject);
+var
+   LForm : TfrmListagemDesignacoes;
+begin
+   Application.CreateForm(TfrmListagemDesignacoes, LForm);
    LForm.ShowModal;
    FreeAndNil(LForm);
 end;

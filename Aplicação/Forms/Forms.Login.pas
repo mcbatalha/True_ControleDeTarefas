@@ -88,7 +88,7 @@ uses Forms.Principal,
      Forms.SelecaoBancoDados,
      Forms.TrocarSenha,
      Funcoes,
-     Libs.Constantes;
+     Libs.Constantes, Util.Menu;
 
 
 procedure TfrmLogin.FormShow(Sender: TObject);

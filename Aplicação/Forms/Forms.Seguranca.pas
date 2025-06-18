@@ -37,6 +37,10 @@ type
     pnlPaineis: TPanel;
     chbMenuPaineis: TCheckBox;
     chbPaineisAcompanhamento: TCheckBox;
+    tbsListagens: TTabSheet;
+    pnlListagens: TPanel;
+    chbMenuListagens: TCheckBox;
+    chbListagemDesignacoes: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -51,6 +55,7 @@ type
     procedure btnDesmarcarTodosClick(Sender: TObject);
     procedure chbMenuImportacoesClick(Sender: TObject);
     procedure chbMenuPaineisClick(Sender: TObject);
+    procedure chbMenuListagensClick(Sender: TObject);
 
   private
 
@@ -134,6 +139,13 @@ begin
       if chbPaineisAcompanhamento.Checked then LItens.Add(4001);
    end;
 
+   if chbMenuListagens.Checked then
+      begin
+      LItens.Add(5000);
+      if chbListagemDesignacoes.Checked then LItens.Add(5001);
+   end;
+
+
    if not FService.Gravar(LItens) then
       begin
       InformationMessage('Ocorreu um erro tentativa de gravar os dados!',C_TITULO_MENSAGENS);
@@ -202,6 +214,22 @@ begin
    chbImportacaoControlPc.Enabled := LMarcar;
 end;
 
+procedure TfrmSeguranca.chbMenuListagensClick(Sender: TObject);
+var
+   LMarcar : Boolean;
+begin
+  inherited;
+
+   if chbMenuListagens.Checked then
+      LMarcar := True
+   else
+      begin
+      LMarcar := False;
+      MarcarItensDoGrupo(False,5000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
+   end;
+   chbListagemDesignacoes.Enabled := LMarcar;
+end;
+
 procedure TfrmSeguranca.chbMenuManutencaoClick(Sender: TObject);
 var
    LMarcar : Boolean;
@@ -248,6 +276,7 @@ begin
    pnlManutencao.Enabled         := AHabilitar;
    pnlImportacaoPlanihas.Enabled := AHabilitar;
    pnlPaineis.Enabled            := AHabilitar;
+   pnlListagens.Enabled          := AHabilitar;
 
    BotoesDeEdicao(AHabilitar);
 end;
@@ -343,6 +372,11 @@ begin
         4000 : chbMenuPaineis.Checked           := True;
         4001 : chbPaineisAcompanhamento.Checked := True;
         {$endRegion}
+
+        {$Region 'Listagens'}
+        5000 : chbMenuListagens.Checked           := True;
+        5001 : chbListagemDesignacoes.Checked := True;
+        {$endRegion}
      end;
    end;
 end;
@@ -375,6 +409,12 @@ begin
       chbMenuPaineis.Checked           := AMarcar;
       chbPaineisAcompanhamento.Checked := AMarcar;
    end;
+
+   if (AGrupo = 0) or (AGrupo = 5000) then     // Listagens
+      begin
+      chbMenuListagens.Checked       := AMarcar;
+      chbListagemDesignacoes.Checked := AMarcar;
+   end;
 end;
 
 procedure TfrmSeguranca.MarcarTodos(const AMarcar: Boolean; const APainel: TPanel);
@@ -387,6 +427,8 @@ begin
        MarcarItensDoGrupo(AMarcar, 3000)
     else if APainel = pnlImportacaoPlanihas  then
        MarcarItensDoGrupo(AMarcar, 4000)
+    else if APainel = pnlListagens  then
+       MarcarItensDoGrupo(AMarcar, 5000)
 end;
 
 procedure TfrmSeguranca.ObterDados;
@@ -407,6 +449,8 @@ begin
      RealocarBotoesDeMarcacao(pnlImportacaoPlanihas)
   else if pgcSeguranca.ActivePage = tbsPaineis then
      RealocarBotoesDeMarcacao(pnlPaineis)
+  else if pgcSeguranca.ActivePage = tbsListagens then
+     RealocarBotoesDeMarcacao(pnlListagens)
 
 end;
 

@@ -199,7 +199,14 @@ type
     function TiposDeClassificacao : TJSONArray;
     function TiposDeStatus    : TJSONArray;
     function Setores          : TJSONArray;
-    function Usuarios         : TJSONArray;  end;
+    function Usuarios         : TJSONArray;
+
+    function ListagemDeDesignacoes(const AUsaDatas : Boolean;
+                                   const ADataInicial, ADataFinal : TDateTime;
+                                   const ANumeroProtocolo : string;
+                                   const AIdUsuarioResponsavel : integer) : TJSONArray;
+
+end;
 
 implementation
 uses ServerMethods.Container,
@@ -347,6 +354,7 @@ var
    LFiltros : TFiltrosControlPc;
 begin
 
+   LFiltros.numeroDoProtocolo    := AFiltros.GetValue<String>('numeroDoProtocolo');
    LFiltros.idTipoStatus         := AFiltros.GetValue<integer>('idTipoStatus');
    LFiltros.idTipoPrazo          := AFiltros.GetValue<integer>('idTipoPrazo');
    LFiltros.idTecnico            := AFiltros.GetValue<integer>('idTecnico');
@@ -379,6 +387,13 @@ begin
    MontarQueryPainel;
 
    qryPainelControlPc.Sql.Add(' and a.Data_Hora_Encerramento is null');
+
+   if LFiltros.numeroDoProtocolo <> '' then
+      begin
+      qryPainelControlPc.Sql.Add(' and a.Protocolo like :pNumeroDoProtocolo');
+      qryPainelControlPc.ParamByName('pNumeroDoProtocolo').AsString := '%' + LFiltros.numeroDoProtocolo + '%';
+   end;
+
    if LFiltros.idTipoStatus > 0 then
       begin
       qryPainelControlPc.Sql.Add(' and a.id_Tipo_Status = :pIdTipoStatus');
@@ -566,19 +581,21 @@ begin
    qryAux.Close;
    qryAux.Sql.Clear;
    qryAux.Sql.Add('Select ');
-   qryAux.Sql.Add('   a.Data_Hora_Historico, a.Tipo_Reclame, a.Tipo_Nip, ');
-   qryAux.Sql.Add('   b.Tipo_Status, ');
-   qryAux.Sql.Add('   c.Tipo_Prazo_Caixa, ');
-   qryAux.Sql.Add('   d.Nome_Tecnico, ');
-   qryAux.Sql.Add('   e.Tipo_Cliente, ');
-   qryAux.Sql.Add('   f.Nome_Usuario ');
+   qryAux.Sql.Add('   a.Data_Hora_Historico, a.Tipo_Reclame, a.Tipo_Nip,  ');
+   qryAux.Sql.Add('   b.Tipo_Status,                                      ');
+   qryAux.Sql.Add('   c.Tipo_Prazo_Caixa,                                 ');
+   qryAux.Sql.Add('   d.Nome_Tecnico,                                     ');
+   qryAux.Sql.Add('   e.Tipo_Classificacao,                               ');
+   qryAux.Sql.Add('   f.Tipo_Cliente,                                     ');
+   qryAux.Sql.Add('   g.Nome_Usuario                                      ');
    qryAux.Sql.Add('From ');
    qryAux.Sql.Add('   ControlPc_Historico a ');
-   qryAux.Sql.Add('   INNER JOIN Tipos_Status b on b.id = a.id_Tipo_Status ');
-   qryAux.Sql.Add('   INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo ');
-   qryAux.Sql.Add('   INNER JOIN Tecnicos d on d.id = a.id_Tecnico ');
-   qryAux.Sql.Add('   INNER JOIN Tipos_Cliente e  on e.id = a.id_Tipo_Cliente ');
-   qryAux.Sql.Add('   INNER JOIN Usuarios f on f.id = a.id_Usuario_Responsavel ');
+   qryAux.Sql.Add('   INNER JOIN Tipos_Status b on b.id = a.id_Tipo_Status                   ');
+   qryAux.Sql.Add('   INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo                     ');
+   qryAux.Sql.Add('   INNER JOIN Tecnicos d on d.id = a.id_Tecnico                           ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Classificacao e on e.id = a.id_Tipo_Classifiacao ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Cliente f on f.id = a.id_Tipo_Cliente            ');
+   qryAux.Sql.Add('   INNER JOIN Usuarios g on g.id = a.id_Usuario_Responsavel               ');
    qryAux.Sql.Add('where ');
    qryAux.Sql.Add('   a.id_ControlPc = :pIdProtocolo');
    qryAux.Sql.Add('Order by ');
@@ -701,6 +718,68 @@ begin
    finally
       FecharTabelasDeCadastro;
    end;
+end;
+
+function TSMControlPc.ListagemDeDesignacoes(
+   const AUsaDatas: Boolean;
+   const ADataInicial, ADataFinal: TDateTime;
+   const ANumeroProtocolo: string;
+   const AIdUsuarioResponsavel : integer) : TJSONArray;
+begin
+   qryAux.SQL.Clear;
+   qryAux.SQL.Add('SELECT                                                                   ');
+   qryAux.SQL.Add('   id_ControlPc as id,                                                   ');
+   qryAux.SQL.Add('   Usuario_Designado,                                                    ');
+   qryAux.SQL.Add('   Setor_Designado,                                                      ');
+   qryAux.SQL.Add('   Usuario_Responsavel,                                                  ');
+   qryAux.SQL.Add('   Justificativa,                                                        ');
+   qryAux.SQL.Add('   Protocolo as Numero,                                                  ');
+   qryAux.SQL.Add('   Data_hora_log AS Data_Hora_Inicial,                                   ');
+   qryAux.SQL.Add('   ISNULL(ProximaData, Null) AS Data_Hora_Final,                    ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, Data_hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('FROM (                                                                             ');
+   qryAux.SQL.Add('       SELECT                                                                      ');
+   qryAux.SQL.Add('          a.id_ControlPc,                                                             ');
+   qryAux.SQL.Add('          a.Data_hora_log,                                                         ');
+   qryAux.SQL.Add('          a.Justificativa,                                                         ');
+   qryAux.SQL.Add('          b.Nome_Usuario as Usuario_Designado,                                     ');
+   qryAux.SQL.Add('          c.Nome_Setor as Setor_Designado,                                         ');
+   qryAux.SQL.Add('          d.Nome_Usuario as Usuario_Responsavel,                                   ');
+   qryAux.SQL.Add('          e.Protocolo,                                                       ');
+   qryAux.SQL.Add('          LEAD(Data_hora_log) OVER (PARTITION BY id_ControlPc ORDER BY Data_hora_log) AS ProximaData ');
+   qryAux.SQL.Add('       FROM                                                                                       ');
+   qryAux.SQL.Add('          ControlPc_Log a                                                                            ');
+   qryAux.SQL.Add('          left outer join Usuarios b on b.id = a.id_Usuario_Designado                             ');
+   qryAux.SQL.Add('          left outer join Setores c on c.id = a.id_Setor_Designado                                ');
+   qryAux.SQL.Add('          inner join Usuarios d on d.id = a.id_Usuario_Responsavel                                ');
+   qryAux.SQL.Add('          inner join ControlPc e on e.id = a.id_ControlPc                                               ');
+   qryAux.SQL.Add('       WHERE 1 = 1 ');
+
+   if AUsaDatas then
+      begin
+      qryAux.SQL.Add('       and cast(a.Data_Hora_Log as Date) between :pDataInicial and :pDataFinal');
+      qryAux.ParamByName('pDataInicial').AsDateTime := ADataInicial;
+      qryAux.ParamByName('pDataFinal').AsDateTime   := ADataFinal;
+   end;
+
+   if ANumeroProtocolo <> '' then
+      begin
+      qryAux.SQL.Add('       and e.Protocolo = :pNumeroProtocolo');
+      qryAux.ParamByName('pNumeroProtocolo').AsString := ANumeroProtocolo;
+   end;
+
+   if AIdUsuarioResponsavel > 0 then
+      begin
+      qryAux.SQL.Add('       and a.id_Usuario_Responsavel = :pIdUsuarioResponsavel');
+      qryAux.ParamByName('pIdUsuarioResponsavel').AsInteger := AIdUsuarioResponsavel;
+   end;
+
+   qryAux.SQL.Add('     ) AS Logs ');
+   qryAux.SQL.Add('Order by Numero, Data_Hora_Inicial desc');
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
 procedure TSMControlPc.MontarQueryPainel;

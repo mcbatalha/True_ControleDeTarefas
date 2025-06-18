@@ -42,7 +42,6 @@ object frmPaineis: TfrmPaineis
     Padding.Bottom = 5
     ParentBackground = False
     TabOrder = 0
-    ExplicitTop = -24
     object pnlBotoes: TPanel
       Left = 7
       Top = 7
@@ -712,11 +711,11 @@ object frmPaineis: TfrmPaineis
     end
   end
   object pgcPaineisConteiner: TPageControl
-    Left = 84
-    Top = 309
+    Left = 92
+    Top = 251
     Width = 1345
     Height = 657
-    ActivePage = TabSheet9
+    ActivePage = TabSheet5
     MultiLine = True
     TabOrder = 1
     Visible = False
@@ -919,7 +918,7 @@ object frmPaineis: TfrmPaineis
             BevelOuter = bvNone
             TabOrder = 1
             object Label2: TLabel
-              Left = 40
+              Left = 328
               Top = 20
               Width = 51
               Height = 16
@@ -995,15 +994,22 @@ object frmPaineis: TfrmPaineis
               Height = 16
               Caption = 'UF'
             end
-            object cmbAuditoriasAutoSc: TDBLookupComboBox
+            object Label68: TLabel
               Left = 40
+              Top = 20
+              Width = 51
+              Height = 16
+              Caption = 'Processo'
+            end
+            object cmbAuditoriasAutoSc: TDBLookupComboBox
+              Left = 328
               Top = 37
               Width = 239
               Height = 24
               KeyField = 'id'
               ListField = 'Tipo_Auditoria'
               ListSource = dtmPainelAutoSC.dtsTiposAuditoria
-              TabOrder = 0
+              TabOrder = 1
             end
             object cmbPrazosCaixaAutoSc: TDBLookupComboBox
               Left = 40
@@ -1013,7 +1019,7 @@ object frmPaineis: TfrmPaineis
               KeyField = 'id'
               ListField = 'Tipo_Prazo_Caixa'
               ListSource = dtmPainelAutoSC.dtsTiposPrazo
-              TabOrder = 1
+              TabOrder = 2
             end
             object cmbPrazosCaixaHojeAutoSc: TDBLookupComboBox
               Left = 328
@@ -1023,7 +1029,7 @@ object frmPaineis: TfrmPaineis
               KeyField = 'id'
               ListField = 'Tipo_Prazo_Caixa_Hoje'
               ListSource = dtmPainelAutoSC.dtsTiposPrazoHoje
-              TabOrder = 2
+              TabOrder = 3
             end
             object cmbTipoProcessoAutoSc: TDBLookupComboBox
               Left = 40
@@ -1033,7 +1039,7 @@ object frmPaineis: TfrmPaineis
               KeyField = 'id'
               ListField = 'Tipo_Processo'
               ListSource = dtmPainelAutoSC.dtsTiposProcesso
-              TabOrder = 5
+              TabOrder = 6
             end
             object cmbTipoProcessoEAutoSc: TDBLookupComboBox
               Left = 328
@@ -1043,7 +1049,7 @@ object frmPaineis: TfrmPaineis
               KeyField = 'id'
               ListField = 'Tipo_Processo_E'
               ListSource = dtmPainelAutoSC.dtsTiposProcessoE
-              TabOrder = 6
+              TabOrder = 7
             end
             object cmbStatusAutoSc: TDBLookupComboBox
               Left = 40
@@ -1053,7 +1059,7 @@ object frmPaineis: TfrmPaineis
               KeyField = 'id'
               ListField = 'Tipo_Status'
               ListSource = dtmPainelAutoSC.dtsTiposStatus
-              TabOrder = 7
+              TabOrder = 8
             end
             object edtDataInicio: TMaskEdit
               Left = 367
@@ -1062,7 +1068,7 @@ object frmPaineis: TfrmPaineis
               Height = 24
               EditMask = '99/99/9999'
               MaxLength = 10
-              TabOrder = 8
+              TabOrder = 9
               Text = '  /  /    '
             end
             object edtDataFim: TMaskEdit
@@ -1072,7 +1078,7 @@ object frmPaineis: TfrmPaineis
               Height = 24
               EditMask = '99/99/9999'
               MaxLength = 10
-              TabOrder = 9
+              TabOrder = 10
               Text = '  /  /    '
             end
             object cmbPrazosAnsAutoSc: TDBLookupComboBox
@@ -1083,7 +1089,7 @@ object frmPaineis: TfrmPaineis
               KeyField = 'id'
               ListField = 'Tipo_Prazo_Caixa'
               ListSource = dtmPainelAutoSC.dtsTiposPrazoANS
-              TabOrder = 3
+              TabOrder = 4
             end
             object cmbUFAutoSc: TDBLookupComboBox
               Left = 328
@@ -1093,20 +1099,28 @@ object frmPaineis: TfrmPaineis
               KeyField = 'Sigla'
               ListField = 'Sigla'
               ListSource = dtmPainelAutoSC.dtsUF
-              TabOrder = 4
+              TabOrder = 5
+            end
+            object edtNumeroProcesso: TEdit
+              Left = 40
+              Top = 37
+              Width = 239
+              Height = 24
+              TabOrder = 0
+              Text = 'edtNumeroProcesso'
             end
           end
         end
       end
     end
-    object TabSheet2: TTabSheet
-      Caption = 'pnlDesignacao'
-      ImageIndex = 1
-      object pnlDesignacao: TPanel
+    object TabSheet7: TTabSheet
+      Caption = 'pnlFiltrosSiags'
+      ImageIndex = 6
+      object pnlFiltrosSiags: TPanel
         Left = 356
-        Top = 118
+        Top = 31
         Width = 625
-        Height = 368
+        Height = 544
         BevelInner = bvRaised
         BevelOuter = bvLowered
         Color = 8404992
@@ -1116,7 +1130,7 @@ object frmPaineis: TfrmPaineis
         Padding.Bottom = 5
         ParentBackground = False
         TabOrder = 0
-        object lblTituloDesignacao: TLabel
+        object Label30: TLabel
           AlignWithMargins = True
           Left = 10
           Top = 10
@@ -1125,43 +1139,45 @@ object frmPaineis: TfrmPaineis
           Margins.Bottom = 10
           Align = alTop
           Alignment = taCenter
-          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Caption = 'Filtros SIAGS'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -20
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
-          WordWrap = True
-          ExplicitWidth = 308
+          ExplicitWidth = 118
         end
-        object pnlCamposDesignacao: TPanel
+        object pnlCamposFiltroSiags: TPanel
           Left = 7
           Top = 44
           Width = 611
-          Height = 317
+          Height = 493
           Align = alClient
           BevelOuter = bvNone
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          object pnlBotoesAutoSc: TPanel
+          ExplicitLeft = -17
+          ExplicitTop = 10
+          object Panel14: TPanel
             Left = 0
-            Top = 245
+            Top = 432
             Width = 611
-            Height = 72
+            Height = 61
             Align = alBottom
+            BevelOuter = bvNone
             TabOrder = 0
             DesignSize = (
               611
-              72)
-            object btnConfirmarDesignacao: TBitBtn
+              61)
+            object btnFiltrarSiags: TBitBtn
               Left = 174
-              Top = 20
+              Top = 14
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
-              Caption = 'Confirmar'
+              Caption = 'Filtrar'
               Glyph.Data = {
                 BE060000424DBE06000000000000360400002800000024000000120000000100
                 0800000000008802000000000000000000000001000000000000000000000000
@@ -1220,11 +1236,11 @@ object frmPaineis: TfrmPaineis
                 0303}
               NumGlyphs = 2
               TabOrder = 0
-              OnClick = btnConfirmarDesignacaoClick
+              OnClick = btnFiltrarSiagsClick
             end
-            object btnCancelarDesignacao: TBitBtn
+            object btnCancelarFiltroSiags: TBitBtn
               Left = 318
-              Top = 20
+              Top = 14
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
@@ -1287,46 +1303,181 @@ object frmPaineis: TfrmPaineis
                 0303}
               NumGlyphs = 2
               TabOrder = 1
-              OnClick = btnCancelarDesignacaoClick
+              OnClick = btnCancelarFiltroSiagsClick
             end
           end
-          object Panel1: TPanel
+          object Panel15: TPanel
             Left = 0
             Top = 0
             Width = 611
-            Height = 121
+            Height = 316
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 1
-            object Label13: TLabel
+            object Label31: TLabel
               Left = 40
-              Top = 24
-              Width = 65
+              Top = 79
+              Width = 51
               Height = 16
-              Caption = 'Justificativa'
+              Caption = 'Auditoria'
             end
-            object memJustificativa: TMemo
+            object Label32: TLabel
               Left = 40
-              Top = 40
-              Width = 505
-              Height = 57
-              Lines.Strings = (
-                'memJustificativa')
-              MaxLength = 100
+              Top = 255
+              Width = 67
+              Height = 16
+              Caption = 'Prazo Caixa'
+            end
+            object Label39: TLabel
+              Left = 328
+              Top = 255
+              Width = 60
+              Height = 16
+              Caption = 'Prazo ANS'
+            end
+            object Label41: TLabel
+              Left = 328
+              Top = 79
+              Width = 15
+              Height = 16
+              Caption = 'UF'
+            end
+            object Label33: TLabel
+              Left = 40
+              Top = 137
+              Width = 114
+              Height = 16
+              Caption = 'Tipo de Autoriza'#231#227'o'
+            end
+            object Label42: TLabel
+              Left = 328
+              Top = 137
+              Width = 119
+              Height = 16
+              Caption = 'Tipo de Atendimento'
+            end
+            object Label43: TLabel
+              Left = 40
+              Top = 196
+              Width = 138
+              Height = 16
+              Caption = 'Situa'#231#227'o da Autoriza'#231#227'o'
+            end
+            object Label44: TLabel
+              Left = 328
+              Top = 196
+              Width = 93
+              Height = 16
+              Caption = 'Ultima Anota'#231#227'o'
+            end
+            object Label79: TLabel
+              Left = 40
+              Top = 20
+              Width = 103
+              Height = 16
+              Caption = 'N'#186' da Autoriza'#231#227'o'
+            end
+            object cmbAuditoriasSiags: TDBLookupComboBox
+              Left = 40
+              Top = 96
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Auditoria'
+              ListSource = dtmPainelSiags.dtsTiposAuditoria
+              TabOrder = 1
+            end
+            object cmbPrazosCaixaSiags: TDBLookupComboBox
+              Left = 40
+              Top = 273
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Prazo_Caixa'
+              ListSource = dtmPainelAutoSC.dtsTiposPrazo
+              TabOrder = 2
+            end
+            object cmbPrazosANSSiags: TDBLookupComboBox
+              Left = 328
+              Top = 273
+              Width = 241
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Prazo_Caixa'
+              ListSource = dtmPainelAutoSC.dtsTiposPrazoANS
+              TabOrder = 3
+            end
+            object cmbUFSiags: TDBLookupComboBox
+              Left = 328
+              Top = 96
+              Width = 81
+              Height = 24
+              KeyField = 'Sigla'
+              ListField = 'Sigla'
+              ListSource = dtmPainelSiags.dtsUF
+              TabOrder = 4
+            end
+            object cmbAutorizacoesSiags: TDBLookupComboBox
+              Left = 40
+              Top = 155
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Autorizacao'
+              ListSource = dtmPainelSiags.dtsTiposAutorizacao
+              TabOrder = 5
+            end
+            object cmbAtendimentosSiags: TDBLookupComboBox
+              Left = 328
+              Top = 155
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Atendimento'
+              ListSource = dtmPainelSiags.dtsTiposAtendimento
+              TabOrder = 6
+            end
+            object cmbSituacoesSiags: TDBLookupComboBox
+              Left = 40
+              Top = 214
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Situacao_Autorizacao'
+              ListSource = dtmPainelSiags.dtsTiposSituacaoAutorizacao
+              TabOrder = 7
+            end
+            object cmbUltimasAnotacoesSiags: TDBLookupComboBox
+              Left = 328
+              Top = 214
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Ultima_Anotacao'
+              ListSource = dtmPainelSiags.dtsTiposUltimaAnotacao
+              TabOrder = 8
+            end
+            object edtNumeroAutorizacao: TEdit
+              Left = 40
+              Top = 37
+              Width = 239
+              Height = 24
+              NumbersOnly = True
               TabOrder = 0
+              Text = 'edtNumeroProcesso'
             end
           end
         end
       end
     end
-    object TabSheet3: TTabSheet
-      Caption = 'pnlHistoricoDesignacoes'
-      ImageIndex = 2
-      object pnlHistoricoDesignacoes: TPanel
+    object TabSheet9: TTabSheet
+      Caption = 'pnlFiltrosControlPc'
+      ImageIndex = 8
+      object pnlFiltrosControlPc: TPanel
         Left = 356
-        Top = 98
+        Top = 30
         Width = 625
-        Height = 408
+        Height = 523
         BevelInner = bvRaised
         BevelOuter = bvLowered
         Color = 8404992
@@ -1336,7 +1487,7 @@ object frmPaineis: TfrmPaineis
         Padding.Bottom = 5
         ParentBackground = False
         TabOrder = 0
-        object lblTituloHistoricoDesignacoes: TLabel
+        object Label34: TLabel
           AlignWithMargins = True
           Left = 10
           Top = 10
@@ -1345,155 +1496,432 @@ object frmPaineis: TfrmPaineis
           Margins.Bottom = 10
           Align = alTop
           Alignment = taCenter
-          Caption = 'Designa'#231#245'es'
+          Caption = 'Filtros CONTROLPC'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -20
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 113
+          ExplicitWidth = 178
         end
-        object Panel3: TPanel
+        object pnlCamposFiltroControlPc: TPanel
           Left = 7
           Top = 44
           Width = 611
-          Height = 357
+          Height = 472
           Align = alClient
           BevelOuter = bvNone
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          object Label15: TLabel
-            Left = 21
-            Top = 77
-            Width = 153
-            Height = 16
-            Caption = 'Data | Hora da designa'#231#227'o'
-          end
-          object Label16: TLabel
-            Left = 215
-            Top = 77
-            Width = 71
-            Height = 16
-            Caption = 'Respons'#225'vel'
-          end
-          object Label17: TLabel
-            Left = 21
-            Top = 141
-            Width = 101
-            Height = 16
-            Caption = 'Setor Desiganado'
-          end
-          object Label18: TLabel
-            Left = 215
-            Top = 141
-            Width = 117
-            Height = 16
-            Caption = 'Usu'#225'rio  Desiganado'
-          end
-          object Label19: TLabel
-            Left = 21
-            Top = 204
-            Width = 65
-            Height = 16
-            Caption = 'Justificativa'
-          end
-          object Panel5: TPanel
+          object Panel18: TPanel
             Left = 0
-            Top = 285
+            Top = 411
             Width = 611
-            Height = 72
+            Height = 61
             Align = alBottom
+            BevelOuter = bvNone
             TabOrder = 0
             DesignSize = (
               611
-              72)
-            object btnFecharHistoricoDesignacao: TBitBtn
-              Left = 246
-              Top = 20
+              61)
+            object btnFiltrarControlPc: TBitBtn
+              Left = 174
+              Top = 14
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
-              Caption = 'Fechar'
+              Caption = 'Filtrar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                03030303030303030303030303030303030303030303FF030303030303030303
+                03030303030303040403030303030303030303030303030303F8F8FF03030303
+                03030303030303030303040202040303030303030303030303030303F80303F8
+                FF030303030303030303030303040202020204030303030303030303030303F8
+                03030303F8FF0303030303030303030304020202020202040303030303030303
+                0303F8030303030303F8FF030303030303030304020202FA0202020204030303
+                0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
+                040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
+                03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
+                FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
+                0303030303030303030303FA0202020403030303030303030303030303F8FF03
+                03F8FF03030303030303030303030303FA020202040303030303030303030303
+                0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
+                03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
+                030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
+                0202040303030303030303030303030303F8FF03F8FF03030303030303030303
+                03030303FA0202030303030303030303030303030303F8FFF803030303030303
+                030303030303030303FA0303030303030303030303030303030303F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
               NumGlyphs = 2
               TabOrder = 0
-              OnClick = btnFecharHistoricoDesignacaoClick
+              OnClick = btnFiltrarControlPcClick
+            end
+            object btnCancelarFiltroControlPc: TBitBtn
+              Left = 318
+              Top = 14
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Cancelar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303F8F80303030303030303030303030303030303FF03030303030303030303
+                0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
+                03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
+                030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
+                FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
+                030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
+                F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
+                010101F8030303030303030303F8FF030303030303FFF8030303030303030303
+                030101010101F80303030303030303030303F8FF0303030303F8030303030303
+                0303030303F901010101F8030303030303030303030303F8FF030303F8030303
+                0303030303030303F90101010101F8030303030303030303030303F803030303
+                F8FF030303030303030303F9010101F8010101F803030303030303030303F803
+                03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
+                03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
+                03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
+                0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
+                030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
+                03030303030303030303030303030303030303030303030303F8F8F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 1
+              OnClick = btnCancelarFiltroControlPcClick
             end
           end
-          object dbnHistoricoDesignacoes: TDBNavigator
-            Left = 174
-            Top = 16
-            Width = 264
-            Height = 25
-            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
-            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
-            Hints.Strings = (
-              'Primeiro'
-              'Anterior'
-              'Pr'#243'ximo'
-              #218'ltimo')
+          object pnlCampos: TPanel
+            Left = 0
+            Top = 0
+            Width = 611
+            Height = 293
+            Align = alTop
+            BevelOuter = bvNone
             TabOrder = 1
+            object Label62: TLabel
+              Left = 40
+              Top = 163
+              Width = 32
+              Height = 16
+              Caption = 'Prazo'
+            end
+            object Label63: TLabel
+              Left = 328
+              Top = 163
+              Width = 44
+              Height = 16
+              Caption = 'T'#233'cnico'
+            end
+            object Label66: TLabel
+              Left = 322
+              Top = 33
+              Width = 36
+              Height = 16
+              Caption = 'Status'
+            end
+            object Label67: TLabel
+              Left = 40
+              Top = 98
+              Width = 74
+              Height = 16
+              Caption = 'DT. Abertura'
+            end
+            object Label69: TLabel
+              Left = 40
+              Top = 230
+              Width = 68
+              Height = 16
+              Caption = 'Tipo Cliente'
+            end
+            object Label71: TLabel
+              Left = 328
+              Top = 230
+              Width = 78
+              Height = 16
+              Caption = 'Tipo Reclame'
+            end
+            object Label61: TLabel
+              Left = 448
+              Top = 230
+              Width = 47
+              Height = 16
+              Caption = 'Tipo Nip'
+            end
+            object Label64: TLabel
+              Left = 181
+              Top = 98
+              Width = 94
+              Height = 16
+              Caption = 'DT. Fechamento'
+            end
+            object Label65: TLabel
+              Left = 322
+              Top = 98
+              Width = 103
+              Height = 16
+              Caption = 'DT. Transfer'#234'ncia'
+            end
+            object Label70: TLabel
+              Left = 464
+              Top = 98
+              Width = 78
+              Height = 16
+              Caption = 'Prev. Solu'#231#227'o'
+            end
+            object Label80: TLabel
+              Left = 40
+              Top = 33
+              Width = 53
+              Height = 16
+              Caption = 'Protocolo'
+            end
+            object cmbPrazos: TDBLookupComboBox
+              Left = 40
+              Top = 181
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Prazo_Caixa'
+              ListSource = dtmPainelControlPc.dtsTiposPrazo
+              TabOrder = 5
+            end
+            object cmbTecnicos: TDBLookupComboBox
+              Left = 328
+              Top = 181
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Nome_Tecnico'
+              ListSource = dtmPainelControlPc.dtsTecnicos
+              TabOrder = 6
+            end
+            object cmbTiposStatusControlPc: TDBLookupComboBox
+              Left = 322
+              Top = 51
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Status'
+              ListSource = dtmPainelControlPc.dtsTiposStatus
+              TabOrder = 0
+            end
+            object edtDataAbertura: TMaskEdit
+              Left = 40
+              Top = 116
+              Width = 103
+              Height = 24
+              EditMask = '99/99/9999'
+              MaxLength = 10
+              TabOrder = 1
+              Text = '  /  /    '
+              OnExit = edtDataAberturaExit
+            end
+            object cmbTiposCliente: TDBLookupComboBox
+              Left = 40
+              Top = 247
+              Width = 241
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Tipo_Cliente'
+              ListSource = dtmPainelControlPc.dtsTiposCliente
+              TabOrder = 7
+            end
+            object cmbTipoReclame: TComboBox
+              Left = 330
+              Top = 247
+              Width = 78
+              Height = 24
+              Style = csOwnerDrawFixed
+              ItemHeight = 18
+              TabOrder = 8
+              Items.Strings = (
+                'Sim'
+                'N'#227'o'
+                'Todos')
+            end
+            object cmbTipoNip: TComboBox
+              Left = 450
+              Top = 247
+              Width = 78
+              Height = 24
+              Style = csOwnerDrawFixed
+              ItemHeight = 18
+              TabOrder = 9
+              Items.Strings = (
+                'Sim'
+                'N'#227'o'
+                'Todos')
+            end
+            object edtDataFechamento: TMaskEdit
+              Left = 181
+              Top = 116
+              Width = 103
+              Height = 24
+              EditMask = '99/99/9999'
+              MaxLength = 10
+              TabOrder = 2
+              Text = '  /  /    '
+              OnExit = edtDataAberturaExit
+            end
+            object edtDataTransferencia: TMaskEdit
+              Left = 322
+              Top = 116
+              Width = 103
+              Height = 24
+              EditMask = '99/99/9999'
+              MaxLength = 10
+              TabOrder = 3
+              Text = '  /  /    '
+              OnExit = edtDataAberturaExit
+            end
+            object edtPrevisaoSolucao: TMaskEdit
+              Left = 464
+              Top = 116
+              Width = 103
+              Height = 24
+              EditMask = '99/99/9999'
+              MaxLength = 10
+              TabOrder = 4
+              Text = '  /  /    '
+              OnExit = edtDataAberturaExit
+            end
+            object edtNumeroProtocolo: TEdit
+              Left = 40
+              Top = 51
+              Width = 239
+              Height = 24
+              NumbersOnly = True
+              TabOrder = 10
+              Text = 'edtNumeroProcesso'
+            end
           end
-          object edtDataHoraDesignacao: TDBEdit
-            Left = 21
-            Top = 94
-            Width = 154
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Data_Hora_Log'
-            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
-            ReadOnly = True
+          object pnlSelecaoDesignacao: TPanel
+            Left = 0
+            Top = 293
+            Width = 611
+            Height = 118
+            Align = alClient
+            BevelOuter = bvNone
             TabOrder = 2
-          end
-          object edtResponsavelDesignacao: TDBEdit
-            Left = 215
-            Top = 94
-            Width = 377
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Usuario_Responsavel'
-            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
-            ReadOnly = True
-            TabOrder = 3
-          end
-          object edtSetorDesignacao: TDBEdit
-            Left = 21
-            Top = 158
-            Width = 154
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Nome_Setor'
-            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
-            ReadOnly = True
-            TabOrder = 4
-          end
-          object edtUsuarioDesignacao: TDBEdit
-            Left = 215
-            Top = 158
-            Width = 377
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Usuario_Designado'
-            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
-            ReadOnly = True
-            TabOrder = 5
-          end
-          object memJustificativaDesignacao: TDBMemo
-            Left = 21
-            Top = 222
-            Width = 572
-            Height = 57
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Justificativa'
-            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
-            ReadOnly = True
-            TabOrder = 6
+            object Label8: TLabel
+              Left = 40
+              Top = 0
+              Width = 31
+              Height = 16
+              Caption = 'Setor'
+            end
+            inline fraPesquisaUsuario: TfraPesquisaUsuario
+              AlignWithMargins = True
+              Left = 0
+              Top = 45
+              Width = 611
+              Height = 71
+              Margins.Left = 0
+              Margins.Top = 45
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alTop
+              Color = clWhite
+              ParentBackground = False
+              ParentColor = False
+              TabOrder = 1
+              ExplicitTop = 45
+              ExplicitWidth = 611
+              ExplicitHeight = 71
+              inherited Label9: TLabel
+                Left = 40
+                ExplicitLeft = 40
+              end
+              inherited btnPesquisarUsuario: TSpeedButton
+                Left = 544
+                ExplicitLeft = 544
+              end
+              inherited cmbUsuarios: TDBLookupComboBox
+                Left = 40
+                ExplicitLeft = 40
+              end
+            end
+            object cmbSetores: TDBLookupComboBox
+              Left = 40
+              Top = 19
+              Width = 239
+              Height = 24
+              KeyField = 'id'
+              ListField = 'Nome_Setor'
+              ListSource = dtmPainelAutoSC.dtsSetores
+              TabOrder = 0
+            end
           end
         end
       end
@@ -1694,912 +2122,6 @@ object frmPaineis: TfrmPaineis
             DataSource = dtmPainelAutoSC.dtsHistoricoAtualizacoes
             ReadOnly = True
             TabOrder = 7
-          end
-        end
-      end
-    end
-    object TabSheet5: TTabSheet
-      Caption = 'pnlEncerramento'
-      ImageIndex = 4
-      object pnlEncerramento: TPanel
-        Left = 356
-        Top = 190
-        Width = 625
-        Height = 224
-        BevelInner = bvRaised
-        BevelOuter = bvLowered
-        Color = 8404992
-        Padding.Left = 5
-        Padding.Top = 5
-        Padding.Right = 5
-        Padding.Bottom = 5
-        ParentBackground = False
-        TabOrder = 0
-        object lblTituloEncerramento: TLabel
-          AlignWithMargins = True
-          Left = 10
-          Top = 10
-          Width = 605
-          Height = 24
-          Margins.Bottom = 10
-          Align = alTop
-          Alignment = taCenter
-          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWhite
-          Font.Height = -20
-          Font.Name = 'Roboto'
-          Font.Style = []
-          ParentFont = False
-          ExplicitWidth = 308
-        end
-        object Panel8: TPanel
-          Left = 7
-          Top = 44
-          Width = 611
-          Height = 173
-          Align = alClient
-          BevelOuter = bvNone
-          Color = clWhite
-          ParentBackground = False
-          TabOrder = 0
-          object Panel9: TPanel
-            Left = 0
-            Top = 101
-            Width = 611
-            Height = 72
-            Align = alBottom
-            TabOrder = 0
-            DesignSize = (
-              611
-              72)
-            object btnConfirmaEncerramento: TBitBtn
-              Left = 174
-              Top = 24
-              Width = 119
-              Height = 33
-              Anchors = [akLeft, akBottom]
-              Caption = 'Confirmar'
-              Glyph.Data = {
-                BE060000424DBE06000000000000360400002800000024000000120000000100
-                0800000000008802000000000000000000000001000000000000000000000000
-                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
-                A400000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
-                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                03030303030303030303030303030303030303030303FF030303030303030303
-                03030303030303040403030303030303030303030303030303F8F8FF03030303
-                03030303030303030303040202040303030303030303030303030303F80303F8
-                FF030303030303030303030303040202020204030303030303030303030303F8
-                03030303F8FF0303030303030303030304020202020202040303030303030303
-                0303F8030303030303F8FF030303030303030304020202FA0202020204030303
-                0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
-                040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
-                03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
-                FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
-                0303030303030303030303FA0202020403030303030303030303030303F8FF03
-                03F8FF03030303030303030303030303FA020202040303030303030303030303
-                0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
-                03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
-                030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
-                0202040303030303030303030303030303F8FF03F8FF03030303030303030303
-                03030303FA0202030303030303030303030303030303F8FFF803030303030303
-                030303030303030303FA0303030303030303030303030303030303F803030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                0303}
-              NumGlyphs = 2
-              TabOrder = 0
-              OnClick = btnConfirmaEncerramentoClick
-            end
-            object btnCancelaEncerramento: TBitBtn
-              Left = 318
-              Top = 24
-              Width = 119
-              Height = 33
-              Anchors = [akLeft, akBottom]
-              Caption = 'Cancelar'
-              Glyph.Data = {
-                BE060000424DBE06000000000000360400002800000024000000120000000100
-                0800000000008802000000000000000000000001000000000000000000000000
-                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
-                A400000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
-                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                0303F8F80303030303030303030303030303030303FF03030303030303030303
-                0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
-                03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
-                030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
-                FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
-                030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
-                F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
-                010101F8030303030303030303F8FF030303030303FFF8030303030303030303
-                030101010101F80303030303030303030303F8FF0303030303F8030303030303
-                0303030303F901010101F8030303030303030303030303F8FF030303F8030303
-                0303030303030303F90101010101F8030303030303030303030303F803030303
-                F8FF030303030303030303F9010101F8010101F803030303030303030303F803
-                03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
-                03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
-                03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
-                0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
-                030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
-                03030303030303030303030303030303030303030303030303F8F8F803030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                0303}
-              NumGlyphs = 2
-              TabOrder = 1
-              OnClick = btnCancelaEncerramentoClick
-            end
-          end
-          object Panel11: TPanel
-            Left = 0
-            Top = 0
-            Width = 611
-            Height = 121
-            Align = alTop
-            BevelOuter = bvNone
-            TabOrder = 1
-            object Label28: TLabel
-              Left = 53
-              Top = 24
-              Width = 65
-              Height = 16
-              Caption = 'Justificativa'
-            end
-            object memJustificativaEncerramento: TMemo
-              Left = 53
-              Top = 40
-              Width = 505
-              Height = 57
-              Lines.Strings = (
-                'memJustificativa')
-              MaxLength = 100
-              TabOrder = 0
-            end
-          end
-        end
-      end
-    end
-    object TabSheet6: TTabSheet
-      Caption = 'pnlObservacoesProcesso'
-      ImageIndex = 5
-      object pnlObservacoesProcesso: TPanel
-        Left = 356
-        Top = 102
-        Width = 625
-        Height = 400
-        BevelInner = bvRaised
-        BevelOuter = bvLowered
-        Color = 8404992
-        Padding.Left = 5
-        Padding.Top = 5
-        Padding.Right = 5
-        Padding.Bottom = 5
-        ParentBackground = False
-        TabOrder = 0
-        object lblTituloObservacoesProcesso: TLabel
-          AlignWithMargins = True
-          Left = 10
-          Top = 10
-          Width = 605
-          Height = 24
-          Margins.Bottom = 10
-          Align = alTop
-          Alignment = taCenter
-          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWhite
-          Font.Height = -20
-          Font.Name = 'Roboto'
-          Font.Style = []
-          ParentFont = False
-          ExplicitWidth = 308
-        end
-        object Panel10: TPanel
-          Left = 7
-          Top = 44
-          Width = 611
-          Height = 349
-          Align = alClient
-          BevelOuter = bvNone
-          Color = clWhite
-          ParentBackground = False
-          TabOrder = 0
-          object Label27: TLabel
-            Left = 41
-            Top = 133
-            Width = 65
-            Height = 16
-            Caption = 'Justificativa'
-          end
-          object btnIncluirObservacao: TSpeedButton
-            Left = 330
-            Top = 16
-            Width = 80
-            Height = 25
-            Caption = 'Incluir'
-            Glyph.Data = {
-              CE070000424DCE07000000000000360000002800000024000000120000000100
-              18000000000098070000C40E0000C40E00000000000000000000FFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF
-              4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50
-              AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50
-              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50
-              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C
-              50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFF
-              FFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFF
-              50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0646464E0E0E0E0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C
-              50AF4C50AF4C50AF4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF
-              4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E064
-              6464E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF
-              50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF
-              4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0
-              E0E0E0E0E0646464646464646464646464646464E0E0E0E0E0E0E0E0E0E0E0E0
-              E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF
-              4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFF
-              FFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0646464E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF
-              4C50AF4C50AF4C50AF4C50AF4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50
-              AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              E0E0E0646464E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFF
-              FFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50
-              AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50
-              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C
-              50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C
-              50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
-              E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFF50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0
-              E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-            NumGlyphs = 2
-            OnClick = btnIncluirObservacaoClick
-          end
-          object btnGravarObservacao: TSpeedButton
-            Left = 410
-            Top = 16
-            Width = 80
-            Height = 25
-            Caption = 'Gravar'
-            Glyph.Data = {
-              BE060000424DBE06000000000000360400002800000024000000120000000100
-              0800000000008802000000000000000000000001000000000000000000000000
-              80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
-              A400000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
-              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
-              0303030303030303030303030303030303030303030303030303030303030303
-              03030303030303030303030303030303030303030303FF030303030303030303
-              03030303030303040403030303030303030303030303030303F8F8FF03030303
-              03030303030303030303040202040303030303030303030303030303F80303F8
-              FF030303030303030303030303040202020204030303030303030303030303F8
-              03030303F8FF0303030303030303030304020202020202040303030303030303
-              0303F8030303030303F8FF030303030303030304020202FA0202020204030303
-              0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
-              040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
-              03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
-              FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
-              0303030303030303030303FA0202020403030303030303030303030303F8FF03
-              03F8FF03030303030303030303030303FA020202040303030303030303030303
-              0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
-              03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
-              030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
-              0202040303030303030303030303030303F8FF03F8FF03030303030303030303
-              03030303FA0202030303030303030303030303030303F8FFF803030303030303
-              030303030303030303FA0303030303030303030303030303030303F803030303
-              0303030303030303030303030303030303030303030303030303030303030303
-              0303}
-            NumGlyphs = 2
-            OnClick = btnGravarObservacaoClick
-          end
-          object btnCancelarObservacao: TSpeedButton
-            Left = 490
-            Top = 16
-            Width = 80
-            Height = 25
-            Caption = 'Cancelar'
-            Glyph.Data = {
-              BE060000424DBE06000000000000360400002800000024000000120000000100
-              0800000000008802000000000000000000000001000000000000000000000000
-              80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
-              A400000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
-              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
-              0303030303030303030303030303030303030303030303030303030303030303
-              0303F8F80303030303030303030303030303030303FF03030303030303030303
-              0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
-              03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
-              030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
-              FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
-              030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
-              F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
-              010101F8030303030303030303F8FF030303030303FFF8030303030303030303
-              030101010101F80303030303030303030303F8FF0303030303F8030303030303
-              0303030303F901010101F8030303030303030303030303F8FF030303F8030303
-              0303030303030303F90101010101F8030303030303030303030303F803030303
-              F8FF030303030303030303F9010101F8010101F803030303030303030303F803
-              03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
-              03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
-              03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
-              0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
-              030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
-              03030303030303030303030303030303030303030303030303F8F8F803030303
-              0303030303030303030303030303030303030303030303030303030303030303
-              0303}
-            NumGlyphs = 2
-            OnClick = btnCancelarObservacaoClick
-          end
-          object Label20: TLabel
-            Left = 41
-            Top = 69
-            Width = 67
-            Height = 16
-            Caption = 'Data | Hora'
-          end
-          object Label29: TLabel
-            Left = 234
-            Top = 69
-            Width = 67
-            Height = 16
-            Caption = 'Data | Hora'
-          end
-          object Panel12: TPanel
-            Left = 0
-            Top = 277
-            Width = 611
-            Height = 72
-            Align = alBottom
-            TabOrder = 0
-            DesignSize = (
-              611
-              72)
-            object btnFecharObservacao: TBitBtn
-              Left = 246
-              Top = 20
-              Width = 119
-              Height = 33
-              Anchors = [akLeft, akBottom]
-              Caption = 'Fechar'
-              NumGlyphs = 2
-              TabOrder = 0
-              OnClick = btnFecharObservacaoClick
-            end
-          end
-          object dbnObservacoes: TDBNavigator
-            Left = 41
-            Top = 16
-            Width = 248
-            Height = 25
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
-            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
-            Hints.Strings = (
-              'Primeiro'
-              'Anterior'
-              'Pr'#243'ximo'
-              #218'ltimo'
-              'Incluir'
-              ''
-              ''
-              'Gravar'
-              'Cancelar')
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 4
-          end
-          object memObservacao: TDBMemo
-            Left = 41
-            Top = 155
-            Width = 529
-            Height = 112
-            DataField = 'Observacao'
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
-            TabOrder = 3
-          end
-          object edtDataHoraObservacao: TDBEdit
-            Left = 41
-            Top = 86
-            Width = 154
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Data_Hora'
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
-            ReadOnly = True
-            TabOrder = 1
-          end
-          object edtUsuarioObservacao: TDBEdit
-            Left = 234
-            Top = 86
-            Width = 336
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Nome_Usuario'
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
-            ReadOnly = True
-            TabOrder = 2
-          end
-        end
-      end
-    end
-    object TabSheet7: TTabSheet
-      Caption = 'pnlFiltrosSiags'
-      ImageIndex = 6
-      object pnlFiltrosSiags: TPanel
-        Left = 356
-        Top = 31
-        Width = 625
-        Height = 544
-        BevelInner = bvRaised
-        BevelOuter = bvLowered
-        Color = 8404992
-        Padding.Left = 5
-        Padding.Top = 5
-        Padding.Right = 5
-        Padding.Bottom = 5
-        ParentBackground = False
-        TabOrder = 0
-        object Label30: TLabel
-          AlignWithMargins = True
-          Left = 10
-          Top = 10
-          Width = 605
-          Height = 24
-          Margins.Bottom = 10
-          Align = alTop
-          Alignment = taCenter
-          Caption = 'Filtros SIAGS'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWhite
-          Font.Height = -20
-          Font.Name = 'Roboto'
-          Font.Style = []
-          ParentFont = False
-          ExplicitWidth = 118
-        end
-        object pnlCamposFiltroSiags: TPanel
-          Left = 7
-          Top = 44
-          Width = 611
-          Height = 493
-          Align = alClient
-          BevelOuter = bvNone
-          Color = clWhite
-          ParentBackground = False
-          TabOrder = 0
-          object Panel14: TPanel
-            Left = 0
-            Top = 432
-            Width = 611
-            Height = 61
-            Align = alBottom
-            BevelOuter = bvNone
-            TabOrder = 0
-            DesignSize = (
-              611
-              61)
-            object btnFiltrarSiags: TBitBtn
-              Left = 174
-              Top = 14
-              Width = 119
-              Height = 33
-              Anchors = [akLeft, akBottom]
-              Caption = 'Filtrar'
-              Glyph.Data = {
-                BE060000424DBE06000000000000360400002800000024000000120000000100
-                0800000000008802000000000000000000000001000000000000000000000000
-                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
-                A400000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
-                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                03030303030303030303030303030303030303030303FF030303030303030303
-                03030303030303040403030303030303030303030303030303F8F8FF03030303
-                03030303030303030303040202040303030303030303030303030303F80303F8
-                FF030303030303030303030303040202020204030303030303030303030303F8
-                03030303F8FF0303030303030303030304020202020202040303030303030303
-                0303F8030303030303F8FF030303030303030304020202FA0202020204030303
-                0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
-                040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
-                03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
-                FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
-                0303030303030303030303FA0202020403030303030303030303030303F8FF03
-                03F8FF03030303030303030303030303FA020202040303030303030303030303
-                0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
-                03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
-                030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
-                0202040303030303030303030303030303F8FF03F8FF03030303030303030303
-                03030303FA0202030303030303030303030303030303F8FFF803030303030303
-                030303030303030303FA0303030303030303030303030303030303F803030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                0303}
-              NumGlyphs = 2
-              TabOrder = 0
-              OnClick = btnFiltrarSiagsClick
-            end
-            object btnCancelarFiltroSiags: TBitBtn
-              Left = 318
-              Top = 14
-              Width = 119
-              Height = 33
-              Anchors = [akLeft, akBottom]
-              Caption = 'Cancelar'
-              Glyph.Data = {
-                BE060000424DBE06000000000000360400002800000024000000120000000100
-                0800000000008802000000000000000000000001000000000000000000000000
-                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
-                A400000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                0000000000000000000000000000000000000000000000000000000000000000
-                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
-                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                0303F8F80303030303030303030303030303030303FF03030303030303030303
-                0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
-                03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
-                030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
-                FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
-                030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
-                F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
-                010101F8030303030303030303F8FF030303030303FFF8030303030303030303
-                030101010101F80303030303030303030303F8FF0303030303F8030303030303
-                0303030303F901010101F8030303030303030303030303F8FF030303F8030303
-                0303030303030303F90101010101F8030303030303030303030303F803030303
-                F8FF030303030303030303F9010101F8010101F803030303030303030303F803
-                03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
-                03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
-                03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
-                0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
-                030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
-                03030303030303030303030303030303030303030303030303F8F8F803030303
-                0303030303030303030303030303030303030303030303030303030303030303
-                0303}
-              NumGlyphs = 2
-              TabOrder = 1
-              OnClick = btnCancelarFiltroSiagsClick
-            end
-          end
-          object Panel15: TPanel
-            Left = 0
-            Top = 0
-            Width = 611
-            Height = 316
-            Align = alTop
-            BevelOuter = bvNone
-            TabOrder = 1
-            object Label31: TLabel
-              Left = 40
-              Top = 20
-              Width = 51
-              Height = 16
-              Caption = 'Auditoria'
-            end
-            object Label32: TLabel
-              Left = 40
-              Top = 255
-              Width = 67
-              Height = 16
-              Caption = 'Prazo Caixa'
-            end
-            object Label39: TLabel
-              Left = 328
-              Top = 255
-              Width = 60
-              Height = 16
-              Caption = 'Prazo ANS'
-            end
-            object Label41: TLabel
-              Left = 328
-              Top = 20
-              Width = 15
-              Height = 16
-              Caption = 'UF'
-            end
-            object Label33: TLabel
-              Left = 40
-              Top = 97
-              Width = 114
-              Height = 16
-              Caption = 'Tipo de Autoriza'#231#227'o'
-            end
-            object Label42: TLabel
-              Left = 328
-              Top = 97
-              Width = 119
-              Height = 16
-              Caption = 'Tipo de Atendimento'
-            end
-            object Label43: TLabel
-              Left = 40
-              Top = 176
-              Width = 138
-              Height = 16
-              Caption = 'Situa'#231#227'o da Autoriza'#231#227'o'
-            end
-            object Label44: TLabel
-              Left = 328
-              Top = 176
-              Width = 93
-              Height = 16
-              Caption = 'Ultima Anota'#231#227'o'
-            end
-            object cmbAuditoriasSiags: TDBLookupComboBox
-              Left = 40
-              Top = 37
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Auditoria'
-              ListSource = dtmPainelSiags.dtsTiposAuditoria
-              TabOrder = 0
-            end
-            object cmbPrazosCaixaSiags: TDBLookupComboBox
-              Left = 40
-              Top = 273
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Prazo_Caixa'
-              ListSource = dtmPainelAutoSC.dtsTiposPrazo
-              TabOrder = 1
-            end
-            object cmbPrazosANSSiags: TDBLookupComboBox
-              Left = 328
-              Top = 273
-              Width = 241
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Prazo_Caixa'
-              ListSource = dtmPainelAutoSC.dtsTiposPrazoANS
-              TabOrder = 2
-            end
-            object cmbUFSiags: TDBLookupComboBox
-              Left = 328
-              Top = 37
-              Width = 81
-              Height = 24
-              KeyField = 'Sigla'
-              ListField = 'Sigla'
-              ListSource = dtmPainelSiags.dtsUF
-              TabOrder = 3
-            end
-            object cmbAutorizacoesSiags: TDBLookupComboBox
-              Left = 40
-              Top = 115
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Autorizacao'
-              ListSource = dtmPainelSiags.dtsTiposAutorizacao
-              TabOrder = 4
-            end
-            object cmbAtendimentosSiags: TDBLookupComboBox
-              Left = 328
-              Top = 115
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Atendimento'
-              ListSource = dtmPainelSiags.dtsTiposAtendimento
-              TabOrder = 5
-            end
-            object cmbSituacoesSiags: TDBLookupComboBox
-              Left = 40
-              Top = 194
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Situacao_Autorizacao'
-              ListSource = dtmPainelSiags.dtsTiposSituacaoAutorizacao
-              TabOrder = 6
-            end
-            object cmbUltimasAnotacoesSiags: TDBLookupComboBox
-              Left = 328
-              Top = 194
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Ultima_Anotacao'
-              ListSource = dtmPainelSiags.dtsTiposUltimaAnotacao
-              TabOrder = 7
-            end
           end
         end
       end
@@ -3041,14 +2563,14 @@ object frmPaineis: TfrmPaineis
         end
       end
     end
-    object TabSheet9: TTabSheet
-      Caption = 'pnlFiltrosControlPc'
-      ImageIndex = 8
-      object pnlFiltrosControlPc: TPanel
-        Left = 356
-        Top = 30
-        Width = 625
-        Height = 523
+    object TabSheet10: TTabSheet
+      Caption = 'pnlHistoricoAtualizacoesControlPc'
+      ImageIndex = 9
+      object pnlHistoricoAtualizacoesControlPc: TPanel
+        Left = 202
+        Top = 55
+        Width = 671
+        Height = 495
         BevelInner = bvRaised
         BevelOuter = bvLowered
         Color = 8404992
@@ -3058,7 +2580,268 @@ object frmPaineis: TfrmPaineis
         Padding.Bottom = 5
         ParentBackground = False
         TabOrder = 0
-        object Label34: TLabel
+        object lblTituloHistoricoAtualizacoesControlPc: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 651
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Atualiza'#231#245'es de Processo - CONTROLPC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 363
+        end
+        object Panel19: TPanel
+          Left = 7
+          Top = 44
+          Width = 657
+          Height = 444
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitLeft = 6
+          ExplicitTop = 47
+          ExplicitWidth = 918
+          object Label72: TLabel
+            Left = 43
+            Top = 50
+            Width = 153
+            Height = 16
+            Caption = 'Data | Hora da atualiza'#231#227'o'
+          end
+          object Label73: TLabel
+            Left = 237
+            Top = 50
+            Width = 71
+            Height = 16
+            Caption = 'Respons'#225'vel'
+          end
+          object Label74: TLabel
+            Left = 43
+            Top = 113
+            Width = 83
+            Height = 16
+            Caption = 'Tipo de Status'
+          end
+          object Label75: TLabel
+            Left = 43
+            Top = 176
+            Width = 44
+            Height = 16
+            Caption = 'T'#233'cnico'
+          end
+          object Label76: TLabel
+            Left = 345
+            Top = 113
+            Width = 32
+            Height = 16
+            Caption = 'Prazo'
+          end
+          object Label77: TLabel
+            Left = 43
+            Top = 240
+            Width = 80
+            Height = 16
+            Caption = 'Classififica'#231#227'o'
+          end
+          object Label78: TLabel
+            Left = 344
+            Top = 176
+            Width = 68
+            Height = 16
+            Caption = 'Tipo Cliente'
+          end
+          object Label81: TLabel
+            Left = 43
+            Top = 341
+            Width = 78
+            Height = 16
+            Caption = 'Tipo Reclame'
+          end
+          object Label82: TLabel
+            Left = 137
+            Top = 341
+            Width = 48
+            Height = 16
+            Caption = 'Tipo NIP'
+          end
+          object Panel20: TPanel
+            Left = 0
+            Top = 394
+            Width = 657
+            Height = 50
+            Align = alBottom
+            TabOrder = 9
+            ExplicitTop = 388
+            DesignSize = (
+              657
+              50)
+            object btnFechraHistoricoControlPc: TBitBtn
+              Left = 269
+              Top = 8
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Fechar'
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFechraHistoricoControlPcClick
+            end
+          end
+          object dbnControlPc: TDBNavigator
+            Left = 197
+            Top = 10
+            Width = 264
+            Height = 25
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+            Hints.Strings = (
+              'Primeiro'
+              'Anterior'
+              'Pr'#243'ximo'
+              #218'ltimo')
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+          end
+          object dbeDataHoraHistoricoControlPc: TDBEdit
+            Left = 43
+            Top = 67
+            Width = 154
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Data_Hora_Historico'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 1
+          end
+          object dbeResponsavelHistoricoControlPc: TDBEdit
+            Left = 237
+            Top = 67
+            Width = 377
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Nome_Usuario'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 2
+          end
+          object dbeTipoStatusHistoricoControlPc: TDBEdit
+            Left = 43
+            Top = 130
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Status'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 3
+          end
+          object dbeTecnicoHistoricoControlPc: TDBEdit
+            Left = 43
+            Top = 193
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Nome_Tecnico'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 5
+          end
+          object dbePrazoHistoricoControlPc: TDBEdit
+            Left = 345
+            Top = 130
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Prazo_Caixa'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 4
+          end
+          object dbeTipoClienteHistoricoControlPc: TDBEdit
+            Left = 344
+            Top = 193
+            Width = 269
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Cliente'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 6
+          end
+          object dbeTipoReclameHistoricoControlPc: TDBEdit
+            Left = 43
+            Top = 358
+            Width = 78
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Reclame'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 7
+          end
+          object dbeTipoNipHistoricoControlPc: TDBEdit
+            Left = 137
+            Top = 358
+            Width = 78
+            Height = 24
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Nip'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 8
+          end
+          object dbeClassificacaoHistoricoControlPc: TDBMemo
+            Left = 43
+            Top = 257
+            Width = 571
+            Height = 62
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Tipo_Classificacao'
+            DataSource = dtmPainelControlPc.dtsHistoricoAtualizacoes
+            ReadOnly = True
+            TabOrder = 10
+          end
+        end
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'pnlDesignacao'
+      ImageIndex = 1
+      object pnlDesignacao: TPanel
+        Left = 356
+        Top = 118
+        Width = 625
+        Height = 368
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloDesignacao: TLabel
           AlignWithMargins = True
           Left = 10
           Top = 10
@@ -3067,45 +2850,43 @@ object frmPaineis: TfrmPaineis
           Margins.Bottom = 10
           Align = alTop
           Alignment = taCenter
-          Caption = 'Filtros CONTROLPC'
+          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -20
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 178
+          WordWrap = True
+          ExplicitWidth = 308
         end
-        object pnlCamposFiltroControlPc: TPanel
+        object pnlCamposDesignacao: TPanel
           Left = 7
           Top = 44
           Width = 611
-          Height = 472
+          Height = 317
           Align = alClient
           BevelOuter = bvNone
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 493
-          object Panel18: TPanel
+          object pnlBotoesAutoSc: TPanel
             Left = 0
-            Top = 411
+            Top = 245
             Width = 611
-            Height = 61
+            Height = 72
             Align = alBottom
-            BevelOuter = bvNone
             TabOrder = 0
-            ExplicitTop = 432
             DesignSize = (
               611
-              61)
-            object btnFiltrarControlPc: TBitBtn
+              72)
+            object btnConfirmarDesignacao: TBitBtn
               Left = 174
-              Top = 14
+              Top = 20
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
-              Caption = 'Filtrar'
+              Caption = 'Confirmar'
               Glyph.Data = {
                 BE060000424DBE06000000000000360400002800000024000000120000000100
                 0800000000008802000000000000000000000001000000000000000000000000
@@ -3164,11 +2945,11 @@ object frmPaineis: TfrmPaineis
                 0303}
               NumGlyphs = 2
               TabOrder = 0
-              OnClick = btnFiltrarControlPcClick
+              OnClick = btnConfirmarDesignacaoClick
             end
-            object btnCancelarFiltroControlPc: TBitBtn
+            object btnCancelarDesignacao: TBitBtn
               Left = 318
-              Top = 14
+              Top = 20
               Width = 119
               Height = 33
               Anchors = [akLeft, akBottom]
@@ -3231,268 +3012,46 @@ object frmPaineis: TfrmPaineis
                 0303}
               NumGlyphs = 2
               TabOrder = 1
-              OnClick = btnCancelarFiltroControlPcClick
+              OnClick = btnCancelarDesignacaoClick
             end
           end
-          object pnlCampos: TPanel
+          object Panel1: TPanel
             Left = 0
             Top = 0
             Width = 611
-            Height = 293
+            Height = 121
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 1
-            object Label62: TLabel
+            object Label13: TLabel
               Left = 40
-              Top = 163
-              Width = 32
+              Top = 24
+              Width = 65
               Height = 16
-              Caption = 'Prazo'
+              Caption = 'Justificativa'
             end
-            object Label63: TLabel
-              Left = 328
-              Top = 163
-              Width = 44
-              Height = 16
-              Caption = 'T'#233'cnico'
-            end
-            object Label66: TLabel
+            object memJustificativa: TMemo
               Left = 40
-              Top = 33
-              Width = 36
-              Height = 16
-              Caption = 'Status'
-            end
-            object Label67: TLabel
-              Left = 40
-              Top = 98
-              Width = 74
-              Height = 16
-              Caption = 'DT. Abertura'
-            end
-            object Label69: TLabel
-              Left = 40
-              Top = 230
-              Width = 68
-              Height = 16
-              Caption = 'Tipo Cliente'
-            end
-            object Label71: TLabel
-              Left = 328
-              Top = 230
-              Width = 78
-              Height = 16
-              Caption = 'Tipo Reclame'
-            end
-            object Label61: TLabel
-              Left = 448
-              Top = 230
-              Width = 47
-              Height = 16
-              Caption = 'Tipo Nip'
-            end
-            object Label64: TLabel
-              Left = 181
-              Top = 98
-              Width = 94
-              Height = 16
-              Caption = 'DT. Fechamento'
-            end
-            object Label65: TLabel
-              Left = 322
-              Top = 98
-              Width = 103
-              Height = 16
-              Caption = 'DT. Transfer'#234'ncia'
-            end
-            object Label70: TLabel
-              Left = 464
-              Top = 98
-              Width = 78
-              Height = 16
-              Caption = 'Prev. Solu'#231#227'o'
-            end
-            object cmbPrazos: TDBLookupComboBox
-              Left = 40
-              Top = 181
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Prazo_Caixa'
-              ListSource = dtmPainelControlPc.dtsTiposPrazo
-              TabOrder = 5
-            end
-            object cmbTecnicos: TDBLookupComboBox
-              Left = 328
-              Top = 181
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Nome_Tecnico'
-              ListSource = dtmPainelControlPc.dtsTecnicos
-              TabOrder = 6
-            end
-            object cmbTiposStatusControlPc: TDBLookupComboBox
-              Left = 40
-              Top = 51
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Status'
-              ListSource = dtmPainelControlPc.dtsTiposStatus
-              TabOrder = 0
-            end
-            object edtDataAbertura: TMaskEdit
-              Left = 40
-              Top = 116
-              Width = 103
-              Height = 24
-              EditMask = '99/99/9999'
-              MaxLength = 10
-              TabOrder = 1
-              Text = '  /  /    '
-              OnExit = edtDataAberturaExit
-            end
-            object cmbTiposCliente: TDBLookupComboBox
-              Left = 40
-              Top = 247
-              Width = 241
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Tipo_Cliente'
-              ListSource = dtmPainelControlPc.dtsTiposCliente
-              TabOrder = 7
-            end
-            object cmbTipoReclame: TComboBox
-              Left = 330
-              Top = 247
-              Width = 78
-              Height = 24
-              Style = csOwnerDrawFixed
-              ItemHeight = 18
-              TabOrder = 8
-              Items.Strings = (
-                'Sim'
-                'N'#227'o'
-                'Todos')
-            end
-            object cmbTipoNip: TComboBox
-              Left = 450
-              Top = 247
-              Width = 78
-              Height = 24
-              Style = csOwnerDrawFixed
-              ItemHeight = 18
-              TabOrder = 9
-              Items.Strings = (
-                'Sim'
-                'N'#227'o'
-                'Todos')
-            end
-            object edtDataFechamento: TMaskEdit
-              Left = 181
-              Top = 116
-              Width = 103
-              Height = 24
-              EditMask = '99/99/9999'
-              MaxLength = 10
-              TabOrder = 2
-              Text = '  /  /    '
-              OnExit = edtDataAberturaExit
-            end
-            object edtDataTransferencia: TMaskEdit
-              Left = 322
-              Top = 116
-              Width = 103
-              Height = 24
-              EditMask = '99/99/9999'
-              MaxLength = 10
-              TabOrder = 3
-              Text = '  /  /    '
-              OnExit = edtDataAberturaExit
-            end
-            object edtPrevisaoSolucao: TMaskEdit
-              Left = 464
-              Top = 116
-              Width = 103
-              Height = 24
-              EditMask = '99/99/9999'
-              MaxLength = 10
-              TabOrder = 4
-              Text = '  /  /    '
-              OnExit = edtDataAberturaExit
-            end
-          end
-          object pnlSelecaoDesignacao: TPanel
-            Left = 0
-            Top = 293
-            Width = 611
-            Height = 118
-            Align = alClient
-            BevelOuter = bvNone
-            TabOrder = 2
-            ExplicitTop = 121
-            ExplicitHeight = 124
-            object Label8: TLabel
-              Left = 40
-              Top = 0
-              Width = 31
-              Height = 16
-              Caption = 'Setor'
-            end
-            inline fraPesquisaUsuario: TfraPesquisaUsuario
-              AlignWithMargins = True
-              Left = 0
-              Top = 45
-              Width = 611
-              Height = 71
-              Margins.Left = 0
-              Margins.Top = 45
-              Margins.Right = 0
-              Margins.Bottom = 0
-              Align = alTop
-              Color = clWhite
-              ParentBackground = False
-              ParentColor = False
-              TabOrder = 1
-              ExplicitTop = 45
-              ExplicitWidth = 611
-              ExplicitHeight = 71
-              inherited Label9: TLabel
-                Left = 40
-                ExplicitLeft = 40
-              end
-              inherited btnPesquisarUsuario: TSpeedButton
-                Left = 544
-                ExplicitLeft = 544
-              end
-              inherited cmbUsuarios: TDBLookupComboBox
-                Left = 40
-                ExplicitLeft = 40
-              end
-            end
-            object cmbSetores: TDBLookupComboBox
-              Left = 40
-              Top = 19
-              Width = 239
-              Height = 24
-              KeyField = 'id'
-              ListField = 'Nome_Setor'
-              ListSource = dtmPainelAutoSC.dtsSetores
+              Top = 40
+              Width = 505
+              Height = 57
+              Lines.Strings = (
+                'memJustificativa')
+              MaxLength = 100
               TabOrder = 0
             end
           end
         end
       end
     end
-    object TabSheet10: TTabSheet
-      Caption = 'pnlHistoricoAtualizacoesControlPc'
-      ImageIndex = 9
-      object pnlHistoricoAtualizacoesControlPc: TPanel
-        Left = 202
-        Top = 55
-        Width = 932
-        Height = 495
+    object TabSheet3: TTabSheet
+      Caption = 'pnlHistoricoDesignacoes'
+      ImageIndex = 2
+      object pnlHistoricoDesignacoes: TPanel
+        Left = 356
+        Top = 98
+        Width = 625
+        Height = 408
         BevelInner = bvRaised
         BevelOuter = bvLowered
         Color = 8404992
@@ -3502,193 +3061,81 @@ object frmPaineis: TfrmPaineis
         Padding.Bottom = 5
         ParentBackground = False
         TabOrder = 0
-        object lblTituloHistoricoAtualizacoesControlPc: TLabel
+        object lblTituloHistoricoDesignacoes: TLabel
           AlignWithMargins = True
           Left = 10
           Top = 10
-          Width = 912
+          Width = 605
           Height = 24
           Margins.Bottom = 10
           Align = alTop
           Alignment = taCenter
-          Caption = 'Atualiza'#231#245'es de Processo - CONTROLPC'
+          Caption = 'Designa'#231#245'es'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -20
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 363
+          ExplicitWidth = 113
         end
-        object Panel19: TPanel
+        object Panel3: TPanel
           Left = 7
           Top = 44
-          Width = 918
-          Height = 444
+          Width = 611
+          Height = 357
           Align = alClient
           BevelOuter = bvNone
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          object Label72: TLabel
+          object Label15: TLabel
             Left = 21
-            Top = 56
+            Top = 77
             Width = 153
             Height = 16
-            Caption = 'Data | Hora da atualiza'#231#227'o'
+            Caption = 'Data | Hora da designa'#231#227'o'
           end
-          object Label73: TLabel
+          object Label16: TLabel
             Left = 215
-            Top = 56
+            Top = 77
             Width = 71
             Height = 16
             Caption = 'Respons'#225'vel'
           end
-          object Label74: TLabel
+          object Label17: TLabel
             Left = 21
-            Top = 120
-            Width = 114
+            Top = 141
+            Width = 101
             Height = 16
-            Caption = 'Tipo de Autoriza'#231#227'o'
+            Caption = 'Setor Desiganado'
           end
-          object Label75: TLabel
-            Left = 625
-            Top = 120
-            Width = 138
+          object Label18: TLabel
+            Left = 215
+            Top = 141
+            Width = 117
             Height = 16
-            Caption = 'Situacao da Autoriza'#231#227'o'
+            Caption = 'Usu'#225'rio  Desiganado'
           end
-          object Label76: TLabel
-            Left = 323
-            Top = 120
-            Width = 119
-            Height = 16
-            Caption = 'Tipo de Atendimento'
-          end
-          object Label77: TLabel
+          object Label19: TLabel
             Left = 21
-            Top = 184
-            Width = 123
+            Top = 204
+            Width = 65
             Height = 16
-            Caption = #218'ltima Anota'#231#227'o ADM'
+            Caption = 'Justificativa'
           end
-          object Label78: TLabel
-            Left = 323
-            Top = 184
-            Width = 51
-            Height = 16
-            Caption = 'Auditoria'
-          end
-          object Label79: TLabel
-            Left = 625
-            Top = 184
-            Width = 123
-            Height = 16
-            Caption = #218'ltima Anota'#231#227'o ADM'
-          end
-          object Label80: TLabel
-            Left = 21
-            Top = 256
-            Width = 60
-            Height = 16
-            Caption = 'Dias Base:'
-          end
-          object Label81: TLabel
-            Left = 89
-            Top = 256
-            Width = 48
-            Height = 16
-            Caption = 'Corridos'
-          end
-          object Label82: TLabel
-            Left = 184
-            Top = 256
-            Width = 28
-            Height = 16
-            Caption = #218'teis'
-          end
-          object Label83: TLabel
-            Left = 119
-            Top = 327
-            Width = 24
-            Height = 16
-            Caption = 'Dias'
-          end
-          object Label84: TLabel
-            Left = 21
-            Top = 327
-            Width = 78
-            Height = 16
-            Caption = 'Prazos Caixa:'
-          end
-          object Label85: TLabel
-            Left = 168
-            Top = 327
-            Width = 32
-            Height = 16
-            Caption = 'Prazo'
-          end
-          object Label86: TLabel
-            Left = 579
-            Top = 327
-            Width = 24
-            Height = 16
-            Caption = 'Dias'
-          end
-          object Label87: TLabel
-            Left = 494
-            Top = 327
-            Width = 71
-            Height = 16
-            Caption = 'Prazos ANS:'
-          end
-          object Label88: TLabel
-            Left = 625
-            Top = 327
-            Width = 32
-            Height = 16
-            Caption = 'Prazo'
-          end
-          object Label89: TLabel
-            Left = 325
-            Top = 256
-            Width = 46
-            Height = 16
-            Caption = 'Anexos:'
-          end
-          object Label90: TLabel
-            Left = 390
-            Top = 256
-            Width = 33
-            Height = 16
-            Caption = 'OPME'
-          end
-          object Label91: TLabel
-            Left = 467
-            Top = 256
-            Width = 40
-            Height = 16
-            Caption = 'Quimio'
-          end
-          object Label92: TLabel
-            Left = 552
-            Top = 255
-            Width = 32
-            Height = 16
-            Caption = 'Radio'
-          end
-          object Panel20: TPanel
+          object Panel5: TPanel
             Left = 0
-            Top = 372
-            Width = 918
+            Top = 285
+            Width = 611
             Height = 72
             Align = alBottom
-            TabOrder = 18
+            TabOrder = 0
             DesignSize = (
-              918
+              611
               72)
-            object btnFechraHistoricoControlPc: TBitBtn
-              Left = 399
+            object btnFecharHistoricoDesignacao: TBitBtn
+              Left = 246
               Top = 20
               Width = 119
               Height = 33
@@ -3696,228 +3143,649 @@ object frmPaineis: TfrmPaineis
               Caption = 'Fechar'
               NumGlyphs = 2
               TabOrder = 0
-              OnClick = btnFecharHistoricoSiagsClick
+              OnClick = btnFecharHistoricoDesignacaoClick
             end
           end
-          object dbnControlPc: TDBNavigator
-            Left = 327
+          object dbnHistoricoDesignacoes: TDBNavigator
+            Left = 174
             Top = 16
             Width = 264
             Height = 25
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
             Hints.Strings = (
               'Primeiro'
               'Anterior'
               'Pr'#243'ximo'
               #218'ltimo')
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 0
+            TabOrder = 1
           end
-          object DBEdit24: TDBEdit
+          object edtDataHoraDesignacao: TDBEdit
             Left = 21
-            Top = 73
+            Top = 94
             Width = 154
             Height = 24
             TabStop = False
             Color = clBtnFace
-            DataField = 'Data_Hora_Historico'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataField = 'Data_Hora_Log'
+            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             ReadOnly = True
-            TabOrder = 1
+            TabOrder = 2
           end
-          object DBEdit25: TDBEdit
+          object edtResponsavelDesignacao: TDBEdit
             Left = 215
-            Top = 73
+            Top = 94
             Width = 377
             Height = 24
             TabStop = False
             Color = clBtnFace
-            DataField = 'Nome_Usuario'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 2
-          end
-          object DBEdit26: TDBEdit
-            Left = 21
-            Top = 137
-            Width = 269
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Tipo_Autorizacao'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataField = 'Usuario_Responsavel'
+            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             ReadOnly = True
             TabOrder = 3
           end
-          object DBEdit27: TDBEdit
-            Left = 625
-            Top = 137
-            Width = 269
+          object edtSetorDesignacao: TDBEdit
+            Left = 21
+            Top = 158
+            Width = 154
             Height = 24
             TabStop = False
             Color = clBtnFace
-            DataField = 'Tipo_Situacao_Autorizacao'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 5
-          end
-          object DBEdit28: TDBEdit
-            Left = 323
-            Top = 137
-            Width = 269
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Tipo_Atendimento'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataField = 'Nome_Setor'
+            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             ReadOnly = True
             TabOrder = 4
           end
-          object DBEdit29: TDBEdit
-            Left = 21
-            Top = 201
-            Width = 269
+          object edtUsuarioDesignacao: TDBEdit
+            Left = 215
+            Top = 158
+            Width = 377
             Height = 24
             TabStop = False
             Color = clBtnFace
-            DataField = 'Tipo_Ultima_Anotacao'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataField = 'Usuario_Designado'
+            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
+            ReadOnly = True
+            TabOrder = 5
+          end
+          object memJustificativaDesignacao: TDBMemo
+            Left = 21
+            Top = 222
+            Width = 572
+            Height = 57
+            TabStop = False
+            Color = clBtnFace
+            DataField = 'Justificativa'
+            DataSource = dtmPainelAutoSC.dtsHistoricoDesignacoes
             ReadOnly = True
             TabOrder = 6
           end
-          object DBEdit30: TDBEdit
-            Left = 323
-            Top = 206
-            Width = 269
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Tipo_Auditoria'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 7
+        end
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'pnlObservacoesProcesso'
+      ImageIndex = 5
+      object pnlObservacoesProcesso: TPanel
+        Left = 356
+        Top = 102
+        Width = 625
+        Height = 400
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloObservacoesProcesso: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 308
+        end
+        object Panel10: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 349
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          object Label27: TLabel
+            Left = 41
+            Top = 133
+            Width = 65
+            Height = 16
+            Caption = 'Justificativa'
           end
-          object DBEdit31: TDBEdit
-            Left = 625
-            Top = 201
-            Width = 269
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Tipo_Ultima_Anotacao'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 8
+          object btnIncluirObservacao: TSpeedButton
+            Left = 330
+            Top = 16
+            Width = 80
+            Height = 25
+            Caption = 'Incluir'
+            Glyph.Data = {
+              CE070000424DCE07000000000000360000002800000024000000120000000100
+              18000000000098070000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF
+              4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50
+              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C
+              50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFF
+              FFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFF
+              50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0646464E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C
+              50AF4C50AF4C50AF4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF
+              4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E064
+              6464E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF
+              50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF
+              4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0646464646464646464646464646464E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF
+              4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFF
+              FFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0646464E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF
+              4C50AF4C50AF4C50AF4C50AF4CFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4CFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0646464E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFF
+              FFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50
+              AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFF50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C50AF4C
+              50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0FFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50AF4C50AF4C50AF4C50AF4C50AF4C
+              50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFE0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0
+              E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFF50AF4C50AF4C50AF4C50AF4C50AF4CFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0E0E0E0E0E0E0
+              E0E0E0E0E0E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+            NumGlyphs = 2
+            OnClick = btnIncluirObservacaoClick
           end
-          object DBEdit32: TDBEdit
-            Left = 89
-            Top = 273
-            Width = 48
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Dias_Corridos_Base'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 9
+          object btnGravarObservacao: TSpeedButton
+            Left = 410
+            Top = 16
+            Width = 80
+            Height = 25
+            Caption = 'Gravar'
+            Glyph.Data = {
+              BE060000424DBE06000000000000360400002800000024000000120000000100
+              0800000000008802000000000000000000000001000000000000000000000000
+              80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+              A400000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              03030303030303030303030303030303030303030303FF030303030303030303
+              03030303030303040403030303030303030303030303030303F8F8FF03030303
+              03030303030303030303040202040303030303030303030303030303F80303F8
+              FF030303030303030303030303040202020204030303030303030303030303F8
+              03030303F8FF0303030303030303030304020202020202040303030303030303
+              0303F8030303030303F8FF030303030303030304020202FA0202020204030303
+              0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
+              040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
+              03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
+              FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
+              0303030303030303030303FA0202020403030303030303030303030303F8FF03
+              03F8FF03030303030303030303030303FA020202040303030303030303030303
+              0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
+              03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
+              030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
+              0202040303030303030303030303030303F8FF03F8FF03030303030303030303
+              03030303FA0202030303030303030303030303030303F8FFF803030303030303
+              030303030303030303FA0303030303030303030303030303030303F803030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              0303}
+            NumGlyphs = 2
+            OnClick = btnGravarObservacaoClick
           end
-          object DBEdit33: TDBEdit
-            Left = 174
-            Top = 273
-            Width = 48
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Dias_Uteis_Base'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 10
+          object btnCancelarObservacao: TSpeedButton
+            Left = 490
+            Top = 16
+            Width = 80
+            Height = 25
+            Caption = 'Cancelar'
+            Glyph.Data = {
+              BE060000424DBE06000000000000360400002800000024000000120000000100
+              0800000000008802000000000000000000000001000000000000000000000000
+              80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+              A400000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              0303F8F80303030303030303030303030303030303FF03030303030303030303
+              0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
+              03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
+              030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
+              FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
+              030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
+              F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
+              010101F8030303030303030303F8FF030303030303FFF8030303030303030303
+              030101010101F80303030303030303030303F8FF0303030303F8030303030303
+              0303030303F901010101F8030303030303030303030303F8FF030303F8030303
+              0303030303030303F90101010101F8030303030303030303030303F803030303
+              F8FF030303030303030303F9010101F8010101F803030303030303030303F803
+              03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
+              03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
+              03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
+              0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
+              030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
+              03030303030303030303030303030303030303030303030303F8F8F803030303
+              0303030303030303030303030303030303030303030303030303030303030303
+              0303}
+            NumGlyphs = 2
+            OnClick = btnCancelarObservacaoClick
           end
-          object DBEdit34: TDBEdit
-            Left = 111
-            Top = 344
-            Width = 43
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Dias_Prazo_Caixa'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 14
+          object Label20: TLabel
+            Left = 41
+            Top = 69
+            Width = 67
+            Height = 16
+            Caption = 'Data | Hora'
           end
-          object DBEdit35: TDBEdit
-            Left = 169
-            Top = 344
-            Width = 269
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Tipo_Prazo_Caixa'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 15
+          object Label29: TLabel
+            Left = 234
+            Top = 69
+            Width = 67
+            Height = 16
+            Caption = 'Data | Hora'
           end
-          object DBEdit36: TDBEdit
-            Left = 571
-            Top = 344
-            Width = 43
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Dias_Prazo_ANS'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 16
+          object Panel12: TPanel
+            Left = 0
+            Top = 277
+            Width = 611
+            Height = 72
+            Align = alBottom
+            TabOrder = 0
+            DesignSize = (
+              611
+              72)
+            object btnFecharObservacao: TBitBtn
+              Left = 246
+              Top = 20
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Fechar'
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnFecharObservacaoClick
+            end
           end
-          object DBEdit37: TDBEdit
-            Left = 625
-            Top = 344
-            Width = 269
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Tipo_Prazo_ANS'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 17
+          object dbnObservacoes: TDBNavigator
+            Left = 41
+            Top = 16
+            Width = 248
+            Height = 25
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+            Hints.Strings = (
+              'Primeiro'
+              'Anterior'
+              'Pr'#243'ximo'
+              #218'ltimo'
+              'Incluir'
+              ''
+              ''
+              'Gravar'
+              'Cancelar')
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 4
           end
-          object DBEdit38: TDBEdit
-            Left = 382
-            Top = 273
-            Width = 48
-            Height = 24
-            TabStop = False
-            Color = clBtnFace
-            DataField = 'Anexo_Opme'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
-            ReadOnly = True
-            TabOrder = 11
+          object memObservacao: TDBMemo
+            Left = 41
+            Top = 155
+            Width = 529
+            Height = 112
+            DataField = 'Observacao'
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            TabOrder = 3
           end
-          object DBEdit39: TDBEdit
-            Left = 463
-            Top = 273
-            Width = 48
+          object edtDataHoraObservacao: TDBEdit
+            Left = 41
+            Top = 86
+            Width = 154
             Height = 24
             TabStop = False
             Color = clBtnFace
-            DataField = 'Anexo_Quimio'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataField = 'Data_Hora'
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
             ReadOnly = True
-            TabOrder = 12
+            TabOrder = 1
           end
-          object DBEdit40: TDBEdit
-            Left = 544
-            Top = 272
-            Width = 48
+          object edtUsuarioObservacao: TDBEdit
+            Left = 234
+            Top = 86
+            Width = 336
             Height = 24
             TabStop = False
             Color = clBtnFace
-            DataField = 'Anexo_Radio'
-            DataSource = dtmPainelSiags.dtsHistoricoAtualizacoes
+            DataField = 'Nome_Usuario'
+            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
             ReadOnly = True
-            TabOrder = 13
+            TabOrder = 2
+          end
+        end
+      end
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'pnlEncerramento'
+      ImageIndex = 4
+      object pnlEncerramento: TPanel
+        Left = 356
+        Top = 190
+        Width = 625
+        Height = 224
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        TabOrder = 0
+        object lblTituloEncerramento: TLabel
+          AlignWithMargins = True
+          Left = 10
+          Top = 10
+          Width = 605
+          Height = 24
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'Designi'#231#227'o de Processo - AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -20
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 308
+        end
+        object Panel8: TPanel
+          Left = 7
+          Top = 44
+          Width = 611
+          Height = 173
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          object Panel9: TPanel
+            Left = 0
+            Top = 101
+            Width = 611
+            Height = 72
+            Align = alBottom
+            TabOrder = 0
+            DesignSize = (
+              611
+              72)
+            object btnConfirmaEncerramento: TBitBtn
+              Left = 174
+              Top = 24
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Confirmar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                03030303030303030303030303030303030303030303FF030303030303030303
+                03030303030303040403030303030303030303030303030303F8F8FF03030303
+                03030303030303030303040202040303030303030303030303030303F80303F8
+                FF030303030303030303030303040202020204030303030303030303030303F8
+                03030303F8FF0303030303030303030304020202020202040303030303030303
+                0303F8030303030303F8FF030303030303030304020202FA0202020204030303
+                0303030303F8FF0303F8FF030303F8FF03030303030303020202FA03FA020202
+                040303030303030303F8FF03F803F8FF0303F8FF03030303030303FA02FA0303
+                03FA0202020403030303030303F8FFF8030303F8FF0303F8FF03030303030303
+                FA0303030303FA0202020403030303030303F80303030303F8FF0303F8FF0303
+                0303030303030303030303FA0202020403030303030303030303030303F8FF03
+                03F8FF03030303030303030303030303FA020202040303030303030303030303
+                0303F8FF0303F8FF03030303030303030303030303FA02020204030303030303
+                03030303030303F8FF0303F8FF03030303030303030303030303FA0202020403
+                030303030303030303030303F8FF0303F8FF03030303030303030303030303FA
+                0202040303030303030303030303030303F8FF03F8FF03030303030303030303
+                03030303FA0202030303030303030303030303030303F8FFF803030303030303
+                030303030303030303FA0303030303030303030303030303030303F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 0
+              OnClick = btnConfirmaEncerramentoClick
+            end
+            object btnCancelaEncerramento: TBitBtn
+              Left = 318
+              Top = 24
+              Width = 119
+              Height = 33
+              Anchors = [akLeft, akBottom]
+              Caption = 'Cancelar'
+              Glyph.Data = {
+                BE060000424DBE06000000000000360400002800000024000000120000000100
+                0800000000008802000000000000000000000001000000000000000000000000
+                80000080000000808000800000008000800080800000C0C0C000C0DCC000F0C8
+                A400000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                0000000000000000000000000000000000000000000000000000000000000000
+                000000000000000000000000000000000000F0FBFF00A4A0A000808080000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00030303030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303F8F80303030303030303030303030303030303FF03030303030303030303
+                0303030303F90101F80303030303F9F80303030303030303F8F8FF0303030303
+                03FF03030303030303F9010101F8030303F90101F8030303030303F8FF03F8FF
+                030303FFF8F8FF030303030303F901010101F803F901010101F80303030303F8
+                FF0303F8FF03FFF80303F8FF030303030303F901010101F80101010101F80303
+                030303F8FF030303F8FFF803030303F8FF030303030303F90101010101010101
+                F803030303030303F8FF030303F803030303FFF80303030303030303F9010101
+                010101F8030303030303030303F8FF030303030303FFF8030303030303030303
+                030101010101F80303030303030303030303F8FF0303030303F8030303030303
+                0303030303F901010101F8030303030303030303030303F8FF030303F8030303
+                0303030303030303F90101010101F8030303030303030303030303F803030303
+                F8FF030303030303030303F9010101F8010101F803030303030303030303F803
+                03030303F8FF0303030303030303F9010101F803F9010101F803030303030303
+                03F8030303F8FF0303F8FF03030303030303F90101F8030303F9010101F80303
+                03030303F8FF0303F803F8FF0303F8FF03030303030303F9010303030303F901
+                0101030303030303F8FFFFF8030303F8FF0303F8FF0303030303030303030303
+                030303F901F903030303030303F8F80303030303F8FFFFFFF803030303030303
+                03030303030303030303030303030303030303030303030303F8F8F803030303
+                0303030303030303030303030303030303030303030303030303030303030303
+                0303}
+              NumGlyphs = 2
+              TabOrder = 1
+              OnClick = btnCancelaEncerramentoClick
+            end
+          end
+          object Panel11: TPanel
+            Left = 0
+            Top = 0
+            Width = 611
+            Height = 121
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 1
+            object Label28: TLabel
+              Left = 53
+              Top = 24
+              Width = 65
+              Height = 16
+              Caption = 'Justificativa'
+            end
+            object memJustificativaEncerramento: TMemo
+              Left = 53
+              Top = 40
+              Width = 505
+              Height = 57
+              Lines.Strings = (
+                'memJustificativa')
+              MaxLength = 100
+              TabOrder = 0
+            end
           end
         end
       end
@@ -3967,7 +3835,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 349
           object Panel21: TPanel
             Left = 0
             Top = 152
@@ -3975,7 +3842,6 @@ object frmPaineis: TfrmPaineis
             Height = 72
             Align = alBottom
             TabOrder = 0
-            ExplicitTop = 277
             DesignSize = (
               611
               72)

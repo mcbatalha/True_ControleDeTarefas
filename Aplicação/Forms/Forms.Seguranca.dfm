@@ -10,6 +10,8 @@ inherited frmSeguranca: TfrmSeguranca
       end
       inherited btnConfirmar: TSpeedButton
         OnClick = btnConfirmarClick
+        ExplicitLeft = 605
+        ExplicitTop = 0
       end
     end
     object pgcSeguranca: TPageControl
@@ -18,9 +20,10 @@ inherited frmSeguranca: TfrmSeguranca
       Top = 111
       Width = 902
       Height = 421
-      ActivePage = tbsCadastro
+      ActivePage = tbsPaineis
       Align = alClient
       TabOrder = 1
+      TabWidth = 150
       OnChange = pgcSegurancaChange
       object tbsCadastro: TTabSheet
         Caption = 'Cadastros'
@@ -119,10 +122,6 @@ inherited frmSeguranca: TfrmSeguranca
           BevelInner = bvRaised
           BevelOuter = bvLowered
           TabOrder = 0
-          ExplicitLeft = 352
-          ExplicitTop = 176
-          ExplicitWidth = 185
-          ExplicitHeight = 41
           object chbMenuPaineis: TCheckBox
             Left = 55
             Top = 55
@@ -138,6 +137,37 @@ inherited frmSeguranca: TfrmSeguranca
             Width = 192
             Height = 17
             Caption = 'Paineis de Acompanhamento'
+            TabOrder = 1
+          end
+        end
+      end
+      object tbsListagens: TTabSheet
+        Caption = 'Listagens'
+        ImageIndex = 4
+        object pnlListagens: TPanel
+          Left = 0
+          Top = 0
+          Width = 894
+          Height = 390
+          Align = alClient
+          BevelInner = bvRaised
+          BevelOuter = bvLowered
+          TabOrder = 0
+          object chbMenuListagens: TCheckBox
+            Left = 55
+            Top = 55
+            Width = 260
+            Height = 17
+            Caption = 'Acesso ao Menu Listagens'
+            TabOrder = 0
+            OnClick = chbMenuListagensClick
+          end
+          object chbListagemDesignacoes: TCheckBox
+            Left = 80
+            Top = 85
+            Width = 192
+            Height = 17
+            Caption = 'Listagem de Designa'#231#245'es'
             TabOrder = 1
           end
         end

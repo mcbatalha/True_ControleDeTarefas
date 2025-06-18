@@ -66,6 +66,11 @@ begin
            4000 : frmPrincipal.mngPaineis.Visible              := True;
            4001 : frmPrincipal.mniPainelAcompanhamento.Visible := True;
            {$endRegion}
+
+           {$Region 'Listagens'}
+           5000 : frmPrincipal.mngListagens.Visible           := True;
+           5001 : frmPrincipal.mniListagemDesignacoes.Visible := True;
+           {$endRegion}
         end;
      end;
    finally

@@ -7,6 +7,7 @@ uses
 
 type
     TFiltrosAutoSc = record
+       numeroDoProcesso     : string;
        idTipoAuditoria      : integer;
        idTipoPrazoCaixa     : integer;
        idTipoPrazoCaixaHoje : integer;
@@ -25,6 +26,7 @@ end;
 
 type
     TFiltrosSiags = record
+       numeroDaAutorizacao       : string;
        idTipoAuditoria           : integer;
        idTipoPrazoCaixa          : integer;
        idTipoPrazoANS            : integer;
@@ -43,6 +45,7 @@ end;
 
 type
     TFiltrosControlPc = record
+       numeroDoProtocolo    : string;
        idTipoStatus         : integer;
        idTipoPrazo          : integer;
        idTecnico            : integer;
@@ -128,6 +131,7 @@ function TFiltros.getFiltrosAutoSCAsJSON: TJSONObject;
 begin
    Result := TJSONObject.Create;
 
+   Result.AddPair('numeroDoProcesso',     TJSONString.Create(FFiltrosAutoSc.numeroDoProcesso));
    Result.AddPair('idTipoAuditoria',      TJSONNumber.Create(FFiltrosAutoSc.idTipoAuditoria));
    Result.AddPair('idTipoPrazoCaixa',     TJSONNumber.Create(FFiltrosAutoSc.idTipoPrazoCaixa));
    Result.AddPair('idTipoPrazoCaixaHoje', TJSONNumber.Create(FFiltrosAutoSc.idTipoPrazoCaixaHoje));
@@ -142,8 +146,8 @@ begin
    Result.AddPair('usaDataStatus',        TJSONBool.Create(FFiltrosAutoSc.usaDataStatus));
    if FFiltrosAutoSc.usaDataStatus then
       begin
-      Result.AddPair('dataInicio',           TJSONString.Create(DateToStr(FFiltrosAutoSc.dataInicio)));
-      Result.AddPair('dataFim',              TJSONString.Create(DateToStr(FFiltrosAutoSc.dataFim)));
+      Result.AddPair('dataInicio',        TJSONString.Create(DateToStr(FFiltrosAutoSc.dataInicio)));
+      Result.AddPair('dataFim',           TJSONString.Create(DateToStr(FFiltrosAutoSc.dataFim)));
    end;
 end;
 
@@ -155,6 +159,7 @@ end;
 function TFiltros.getFiltrosControlPcAsJSON: TJSONObject;
 begin
    Result := TJSONObject.Create;
+   Result.AddPair('numeroDoProtocolo',    TJSONString.Create(FFiltrosControlPc.numeroDoProtocolo));
    Result.AddPair('idTipoStatus',         TJSONNumber.Create(FFiltrosControlPc.idTipoStatus));
    Result.AddPair('idTipoPrazo',          TJSONNumber.Create(FFiltrosControlPc.idTipoPrazo));
    Result.AddPair('idTecnico',            TJSONNumber.Create(FFiltrosControlPc.idTecnico));
@@ -192,6 +197,7 @@ function TFiltros.getFiltrosSiagsAsJSON: TJSONObject;
 begin
    Result := TJSONObject.Create;
 
+   Result.AddPair('numeroDaAutorizacao',       TJSONString.Create(FFiltrosSiags.numeroDaAutorizacao));
    Result.AddPair('idTipoAuditoria',           TJSONNumber.Create(FFiltrosSiags.idTipoAuditoria));
    Result.AddPair('idTipoPrazoCaixa',          TJSONNumber.Create(FFiltrosSiags.idTipoPrazoCaixa));
    Result.AddPair('idTipoPrazoANS',            TJSONNumber.Create(FFiltrosSiags.idTipoPrazoANS));
@@ -215,6 +221,7 @@ end;
 
 procedure TFiltros.LimparFiltrosAutoSc;
 begin
+   FFiltrosAutoSc.numeroDoProcesso     := '';
    FFiltrosAutoSc.idTipoAuditoria      := 0;
    FFiltrosAutoSc.idTipoPrazoCaixa     := 0;
    FFiltrosAutoSc.idTipoPrazoCaixaHoje := 0;
@@ -232,6 +239,7 @@ end;
 
 procedure TFiltros.LimparFiltrosControlPc;
 begin
+   FFiltrosControlPc.numeroDoProtocolo    := '';
    FFiltrosControlPc.idTipoStatus         := 0;
    FFiltrosControlPc.idTipoPrazo          := 0;
    FFiltrosControlPc.idTecnico            := 0;
@@ -255,6 +263,7 @@ end;
 
 procedure TFiltros.LimparFiltrosSiags;
 begin
+   FFiltrosSiags.numeroDaAutorizacao       := '';
    FFiltrosSiags.idTipoAuditoria           := 0;
    FFiltrosSiags.idTipoPrazoCaixa          := 0;
    FFiltrosSiags.idTipoPrazoANS            := 0;

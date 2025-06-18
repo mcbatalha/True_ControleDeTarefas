@@ -40,7 +40,7 @@ uses
   Libs.TFiltros,
   Libs.TSeguranca,
   Providers.Panels.Conexao,
-  Frames.Pesquisa.Usuario, Vcl.Menus;
+  Frames.Pesquisa.Usuario, Vcl.Menus, IdBaseComponent, IdComponent, IdCustomTCPServer, IdMappedPortTCP, IdMappedTelnet;
 
 type
   TfrmPaineis = class(TForm)
@@ -285,40 +285,19 @@ type
     Label76: TLabel;
     Label77: TLabel;
     Label78: TLabel;
-    Label79: TLabel;
-    Label80: TLabel;
     Label81: TLabel;
     Label82: TLabel;
-    Label83: TLabel;
-    Label84: TLabel;
-    Label85: TLabel;
-    Label86: TLabel;
-    Label87: TLabel;
-    Label88: TLabel;
-    Label89: TLabel;
-    Label90: TLabel;
-    Label91: TLabel;
-    Label92: TLabel;
     Panel20: TPanel;
     btnFechraHistoricoControlPc: TBitBtn;
     dbnControlPc: TDBNavigator;
-    DBEdit24: TDBEdit;
-    DBEdit25: TDBEdit;
-    DBEdit26: TDBEdit;
-    DBEdit27: TDBEdit;
-    DBEdit28: TDBEdit;
-    DBEdit29: TDBEdit;
-    DBEdit30: TDBEdit;
-    DBEdit31: TDBEdit;
-    DBEdit32: TDBEdit;
-    DBEdit33: TDBEdit;
-    DBEdit34: TDBEdit;
-    DBEdit35: TDBEdit;
-    DBEdit36: TDBEdit;
-    DBEdit37: TDBEdit;
-    DBEdit38: TDBEdit;
-    DBEdit39: TDBEdit;
-    DBEdit40: TDBEdit;
+    dbeDataHoraHistoricoControlPc: TDBEdit;
+    dbeResponsavelHistoricoControlPc: TDBEdit;
+    dbeTipoStatusHistoricoControlPc: TDBEdit;
+    dbeTecnicoHistoricoControlPc: TDBEdit;
+    dbePrazoHistoricoControlPc: TDBEdit;
+    dbeTipoClienteHistoricoControlPc: TDBEdit;
+    dbeTipoReclameHistoricoControlPc: TDBEdit;
+    dbeTipoNipHistoricoControlPc: TDBEdit;
     pnlSelecaoDesignacao: TPanel;
     Label8: TLabel;
     fraPesquisaUsuario: TfraPesquisaUsuario;
@@ -330,6 +309,13 @@ type
     Panel21: TPanel;
     btnFecharExibicaoConteudo: TBitBtn;
     memExibirConteudo: TMemo;
+    dbeClassificacaoHistoricoControlPc: TDBMemo;
+    Label68: TLabel;
+    edtNumeroProcesso: TEdit;
+    edtNumeroAutorizacao: TEdit;
+    Label79: TLabel;
+    Label80: TLabel;
+    edtNumeroProtocolo: TEdit;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -371,6 +357,7 @@ type
     procedure edtDataAberturaExit(Sender: TObject);
     procedure dbgControlPcDblClick(Sender: TObject);
     procedure btnFecharExibicaoConteudoClick(Sender: TObject);
+    procedure btnFechraHistoricoControlPcClick(Sender: TObject);
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
@@ -400,8 +387,6 @@ type
     procedure OrdenarGrid(const ADataSet : TDataSet; const AFieldName : String);
     procedure BotoesObservacao(const AHabilitar : Boolean);
     procedure AtualizarPainel(const AAtualizar : Boolean = True);
-
-    procedure ConfigurarDataSourcesControlPc;
 
   public
     { Public declarations }
@@ -439,6 +424,7 @@ begin
    end else
       LFiltro.usaDataStatus := False;
 
+    LFiltro.numeroDoProcesso       := edtNumeroProcesso.Text;
     LFiltro.idTipoAuditoria        := cmbAuditoriasAutoSc.KeyValue;
     LFiltro.idTipoPrazoCaixa       := cmbPrazosCaixaAutoSc.KeyValue;
     LFiltro.idTipoPrazoCaixaHoje   := cmbPrazosCaixaHojeAutoSc.KeyValue;
@@ -460,12 +446,13 @@ var
 begin
     Result := False;
 
-    LFiltro.idTipoStatus  := cmbTiposStatusControlPc.KeyValue;
-    LFiltro.idTipoPrazo   := cmbPrazos.KeyValue;
-    LFiltro.idTecnico     := cmbTecnicos.KeyValue;
-    LFiltro.idTipoCliente := cmbTiposCliente.KeyValue;
-    LFiltro.tipoReclame   := cmbTipoReclame.Text;
-    LFiltro.tipoNip       := cmbTipoNip.Text;
+    LFiltro.numeroDoProtocolo := edtNumeroProtocolo.Text;
+    LFiltro.idTipoStatus      := cmbTiposStatusControlPc.KeyValue;
+    LFiltro.idTipoPrazo       := cmbPrazos.KeyValue;
+    LFiltro.idTecnico         := cmbTecnicos.KeyValue;
+    LFiltro.idTipoCliente     := cmbTiposCliente.KeyValue;
+    LFiltro.tipoReclame       := cmbTipoReclame.Text;
+    LFiltro.tipoNip           := cmbTipoNip.Text;
 
     if edtDataAbertura.Text <> C_DATA_EM_BRANCO then
        begin
@@ -510,10 +497,9 @@ var
 begin
     Result := False;
 
-    LFiltro.idTipoAuditoria        := cmbAuditoriasSiags.KeyValue;
-    LFiltro.UF                     := cmbUFSiags.KeyValue;
-
-
+    LFiltro.numeroDaAutorizacao       := edtNumeroAutorizacao.Text;
+    LFiltro.idTipoAuditoria           := cmbAuditoriasSiags.KeyValue;
+    LFiltro.UF                        := cmbUFSiags.KeyValue;
     LFiltro.idTipoAutorizacao         := cmbAutorizacoesSiags.KeyValue;
     LFiltro.idTipoAtendimento         := cmbAtendimentosSiags.KeyValue;
     LFiltro.idTipoSituacaoAutorizacao := cmbSituacoesSiags.KeyValue;
@@ -866,12 +852,12 @@ begin
    end else if pgcPaineis.ActivePage = tbsSiags then
       begin
       LProcesso := FServiceSiags.HistoricoDeAtualizacoes;
-      lblTituloHistoricoAtualizacoesSiags.Caption := 'Atualizações do Processo - SIAGS - ' + LProcesso;
+      lblTituloHistoricoAtualizacoesSiags.Caption := 'Atualizações do Autorizações - SIAGS - ' + LProcesso;
       HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesSiags, True);
    end else if pgcPaineis.ActivePage = tbsControlPc then
       begin
       LProcesso := FServiceControlPc.HistoricoDeAtualizacoes;
-      lblTituloHistoricoAtualizacoesControlPc.Caption := 'Atualizações do Processo - ControlPc - ' + LProcesso;
+      lblTituloHistoricoAtualizacoesControlPc.Caption := 'Atualizações do Protocolos - CONTROLPC - ' + LProcesso;
       HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesControlPc, True);
    end;
 end;
@@ -921,6 +907,11 @@ end;
 procedure TfrmPaineis.btnFecharObservacaoClick(Sender: TObject);
 begin
    HabilitarEdicaoDoPainel(Self, pnlObservacoesProcesso, false);
+end;
+
+procedure TfrmPaineis.btnFechraHistoricoControlPcClick(Sender: TObject);
+begin
+   HabilitarEdicaoDoPainel(Self, pnlHistoricoAtualizacoesControlPc, false);
 end;
 
 procedure TfrmPaineis.btnFiltrarAutoSCClick(Sender: TObject);
@@ -1047,14 +1038,6 @@ begin
    btnEncerrar.Enabled := LHabilitar;
 end;
 
-procedure TfrmPaineis.ConfigurarDataSourcesControlPc;
-begin
-   cmbTiposStatusControlPc.ListSource := FServiceControlPc.DataSourceTipoStatus;
-   cmbPrazos.ListSource               := FServiceControlPc.DataSourceTiposPrazo;
-   cmbTecnicos.ListSource             := FServiceControlPc.DataSourceTecnicos;
-   cmbTiposCliente.ListSource         := FServiceControlPc.DataSourceTiposCliente;
-   dbgControlPc.DataSource            := FServiceControlPc.DataSourcePainel;
-end;
 
 procedure TfrmPaineis.ConfigurarHistoricoDeDesignacao;
 begin
@@ -1147,8 +1130,6 @@ begin
       begin
       FServiceControlPc := TSrvControlPc.create(Fdm.SQLConnection);
       FFiltroControlPc := TFiltros.create(C_CODIGO_CONTROLPC);
-
-      ConfigurarDataSourcesControlPc;
    end;
 
    if tbsAutoSC.TabVisible then

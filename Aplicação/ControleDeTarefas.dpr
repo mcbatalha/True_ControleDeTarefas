@@ -54,7 +54,10 @@ uses
   Services.Importacao.ControlPc in 'Services\Importacoes\Services.Importacao.ControlPc.pas',
   Forms.Importacoes.ControlPc in 'Forms\Importacoes\Forms.Importacoes.ControlPc.pas' {frmImportacoesControlPc},
   Providers.Panels.ControlPc in 'Providers\Panels\Providers.Panels.ControlPc.pas' {dtmPainelControlPc: TDataModule},
-  Services.Panels.ControlPc in 'Services\Panels\Services.Panels.ControlPc.pas';
+  Services.Panels.ControlPc in 'Services\Panels\Services.Panels.ControlPc.pas',
+  Forms.Listagens.Designacoes in 'Forms\Listagens\Forms.Listagens.Designacoes.pas' {frmListagemDesignacoes},
+  Providers.Listagens.Designacoes in 'Providers\Listagens\Providers.Listagens.Designacoes.pas' {dtmListagensDesinacoes: TDataModule},
+  Services.Listagens.Designacoes in 'Services\Listagens\Services.Listagens.Designacoes.pas';
 
 {$R *.res}
 
@@ -64,6 +67,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TdtmConexao, dtmConexao);
-  Application.CreateForm(TdtmPainelControlPc, dtmPainelControlPc);
   Application.Run;
 end.
