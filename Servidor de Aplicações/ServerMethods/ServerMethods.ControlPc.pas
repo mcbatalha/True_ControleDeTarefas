@@ -6,6 +6,7 @@ uses
   System.SysUtils,
   System.Classes,
   System.JSON,
+  System.Generics.Collections,
 
   Datasnap.DSServer,
   Datasnap.DSAuth,
@@ -126,6 +127,15 @@ type
     qryControlPcHistoricoTipo_Nip: TStringField;
     qryPainelControlPcProtocolo: TStringField;
     qryPainelControlPcTipo_Classificacao: TStringField;
+    qryControlPcUltima_Atualizacao: TDateTimeField;
+    qryControlPcid_Usuario_Ultima_Atualizacao: TIntegerField;
+    qryPainelControlPcData_Hora_Importacao: TDateTimeField;
+    qryPainelControlPcUltima_Atualizacao: TDateTimeField;
+    qryPainelControlPcData_Hora_Encerramento: TDateTimeField;
+    qryPainelControlPcUsuario_Importacao: TStringField;
+    qryPainelControlPcUsuario_Atualizacao: TStringField;
+    qryPainelControlPcUsuario_Encerrameto: TStringField;
+    qryPainelControlPcJustificativa_Encerramento: TStringField;
   private
 
     FIdTecnico            : integer;
@@ -174,7 +184,7 @@ type
   public
     function Importar(const ARegistros : TJSONArray; const AIdUsuario : integer) : TJSONObject;
 
-    function FiltrarProtocolos(const AFiltros : TJSONObject) : TJSONArray;
+    function FiltrarProtocolos(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean) : TJSONArray;
     function Designar(const AJustificativa: String;
                       const AIdSetor, AIdUsuario, AIdUsuarioResponsavel : integer;
                       const AIdProtocolo : LongInt ): Boolean;
@@ -201,10 +211,14 @@ type
     function Setores          : TJSONArray;
     function Usuarios         : TJSONArray;
 
-    function ListagemDeDesignacoes(const AUsaDatas : Boolean;
-                                   const ADataInicial, ADataFinal : TDateTime;
-                                   const ANumeroProtocolo : string;
-                                   const AIdUsuarioResponsavel : integer) : TJSONArray;
+    function RelatorioDeDesignacoes(const AUsaDatas : Boolean;
+                                    const ADataInicial, ADataFinal : TDateTime;
+                                    const ANumeroProtocolo : string;
+                                    const AIdUsuarioResponsavel : integer) : TJSONArray;
+
+    function RelatorioDeEncerramentos(const ADataInicial, ADataFinal : TDateTime;
+                                      const AIdUsuarioResponsavel : integer) : TJSONArray;
+
 
 end;
 
@@ -349,7 +363,7 @@ begin
    qryTiposClassificacao.Close;
 end;
 
-function TSMControlPc.FiltrarProtocolos(const AFiltros: TJSONObject): TJSONArray;
+function TSMControlPc.FiltrarProtocolos(const AFiltros: TJSONObject; const AIncluirEncerrados : Boolean): TJSONArray;
 var
    LFiltros : TFiltrosControlPc;
 begin
@@ -386,7 +400,8 @@ begin
 
    MontarQueryPainel;
 
-   qryPainelControlPc.Sql.Add(' and a.Data_Hora_Encerramento is null');
+   if not AIncluirEncerrados then
+      qryPainelControlPc.Sql.Add(' and a.Data_Hora_Encerramento is null');
 
    if LFiltros.numeroDoProtocolo <> '' then
       begin
@@ -503,7 +518,6 @@ end;
 procedure TSMControlPc.GravarProtocolo;
 var
    LNovo      : Boolean;
-   LAtualizou : Boolean;
    LAtualizar : Boolean;
 begin
    qryControlPc.Close;
@@ -520,7 +534,6 @@ begin
       LNovo := qryControlPc.isEmpty;
       if LNovo then
          begin
-         LAtualizou := False;
          qryControlPc.Append;
          qryControlPcProtocolo.AsString := FNumeroProtocolo;
       end else
@@ -566,8 +579,13 @@ begin
          qryControlPcTipo_Reclame.AsString            := FTipoReclame;
          qryControlPcTipo_Nip.AsString                := FTipoNip;
 
-         qryControlPcid_Usuario_Importacao.AsInteger    := FIdUsuarioResponsavel;
-         qryControlPcData_Hora_Importacao.AsDateTime    := FDataHora;
+         qryControlPcid_Usuario_Ultima_Atualizacao.AsInteger := FIdUsuarioResponsavel;
+         qryControlPcUltima_Atualizacao.AsDateTime           := FDataHora;
+         if LNovo then
+            begin
+            qryControlPcid_Usuario_Importacao.AsInteger    := FIdUsuarioResponsavel;
+            qryControlPcData_Hora_Importacao.AsDateTime    := FDataHora;
+         end;
          qryControlPc.Post;
       end else
          FTotalNaoAtualizados := FTotalNaoAtualizados + 1;
@@ -720,7 +738,7 @@ begin
    end;
 end;
 
-function TSMControlPc.ListagemDeDesignacoes(
+function TSMControlPc.RelatorioDeDesignacoes(
    const AUsaDatas: Boolean;
    const ADataInicial, ADataFinal: TDateTime;
    const ANumeroProtocolo: string;
@@ -734,21 +752,21 @@ begin
    qryAux.SQL.Add('   Usuario_Responsavel,                                                  ');
    qryAux.SQL.Add('   Justificativa,                                                        ');
    qryAux.SQL.Add('   Protocolo as Numero,                                                  ');
-   qryAux.SQL.Add('   Data_hora_log AS Data_Hora_Inicial,                                   ');
+   qryAux.SQL.Add('   Data_Hora_log AS Data_Hora_Inicial,                                   ');
    qryAux.SQL.Add('   ISNULL(ProximaData, Null) AS Data_Hora_Final,                    ');
-   qryAux.SQL.Add('   DATEDIFF(DAY, Data_hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
-   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
-   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, Data_Hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_Hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_Hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
    qryAux.SQL.Add('FROM (                                                                             ');
    qryAux.SQL.Add('       SELECT                                                                      ');
    qryAux.SQL.Add('          a.id_ControlPc,                                                             ');
-   qryAux.SQL.Add('          a.Data_hora_log,                                                         ');
+   qryAux.SQL.Add('          a.Data_Hora_log,                                                         ');
    qryAux.SQL.Add('          a.Justificativa,                                                         ');
    qryAux.SQL.Add('          b.Nome_Usuario as Usuario_Designado,                                     ');
    qryAux.SQL.Add('          c.Nome_Setor as Setor_Designado,                                         ');
    qryAux.SQL.Add('          d.Nome_Usuario as Usuario_Responsavel,                                   ');
    qryAux.SQL.Add('          e.Protocolo,                                                       ');
-   qryAux.SQL.Add('          LEAD(Data_hora_log) OVER (PARTITION BY id_ControlPc ORDER BY Data_hora_log) AS ProximaData ');
+   qryAux.SQL.Add('          LEAD(Data_Hora_log) OVER (PARTITION BY id_ControlPc ORDER BY Data_Hora_log) AS ProximaData ');
    qryAux.SQL.Add('       FROM                                                                                       ');
    qryAux.SQL.Add('          ControlPc_Log a                                                                            ');
    qryAux.SQL.Add('          left outer join Usuarios b on b.id = a.id_Usuario_Designado                             ');
@@ -782,6 +800,39 @@ begin
    Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
+function TSMControlPc.RelatorioDeEncerramentos(
+   const ADataInicial, ADataFinal: TDateTime;
+   const AIdUsuarioResponsavel: integer): TJSONArray;
+begin
+   qryAux.SQL.Clear;
+   qryAux.SQL.Add('SELECT                                                                   ');
+   qryAux.SQL.Add('   a.Protocolo as Numero,                                                ');
+   qryAux.SQL.Add('   a.Data_Hora_Importacao,                                               ');
+   qryAux.SQL.Add('   a.Data_Hora_Encerramento,                                             ');
+   qryAux.SQL.Add('   a.Justificativa_Encerramento,                                         ');
+   qryAux.SQL.Add('   b.Nome_Usuario,                                                       ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) AS Dias,           ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('FROM                                                                          ');
+   qryAux.SQL.Add('   ControlPc a                                                                ');
+   qryAux.SQL.Add('   Inner Join Usuarios b on b.id = a.id_Usuario_Encerramento                  ');
+   qryAux.SQL.Add('WHERE not Data_Hora_Encerramento is null                                      ');
+   qryAux.SQL.Add('      and cast(a.Data_Hora_Encerramento as Date) between :pDataInicial and :pDataFinal ');
+
+   if AIdUsuarioResponsavel > 0 then
+      begin
+      qryAux.SQL.Add('       and a.id_Usuario_Encerramento = :pIdUsuarioResponsavel');
+      qryAux.ParamByName('pIdUsuarioResponsavel').AsInteger := AIdUsuarioResponsavel;
+   end;
+   qryAux.SQL.Add('Order by Data_Hora_Encerramento desc');
+
+   qryAux.ParamByName('pDataInicial').AsDateTime := ADataInicial;
+   qryAux.ParamByName('pDataFinal').AsDateTime   := ADataFinal;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+end;
+
 procedure TSMControlPc.MontarQueryPainel;
 begin
    with qryPainelControlPc do
@@ -792,6 +843,8 @@ begin
       Sql.Add('   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, a.Data_Transferencia,  ');
       Sql.Add('   a.Data_Fechamento,a.Previsao_Solucao, a.Solicitacao_Cliente, a.Tipo_Reclame, ');
       Sql.Add('   a.Tipo_Nip,');
+      Sql.Add('   a.Data_Hora_Importacao, a.Ultima_Atualizacao, a.Data_Hora_Encerramento, ');
+      Sql.Add('   a.Justificativa_Encerramento, ');
       Sql.Add('   b.Tipo_Status,');
       Sql.Add('   c.Tipo_Prazo_Caixa,');
       Sql.Add('   d.Nome_Tecnico,');
@@ -799,6 +852,10 @@ begin
       Sql.Add('   f.Tipo_Classificacao,');
       Sql.Add('   g.Nome_Usuario as Usuario_Designado,');
       Sql.Add('   h.Nome_Setor as Setor_Designado,');
+      Sql.Add('   i.Nome_Usuario as Usuario_Importacao, ');
+      Sql.Add('   j.Nome_Usuario as Usuario_Atualizacao, ');
+      Sql.Add('   k.Nome_Usuario as Usuario_Encerrameto, ');
+
       Sql.Add('   IsNull((Select count(*) ');
       Sql.Add('           From ControlPc_Historico ah ');
       Sql.Add('           where ah.id_ControlPc = a.id),0) as Qtd_Historicos,');
@@ -817,7 +874,12 @@ begin
       Sql.Add('   INNER JOIN Tipos_Classificacao f on f.id = a.id_Tipo_Classificacao');
       Sql.Add('   LEFT OUTER JOIN Usuarios g on g.id = a.id_Usuario_Designado');
       Sql.Add('   LEFT OUTER JOIN Setores h on h.id = a.id_Setor_Designado');
+      Sql.Add('   LEFT OUTER JOIN Usuarios i on i.id = a.id_Usuario_Importacao ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios j on j.id = a.id_Usuario_Ultima_Atualizacao ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios k on k.id = a.id_Usuario_Encerramento');
       Sql.Add('where 1 = 1');
+
+
    end;
 end;
 

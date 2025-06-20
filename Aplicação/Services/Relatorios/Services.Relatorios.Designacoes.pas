@@ -1,4 +1,4 @@
-unit Services.Listagens.Designacoes;
+unit Services.Relatorios.Designacoes;
 
 interface
 uses
@@ -26,14 +26,14 @@ uses
   Libs.TFuncoesJSON,
   Libs.TFiltros,
 
-  Providers.Listagens.Designacoes,
+  Providers.Relatorios.Designacoes,
 
   Providers.Panels.Conexao;
 
 type
-  TSrvListagensDesignacoes = class
+  TSrvRelatorioDesignacoes = class
   private
-     Fdm           : TdtmListagensDesinacoes;
+     Fdm           : TdtmRelatoriosDesinacoes;
      FPxySiags     : TSMSiagsClient;
      FPxyAutoSc    : TSMAutoScClient;
      FPxyControlPc : TSMControlPcClient;
@@ -50,23 +50,23 @@ type
      function DataSetUsuarioSiags : TDataSet;
      function DataSetUsuarioControlPc : TDataSet;
 
-     procedure ListagemAutoSc(const ANumeroProcesso : String;
+     procedure RelatorioAutoSc(const ANumeroProcesso : String;
+                               const AUsaData : Boolean;
+                               const ADataInicial, ADataFinal : TDateTime;
+                               const AIdUsuarioResponsavel : integer;
+                               const ANomeResponsavel : String);
+
+     procedure RelatorioSiags(const ANumeroAutorizacao : String;
                               const AUsaData : Boolean;
                               const ADataInicial, ADataFinal : TDateTime;
                               const AIdUsuarioResponsavel : integer;
                               const ANomeResponsavel : String);
 
-     procedure ListagemSiags(const ANumeroAutorizacao : String;
-                             const AUsaData : Boolean;
-                             const ADataInicial, ADataFinal : TDateTime;
-                             const AIdUsuarioResponsavel : integer;
-                             const ANomeResponsavel : String);
-
-     procedure ListagemControlPc(const ANumeroProtocolo : String;
-                                 const AUsaData : Boolean;
-                                 const ADataInicial, ADataFinal : TDateTime;
-                                 const AIdUsuarioResponsavel : integer;
-                                 const ANomeResponsavel : String);
+     procedure RelatorioControlPc(const ANumeroProtocolo : String;
+                                  const AUsaData : Boolean;
+                                  const ADataInicial, ADataFinal : TDateTime;
+                                  const AIdUsuarioResponsavel : integer;
+                                  const ANomeResponsavel : String);
 
 
      destructor destroy(); override;
@@ -79,9 +79,9 @@ implementation
 
 { TSrvSiags }
 
-constructor TSrvListagensDesignacoes.create;
+constructor TSrvRelatorioDesignacoes.create;
 begin
-   Application.CreateForm(TdtmListagensDesinacoes, Fdm);
+   Application.CreateForm(TdtmRelatoriosDesinacoes, Fdm);
 
    FPxySiags     := TSMSiagsClient.Create(FDm.SQLConnection.DBXConnection);
    FPxyAutoSc    := TSMAutoScClient.Create(FDm.SQLConnection.DBXConnection);
@@ -90,34 +90,34 @@ begin
    PopularTabelasDeUsuarios;
 end;
 
-function TSrvListagensDesignacoes.DataSetUsuarioAutoSc: TDataSet;
+function TSrvRelatorioDesignacoes.DataSetUsuarioAutoSc: TDataSet;
 begin
    Result := Fdm.mtbUsuariosAutoSc;
 end;
 
-function TSrvListagensDesignacoes.DataSetUsuarioControlPc: TDataSet;
+function TSrvRelatorioDesignacoes.DataSetUsuarioControlPc: TDataSet;
 begin
    Result := Fdm.mtbUsuariosControlPc;
 end;
 
-function TSrvListagensDesignacoes.DataSetUsuarioSiags: TDataSet;
+function TSrvRelatorioDesignacoes.DataSetUsuarioSiags: TDataSet;
 begin
    Result := Fdm.mtbUsuariosSiags;
 end;
 
-destructor TSrvListagensDesignacoes.destroy;
+destructor TSrvRelatorioDesignacoes.destroy;
 begin
    FreeAndNil(FPxySiags);
    FreeAndNil(FPxyAutoSc);
    FreeAndNil(FPxyControlPc);
    FreeAndNil(Fdm);
 
-  inherited;
+   inherited;
 end;
 
 
 
-procedure TSrvListagensDesignacoes.ListagemAutoSc(
+procedure TSrvRelatorioDesignacoes.RelatorioAutoSc(
    const ANumeroProcesso: String;
    const AUsaData: Boolean;
    const ADataInicial, ADataFinal: TDateTime;
@@ -126,19 +126,25 @@ procedure TSrvListagensDesignacoes.ListagemAutoSc(
 var
    LProcesso : String;
    LPeriodo  : String;
-
+   LDados    : TJSONArray;
 begin
-   TFuncoesJSON.PopularTabela(Fdm.mtbDesignacoes, FPxyAutoSc.ListagemDeDesignacoes(AUsaData,
-                                                                                   ADataInicial,
-                                                                                   ADataFinal,
-                                                                                   ANumeroProcesso,
-                                                                                   AIdUsuarioResponsavel));
-   if Fdm.mtbDesignacoes.isEmpty then
+
+   LDados := FPxyAutoSc.RelatorioDeDesignacoes(AUsaData,
+                                               ADataInicial,
+                                               ADataFinal,
+                                               ANumeroProcesso,
+                                               AIdUsuarioResponsavel);
+
+
+   if LDados.Count = 0 then
       begin
       InformationMessage('Não foram encotrados registros que atendam aos filtros especificados !',C_TITULO_MENSAGENS);
       Fdm.mtbDesignacoes.Close;
       Exit;
    end;
+
+   Fdm.mtbDesignacoes.Close;
+   TFuncoesJSON.PopularTabela(Fdm.mtbDesignacoes, LDados);
 
    if ANumeroProcesso = '' then
       LProcesso := 'Filtro não especificado'
@@ -160,7 +166,7 @@ begin
    Fdm.frpDesignacoes.ShowReport();
 end;
 
-procedure TSrvListagensDesignacoes.ListagemControlPc(
+procedure TSrvRelatorioDesignacoes.RelatorioControlPc(
    const ANumeroProtocolo: String;
    const AUsaData: Boolean;
    const ADataInicial, ADataFinal: TDateTime;
@@ -170,18 +176,25 @@ procedure TSrvListagensDesignacoes.ListagemControlPc(
 var
    LProcesso: String;
    LPeriodo:  String;
+   LDados    : TJSONArray;
 begin
-   TFuncoesJSON.PopularTabela(Fdm.mtbDesignacoes, FPxyControlPc.ListagemDeDesignacoes(AUsaData,
-                                                                                      ADataInicial,
-                                                                                      ADataFinal,
-                                                                                      ANumeroProtocolo,
-                                                                                      AIdUsuarioResponsavel));
-   if Fdm.mtbDesignacoes.isEmpty then
+
+   LDados := FPxyControlPc.RelatorioDeDesignacoes(AUsaData,
+                                                  ADataInicial,
+                                                  ADataFinal,
+                                                  ANumeroProtocolo,
+                                                  AIdUsuarioResponsavel);
+
+
+   if LDados.Count = 0 then
       begin
       InformationMessage('Não foram encotrados registros que atendam aos filtros especificados !',C_TITULO_MENSAGENS);
       Fdm.mtbDesignacoes.Close;
       Exit;
    end;
+
+   Fdm.mtbDesignacoes.Close;
+   TFuncoesJSON.PopularTabela(Fdm.mtbDesignacoes, LDados);
 
    if ANumeroProtocolo = '' then
       LProcesso := 'Filtro não especificado'
@@ -203,7 +216,7 @@ begin
    Fdm.frpDesignacoes.ShowReport();
 end;
 
-procedure TSrvListagensDesignacoes.ListagemSiags(
+procedure TSrvRelatorioDesignacoes.RelatorioSiags(
    const ANumeroAutorizacao: String;
    const AUsaData: Boolean;
    const ADataInicial, ADataFinal: TDateTime;
@@ -213,20 +226,24 @@ procedure TSrvListagensDesignacoes.ListagemSiags(
 var
    LProcesso: String;
    LPeriodo:  String;
-
+   LDados    : TJSONArray;
 begin
-   TFuncoesJSON.PopularTabela(Fdm.mtbDesignacoes, FPxySiags.ListagemDeDesignacoes(AUsaData,
-                                                                                  ADataInicial,
-                                                                                  ADataFinal,
-                                                                                  ANumeroAutorizacao,
-                                                                                  AIdUsuarioResponsavel));
 
-   if Fdm.mtbDesignacoes.isEmpty then
+   LDados := FPxySiags.RelatorioDeDesignacoes(AUsaData,
+                                              ADataInicial,
+                                              ADataFinal,
+                                              ANumeroAutorizacao,
+                                              AIdUsuarioResponsavel);
+
+   if LDados.Count = 0 then
       begin
       InformationMessage('Não foram encotrados registros que atendam aos filtros especificados !',C_TITULO_MENSAGENS);
       Fdm.mtbDesignacoes.Close;
       Exit;
    end;
+
+   Fdm.mtbDesignacoes.Close;
+   TFuncoesJSON.PopularTabela(Fdm.mtbDesignacoes, LDados);
 
    if ANumeroAutorizacao = '' then
       LProcesso := 'Filtro não especificado'
@@ -248,7 +265,7 @@ begin
    Fdm.frpDesignacoes.ShowReport();
 end;
 
-procedure TSrvListagensDesignacoes.PopularTabelasDeUsuarios;
+procedure TSrvRelatorioDesignacoes.PopularTabelasDeUsuarios;
 begin
    TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosAutoSc,    FPxyAutoSC.Usuarios);
    TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosSiags,     FPxySiags.Usuarios);

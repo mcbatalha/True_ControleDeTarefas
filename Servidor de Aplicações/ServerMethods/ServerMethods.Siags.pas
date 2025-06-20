@@ -6,6 +6,7 @@ uses
   System.SysUtils,
   System.Classes,
   System.JSON,
+  System.Generics.Collections,
 
   Datasnap.DSServer,
   Datasnap.DSAuth,
@@ -153,6 +154,15 @@ type
     qryPainelSiagsQtd_Observacoes: TIntegerField;
     qrySiagsid_Usuario_Designado: TIntegerField;
     qryPainelSiagsid_Autorizacao: TLargeintField;
+    qrySiagsUltima_Atualizacao: TDateTimeField;
+    qrySiagsid_Usuario_Ultima_Atualizacao: TIntegerField;
+    qryPainelAutoScData_Hora_Importacao: TDateTimeField;
+    qryPainelAutoScUltima_Atualizacao: TDateTimeField;
+    qryPainelAutoScData_Hora_Encerramento: TDateTimeField;
+    qryPainelAutoScJustificativa_Encerramento: TStringField;
+    qryPainelSiagsUsuario_Importacao: TStringField;
+    qryPainelSiagsUsuario_Atualizacao: TStringField;
+    qryPainelSiagsUsuario_Encerrameto: TStringField;
   private
     { Private declarations }
     FIdTipoAuditoria           : integer;
@@ -170,7 +180,6 @@ type
     FDiasPrazoCaixa            : integer;
     FDiasPrazoAns              : integer;
 
-    FIdAutorizacao             : LongInt;
     FAnexoOpme                 : String;
     FAnexoQuimio               : String;
     FAnexoRadio                : String;
@@ -199,7 +208,6 @@ type
     function ObterIdTipoSituacaoAutorizacao(const AValor : String) : integer;
     function ObterIdTipoUltimaAnotacao(const AValor : String) : integer;
     function ObterIdBeneficiario(const AValor, ANome : String) : integer;
-    function ObterIdAutorizacao(const AValor : String) : LongInt;
 
     procedure GravarAutorizacao;
     procedure GravarHistorico(const AId : Largeint);
@@ -210,7 +218,7 @@ type
   public
     function Importar(const ARegistros : TJSONArray; const AIdUsuario : integer) : TJSONObject;
 
-    function FiltrarAutorizacoes(const AFiltros : TJSONObject) : TJSONArray;
+    function FiltrarAutorizacoes(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean) : TJSONArray;
     function Designar(const AJustificativa: String;
                       const AIdSetor, AIdUsuario, AIdUsuarioResponsavel : integer;
                       const AIdAutorizacao : LongInt ): Boolean;
@@ -238,11 +246,13 @@ type
     function Setores          : TJSONArray;
     function Usuarios         : TJSONArray;
 
-    function ListagemDeDesignacoes(const AUsaDatas : Boolean;
-                                   const ADataInicial, ADataFinal : TDateTime;
-                                   const ANumeroAutorizacao : string;
-                                   const AIdUsuarioResponsavel : integer) : TJSONArray;
+    function RelatorioDeDesignacoes(const AUsaDatas : Boolean;
+                                    const ADataInicial, ADataFinal : TDateTime;
+                                    const ANumeroAutorizacao : string;
+                                    const AIdUsuarioResponsavel : integer) : TJSONArray;
 
+    function RelatorioDeEncerramentos(const ADataInicial, ADataFinal : TDateTime;
+                                      const AIdUsuarioResponsavel : integer) : TJSONArray;
   end;
 
 implementation
@@ -390,7 +400,7 @@ begin
    qryBeneficiarios.Close;
 end;
 
-function TSMSiags.FiltrarAutorizacoes(const AFiltros: TJSONObject): TJSONArray;
+function TSMSiags.FiltrarAutorizacoes(const AFiltros: TJSONObject; const AIncluirEncerrados : Boolean): TJSONArray;
 var
    LFiltros : TFiltrosSiags;
 begin
@@ -411,7 +421,8 @@ begin
 
    MontarQueryPainel;
 
-   qryPainelSiags.Sql.Add(' and a.Data_Hora_Encerramento is null');
+   if not AIncluirEncerrados then
+      qryPainelSiags.Sql.Add(' and a.Data_Hora_Encerramento is null');
 
    if LFiltros.numeroDaAutorizacao <> '' then
       begin
@@ -505,7 +516,6 @@ end;
 procedure TSMSiags.GravarAutorizacao;
 var
    LNovo      : Boolean;
-   LAtualizou : Boolean;
    LAtualizar : Boolean;
 begin
    qrySiags.Close;
@@ -522,7 +532,6 @@ begin
       LNovo := qrySiags.isEmpty;
       if LNovo then
          begin
-         LAtualizou := False;
          qrySiags.Append;
          qrySiagsNumero_Autorizacao.AsInteger := FNumeroAutorizacao;
       end else
@@ -577,8 +586,14 @@ begin
          qrySiagsData_Prazo_ANS.AsDateTime              := FDataPrazoANS;
          qrySiagsid_Tipo_Prazo_ANS.AsInteger            := FIdTipoPrazoANS;
 
-         qrySiagsid_Usuario_Importacao.AsInteger    := FIdUsuarioResponsavel;
-         qrySiagsData_Hora_Importacao.AsDateTime    := FDataHora;
+         qrySiagsid_Usuario_Ultima_Atualizacao.AsInteger := FIdUsuarioResponsavel;
+         qrySiagsUltima_Atualizacao.AsDateTime           := FDataHora;
+
+         if LNovo then
+            begin
+            qrySiagsid_Usuario_Importacao.AsInteger    := FIdUsuarioResponsavel;
+            qrySiagsData_Hora_Importacao.AsDateTime    := FDataHora;
+         end;
          qrySiags.Post;
       end else
          FTotalNaoAtualizados := FTotalNaoAtualizados + 1;
@@ -680,7 +695,6 @@ end;
 function TSMSiags.Importar(const ARegistros: TJSONArray; const AIdUsuario: integer): TJSONObject;
 var
    I                   : Integer;
-   LData               : String;
    LNomeBeneficiario   : String;
    LNumeroBeneficiario : String;
 
@@ -751,7 +765,7 @@ begin
    end;
 end;
 
-function TSMSiags.ListagemDeDesignacoes(
+function TSMSiags.RelatorioDeDesignacoes(
    const AUsaDatas: Boolean;
    const ADataInicial, ADataFinal: TDateTime;
    const ANumeroAutorizacao: string;
@@ -766,21 +780,21 @@ begin
    qryAux.SQL.Add('   Usuario_Responsavel,                                                  ');
    qryAux.SQL.Add('   Justificativa,                                                        ');
    qryAux.SQL.Add('   Numero_Autorizacao as Numero,                                         ');
-   qryAux.SQL.Add('   Data_hora_log AS Data_Hora_Inicial,                                   ');
+   qryAux.SQL.Add('   Data_Hora_log AS Data_Hora_Inicial,                                   ');
    qryAux.SQL.Add('   ISNULL(ProximaData, Null) AS Data_Hora_Final,                    ');
-   qryAux.SQL.Add('   DATEDIFF(DAY, Data_hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
-   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
-   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, Data_Hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_Hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_Hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
    qryAux.SQL.Add('FROM (                                                                             ');
    qryAux.SQL.Add('       SELECT                                                                      ');
    qryAux.SQL.Add('          a.id_Siags,                                                             ');
-   qryAux.SQL.Add('          a.Data_hora_log,                                                         ');
+   qryAux.SQL.Add('          a.Data_Hora_log,                                                         ');
    qryAux.SQL.Add('          a.Justificativa,                                                         ');
    qryAux.SQL.Add('          b.Nome_Usuario as Usuario_Designado,                                     ');
    qryAux.SQL.Add('          c.Nome_Setor as Setor_Designado,                                         ');
    qryAux.SQL.Add('          d.Nome_Usuario as Usuario_Responsavel,                                   ');
    qryAux.SQL.Add('          e.Numero_Autorizacao,                                                       ');
-   qryAux.SQL.Add('          LEAD(Data_hora_log) OVER (PARTITION BY id_Siags ORDER BY Data_hora_log) AS ProximaData ');
+   qryAux.SQL.Add('          LEAD(Data_Hora_log) OVER (PARTITION BY id_Siags ORDER BY Data_Hora_log) AS ProximaData ');
    qryAux.SQL.Add('       FROM                                                                                       ');
    qryAux.SQL.Add('          Siags_Log a                                                                            ');
    qryAux.SQL.Add('          left outer join Usuarios b on b.id = a.id_Usuario_Designado                             ');
@@ -815,6 +829,39 @@ begin
 
 end;
 
+function TSMSiags.RelatorioDeEncerramentos(
+   const ADataInicial, ADataFinal: TDateTime;
+   const AIdUsuarioResponsavel: integer): TJSONArray;
+begin
+   qryAux.SQL.Clear;
+   qryAux.SQL.Add('SELECT                                                                   ');
+   qryAux.SQL.Add('   a.Numero_Autorizacao as Numero,                                       ');
+   qryAux.SQL.Add('   a.Data_Hora_Importacao,                                               ');
+   qryAux.SQL.Add('   a.Data_Hora_Encerramento,                                             ');
+   qryAux.SQL.Add('   a.Justificativa_Encerramento,                                         ');
+   qryAux.SQL.Add('   b.Nome_Usuario,                                                       ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) AS Dias,           ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('FROM                                                                          ');
+   qryAux.SQL.Add('   Siags a                                                                    ');
+   qryAux.SQL.Add('   Inner Join Usuarios b on b.id = a.id_Usuario_Encerramento                  ');
+   qryAux.SQL.Add('where not Data_Hora_Encerramento is null                                      ');
+   qryAux.SQL.Add('      and cast(a.Data_Hora_Encerramento as Date) between :pDataInicial and :pDataFinal ');
+
+   if AIdUsuarioResponsavel > 0 then
+      begin
+      qryAux.SQL.Add('       and a.id_Usuario_Encerramento = :pIdUsuarioResponsavel');
+      qryAux.ParamByName('pIdUsuarioResponsavel').AsInteger := AIdUsuarioResponsavel;
+   end;
+   qryAux.SQL.Add('Order by Data_Hora_Encerramento desc');
+
+   qryAux.ParamByName('pDataInicial').AsDateTime := ADataInicial;
+   qryAux.ParamByName('pDataFinal').AsDateTime   := ADataFinal;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+end;
+
 procedure TSMSiags.MontarQueryPainel;
 begin
    with qryPainelSiags do
@@ -826,6 +873,8 @@ begin
       Sql.Add('   a.Anexo_Radio, a.Dia_Inclusao, a.Dias_Corridos_Base, a.Dias_Uteis_Base, ');
       Sql.Add('   a.Dias_Prazo_ANS, a.Data_Prazo_Caixa,  a.Dias_Prazo_Caixa, a.Dias_Prazo_ANS, ');
       Sql.Add('   a.Data_Prazo_ANS, a.id_Usuario_Designado,  a.id_Setor_Designado, ');
+      Sql.Add('   a.Data_Hora_Importacao, a.Ultima_Atualizacao, a.Data_Hora_Encerramento, ');
+      Sql.Add('   a.Justificativa_Encerramento, ');
       Sql.Add('   b.Tipo_Autorizacao, ');
       Sql.Add('   c.Tipo_Atendimento, ');
       Sql.Add('   d.Tipo_Situacao_Autorizacao, ');
@@ -836,6 +885,9 @@ begin
       Sql.Add('   i.Numero_Beneficiario, i.Nome_Beneficiario, ');
       Sql.Add('   j.Nome_Usuario as Usuario_Designado, ');
       Sql.Add('   k.Nome_Setor as Setor_Designado, ');
+      Sql.Add('   l.Nome_Usuario as Usuario_Importacao, ');
+      Sql.Add('   m.Nome_Usuario as Usuario_Atualizacao, ');
+      Sql.Add('   n.Nome_Usuario as Usuario_Encerrameto, ');
       Sql.Add('   IsNull((Select count(*) ');
       Sql.Add('           From Siags_Historico ah ');
       Sql.Add('           where ah.id_Siags = a.id),0) as Qtd_Historicos,');
@@ -857,6 +909,9 @@ begin
       Sql.Add('   Inner Join Beneficiarios i on i.id = a.id_Beneficiario ');
       Sql.Add('   Left Outer Join Usuarios j on j.id = a.id_Usuario_Designado ');
       Sql.Add('   Left Outer Join Setores k on k.id = a.id_Setor_Designado ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios l on l.id = a.id_Usuario_Importacao ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios m on m.id = a.id_Usuario_Ultima_Atualizacao ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios n on n.id = a.id_Usuario_Encerramento');
       Sql.Add('where 1 = 1');
    end;
 end;
@@ -881,9 +936,6 @@ begin
    Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
-function TSMSiags.ObterIdAutorizacao(const AValor: String): LongInt;
-begin
-end;
 
 function TSMSiags.ObterIdBeneficiario(const AValor, ANome: String): integer;
 begin

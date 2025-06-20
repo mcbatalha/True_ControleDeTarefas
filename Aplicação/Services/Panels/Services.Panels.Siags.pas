@@ -45,16 +45,17 @@ type
      function DataSetPesquisaDeUsuario : TDataSet;
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
-     function Filtrar(const AFiltros : TJSONObject) : Boolean;
+     function Filtrar(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
      function NumeroDaAutorizacao  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
      function SetorDesignado : integer;
      function UsuarioDesignado : integer;
-     function TemRegistros : Boolean;
-     function TemDesignacoes : Boolean;
-     function TemAtualizacoes: Boolean;
+     function TemRegistros     : Boolean;
+     function TemDesignacoes   : Boolean;
+     function TemAtualizacoes  : Boolean;
+     function TemObservacoes   : Boolean;
      function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
      function Encerrar(const AJustificativa : String) : Boolean;
 
@@ -67,6 +68,11 @@ type
      function GravarObservacao(const AObservacao : String): Boolean;
      procedure CancelarObservacao;
 
+     procedure ImprimirExtrato(const AAutorizacao : String; const AFecharTabelas : Boolean);
+     procedure PosicionarRegistro(const ANumero: String);
+
+     procedure HabilitarControles;
+     procedure DesabilitarControles;
 
      destructor Destroy(); override;
 
@@ -85,7 +91,7 @@ end;
 
 function TSrvSiags.DataSourceObservacao: TDataSource;
 begin
-   Result := FdmSiags.dtsObservacoesProcesso;
+   Result := FdmSiags.dtsObservacoes;
 end;
 
 function TSrvSiags.DataSetPesquisaDeUsuario : TDataSet;
@@ -95,7 +101,7 @@ end;
 
 procedure TSrvSiags.CancelarObservacao;
 begin
-   FdmSiags.mtbObservacoesProcesso.Cancel;
+   FdmSiags.mtbObservacoes.Cancel;
 end;
 
 constructor TSrvSiags.Create(ASqlConnection : TSQLConnection);
@@ -106,6 +112,11 @@ begin
    FPxySiags := TSMSiagsClient.Create(ASqlConnection.DBXConnection);
 
    TabelasDeDominio;
+end;
+
+procedure TSrvSiags.DesabilitarControles;
+begin
+   FdmSiags.cdsPainel.DisableControls;
 end;
 
 procedure TSrvSiags.DesignacaoExcluirTodos;
@@ -205,14 +216,16 @@ begin
    end;
 end;
 
-function TSrvSiags.Filtrar(const AFiltros: TJSONObject): Boolean;
+function TSrvSiags.Filtrar(
+   const AFiltros: TJSONObject;
+   const AIncluirEncerrados : Boolean) : Boolean;
 var
    LDados : TJSONArray;
 begin
    Result := True;
 
    FdmSiags.cdsPainel.Close;
-   LDados := FPxySiags.FiltrarAutorizacoes(AFiltros);
+   LDados := FPxySiags.FiltrarAutorizacoes(AFiltros, AIncluirEncerrados);
    if LDados.Count > 0 then
       TFuncoesJSON.PopularTabela(FdmSiags.cdsPainel, LDados);
 
@@ -234,14 +247,19 @@ begin
    if Result then
       begin
       InformationMessage('Observação registrada com sucesso !','Observações');
-      FdmSiags.mtbObservacoesProcessoData_Hora.AsDateTime := LDataHora;
-      FdmSiags.mtbObservacoesProcesso.Post;
+      FdmSiags.mtbObservacoesData_Hora.AsDateTime := LDataHora;
+      FdmSiags.mtbObservacoes.Post;
 
       FdmSiags.cdsPainel.Edit;
       FdmSiags.cdsPainelQtd_Observacoes.AsInteger := FdmSiags.cdsPainelQtd_Observacoes.AsInteger + 1;
       FdmSiags.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
+end;
+
+procedure TSrvSiags.HabilitarControles;
+begin
+   FdmSiags.cdsPainel.EnableControls;
 end;
 
 function TSrvSiags.HistoricoDeAtualizacoes : String;
@@ -256,11 +274,74 @@ begin
    Result := FdmSiags.cdsPainelNumero_Autorizacao.AsString;
 end;
 
+procedure TSrvSiags.ImprimirExtrato(const AAutorizacao : String; const AFecharTabelas : Boolean);
+var
+   LFiltroSiags  : TFiltros;
+   LSiags        : TFiltrosSiags;
+   LDados         : TJSONArray;
+begin
+   if AAutorizacao = '' then
+      begin
+      InformationMessage('Informe o nº do processo.','Impressão de Extrato');
+      Exit;
+   end;
+
+   LFiltroSiags := TFiltros.create(C_CODIGO_Siags);
+   try
+      LSiags := LFiltroSiags.getFiltrosSiagsAsRecord;
+      LSiags.numeroDaAutorizacao := AAutorizacao;
+      LSiags.idUsuarioDesignado  := 0;
+
+      LFiltroSiags.setFiltrosSiags(LSiags);
+
+      if not Filtrar(LFiltroSiags.getFiltrosSiagsAsJSON, True) or (not TemRegistros) then
+         begin
+         InformationMessage('Processo não localizado.','Impressão de Extrato');
+         Exit;
+      end;
+
+
+      if TemAtualizacoes then
+         HistoricoDeAtualizacoes;
+
+      if TemObservacoes then
+         ObservacoesDaAutorizacao;
+
+      if TemDesignacoes then
+         begin
+         LDados := FPxySiags.RelatorioDeDesignacoes(True,
+                                                     StrToDate('01/01/2025'),
+                                                     Date,
+                                                     FdmSiags.cdsPainelNumero_Autorizacao.AsString,
+                                                     0);
+
+         FdmSiags.mtbDesignacoes.Close;
+         if LDados.Count > 0 then
+            TFuncoesJSON.PopularTabela(FdmSiags.mtbDesignacoes, LDados)
+         else
+            FdmSiags.mtbDesignacoes.Open;
+      end;
+
+      FdmSiags.frpExtrato.Showreport();
+
+   finally
+      FreeAndNil(LFiltroSiags);
+
+      if AFecharTabelas then
+         begin
+         FdmSiags.cdsPainel.Close;
+         FdmSiags.mtbDesignacoes.Close;
+         FdmSiags.mtbHistoricoAtualizacoes.Close;
+         FdmSiags.mtbObservacoes.Close;
+      end;
+   end;
+end;
+
 procedure TSrvSiags.IncluirObservacao;
 begin
-   FdmSiags.mtbObservacoesProcesso.Append;
-   FdmSiags.mtbObservacoesProcessoNome_Usuario.AsString := Seguranca.Nome;
-   FdmSiags.mtbObservacoesProcessoData_Hora.AsDateTime  := Now;
+   FdmSiags.mtbObservacoes.Append;
+   FdmSiags.mtbObservacoesNome_Usuario.AsString := Seguranca.Nome;
+   FdmSiags.mtbObservacoesData_Hora.AsDateTime  := Now;
 end;
 
 function TSrvSiags.NumeroDaAutorizacao: String;
@@ -270,12 +351,17 @@ end;
 
 function TSrvSiags.ObservacoesDaAutorizacao: String;
 begin
-   FdmSiags.mtbObservacoesProcesso.Close;
+   FdmSiags.mtbObservacoes.Close;
    if FdmSiags.cdsPainelQtd_Observacoes.AsInteger > 0 then
-      TFuncoesJSON.PopularTabela(FdmSiags.mtbObservacoesProcesso, FPxySiags.ObservacoesDaAutorizacao(FdmSiags.cdsPainelid_Autorizacao.AsInteger))
+      TFuncoesJSON.PopularTabela(FdmSiags.mtbObservacoes, FPxySiags.ObservacoesDaAutorizacao(FdmSiags.cdsPainelid_Autorizacao.AsInteger))
    else
-      FdmSiags.mtbObservacoesProcesso.Open;
+      FdmSiags.mtbObservacoes.Open;
    Result := FdmSiags.cdsPainelNumero_Autorizacao.AsString;
+end;
+
+procedure TSrvSiags.PosicionarRegistro(const ANumero: String);
+begin
+   FdmSiags.cdsPainel.Locate('Numero_Autorizacao',ANumero,[]);
 end;
 
 procedure TSrvSiags.TabelasDeDominio;
@@ -319,6 +405,11 @@ end;
 function TSrvSiags.TemDesignacoes: Boolean;
 begin
    Result := FdmSiags.cdsPainelQtd_Designacoes.AsInteger > 0;
+end;
+
+function TSrvSiags.TemObservacoes: Boolean;
+begin
+   Result := FdmSiags.cdsPainelQtd_Observacoes.AsInteger > 0;
 end;
 
 function TSrvSiags.TemRegistros: Boolean;

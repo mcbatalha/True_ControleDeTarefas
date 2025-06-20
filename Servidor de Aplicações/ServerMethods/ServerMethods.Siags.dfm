@@ -252,6 +252,14 @@ object SMSiags: TSMSiags
       Origin = 'Justificativa_Encerramento'
       Size = 100
     end
+    object qrySiagsUltima_Atualizacao: TDateTimeField
+      FieldName = 'Ultima_Atualizacao'
+      Origin = 'Ultima_Atualizacao'
+    end
+    object qrySiagsid_Usuario_Ultima_Atualizacao: TIntegerField
+      FieldName = 'id_Usuario_Ultima_Atualizacao'
+      Origin = 'id_Usuario_Ultima_Atualizacao'
+    end
   end
   object qrySiagsHistorico: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -522,6 +530,38 @@ object SMSiags: TSMSiags
       Origin = 'Qtd_Observacoes'
       ReadOnly = True
       Required = True
+    end
+    object qryPainelAutoScData_Hora_Importacao: TDateTimeField
+      FieldName = 'Data_Hora_Importacao'
+      Origin = 'Data_Hora_Importacao'
+    end
+    object qryPainelAutoScUltima_Atualizacao: TDateTimeField
+      FieldName = 'Ultima_Atualizacao'
+      Origin = 'Ultima_Atualizacao'
+    end
+    object qryPainelAutoScData_Hora_Encerramento: TDateTimeField
+      FieldName = 'Data_Hora_Encerramento'
+      Origin = 'Data_Hora_Encerramento'
+    end
+    object qryPainelSiagsUsuario_Importacao: TStringField
+      FieldName = 'Usuario_Importacao'
+      Origin = 'Usuario_Importacao'
+      Size = 100
+    end
+    object qryPainelSiagsUsuario_Atualizacao: TStringField
+      FieldName = 'Usuario_Atualizacao'
+      Origin = 'Usuario_Atualizacao'
+      Size = 100
+    end
+    object qryPainelSiagsUsuario_Encerrameto: TStringField
+      FieldName = 'Usuario_Encerrameto'
+      Origin = 'Usuario_Encerrameto'
+      Size = 100
+    end
+    object qryPainelAutoScJustificativa_Encerramento: TStringField
+      FieldName = 'Justificativa_Encerramento'
+      Origin = 'Justificativa_Encerramento'
+      Size = 100
     end
   end
   object qrySetores: TFDQuery

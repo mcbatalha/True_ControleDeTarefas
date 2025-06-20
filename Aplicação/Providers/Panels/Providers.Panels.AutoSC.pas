@@ -29,7 +29,7 @@ uses
   Proxy.Classes,
 
   Providers.Panels,
-  Providers.Connection;
+  Providers.Connection, frxClass, frxDBSet;
 
 type
   TdtmPainelAutoSC = class(TdtmPainel)
@@ -116,6 +116,20 @@ type
     mtbHistoricoAtualizacoesTipo_Status: TStringField;
     mtbHistoricoAtualizacoesNome_Usuario: TStringField;
     cdsPainelid_Processo: TLargeintField;
+    mtbPainelData_Hora_Importacao: TDateTimeField;
+    mtbPainelUltima_Atualizacao: TDateTimeField;
+    mtbPainelData_Hora_Encerramento: TDateTimeField;
+    mtbPainelJustificativa_Encerramento: TStringField;
+    mtbPainelUsuario_Importacao: TStringField;
+    mtbPainelUsuario_Atualizacao: TStringField;
+    mtbPainelUsuario_Encerrameto: TStringField;
+    cdsPainelData_Hora_Importacao: TDateTimeField;
+    cdsPainelUltima_Atualizacao: TDateTimeField;
+    cdsPainelData_Hora_Encerramento: TDateTimeField;
+    cdsPainelJustificativa_Encerramento: TStringField;
+    cdsPainelUsuario_Importacao: TStringField;
+    cdsPainelUsuario_Atualizacao: TStringField;
+    cdsPainelUsuario_Encerrameto: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure cdsPainelTipo_ProcessoGetText(Sender: TField; var Text: string; DisplayText: Boolean);

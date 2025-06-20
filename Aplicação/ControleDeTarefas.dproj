@@ -268,16 +268,35 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Services\Panels\Services.Panels.ControlPc.pas"/>
-        <DCCReference Include="Forms\Listagens\Forms.Listagens.Designacoes.pas">
-            <Form>frmListagemDesignacoes</Form>
+        <DCCReference Include="Forms\Relatorios\Forms.Relatorios.Designacoes.pas">
+            <Form>frmRelatorioDesignacoes</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Providers\Listagens\Providers.Listagens.Designacoes.pas">
-            <Form>dtmListagensDesinacoes</Form>
+        <DCCReference Include="Services\Relatorios\Services.Relatorios.Designacoes.pas"/>
+        <DCCReference Include="Providers\Relatorios\Providers.Relatorios.pas">
+            <Form>dtmRelatorios</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Services\Listagens\Services.Listagens.Designacoes.pas"/>
+        <DCCReference Include="Providers\Relatorios\Providers.Relatorios.Designacoes.pas">
+            <Form>dtmRelatoriosDesinacoes</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Providers\Relatorios\Providers.Relatorios.Encerramentos.pas">
+            <Form>dtmRelatoriosEncerramento</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Services\Relatorios\Services.Relatorios.Encerramento.pas"/>
+        <DCCReference Include="Forms\Relatorios\Forms.Relatorios.Encerramentos.pas">
+            <Form>frmRelatorioEncerramentos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Relatorios\Forms.Relatorios.Extrato.pas">
+            <Form>frmRelatorioExtrato</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

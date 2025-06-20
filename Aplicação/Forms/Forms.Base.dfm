@@ -236,7 +236,7 @@ object frmBase: TfrmBase
       end
       object btnExportar: TSpeedButton
         AlignWithMargins = True
-        Left = 105
+        Left = 205
         Top = 3
         Width = 95
         Height = 35
@@ -258,8 +258,7 @@ object frmBase: TfrmBase
           00008288FFFFFFFFFFF882800000827788888888888772800000827788888888
           888772800000822222222222222222800000888888888888888888800000}
         Visible = False
-        ExplicitLeft = 298
-        ExplicitHeight = 32
+        ExplicitLeft = 281
       end
       object btnIncluir: TSpeedButton
         AlignWithMargins = True
@@ -362,7 +361,7 @@ object frmBase: TfrmBase
       end
       object btnImprimir: TSpeedButton
         AlignWithMargins = True
-        Left = 205
+        Left = 105
         Top = 3
         Width = 95
         Height = 35

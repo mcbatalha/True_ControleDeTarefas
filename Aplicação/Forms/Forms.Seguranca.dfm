@@ -20,7 +20,7 @@ inherited frmSeguranca: TfrmSeguranca
       Top = 111
       Width = 902
       Height = 421
-      ActivePage = tbsPaineis
+      ActivePage = tbsRelatorios
       Align = alClient
       TabOrder = 1
       TabWidth = 150
@@ -141,10 +141,10 @@ inherited frmSeguranca: TfrmSeguranca
           end
         end
       end
-      object tbsListagens: TTabSheet
-        Caption = 'Listagens'
+      object tbsRelatorios: TTabSheet
+        Caption = 'Relat'#243'rios'
         ImageIndex = 4
-        object pnlListagens: TPanel
+        object pnlRelatorios: TPanel
           Left = 0
           Top = 0
           Width = 894
@@ -153,22 +153,30 @@ inherited frmSeguranca: TfrmSeguranca
           BevelInner = bvRaised
           BevelOuter = bvLowered
           TabOrder = 0
-          object chbMenuListagens: TCheckBox
+          object chbMenuRelatorios: TCheckBox
             Left = 55
             Top = 55
             Width = 260
             Height = 17
-            Caption = 'Acesso ao Menu Listagens'
+            Caption = 'Acesso ao Menu Relat'#243'rios'
             TabOrder = 0
-            OnClick = chbMenuListagensClick
+            OnClick = chbMenuRelatoriosClick
           end
-          object chbListagemDesignacoes: TCheckBox
+          object chbRelatorioDesignacoes: TCheckBox
             Left = 80
             Top = 85
             Width = 192
             Height = 17
-            Caption = 'Listagem de Designa'#231#245'es'
+            Caption = 'Designa'#231#245'es'
             TabOrder = 1
+          end
+          object chbRelatorioEncerramentos: TCheckBox
+            Left = 80
+            Top = 115
+            Width = 192
+            Height = 17
+            Caption = 'Encerramentos'
+            TabOrder = 2
           end
         end
       end

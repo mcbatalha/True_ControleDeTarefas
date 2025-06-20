@@ -29,7 +29,7 @@ uses
   Proxy.Classes,
 
   Providers.Panels,
-  Providers.Connection;
+  Providers.Connection, frxClass, frxDBSet;
 
 type
   TdtmPainelControlPc = class(TdtmPainel)
@@ -112,6 +112,20 @@ type
     mtbTiposPrazoid: TIntegerField;
     mtbTiposPrazoTipo_Prazo_Caixa: TStringField;
     dtsTiposPrazo: TDataSource;
+    mtbPainelData_Hora_Importacao: TDateTimeField;
+    mtbPainelUltima_Atualizacao: TDateTimeField;
+    mtbPainelData_Hora_Encerramento: TDateTimeField;
+    mtbPainelJustificativa_Encerramento: TStringField;
+    mtbPainelUsuario_Importacao: TStringField;
+    mtbPainelUsuario_Atualizacao: TStringField;
+    mtbPainelUsuario_Encerrameto: TStringField;
+    cdsPainelData_Hora_Importacao: TDateTimeField;
+    cdsPainelUltima_Atualizacao: TDateTimeField;
+    cdsPainelData_Hora_Encerramento: TDateTimeField;
+    cdsPainelJustificativa_Encerramento: TStringField;
+    cdsPainelUsuario_Importacao: TStringField;
+    cdsPainelUsuario_Atualizacao: TStringField;
+    cdsPainelUsuario_Encerrameto: TStringField;
     procedure cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
     { Private declarations }

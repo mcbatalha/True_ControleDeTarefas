@@ -1,4 +1,4 @@
-unit Providers.Listagens.Designacoes;
+unit Providers.Relatorios.Designacoes;
 
 interface
 
@@ -35,7 +35,7 @@ uses
   frxExportPDF;
 
 type
-  TdtmListagensDesinacoes = class(TdtmConexao)
+  TdtmRelatoriosDesinacoes = class(TdtmConexao)
     mtbUsuariosAutoSc: TFDMemTable;
     mtbUsuariosAutoScid: TIntegerField;
     mtbUsuariosAutoScNome_Usuario: TStringField;
@@ -93,7 +93,7 @@ type
   end;
 
 var
-  dtmListagensDesinacoes: TdtmListagensDesinacoes;
+  dtmRelatoriosDesinacoes: TdtmRelatoriosDesinacoes;
 
 implementation
 
@@ -103,21 +103,21 @@ uses Funcoes;
 
 {$R *.dfm}
 
-procedure TdtmListagensDesinacoes.DataModuleCreate(Sender: TObject);
+procedure TdtmRelatoriosDesinacoes.DataModuleCreate(Sender: TObject);
 begin
    inherited;
    ConnectionProvider.ConfigurarConexao(SQLConnection);
 
 end;
 
-procedure TdtmListagensDesinacoes.DataModuleDestroy(Sender: TObject);
+procedure TdtmRelatoriosDesinacoes.DataModuleDestroy(Sender: TObject);
 begin
    inherited;
    SQLConnection.Connected := False;
 
 end;
 
-procedure TdtmListagensDesinacoes.mtbDesignacoesCalcFields(DataSet: TDataSet);
+procedure TdtmRelatoriosDesinacoes.mtbDesignacoesCalcFields(DataSet: TDataSet);
 var
    LTempo : string;
 begin
@@ -132,7 +132,7 @@ begin
    mtbDesignacoesccTempo.Value := LTempo;
 end;
 
-procedure TdtmListagensDesinacoes.mtbDesignacoesData_Hora_FinalGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+procedure TdtmRelatoriosDesinacoes.mtbDesignacoesData_Hora_FinalGetText(Sender: TField; var Text: string; DisplayText: Boolean);
 begin
    inherited;
    if Sender.AsString = '' then
@@ -141,7 +141,7 @@ begin
       Text := FormatDateTime('dd/mm/yyyy hh:MM:ss',Sender.AsDateTime);
 end;
 
-procedure TdtmListagensDesinacoes.mtbDesignacoesUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+procedure TdtmRelatoriosDesinacoes.mtbDesignacoesUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
 begin
    inherited;
    if Sender.AsString = '' then
@@ -150,7 +150,7 @@ begin
       Text := Sender.AsString;
 end;
 
-procedure TdtmListagensDesinacoes.setParameters(const ATipo, ATituloFiltroNumero, AFiltroNumero, AFiltroPeriodo, AFiltroResponsavel, ATituloTipo: String);
+procedure TdtmRelatoriosDesinacoes.setParameters(const ATipo, ATituloFiltroNumero, AFiltroNumero, AFiltroPeriodo, AFiltroResponsavel, ATituloTipo: String);
 begin
    mtbTitulos.close;
    mtbTitulos.Open;

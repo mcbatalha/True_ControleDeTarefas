@@ -1,4 +1,4 @@
-unit Forms.Listagens.Designacoes;
+unit Forms.Relatorios.Designacoes;
 
 interface
 
@@ -27,9 +27,9 @@ uses
   Libs.Constantes,
   Libs.TFuncoesJSON,
 
-  Services.Listagens.Designacoes;
+  Services.Relatorios.Designacoes;
 type
-  TfrmListagemDesignacoes = class(TfrmBase)
+  TfrmRelatorioDesignacoes = class(TfrmBase)
     Label1: TLabel;
     edtDataInicial: TMaskEdit;
     edtDataFinal: TMaskEdit;
@@ -51,13 +51,13 @@ type
     procedure btnImprimirClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
-     FService : TSrvListagensDesignacoes;
+     FService : TSrvRelatorioDesignacoes;
 
      procedure ConfigurarBotoes;
      procedure PosicionarCampoNumero;
 
      const
-        C_TITULO_MENSAGENS = 'Listagem de Designações';
+        C_TITULO_MENSAGENS = 'Relatório de Designações';
   public
     { Public declarations }
   end;
@@ -68,13 +68,13 @@ implementation
 
 { TfrmListagemDesignacoes }
 
-procedure TfrmListagemDesignacoes.btnExportarClick(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.btnExportarClick(Sender: TObject);
 begin
   inherited;
   InformationMessage('Em desenvolvimento !',C_TITULO_MENSAGENS);
 end;
 
-procedure TfrmListagemDesignacoes.btnImprimirClick(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.btnImprimirClick(Sender: TObject);
 var
    LUsaDatas    : Boolean;
    LDataInicial : TDateTime;
@@ -96,35 +96,35 @@ begin
    end;
 
    if rdbAutoSc.Checked then
-      FService.ListagemAutoSc(edtNumero.Text,
+      FService.RelatorioAutoSc(edtNumero.Text,
+                               LUsaDatas,
+                               LDataInicial,
+                               LDataFinal,
+                               fraPesquisaUsuario.getIdUsuario,
+                               fraPesquisaUsuario.getNomeUsuario)
+   else if rdbSiags.Checked then
+      FService.RelatorioSiags(edtNumero.Text,
                               LUsaDatas,
                               LDataInicial,
                               LDataFinal,
                               fraPesquisaUsuario.getIdUsuario,
                               fraPesquisaUsuario.getNomeUsuario)
-   else if rdbSiags.Checked then
-      FService.ListagemSiags(edtNumero.Text,
-                             LUsaDatas,
-                             LDataInicial,
-                             LDataFinal,
-                             fraPesquisaUsuario.getIdUsuario,
-                             fraPesquisaUsuario.getNomeUsuario)
-   else if rdbSiags.Checked then
-      FService.ListagemControlPc(edtNumero.Text,
-                                 LUsaDatas,
-                                 LDataInicial,
-                                 LDataFinal,
-                                 fraPesquisaUsuario.getIdUsuario,
-                                 fraPesquisaUsuario.getNomeUsuario);
+   else if rdbControlPc.Checked then
+      FService.RelatorioControlPc(edtNumero.Text,
+                                  LUsaDatas,
+                                  LDataInicial,
+                                  LDataFinal,
+                                  fraPesquisaUsuario.getIdUsuario,
+                                  fraPesquisaUsuario.getNomeUsuario);
 end;
 
-procedure TfrmListagemDesignacoes.ConfigurarBotoes;
+procedure TfrmRelatorioDesignacoes.ConfigurarBotoes;
 begin
    btnImprimir.Visible := True;
    btnExportar.Visible := True;
 end;
 
-procedure TfrmListagemDesignacoes.edtDataInicialExit(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.edtDataInicialExit(Sender: TObject);
 begin
    inherited;
    if (ActiveControl.tag = 1) or ((Sender as TMaskEdit).Text = C_DATA_EM_BRANCO) then exit;
@@ -132,35 +132,35 @@ begin
    VerificarData((Sender as TMaskEdit));
 end;
 
-procedure TfrmListagemDesignacoes.FormCreate(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.FormCreate(Sender: TObject);
 begin
   inherited;
   ConfigurarBotoes;
 
-  FService := TSrvListagensDesignacoes.Create;
+  FService := TSrvRelatorioDesignacoes.Create;
 end;
 
-procedure TfrmListagemDesignacoes.FormDestroy(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.FormDestroy(Sender: TObject);
 begin
    inherited;
    FreeAndNil(FService);
 end;
 
-procedure TfrmListagemDesignacoes.FormShow(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.FormShow(Sender: TObject);
 begin
    inherited;
    rdbAutoSc.Checked := true;
 end;
 
 
-procedure TfrmListagemDesignacoes.PosicionarCampoNumero;
+procedure TfrmRelatorioDesignacoes.PosicionarCampoNumero;
 begin
   edtNumero.Left  := lblTipo.Left + lblTipo.Width + 10;
   if edtNumero.CanFocus then
      edtNumero.SetFocus;
 end;
 
-procedure TfrmListagemDesignacoes.rdbAutoScClick(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.rdbAutoScClick(Sender: TObject);
 begin
   inherited;
   lblTipo.Caption := 'Nº do Processo:';
@@ -170,7 +170,7 @@ begin
   PosicionarCampoNumero;
 end;
 
-procedure TfrmListagemDesignacoes.rdbControlPcClick(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.rdbControlPcClick(Sender: TObject);
 begin
   inherited;
   lblTipo.Caption := 'Nº do Protocolo:';
@@ -179,7 +179,7 @@ begin
   PosicionarCampoNumero;
 end;
 
-procedure TfrmListagemDesignacoes.rdbSiagsClick(Sender: TObject);
+procedure TfrmRelatorioDesignacoes.rdbSiagsClick(Sender: TObject);
 begin
   inherited;
   lblTipo.Caption := 'Nº da Autorização:';

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage,
-  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis, Funcoes, Forms.Listagens.Designacoes;
+  Vcl.StdCtrls, Vcl.Buttons, Proxy.Classes, Vcl.Menus, Vcl.ComCtrls, Forms.Seguranca, Forms.Paineis, Funcoes, Forms.Relatorios.Designacoes;
 
 type
   TfrmPrincipal = class(TForm)
@@ -27,8 +27,10 @@ type
     mniSair: TMenuItem;
     mniImportacaoControlPc: TMenuItem;
     mngPaineis: TMenuItem;
-    mngListagens: TMenuItem;
-    mniListagemDesignacoes: TMenuItem;
+    mngRelatorios: TMenuItem;
+    mniRelatorioDesignacoes: TMenuItem;
+    mniRelatorioEncerramentos: TMenuItem;
+    mniRelatorioExtrato: TMenuItem;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
@@ -39,7 +41,9 @@ type
     procedure mniSairClick(Sender: TObject);
     procedure mniImportacaoSiagsClick(Sender: TObject);
     procedure mniImportacaoControlPcClick(Sender: TObject);
-    procedure mniListagemDesignacoesClick(Sender: TObject);
+    procedure mniRelatorioDesignacoesClick(Sender: TObject);
+    procedure mniRelatorioEncerramentosClick(Sender: TObject);
+    procedure mniRelatorioExtratoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -57,7 +61,7 @@ uses Forms.Cadastro.Setores,
      Forms.Cadastro.Usuarios,
      Libs.TSeguranca,
      Forms.Login,
-     Forms.Importacoes.AutoSc, Forms.Importacoes.Siags, Forms.Importacoes.ControlPc;
+     Forms.Importacoes.AutoSc, Forms.Importacoes.Siags, Forms.Importacoes.ControlPc, Forms.Relatorios.Encerramentos, Forms.Relatorios.Extrato;
 
 procedure TfrmPrincipal.FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
@@ -159,11 +163,29 @@ begin
    FreeAndNil(LForm);
 end;
 
-procedure TfrmPrincipal.mniListagemDesignacoesClick(Sender: TObject);
+procedure TfrmPrincipal.mniRelatorioDesignacoesClick(Sender: TObject);
 var
-   LForm : TfrmListagemDesignacoes;
+   LForm : TfrmRelatorioDesignacoes;
 begin
-   Application.CreateForm(TfrmListagemDesignacoes, LForm);
+   Application.CreateForm(TfrmRelatorioDesignacoes, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.mniRelatorioEncerramentosClick(Sender: TObject);
+var
+   LForm : TfrmRelatorioEncerramentos;
+begin
+   Application.CreateForm(TfrmRelatorioEncerramentos, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.mniRelatorioExtratoClick(Sender: TObject);
+var
+   LForm : TfrmRelatorioExtrato;
+begin
+   Application.CreateForm(TfrmRelatorioExtrato, LForm);
    LForm.ShowModal;
    FreeAndNil(LForm);
 end;

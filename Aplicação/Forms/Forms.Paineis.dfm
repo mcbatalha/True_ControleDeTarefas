@@ -242,7 +242,7 @@ object frmPaineis: TfrmPaineis
       end
       object btnEncerrar: TSpeedButton
         AlignWithMargins = True
-        Left = 886
+        Left = 1020
         Top = 3
         Width = 95
         Height = 35
@@ -326,6 +326,34 @@ object frmPaineis: TfrmPaineis
         NumGlyphs = 2
         Visible = False
         OnClick = btnObservacoesClick
+      end
+      object btnExtrato: TSpeedButton
+        AlignWithMargins = True
+        Left = 886
+        Top = 3
+        Width = 129
+        Height = 35
+        Margins.Left = 5
+        Margins.Right = 0
+        Align = alLeft
+        Caption = 'Extrato'
+        Flat = True
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000120B0000120B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333300000000
+          0EEE333377777777777733330FF00FBFB0EE33337F37733F377733330F0BFB0B
+          FB0E33337F73FF73337733330FF000BFBFB033337F377733333733330FFF0BFB
+          FBF033337FFF733F333733300000BF0FBFB03FF77777F3733F37000FBFB0F0FB
+          0BF077733FF7F7FF7337E0FB00000000BF0077F377777777F377E0BFBFBFBFB0
+          F0F077F3333FFFF7F737E0FBFB0000000FF077F3337777777337E0BFBFBFBFB0
+          FFF077F3333FFFF73FF7E0FBFB00000F000077FF337777737777E00FBFBFB0FF
+          0FF07773FFFFF7337F37003000000FFF0F037737777773337F7333330FFFFFFF
+          003333337FFFFFFF773333330000000003333333777777777333}
+        NumGlyphs = 2
+        Visible = False
+        OnClick = btnExtratoClick
       end
       object pnlSair: TPanel
         Left = 1254
@@ -711,11 +739,11 @@ object frmPaineis: TfrmPaineis
     end
   end
   object pgcPaineisConteiner: TPageControl
-    Left = 92
-    Top = 251
+    Left = 76
+    Top = 91
     Width = 1345
     Height = 657
-    ActivePage = TabSheet5
+    ActivePage = TabSheet1
     MultiLine = True
     TabOrder = 1
     Visible = False
@@ -1158,8 +1186,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = -17
-          ExplicitTop = 10
           object Panel14: TPanel
             Left = 0
             Top = 432
@@ -2608,9 +2634,6 @@ object frmPaineis: TfrmPaineis
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 6
-          ExplicitTop = 47
-          ExplicitWidth = 918
           object Label72: TLabel
             Left = 43
             Top = 50
@@ -2681,7 +2704,6 @@ object frmPaineis: TfrmPaineis
             Height = 50
             Align = alBottom
             TabOrder = 9
-            ExplicitTop = 388
             DesignSize = (
               657
               50)
@@ -3519,7 +3541,7 @@ object frmPaineis: TfrmPaineis
             Top = 16
             Width = 248
             Height = 25
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            DataSource = dtmPainelAutoSC.dtsObservacoes
             VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
             Hints.Strings = (
               'Primeiro'
@@ -3541,8 +3563,9 @@ object frmPaineis: TfrmPaineis
             Width = 529
             Height = 112
             DataField = 'Observacao'
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            DataSource = dtmPainelAutoSC.dtsObservacoes
             TabOrder = 3
+            OnKeyPress = memObservacaoKeyPress
           end
           object edtDataHoraObservacao: TDBEdit
             Left = 41
@@ -3552,7 +3575,7 @@ object frmPaineis: TfrmPaineis
             TabStop = False
             Color = clBtnFace
             DataField = 'Data_Hora'
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            DataSource = dtmPainelAutoSC.dtsObservacoes
             ReadOnly = True
             TabOrder = 1
           end
@@ -3564,7 +3587,7 @@ object frmPaineis: TfrmPaineis
             TabStop = False
             Color = clBtnFace
             DataField = 'Nome_Usuario'
-            DataSource = dtmPainelAutoSC.dtsObservacoesProcesso
+            DataSource = dtmPainelAutoSC.dtsObservacoes
             ReadOnly = True
             TabOrder = 2
           end

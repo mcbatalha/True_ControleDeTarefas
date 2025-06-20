@@ -316,6 +316,7 @@ type
     Label79: TLabel;
     Label80: TLabel;
     edtNumeroProtocolo: TEdit;
+    btnExtrato: TSpeedButton;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -358,6 +359,8 @@ type
     procedure dbgControlPcDblClick(Sender: TObject);
     procedure btnFecharExibicaoConteudoClick(Sender: TObject);
     procedure btnFechraHistoricoControlPcClick(Sender: TObject);
+    procedure memObservacaoKeyPress(Sender: TObject; var Key: Char);
+    procedure btnExtratoClick(Sender: TObject);
   private
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
@@ -546,6 +549,7 @@ begin
    btnExportar.Enabled := not AHabilitar;
    btnExportar.Enabled := not AHabilitar;
    btnImprimir.Enabled := not AHabilitar;
+   btnExtrato.Enabled  := not AHabilitar;
    btnSair.Enabled     := not AHabilitar;
 end;
 
@@ -603,10 +607,6 @@ procedure TfrmPaineis.FiltrosControlPc;
 var
    LFiltro : TFiltrosControlPc;
 begin
-
-
-
-
    pnlSelecaoDesignacao.Parent := pnlCamposFiltroControlPc;
    fraPesquisaUsuario.setDataSet(FServiceControlPc.DataSetPesquisaDeUsuario);
 
@@ -642,8 +642,6 @@ begin
       edtPrevisaoSolucao.Text := '';
 
    HabilitarEdicaoDoPainel(Self, pnlFiltrosControlPc, True);
-//   ConfigurarDataSourcesControlPc;
-
 end;
 
 procedure TfrmPaineis.FiltrosSiags;
@@ -713,6 +711,12 @@ end;
 procedure TfrmPaineis.FormShow(Sender: TObject);
 begin
    LimparTela(Self);
+end;
+
+procedure TfrmPaineis.memObservacaoKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key <> #8) and (Length(memObservacao.Text) >= 500) then
+    Key := #0;
 end;
 
 procedure TfrmPaineis.OrdenarGrid(const ADataSet : TDataSet; const AFieldName : String);
@@ -877,7 +881,7 @@ begin
    else if pgcPaineis.ActivePage = tbsSiags then
       lblTituloEncerramento.Caption := 'Encerramento de Autorização - SIAGS - ' + FServiceSiags.NumeroDaAutorizacao
    else if pgcPaineis.ActivePage = tbsControlPc then
-      lblTituloEncerramento.Caption := 'Encerramento de Autorização - CONTROLPC - ' + FServiceControlPc.NumeroDoProtocolo;
+      lblTituloEncerramento.Caption := 'Encerramento do Protocolo - CONTROLPC - ' + FServiceControlPc.NumeroDoProtocolo;
 
    memJustificativaEncerramento.Text := '';
    HabilitarEdicaoDoPainel(Self, pnlEncerramento, True);
@@ -887,6 +891,58 @@ end;
 procedure TfrmPaineis.btnExportarClick(Sender: TObject);
 begin
    InformationMessage('Em desenvolvimento','Status');
+end;
+
+procedure TfrmPaineis.btnExtratoClick(Sender: TObject);
+var
+   LFiltroAutoSC    : TFiltros;
+   LFiltroSiags     : TFiltros;
+   LFiltroControlPc : TFiltros;
+   LNumero          : String;
+begin
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      begin
+      LNumero := FServiceAutoSC.NumeroDoProcesso;
+
+      FServiceAutoSC.DesabilitarControles;
+      LFiltroAutoSC := TFiltros.Create(C_CODIGO_AUTOSC);
+      LFiltroAutoSC.setFiltrosAutoSC(FFiltroAutoSC.getFiltrosAutoSCAsRecord);
+      FServiceAutoSC.ImprimirExtrato(FServiceAutoSC.NumeroDoProcesso, False);
+      FFiltroAutoSC.setFiltrosAutoSC(LFiltroAutoSC.getFiltrosAutoSCAsRecord);
+      FreeAndNil(LFiltroAutoSC);
+
+      btnFiltrarAutoSCClick(Self);
+      FServiceAutoSC.PosicionarRegistro(LNumero);
+      FServiceAutoSC.HabilitarControles;
+   end else if pgcPaineis.ActivePage = tbsSiags then
+      begin
+      LNumero := FServiceSiags.NumeroDaAutorizacao;
+
+      FServiceSiags.DesabilitarControles;
+      LFiltroSiags := TFiltros.Create(C_CODIGO_Siags);
+      LFiltroSiags.setFiltrosSiags(FFiltroSiags.getFiltrosSiagsAsRecord);
+      FServiceSiags.ImprimirExtrato(FServiceSiags.NumeroDaAutorizacao, False);
+      FFiltroSiags.setFiltrosSiags(LFiltroSiags.getFiltrosSiagsAsRecord);
+      FreeAndNil(LFiltroSiags);
+
+      btnFiltrarSiagsClick(Self);
+      FServiceSiags.PosicionarRegistro(LNumero);
+      FServiceSiags.HabilitarControles;
+   end else if pgcPaineis.ActivePage = tbsControlPc then
+      begin
+      LNumero := FServiceControlPc.NumeroDoProtocolo;
+
+      FServiceControlPc.DesabilitarControles;
+      LFiltroControlPc := TFiltros.Create(C_CODIGO_CONTROLPC);
+      LFiltroControlPc.setFiltrosControlPc(FFiltroControlPc.getFiltrosControlPcAsRecord);
+      FServiceControlPc.ImprimirExtrato(FServiceControlPc.NumeroDoProtocolo, False);
+      FFiltroControlPc.setFiltrosControlPc(LFiltroControlPc.getFiltrosControlPcAsRecord);
+      FreeAndNil(LFiltroControlPc);
+
+      btnFiltrarControlPcClick(Self);
+      FServiceControlPc.PosicionarRegistro(LNumero);
+      FServiceControlPc.HabilitarControles;
+   end;
 end;
 
 procedure TfrmPaineis.btnFecharExibicaoConteudoClick(Sender: TObject);
@@ -989,7 +1045,7 @@ begin
    else if pgcPaineis.ActivePage = tbsSiags then
       FServiceSiags.ObservacoesDaAutorizacao
    else if pgcPaineis.ActivePage = tbsControlPc then
-      FServiceControlPc.ObservacoesDaAutorizacao;
+      FServiceControlPc.ObservacoesDoProtocolo;
 
    HabilitarEdicaoDoPainel(Self, pnlObservacoesProcesso, True);
 end;
@@ -1006,6 +1062,7 @@ begin
    btnImprimir.Visible := True;
    btnDesignar.Visible := True;
    btnEncerrar.Visible := True;
+   btnExtrato.Visible  := True;
 
    btnHistoricoDesignacoes.Visible  := True;
    btnHistoricoAtualizacoes.Visible := True;
@@ -1018,6 +1075,7 @@ begin
    btnExportar.Enabled              := False;
    btnImprimir.Enabled              := False;
    btnDesignar.Enabled              := False;
+   btnExtrato.Enabled               := False;
 end;
 
 procedure TfrmPaineis.ConfigurarBotoesDeOperacao;
@@ -1036,6 +1094,7 @@ begin
    btnDesignar.Enabled := LHabilitar;
    btnExportar.Enabled := LHabilitar;
    btnEncerrar.Enabled := LHabilitar;
+   btnExtrato.Enabled  := LHabilitar;
 end;
 
 
@@ -1072,7 +1131,7 @@ begin
           edtUsuarioDesignacao.DataSource       := FServiceControlPc.DataSourceDesignacao;
           memJustificativaDesignacao.DataSource := FServiceControlPc.DataSourceDesignacao;
 
-          lblTituloHistoricoDesignacoes.Caption := 'Designações da Autorização - CONTROLPC - ' + FServiceControlPc.HistoricoDeDesignacoes;
+          lblTituloHistoricoDesignacoes.Caption := 'Designações do Protocolo - CONTROLPC - ' + FServiceControlPc.HistoricoDeDesignacoes;
       end;
    end;
 end;
@@ -1104,7 +1163,7 @@ begin
          memObservacao.DataSource         := FServiceControlPc.DataSourceObservacao;
          dbnObservacoes.DataSource        := FServiceControlPc.DataSourceObservacao;
 
-         lblTituloObservacoesProcesso.Caption := 'Observações da Autorização - CONTROLPC - ' +FServiceControlPc.NumeroDoProtocolo;
+         lblTituloObservacoesProcesso.Caption := 'Observações da Protocolo - CONTROLPC - ' +FServiceControlPc.NumeroDoProtocolo;
       end;
    end;
 end;
@@ -1155,6 +1214,7 @@ begin
    btnObservacoes.Enabled           := FServiceAutoSC.TemRegistros;
    btnDesignar.Enabled              := FServiceAutoSC.TemRegistros;
    btnEncerrar.Enabled              := FServiceAutoSC.TemRegistros;
+   btnExtrato.Enabled               := FServiceAutoSC.TemRegistros;
 end;
 
 procedure TfrmPaineis.dbgAutoSCTitleButtonClick(Sender: TObject; AFieldName: string);
@@ -1196,6 +1256,7 @@ begin
    btnObservacoes.Enabled           := FServiceControlPc.TemRegistros;
    btnDesignar.Enabled              := FServiceControlPc.TemRegistros;
    btnEncerrar.Enabled              := FServiceControlPc.TemRegistros;
+   btnExtrato.Enabled               := FServiceControlPc.TemRegistros;
 end;
 
 procedure TfrmPaineis.dbgControlPcTitleButtonClick(Sender: TObject; AFieldName: string);
@@ -1212,6 +1273,7 @@ begin
    btnObservacoes.Enabled           := FServiceSiags.TemRegistros;
    btnDesignar.Enabled              := FServiceSiags.TemRegistros;
    btnEncerrar.Enabled              := FServiceSiags.TemRegistros;
+   btnExtrato.Enabled               := FServiceSiags.TemRegistros;
 end;
 
 procedure TfrmPaineis.dbgSiagsTitleButtonClick(Sender: TObject; AFieldName: string);

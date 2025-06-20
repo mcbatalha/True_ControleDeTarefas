@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 17/06/2025 13:49:53
+// 19/06/2025 22:33:56
 //
 
 unit Proxy.Classes;
@@ -82,13 +82,14 @@ type
     FTiposDeStatusCommand: TDBXCommand;
     FSetoresCommand: TDBXCommand;
     FUsuariosCommand: TDBXCommand;
-    FListagemDeDesignacoesCommand: TDBXCommand;
+    FRelatorioDeDesignacoesCommand: TDBXCommand;
+    FRelatorioDeEncerramentosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
-    function FiltrarProcessos(AFiltros: TJSONObject): TJSONArray;
+    function FiltrarProcessos(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
     function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProcesso: Integer): Boolean;
     function RegistrarObservacao(AIdProcesso: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
     function EncerrarProcesso(AIdProcesso: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
@@ -103,7 +104,8 @@ type
     function TiposDeStatus: TJSONArray;
     function Setores: TJSONArray;
     function Usuarios: TJSONArray;
-    function ListagemDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProceso: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProceso: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
   end;
 
   TSMSiagsClient = class(TDSAdminClient)
@@ -124,13 +126,14 @@ type
     FTiposDeUltimaAnotacaoCommand: TDBXCommand;
     FSetoresCommand: TDBXCommand;
     FUsuariosCommand: TDBXCommand;
-    FListagemDeDesignacoesCommand: TDBXCommand;
+    FRelatorioDeDesignacoesCommand: TDBXCommand;
+    FRelatorioDeEncerramentosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
-    function FiltrarAutorizacoes(AFiltros: TJSONObject): TJSONArray;
+    function FiltrarAutorizacoes(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
     function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
     function RegistrarObservacao(AIdAutorizacao: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
     function EncerrarAutorizacao(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
@@ -145,7 +148,8 @@ type
     function TiposDeUltimaAnotacao: TJSONArray;
     function Setores: TJSONArray;
     function Usuarios: TJSONArray;
-    function ListagemDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroAutorizacao: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroAutorizacao: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
   end;
 
   TSMControlPcClient = class(TDSAdminClient)
@@ -165,13 +169,14 @@ type
     FTiposDeStatusCommand: TDBXCommand;
     FSetoresCommand: TDBXCommand;
     FUsuariosCommand: TDBXCommand;
-    FListagemDeDesignacoesCommand: TDBXCommand;
+    FRelatorioDeDesignacoesCommand: TDBXCommand;
+    FRelatorioDeEncerramentosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
-    function FiltrarProtocolos(AFiltros: TJSONObject): TJSONArray;
+    function FiltrarProtocolos(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
     function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
     function RegistrarObservacao(AIdProtocolo: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
     function EncerrarProtocolo(AIdProtocolo: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
@@ -185,7 +190,8 @@ type
     function TiposDeStatus: TJSONArray;
     function Setores: TJSONArray;
     function Usuarios: TJSONArray;
-    function ListagemDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
   end;
 
 implementation
@@ -480,7 +486,7 @@ begin
   Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMAutoSCClient.FiltrarProcessos(AFiltros: TJSONObject): TJSONArray;
+function TSMAutoSCClient.FiltrarProcessos(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
 begin
   if FFiltrarProcessosCommand = nil then
   begin
@@ -490,8 +496,9 @@ begin
     FFiltrarProcessosCommand.Prepare;
   end;
   FFiltrarProcessosCommand.Parameters[0].Value.SetJSONValue(AFiltros, FInstanceOwner);
+  FFiltrarProcessosCommand.Parameters[1].Value.SetBoolean(AIncluirEncerrados);
   FFiltrarProcessosCommand.ExecuteUpdate;
-  Result := TJSONArray(FFiltrarProcessosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FFiltrarProcessosCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMAutoSCClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProcesso: Integer): Boolean;
@@ -691,22 +698,38 @@ begin
   Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMAutoSCClient.ListagemDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProceso: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+function TSMAutoSCClient.RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProceso: string; AIdUsuarioResponsavel: Integer): TJSONArray;
 begin
-  if FListagemDeDesignacoesCommand = nil then
+  if FRelatorioDeDesignacoesCommand = nil then
   begin
-    FListagemDeDesignacoesCommand := FDBXConnection.CreateCommand;
-    FListagemDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FListagemDeDesignacoesCommand.Text := 'TSMAutoSC.ListagemDeDesignacoes';
-    FListagemDeDesignacoesCommand.Prepare;
+    FRelatorioDeDesignacoesCommand := FDBXConnection.CreateCommand;
+    FRelatorioDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRelatorioDeDesignacoesCommand.Text := 'TSMAutoSC.RelatorioDeDesignacoes';
+    FRelatorioDeDesignacoesCommand.Prepare;
   end;
-  FListagemDeDesignacoesCommand.Parameters[0].Value.SetBoolean(AUsaDatas);
-  FListagemDeDesignacoesCommand.Parameters[1].Value.AsDateTime := ADataInicial;
-  FListagemDeDesignacoesCommand.Parameters[2].Value.AsDateTime := ADataFinal;
-  FListagemDeDesignacoesCommand.Parameters[3].Value.SetWideString(ANumeroProceso);
-  FListagemDeDesignacoesCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
-  FListagemDeDesignacoesCommand.ExecuteUpdate;
-  Result := TJSONArray(FListagemDeDesignacoesCommand.Parameters[5].Value.GetJSONValue(FInstanceOwner));
+  FRelatorioDeDesignacoesCommand.Parameters[0].Value.SetBoolean(AUsaDatas);
+  FRelatorioDeDesignacoesCommand.Parameters[1].Value.AsDateTime := ADataInicial;
+  FRelatorioDeDesignacoesCommand.Parameters[2].Value.AsDateTime := ADataFinal;
+  FRelatorioDeDesignacoesCommand.Parameters[3].Value.SetWideString(ANumeroProceso);
+  FRelatorioDeDesignacoesCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
+  FRelatorioDeDesignacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FRelatorioDeDesignacoesCommand.Parameters[5].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMAutoSCClient.RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
+begin
+  if FRelatorioDeEncerramentosCommand = nil then
+  begin
+    FRelatorioDeEncerramentosCommand := FDBXConnection.CreateCommand;
+    FRelatorioDeEncerramentosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRelatorioDeEncerramentosCommand.Text := 'TSMAutoSC.RelatorioDeEncerramentos';
+    FRelatorioDeEncerramentosCommand.Prepare;
+  end;
+  FRelatorioDeEncerramentosCommand.Parameters[0].Value.AsDateTime := ADataInicial;
+  FRelatorioDeEncerramentosCommand.Parameters[1].Value.AsDateTime := ADataFinal;
+  FRelatorioDeEncerramentosCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FRelatorioDeEncerramentosCommand.ExecuteUpdate;
+  Result := TJSONArray(FRelatorioDeEncerramentosCommand.Parameters[3].Value.GetJSONValue(FInstanceOwner));
 end;
 
 constructor TSMAutoSCClient.Create(ADBXConnection: TDBXConnection);
@@ -737,7 +760,8 @@ begin
   FTiposDeStatusCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
   FUsuariosCommand.DisposeOf;
-  FListagemDeDesignacoesCommand.DisposeOf;
+  FRelatorioDeDesignacoesCommand.DisposeOf;
+  FRelatorioDeEncerramentosCommand.DisposeOf;
   inherited;
 end;
 
@@ -756,7 +780,7 @@ begin
   Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.FiltrarAutorizacoes(AFiltros: TJSONObject): TJSONArray;
+function TSMSiagsClient.FiltrarAutorizacoes(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
 begin
   if FFiltrarAutorizacoesCommand = nil then
   begin
@@ -766,8 +790,9 @@ begin
     FFiltrarAutorizacoesCommand.Prepare;
   end;
   FFiltrarAutorizacoesCommand.Parameters[0].Value.SetJSONValue(AFiltros, FInstanceOwner);
+  FFiltrarAutorizacoesCommand.Parameters[1].Value.SetBoolean(AIncluirEncerrados);
   FFiltrarAutorizacoesCommand.ExecuteUpdate;
-  Result := TJSONArray(FFiltrarAutorizacoesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FFiltrarAutorizacoesCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMSiagsClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
@@ -967,22 +992,38 @@ begin
   Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.ListagemDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroAutorizacao: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+function TSMSiagsClient.RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroAutorizacao: string; AIdUsuarioResponsavel: Integer): TJSONArray;
 begin
-  if FListagemDeDesignacoesCommand = nil then
+  if FRelatorioDeDesignacoesCommand = nil then
   begin
-    FListagemDeDesignacoesCommand := FDBXConnection.CreateCommand;
-    FListagemDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FListagemDeDesignacoesCommand.Text := 'TSMSiags.ListagemDeDesignacoes';
-    FListagemDeDesignacoesCommand.Prepare;
+    FRelatorioDeDesignacoesCommand := FDBXConnection.CreateCommand;
+    FRelatorioDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRelatorioDeDesignacoesCommand.Text := 'TSMSiags.RelatorioDeDesignacoes';
+    FRelatorioDeDesignacoesCommand.Prepare;
   end;
-  FListagemDeDesignacoesCommand.Parameters[0].Value.SetBoolean(AUsaDatas);
-  FListagemDeDesignacoesCommand.Parameters[1].Value.AsDateTime := ADataInicial;
-  FListagemDeDesignacoesCommand.Parameters[2].Value.AsDateTime := ADataFinal;
-  FListagemDeDesignacoesCommand.Parameters[3].Value.SetWideString(ANumeroAutorizacao);
-  FListagemDeDesignacoesCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
-  FListagemDeDesignacoesCommand.ExecuteUpdate;
-  Result := TJSONArray(FListagemDeDesignacoesCommand.Parameters[5].Value.GetJSONValue(FInstanceOwner));
+  FRelatorioDeDesignacoesCommand.Parameters[0].Value.SetBoolean(AUsaDatas);
+  FRelatorioDeDesignacoesCommand.Parameters[1].Value.AsDateTime := ADataInicial;
+  FRelatorioDeDesignacoesCommand.Parameters[2].Value.AsDateTime := ADataFinal;
+  FRelatorioDeDesignacoesCommand.Parameters[3].Value.SetWideString(ANumeroAutorizacao);
+  FRelatorioDeDesignacoesCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
+  FRelatorioDeDesignacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FRelatorioDeDesignacoesCommand.Parameters[5].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMSiagsClient.RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
+begin
+  if FRelatorioDeEncerramentosCommand = nil then
+  begin
+    FRelatorioDeEncerramentosCommand := FDBXConnection.CreateCommand;
+    FRelatorioDeEncerramentosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRelatorioDeEncerramentosCommand.Text := 'TSMSiags.RelatorioDeEncerramentos';
+    FRelatorioDeEncerramentosCommand.Prepare;
+  end;
+  FRelatorioDeEncerramentosCommand.Parameters[0].Value.AsDateTime := ADataInicial;
+  FRelatorioDeEncerramentosCommand.Parameters[1].Value.AsDateTime := ADataFinal;
+  FRelatorioDeEncerramentosCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FRelatorioDeEncerramentosCommand.ExecuteUpdate;
+  Result := TJSONArray(FRelatorioDeEncerramentosCommand.Parameters[3].Value.GetJSONValue(FInstanceOwner));
 end;
 
 constructor TSMSiagsClient.Create(ADBXConnection: TDBXConnection);
@@ -1013,7 +1054,8 @@ begin
   FTiposDeUltimaAnotacaoCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
   FUsuariosCommand.DisposeOf;
-  FListagemDeDesignacoesCommand.DisposeOf;
+  FRelatorioDeDesignacoesCommand.DisposeOf;
+  FRelatorioDeEncerramentosCommand.DisposeOf;
   inherited;
 end;
 
@@ -1032,7 +1074,7 @@ begin
   Result := TJSONObject(FImportarCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.FiltrarProtocolos(AFiltros: TJSONObject): TJSONArray;
+function TSMControlPcClient.FiltrarProtocolos(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
 begin
   if FFiltrarProtocolosCommand = nil then
   begin
@@ -1042,8 +1084,9 @@ begin
     FFiltrarProtocolosCommand.Prepare;
   end;
   FFiltrarProtocolosCommand.Parameters[0].Value.SetJSONValue(AFiltros, FInstanceOwner);
+  FFiltrarProtocolosCommand.Parameters[1].Value.SetBoolean(AIncluirEncerrados);
   FFiltrarProtocolosCommand.ExecuteUpdate;
-  Result := TJSONArray(FFiltrarProtocolosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FFiltrarProtocolosCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMControlPcClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
@@ -1230,22 +1273,38 @@ begin
   Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.ListagemDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
+function TSMControlPcClient.RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
 begin
-  if FListagemDeDesignacoesCommand = nil then
+  if FRelatorioDeDesignacoesCommand = nil then
   begin
-    FListagemDeDesignacoesCommand := FDBXConnection.CreateCommand;
-    FListagemDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FListagemDeDesignacoesCommand.Text := 'TSMControlPc.ListagemDeDesignacoes';
-    FListagemDeDesignacoesCommand.Prepare;
+    FRelatorioDeDesignacoesCommand := FDBXConnection.CreateCommand;
+    FRelatorioDeDesignacoesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRelatorioDeDesignacoesCommand.Text := 'TSMControlPc.RelatorioDeDesignacoes';
+    FRelatorioDeDesignacoesCommand.Prepare;
   end;
-  FListagemDeDesignacoesCommand.Parameters[0].Value.SetBoolean(AUsaDatas);
-  FListagemDeDesignacoesCommand.Parameters[1].Value.AsDateTime := ADataInicial;
-  FListagemDeDesignacoesCommand.Parameters[2].Value.AsDateTime := ADataFinal;
-  FListagemDeDesignacoesCommand.Parameters[3].Value.SetWideString(ANumeroProtocolo);
-  FListagemDeDesignacoesCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
-  FListagemDeDesignacoesCommand.ExecuteUpdate;
-  Result := TJSONArray(FListagemDeDesignacoesCommand.Parameters[5].Value.GetJSONValue(FInstanceOwner));
+  FRelatorioDeDesignacoesCommand.Parameters[0].Value.SetBoolean(AUsaDatas);
+  FRelatorioDeDesignacoesCommand.Parameters[1].Value.AsDateTime := ADataInicial;
+  FRelatorioDeDesignacoesCommand.Parameters[2].Value.AsDateTime := ADataFinal;
+  FRelatorioDeDesignacoesCommand.Parameters[3].Value.SetWideString(ANumeroProtocolo);
+  FRelatorioDeDesignacoesCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
+  FRelatorioDeDesignacoesCommand.ExecuteUpdate;
+  Result := TJSONArray(FRelatorioDeDesignacoesCommand.Parameters[5].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
+begin
+  if FRelatorioDeEncerramentosCommand = nil then
+  begin
+    FRelatorioDeEncerramentosCommand := FDBXConnection.CreateCommand;
+    FRelatorioDeEncerramentosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FRelatorioDeEncerramentosCommand.Text := 'TSMControlPc.RelatorioDeEncerramentos';
+    FRelatorioDeEncerramentosCommand.Prepare;
+  end;
+  FRelatorioDeEncerramentosCommand.Parameters[0].Value.AsDateTime := ADataInicial;
+  FRelatorioDeEncerramentosCommand.Parameters[1].Value.AsDateTime := ADataFinal;
+  FRelatorioDeEncerramentosCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
+  FRelatorioDeEncerramentosCommand.ExecuteUpdate;
+  Result := TJSONArray(FRelatorioDeEncerramentosCommand.Parameters[3].Value.GetJSONValue(FInstanceOwner));
 end;
 
 constructor TSMControlPcClient.Create(ADBXConnection: TDBXConnection);
@@ -1275,7 +1334,8 @@ begin
   FTiposDeStatusCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
   FUsuariosCommand.DisposeOf;
-  FListagemDeDesignacoesCommand.DisposeOf;
+  FRelatorioDeDesignacoesCommand.DisposeOf;
+  FRelatorioDeEncerramentosCommand.DisposeOf;
   inherited;
 end;
 

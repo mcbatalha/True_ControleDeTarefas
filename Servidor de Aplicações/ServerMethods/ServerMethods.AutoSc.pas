@@ -6,6 +6,7 @@ uses
   System.SysUtils,
   System.Classes,
   System.JSON,
+  System.Generics.Collections,
 
   Datasnap.DSServer,
   Datasnap.DSAuth,
@@ -126,6 +127,16 @@ type
     qryTiposStatusAUTOSC: TIntegerField;
     qryTiposStatusSIAGS: TIntegerField;
     qryTiposStatusCONTROLPC: TIntegerField;
+    qryAutoScUltima_Atualizacao: TDateTimeField;
+    qryAutoScid_Usuario_Ultima_Atualizacao: TIntegerField;
+    qryPainelAutoScData_Hora_Importacao: TDateTimeField;
+    qryPainelAutoScUltima_Atualizacao: TDateTimeField;
+    qryPainelAutoScData_Hora_Encerramento: TDateTimeField;
+    qryPainelAutoScJustificativa_Encerramento: TStringField;
+    qryPainelAutoScSetor_Designado: TStringField;
+    qryPainelAutoScUsuario_Importacao: TStringField;
+    qryPainelAutoScUsuario_Atualizacao: TStringField;
+    qryPainelAutoScUsuario_Encerrameto: TStringField;
   private
     { Private declarations }
 
@@ -155,7 +166,6 @@ type
 
     function ObterIdTipoAuditoria(const AValor : String) : integer;
     function ObterIdTipoPrazoHJ(const AValor : String) : integer;
-    function ObterIdProcesso(const AValor : String) : LongInt;
     function ObterIdTipoStatus(const AValor : String) : integer;
     function ObterIdTipoProcesso(const AValor : String) : integer;
     function ObterIdTipoProcessoE(const AValor : String) : integer;
@@ -170,7 +180,7 @@ type
   public
     function Importar(const ARegistros : TJSONArray; const AIdUsuario : integer) : TJSONObject;
 
-    function FiltrarProcessos(const AFiltros : TJSONObject) : TJSONArray;
+    function FiltrarProcessos(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean) : TJSONArray;
     function Designar(const AJustificativa: String;
                       const AIdSetor, AIdUsuario, AIdUsuarioResponsavel : integer;
                       const AIdProcesso : LongInt ): Boolean;
@@ -198,10 +208,14 @@ type
     function Setores          : TJSONArray;
     function Usuarios         : TJSONArray;
 
-    function ListagemDeDesignacoes(const AUsaDatas : Boolean;
-                                   const ADataInicial, ADataFinal : TDateTime;
-                                   const ANumeroProceso : string;
-                                   const AIdUsuarioResponsavel : integer) : TJSONArray;
+    function RelatorioDeDesignacoes(const AUsaDatas : Boolean;
+                                    const ADataInicial, ADataFinal : TDateTime;
+                                    const ANumeroProceso : string;
+                                    const AIdUsuarioResponsavel : integer) : TJSONArray;
+
+    function RelatorioDeEncerramentos(const ADataInicial, ADataFinal : TDateTime;
+                                      const AIdUsuarioResponsavel : integer) : TJSONArray;
+
 
   end;
 
@@ -289,10 +303,6 @@ begin
 
    Result := TFuncoesJSON.MontarJSON(qryAux);
 
-end;
-
-function TSMAutoSC.ObterIdProcesso(const AValor: String): LongInt;
-begin
 end;
 
 function TSMAutoSC.ObterIdTipoStatus(const AValor: String): integer;
@@ -585,7 +595,7 @@ begin
    qryTiposAuditoria.Close;
 end;
 
-function TSMAutoSC.FiltrarProcessos(const AFiltros : TJSONObject) : TJSONArray;
+function TSMAutoSC.FiltrarProcessos(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean) : TJSONArray;
 var
    LFiltros : TFiltrosAutoSc;
 begin
@@ -611,7 +621,8 @@ begin
 
    MontarQueryPainel;
 
-   qryPainelAutoSc.Sql.Add(' and a.Data_Hora_Encerramento is null');
+   if not AIncluirEncerrados then
+      qryPainelAutoSc.Sql.Add(' and a.Data_Hora_Encerramento is null');
 
    if LFiltros.numeroDoProcesso <> '' then
       begin
@@ -722,7 +733,6 @@ end;
 procedure TSMAutoSC.GravarProcesso;
 var
    LNovo      : Boolean;
-   LAtualizou : Boolean;
    LAtualizar : Boolean;
 begin
    qryAutoSc.Close;
@@ -739,7 +749,6 @@ begin
       LNovo := qryAutoSc.isEmpty;
       if LNovo then
          begin
-         LAtualizou := False;
          qryAutoSc.Append;
          qryAutoScNumero_Processo.AsInteger := FNumeroProcesso;
       end else
@@ -778,8 +787,15 @@ begin
          qryAutoScQtd_Arquivos.AsInteger             := FQtdArquivos;
          qryAutoScData_Status.AsDateTime             := FDataStatus;
          qryAutoScUF.AsString                        := FUF;
-         qryAutoScid_Usuario_Importacao.AsInteger    := FIdUsuarioResponsavel;
-         qryAutoScData_Hora_Importacao.AsDateTime    := FDataHora;
+
+         qryAutoScid_Usuario_Ultima_Atualizacao.AsInteger := FIdUsuarioResponsavel;
+         qryAutoScUltima_Atualizacao.AsDateTime           := FDataHora;
+
+         if LNovo then
+            begin
+            qryAutoScid_Usuario_Importacao.AsInteger    := FIdUsuarioResponsavel;
+            qryAutoScData_Hora_Importacao.AsDateTime    := FDataHora;
+         end;
          qryAutoSc.Post;
       end else
          FTotalNaoAtualizados := FTotalNaoAtualizados + 1;
@@ -902,11 +918,11 @@ begin
    end;
 end;
 
-function TSMAutoSC.ListagemDeDesignacoes(
-   const AUsaDatas : Boolean;
+function TSMAutoSC.RelatorioDeDesignacoes(
+   const AUsaDatas                : Boolean;
    const ADataInicial, ADataFinal : TDateTime;
-   const ANumeroProceso : string;
-   const AIdUsuarioResponsavel : integer) : TJSONArray;
+   const ANumeroProceso           : string;
+   const AIdUsuarioResponsavel    : integer) : TJSONArray;
 begin
    qryAux.SQL.Clear;
    qryAux.SQL.Add('SELECT                                                                   ');
@@ -918,19 +934,19 @@ begin
    qryAux.SQL.Add('   Numero_Processo as Numero,                                            ');
    qryAux.SQL.Add('   Data_Hora_Log AS Data_Hora_Inicial,                                   ');
    qryAux.SQL.Add('   ISNULL(ProximaData, Null) AS Data_Hora_Final,                    ');
-   qryAux.SQL.Add('   DATEDIFF(DAY, Data_hora_log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
-   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
-   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_hora_log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, Data_Hora_Log, ISNULL(ProximaData, GETDATE())) AS Dias, ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, Data_Hora_Log, ISNULL(ProximaData, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, Data_Hora_Log, ISNULL(ProximaData, GETDATE())) % 60 AS Minutos ');
    qryAux.SQL.Add('FROM (                                                                             ');
    qryAux.SQL.Add('       SELECT                                                                      ');
    qryAux.SQL.Add('          a.id_AutoSc,                                                             ');
-   qryAux.SQL.Add('          a.Data_hora_log,                                                         ');
+   qryAux.SQL.Add('          a.Data_Hora_log,                                                         ');
    qryAux.SQL.Add('          a.Justificativa,                                                         ');
    qryAux.SQL.Add('          b.Nome_Usuario as Usuario_Designado,                                     ');
    qryAux.SQL.Add('          c.Nome_Setor as Setor_Designado,                                         ');
    qryAux.SQL.Add('          d.Nome_Usuario as Usuario_Responsavel,                                   ');
    qryAux.SQL.Add('          e.Numero_Processo,                                                       ');
-   qryAux.SQL.Add('          LEAD(Data_hora_log) OVER (PARTITION BY id_AutoSc ORDER BY Data_hora_log) AS ProximaData ');
+   qryAux.SQL.Add('          LEAD(Data_Hora_log) OVER (PARTITION BY id_AutoSc ORDER BY Data_Hora_log) AS ProximaData ');
    qryAux.SQL.Add('       FROM                                                                                       ');
    qryAux.SQL.Add('          AutoSc_Log a                                                                            ');
    qryAux.SQL.Add('          left outer join Usuarios b on b.id = a.id_Usuario_Designado                             ');
@@ -965,6 +981,39 @@ begin
    Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
+function TSMAutoSC.RelatorioDeEncerramentos(
+   const ADataInicial, ADataFinal: TDateTime;
+   const AIdUsuarioResponsavel: integer): TJSONArray;
+begin
+   qryAux.SQL.Clear;
+   qryAux.SQL.Add('SELECT                                                                   ');
+   qryAux.SQL.Add('   a.Numero_Processo as Numero,                                          ');
+   qryAux.SQL.Add('   a.Data_Hora_Importacao,                                               ');
+   qryAux.SQL.Add('   a.Data_Hora_Encerramento,                                             ');
+   qryAux.SQL.Add('   a.Justificativa_Encerramento,                                         ');
+   qryAux.SQL.Add('   b.Nome_Usuario,                                                       ');
+   qryAux.SQL.Add('   DATEDIFF(DAY, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) AS Dias,           ');
+   qryAux.SQL.Add('   DATEDIFF(HOUR, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) % 24 AS Horas,    ');
+   qryAux.SQL.Add('   DATEDIFF(MINUTE, a.Data_Hora_Importacao, ISNULL(a.Data_Hora_Encerramento, GETDATE())) % 60 AS Minutos ');
+   qryAux.SQL.Add('FROM                                                                          ');
+   qryAux.SQL.Add('   AutoSC a                                                                   ');
+   qryAux.SQL.Add('   Inner Join Usuarios b on b.id = a.id_Usuario_Encerramento                  ');
+   qryAux.SQL.Add('where not Data_Hora_Encerramento is null                                      ');
+   qryAux.SQL.Add('      and cast(a.Data_Hora_Encerramento as Date) between :pDataInicial and :pDataFinal ');
+
+   if AIdUsuarioResponsavel > 0 then
+      begin
+      qryAux.SQL.Add('       and a.id_Usuario_Encerramento = :pIdUsuarioResponsavel');
+      qryAux.ParamByName('pIdUsuarioResponsavel').AsInteger := AIdUsuarioResponsavel;
+   end;
+   qryAux.SQL.Add('Order by Data_Hora_Encerramento desc');
+
+   qryAux.ParamByName('pDataInicial').AsDateTime := ADataInicial;
+   qryAux.ParamByName('pDataFinal').AsDateTime   := ADataFinal;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+end;
+
 procedure TSMAutoSC.MontarQueryPainel;
 begin
    with qryPainelAutoSc do
@@ -973,7 +1022,8 @@ begin
       Sql.Clear;
       Sql.Add('Select ');
       Sql.Add('   a.id as id_Processo, a.Numero_Processo, a.Data_Status, a.Qtd_Arquivos, a.uf, ');
-      Sql.Add('   a.id_Usuario_Designado, a.id_Setor_Designado, ');
+      Sql.Add('   a.id_Usuario_Designado, a.id_Setor_Designado, a.Data_Hora_Importacao, ');
+      Sql.Add('   a.Ultima_Atualizacao, a.Data_Hora_Encerramento, a.Justificativa_Encerramento, ');
       Sql.Add('   b.Tipo_Auditoria, ');
       Sql.Add('   c.Tipo_Prazo_Caixa, ');
       Sql.Add('   d.Tipo_Prazo_Caixa_Hoje, ');
@@ -983,6 +1033,9 @@ begin
       Sql.Add('   h.Tipo_Prazo_Caixa as Tipo_Prazo_Ans, ');
       Sql.Add('   i.Nome_Usuario as Usuario_Designado, ');
       Sql.Add('   j.Nome_Setor as Setor_Designado, ');
+      Sql.Add('   k.Nome_Usuario as Usuario_Importacao, ');
+      Sql.Add('   l.Nome_Usuario as Usuario_Atualizacao, ');
+      Sql.Add('   m.Nome_Usuario as Usuario_Encerrameto, ');
       Sql.Add('   IsNull((Select count(*) ');
       Sql.Add('           From AutoSc_Historico ah ');
       Sql.Add('           where ah.id_AutoSC = a.id),0) as Qtd_Historicos,');
@@ -1003,6 +1056,9 @@ begin
       Sql.Add('   INNER JOIN Tipos_Prazo h on h.id = a.id_Tipo_Prazo_ANS ');
       Sql.Add('   LEFT OUTER JOIN Usuarios i on i.id = a.id_Usuario_Designado ');
       Sql.Add('   LEFT OUTER JOIN Setores j on j.id = a.id_Setor_Designado ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios k on k.id = a.id_Usuario_Importacao ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios l on l.id = a.id_Usuario_Ultima_Atualizacao ');
+      Sql.Add('   LEFT OUTER JOIN Usuarios m on m.id = a.id_Usuario_Encerramento');
       Sql.Add('where 1 = 1');
    end;
 end;

@@ -21,16 +21,17 @@ var
    function VersaoAtual : integer;
    procedure AtualizarVersao;
    procedure AtualizarBD;
-   procedure Atualizacao002;
-   procedure Atualizacao003;
-   procedure Atualizacao004;
-   procedure Atualizacao005;
-   procedure Atualizacao006;
-   procedure Atualizacao007;
-   procedure Atualizacao008;
-   procedure Atualizacao009;
-   procedure Atualizacao010;
+   procedure Atualizacao012;
    procedure Atualizacao011;
+   procedure Atualizacao010;
+   procedure Atualizacao009;
+   procedure Atualizacao008;
+   procedure Atualizacao007;
+   procedure Atualizacao006;
+   procedure Atualizacao005;
+   procedure Atualizacao004;
+   procedure Atualizacao003;
+   procedure Atualizacao002;
 
 implementation
 
@@ -126,6 +127,60 @@ begin
    if FVersaoAtual =  8 then Atualizacao009;
    if FVersaoAtual =  9 then Atualizacao010;
    if FVersaoAtual = 10 then Atualizacao011;
+   if FVersaoAtual = 11 then Atualizacao012;
+end;
+
+
+
+procedure Atualizacao012;
+var LQuery : TFDQuery;
+begin
+   FAtualizou := False;
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+         LQuery := TFDQuery.Create(nil);
+         LQuery.Connection := ServerContainer.FDConnection;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSC ');
+         LQuery.SQL.Add('Add Ultima_Atualizacao smalldatetime, ');
+         LQuery.SQL.Add('    id_Usuario_Ultima_Atualizacao int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_AutoSc_Usuarios_Atualizacao FOREIGN KEY (id_Usuario_Ultima_Atualizacao)');
+         LQuery.SQL.Add('    REFERENCES Usuarios (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE Siags ');
+         LQuery.SQL.Add('Add Ultima_Atualizacao smalldatetime, ');
+         LQuery.SQL.Add('    id_Usuario_Ultima_Atualizacao int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_Siags_Usuarios_Atualizacao FOREIGN KEY (id_Usuario_Ultima_Atualizacao)');
+         LQuery.SQL.Add('    REFERENCES Usuarios (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE ControlPc ');
+         LQuery.SQL.Add('Add Ultima_Atualizacao smalldatetime, ');
+         LQuery.SQL.Add('    id_Usuario_Ultima_Atualizacao int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_ControlPc_Usuarios_Atualizacao FOREIGN KEY (id_Usuario_Ultima_Atualizacao)');
+         LQuery.SQL.Add('    REFERENCES Usuarios (id)');
+         LQuery.ExecSQL;
+
+         AtualizarVersao;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         FAtualizou := True;
+         Inc(FVersaoAtual);
+      except
+         on E: Exception do
+            begin
+            TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+            ShowMessage('Erro ao processar a atualização ' + IntToStrZero(VersaoAtual +1,3) + chr(13) + E.Message );
+         end;
+      end;
+   finally
+      LQuery.Close;
+      FreeAndNil(LQuery);
+   end;
 end;
 
 

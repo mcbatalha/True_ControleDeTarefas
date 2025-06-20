@@ -38,35 +38,41 @@ type
      procedure TabelasDeDominio;
 
      const
-        C_TITULO_MENSAGENS = 'Designação de Autorizações CONTROLPC';
+        C_TITULO_MENSAGENS = 'Designação de Protocolo CONTROLPC';
   public
      constructor Create(ASqlConnection : TSQLConnection);
 
      function DataSetPesquisaDeUsuario : TDataSet;
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
-     function Filtrar(const AFiltros : TJSONObject) : Boolean;
+     function Filtrar(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
      function NumeroDoProtocolo  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
      function SetorDesignado : integer;
      function UsuarioDesignado : integer;
-     function TemRegistros : Boolean;
-     function TemDesignacoes : Boolean;
-     function TemAtualizacoes: Boolean;
+     function TemRegistros     : Boolean;
+     function TemDesignacoes   : Boolean;
+     function TemAtualizacoes  : Boolean;
+     function TemObservacoes   : Boolean;
      function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
      function Encerrar(const AJustificativa : String) : Boolean;
 
      function HistoricoDeDesignacoes   : String;
      function HistoricoDeAtualizacoes  : String;
-     function ObservacoesDaAutorizacao : String;
+     function ObservacoesDoProtocolo : String;
 
      procedure IncluirObservacao;
      function GravarObservacao(const AObservacao : String): Boolean;
      procedure CancelarObservacao;
 
      function Conteudo(const ACampo : String) : String;
+     procedure ImprimirExtrato(const AProcesso : String; const AFecharTabelas : Boolean);
+     procedure PosicionarRegistro(const ANumero : String);
+
+     procedure HabilitarControles;
+     procedure DesabilitarControles;
 
      destructor Destroy(); override;
 
@@ -86,7 +92,7 @@ end;
 
 function TSrvControlPc.DataSourceObservacao: TDataSource;
 begin
-   Result := FdmControlPc.dtsObservacoesProcesso;
+   Result := FdmControlPc.dtsObservacoes;
 end;
 
 
@@ -97,7 +103,7 @@ end;
 
 procedure TSrvControlPc.CancelarObservacao;
 begin
-   FdmControlPc.mtbObservacoesProcesso.Cancel;
+   FdmControlPc.mtbObservacoes.Cancel;
 end;
 
 function TSrvControlPc.Conteudo(const ACampo: String): String;
@@ -111,6 +117,11 @@ begin
    FPxyControlPc := TSMControlPcClient.Create(ASqlConnection.DBXConnection);
 
    TabelasDeDominio;
+end;
+
+procedure TSrvControlPc.DesabilitarControles;
+begin
+   FdmControlPc.cdsPainel.DisableControls;
 end;
 
 procedure TSrvControlPc.DesignacaoExcluirTodos;
@@ -133,7 +144,7 @@ function TSrvControlPc.Designar(const AJustificativa: String; const AIdSetor, AI
 begin
    Result := False;
 
-   if not QuestionMessage('Confirma a designação da autorização ? ',C_TITULO_MENSAGENS) then
+   if not QuestionMessage('Confirma a designação do protocolo ? ',C_TITULO_MENSAGENS) then
       Exit;
 
    if Length(Trim(AJustificativa)) < 5 then
@@ -199,25 +210,27 @@ end;
 function TSrvControlPc.Encerrar(const AJustificativa: String): Boolean;
 begin
    Result := False;
-   if not QuestionMessage('Confirma o encerramento do autorização ' + FdmControlPc.cdsPainelProtocolo.AsString + ' ? ','Encerramento') then
+   if not QuestionMessage('Confirma o encerramento do protocolo ' + FdmControlPc.cdsPainelProtocolo.AsString + ' ? ','Encerramento') then
       Exit;
 
    if FPxyControlPc.EncerrarProtocolo(FdmControlPc.cdsPainelid_Protocolo.AsInteger, AJustificativa, Seguranca.id) then
       begin
       FdmControlPc.cdsPainel.Delete;
-      InformationMessage('Autorização encerrada com sucesso !','Encerramento');
+      InformationMessage('Protocolo encerrado com sucesso !','Encerramento');
       Result := True;
    end;
 end;
 
-function TSrvControlPc.Filtrar(const AFiltros: TJSONObject): Boolean;
+function TSrvControlPc.Filtrar(
+   const AFiltros: TJSONObject;
+   const AIncluirEncerrados : Boolean): Boolean;
 var
    LDados : TJSONArray;
 begin
    Result := True;
 
    FdmControlPc.cdsPainel.Close;
-   LDados := FPxyControlPc.FiltrarProtocolos(AFiltros);
+   LDados := FPxyControlPc.FiltrarProtocolos(AFiltros, AIncluirEncerrados);
    if LDados.Count > 0 then
       TFuncoesJSON.PopularTabela(FdmControlPc.cdsPainel, LDados);
 
@@ -229,7 +242,7 @@ var
 begin
    Result := False;
 
-   if not QuestionMessage('Confirma o registro da observação para a autorização ?','Observações') then
+   if not QuestionMessage('Confirma o registro da observação para o protocolo ?','Observações') then
       exit;
 
    Result := FPxyControlPc.RegistrarObservacao(FdmControlPc.cdsPainelid_Protocolo.AsInteger,
@@ -239,14 +252,19 @@ begin
    if Result then
       begin
       InformationMessage('Observação registrada com sucesso !','Observações');
-      FdmControlPc.mtbObservacoesProcessoData_Hora.AsDateTime := LDataHora;
-      FdmControlPc.mtbObservacoesProcesso.Post;
+      FdmControlPc.mtbObservacoesData_Hora.AsDateTime := LDataHora;
+      FdmControlPc.mtbObservacoes.Post;
 
       FdmControlPc.cdsPainel.Edit;
       FdmControlPc.cdsPainelQtd_Observacoes.AsInteger := FdmControlPc.cdsPainelQtd_Observacoes.AsInteger + 1;
       FdmControlPc.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
+end;
+
+procedure TSrvControlPc.HabilitarControles;
+begin
+   FdmControlPc.cdsPainel.EnableControls;
 end;
 
 function TSrvControlPc.HistoricoDeAtualizacoes : String;
@@ -261,11 +279,73 @@ begin
    Result := FdmControlPc.cdsPainelProtocolo.AsString;
 end;
 
+procedure TSrvControlPc.ImprimirExtrato(const AProcesso : String; const AFecharTabelas : Boolean);
+var
+   LFiltroControlPc : TFiltros;
+   LControlPc       : TFiltrosControlPc;
+   LDados           : TJSONArray;
+begin
+   if AProcesso = '' then
+      begin
+      InformationMessage('Informe o nº do processo.','Impressão de Extrato');
+      Exit;
+   end;
+
+   LFiltroControlPc := TFiltros.create(C_CODIGO_ControlPc);
+   try
+      LControlPc := LFiltroControlPc.getFiltrosControlPcAsRecord;
+      LControlPc.numeroDoProtocolo  := AProcesso;
+      LControlPc.idUsuarioDesignado := 0;
+
+      LFiltroControlPc.setFiltrosControlPc(LControlPc);
+
+      if not Filtrar(LFiltroControlPc.getFiltrosControlPcAsJSON, True) or (not TemRegistros) then
+         begin
+         InformationMessage('Processo não localizado.','Impressão de Extrato');
+         Exit;
+      end;
+
+
+      if TemAtualizacoes then
+         HistoricoDeAtualizacoes;
+
+      if TemObservacoes then
+         ObservacoesDoProtocolo;
+
+      if TemDesignacoes then
+         begin
+         LDados := FPxyControlPc.RelatorioDeDesignacoes(True,
+                                                     StrToDate('01/01/2025'),
+                                                     Date,
+                                                     FdmControlPc.cdsPainelProtocolo.AsString,
+                                                     0);
+
+         FdmControlPc.mtbDesignacoes.Close;
+         if LDados.Count > 0 then
+            TFuncoesJSON.PopularTabela(FdmControlPc.mtbDesignacoes, LDados)
+         else
+            FdmControlPc.mtbDesignacoes.Open;
+      end;
+
+      FdmControlPc.frpExtrato.Showreport();
+
+   finally
+      FreeAndNil(LFiltroControlPc);
+      if AFecharTabelas then
+         begin
+         FdmControlPc.cdsPainel.Close;
+         FdmControlPc.mtbDesignacoes.Close;
+         FdmControlPc.mtbHistoricoAtualizacoes.Close;
+         FdmControlPc.mtbObservacoes.Close;
+      end;
+   end;
+end;
+
 procedure TSrvControlPc.IncluirObservacao;
 begin
-   FdmControlPc.mtbObservacoesProcesso.Append;
-   FdmControlPc.mtbObservacoesProcessoNome_Usuario.AsString := Seguranca.Nome;
-   FdmControlPc.mtbObservacoesProcessoData_Hora.AsDateTime  := Now;
+   FdmControlPc.mtbObservacoes.Append;
+   FdmControlPc.mtbObservacoesNome_Usuario.AsString := Seguranca.Nome;
+   FdmControlPc.mtbObservacoesData_Hora.AsDateTime  := Now;
 end;
 
 function TSrvControlPc.NumeroDoProtocolo: String;
@@ -273,14 +353,19 @@ begin
    Result := FdmControlPc.cdsPainelProtocolo.AsString;
 end;
 
-function TSrvControlPc.ObservacoesDaAutorizacao: String;
+function TSrvControlPc.ObservacoesDoProtocolo: String;
 begin
-   FdmControlPc.mtbObservacoesProcesso.Close;
+   FdmControlPc.mtbObservacoes.Close;
    if FdmControlPc.cdsPainelQtd_Observacoes.AsInteger > 0 then
-      TFuncoesJSON.PopularTabela(FdmControlPc.mtbObservacoesProcesso, FPxyControlPc.ObservacoesDoProtocolo(FdmControlPc.cdsPainelid_Protocolo.AsInteger))
+      TFuncoesJSON.PopularTabela(FdmControlPc.mtbObservacoes, FPxyControlPc.ObservacoesDoProtocolo(FdmControlPc.cdsPainelid_Protocolo.AsInteger))
    else
-      FdmControlPc.mtbObservacoesProcesso.Open;
+      FdmControlPc.mtbObservacoes.Open;
    Result := FdmControlPc.cdsPainelProtocolo.AsString;
+end;
+
+procedure TSrvControlPc.PosicionarRegistro(const ANumero: String);
+begin
+   FdmControlPc.cdsPainel.Locate('Protocolo',ANumero,[]);
 end;
 
 procedure TSrvControlPc.TabelasDeDominio;
@@ -317,6 +402,11 @@ end;
 function TSrvControlPc.TemDesignacoes: Boolean;
 begin
    Result := FdmControlPc.cdsPainelQtd_Designacoes.AsInteger > 0;
+end;
+
+function TSrvControlPc.TemObservacoes: Boolean;
+begin
+   Result := FdmControlPc.cdsPainelQtd_Observacoes.AsInteger > 0;
 end;
 
 function TSrvControlPc.TemRegistros: Boolean;

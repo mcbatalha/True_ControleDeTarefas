@@ -46,16 +46,18 @@ type
      function DataSetPesquisaDeUsuario : TDataSet;
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
-     function Filtrar(const AFiltros : TJSONObject) : Boolean;
+     function Filtrar(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
      function NumeroDoProcesso  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
-     function SetorDesignado : integer;
+     function SetorDesignado   : integer;
      function UsuarioDesignado : integer;
-     function TemRegistros : Boolean;
-     function TemDesignacoes : Boolean;
-     function TemAtualizacoes: Boolean;
+     function TemRegistros     : Boolean;
+     function TemDesignacoes   : Boolean;
+     function TemAtualizacoes  : Boolean;
+     function TemObservacoes   : Boolean;
+
      function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
      function Encerrar(const AJustificativa : String) : Boolean;
 
@@ -68,6 +70,11 @@ type
      function GravarObservacao(const AObservacao : String): Boolean;
      procedure CancelarObservacao;
 
+     procedure ImprimirExtrato(const AProcesso : String; const AFecharTabelas : Boolean);
+
+     procedure PosicionarRegistro(const ANumero: String);
+     procedure HabilitarControles;
+     procedure DesabilitarControles;
 
      destructor Destroy(); override;
 
@@ -86,7 +93,7 @@ end;
 
 function TSrvAutoSC.DataSourceObservacao: TDataSource;
 begin
-   Result := FdmAutoSC.dtsObservacoesProcesso;
+   Result := FdmAutoSC.dtsObservacoes;
 end;
 
 function TSrvAutoSC.DataSetPesquisaDeUsuario : TDataSet;
@@ -96,7 +103,7 @@ end;
 
 procedure TSrvAutoSC.CancelarObservacao;
 begin
-   FdmAutoSC.mtbObservacoesProcesso.Cancel;
+   FdmAutoSC.mtbObservacoes.Cancel;
 end;
 
 constructor TSrvAutoSC.Create(ASqlConnection : TSQLConnection);
@@ -107,6 +114,11 @@ begin
    FPxyAutoSC := TSMAutoSCClient.Create(ASqlConnection.DBXConnection);
 
    TabelasDeDominio;
+end;
+
+procedure TSrvAutoSC.DesabilitarControles;
+begin
+   FdmAutoSC.cdsPainel.DisableControls;
 end;
 
 procedure TSrvAutoSC.DesignacaoExcluirTodos;
@@ -207,14 +219,14 @@ begin
    end;
 end;
 
-function TSrvAutoSC.Filtrar(const AFiltros: TJSONObject): Boolean;
+function TSrvAutoSC.Filtrar(const AFiltros: TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
 var
    LDados : TJSONArray;
 begin
    Result := True;
 
    FdmAutoSC.cdsPainel.Close;
-   LDados := FPxyAutoSC.FiltrarProcessos(AFiltros);
+   LDados := FPxyAutoSC.FiltrarProcessos(AFiltros, AIncluirEncerrados);
    if LDados.Count > 0 then
       TFuncoesJSON.PopularTabela(FdmAutoSC.cdsPainel, LDados);
 
@@ -236,14 +248,19 @@ begin
    if Result then
       begin
       InformationMessage('Observação registrada com sucesso !','Observações');
-      FdmAutoSC.mtbObservacoesProcessoData_Hora.AsDateTime := LDataHora;
-      FdmAutoSC.mtbObservacoesProcesso.Post;
+      FdmAutoSC.mtbObservacoesData_Hora.AsDateTime := LDataHora;
+      FdmAutoSC.mtbObservacoes.Post;
 
       FdmAutoSC.cdsPainel.Edit;
       FdmAutoSC.cdsPainelQtd_Observacoes.AsInteger := FdmAutoSC.cdsPainelQtd_Observacoes.AsInteger + 1;
       FdmAutoSC.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
+end;
+
+procedure TSrvAutoSC.HabilitarControles;
+begin
+   FdmAutoSC.cdsPainel.EnableControls;
 end;
 
 function TSrvAutoSC.HistoricoDeAtualizacoes : String;
@@ -258,11 +275,73 @@ begin
    Result := FdmAutoSC.cdsPainelNumero_Processo.AsString;
 end;
 
+procedure TSrvAutoSC.ImprimirExtrato(const AProcesso : String; const AFecharTabelas : Boolean);
+var
+   LFiltroAutoSC  : TFiltros;
+   LAutoSc        : TFiltrosAutoSc;
+   LDados         : TJSONArray;
+begin
+   if AProcesso = '' then
+      begin
+      InformationMessage('Informe o nº do processo.','Impressão de Extrato');
+      Exit;
+   end;
+
+   LFiltroAutoSC := TFiltros.create(C_CODIGO_AUTOSC);
+   try
+      LAutoSc := LFiltroAutoSC.getFiltrosAutoSCAsRecord;
+      LAutoSc.numeroDoProcesso   := AProcesso;
+      LAutoSc.idUsuarioDesignado := 0;
+
+      LFiltroAutoSC.setFiltrosAutoSC(LAutoSc);
+
+      if not Filtrar(LFiltroAutoSC.getFiltrosAutoSCAsJSON, True) or (not TemRegistros) then
+         begin
+         InformationMessage('Processo não localizado.','Impressão de Extrato');
+         Exit;
+      end;
+
+
+      if TemAtualizacoes then
+         HistoricoDeAtualizacoes;
+
+      if TemObservacoes then
+         ObservacoesDoProcesso;
+
+      if TemDesignacoes then
+         begin
+         LDados := FPxyAutoSc.RelatorioDeDesignacoes(True,
+                                                     StrToDate('01/01/2025'),
+                                                     Date,
+                                                     FdmAutoSC.cdsPainelNumero_Processo.AsString,
+                                                     0);
+
+         FdmAutoSC.mtbDesignacoes.Close;
+         if LDados.Count > 0 then
+            TFuncoesJSON.PopularTabela(FdmAutoSC.mtbDesignacoes, LDados)
+         else
+            FdmAutoSC.mtbDesignacoes.Open;
+      end;
+
+      FdmAutoSC.frpExtrato.Showreport();
+
+   finally
+      FreeAndNil(LFiltroAutoSC);
+      if AFecharTabelas then
+         begin
+         FdmAutoSC.cdsPainel.Close;
+         FdmAutoSC.mtbDesignacoes.Close;
+         FdmAutoSC.mtbHistoricoAtualizacoes.Close;
+         FdmAutoSC.mtbObservacoes.Close;
+      end;
+   end;
+end;
+
 procedure TSrvAutoSC.IncluirObservacao;
 begin
-   FdmAutoSC.mtbObservacoesProcesso.Append;
-   FdmAutoSC.mtbObservacoesProcessoNome_Usuario.AsString := Seguranca.Nome;
-   FdmAutoSC.mtbObservacoesProcessoData_Hora.AsDateTime  := Now;
+   FdmAutoSC.mtbObservacoes.Append;
+   FdmAutoSC.mtbObservacoesNome_Usuario.AsString := Seguranca.Nome;
+   FdmAutoSC.mtbObservacoesData_Hora.AsDateTime  := Now;
 end;
 
 function TSrvAutoSC.NumeroDoProcesso: String;
@@ -272,12 +351,17 @@ end;
 
 function TSrvAutoSC.ObservacoesDoProcesso: String;
 begin
-   FdmAutoSC.mtbObservacoesProcesso.Close;
+   FdmAutoSC.mtbObservacoes.Close;
    if FdmAutoSC.cdsPainelQtd_Observacoes.AsInteger > 0 then
-      TFuncoesJSON.PopularTabela(FdmAutoSC.mtbObservacoesProcesso, FPxyAutoSC.ObservacoesDoProcesso(FdmAutoSC.cdsPainelid_Processo.AsInteger))
+      TFuncoesJSON.PopularTabela(FdmAutoSC.mtbObservacoes, FPxyAutoSC.ObservacoesDoProcesso(FdmAutoSC.cdsPainelid_Processo.AsInteger))
    else
-      FdmAutoSC.mtbObservacoesProcesso.Open;
+      FdmAutoSC.mtbObservacoes.Open;
    Result := FdmAutoSC.cdsPainelNumero_Processo.AsString;
+end;
+
+procedure TSrvAutoSC.PosicionarRegistro(const ANumero: String);
+begin
+   FdmAutoSC.cdsPainel.Locate('Numero_Processo',ANumero,[]);
 end;
 
 procedure TSrvAutoSC.TabelasDeDominio;
@@ -309,8 +393,6 @@ begin
    IncluirRegistro(FdmAutoSC.mtbUF, 'Sigla', C_TODOS);
 
    DesignacaoIncluirTodos;
-
-
 end;
 
 function TSrvAutoSC.TemAtualizacoes: Boolean;
@@ -321,6 +403,11 @@ end;
 function TSrvAutoSC.TemDesignacoes: Boolean;
 begin
    Result := FdmAutoSC.cdsPainelQtd_Designacoes.AsInteger > 0;
+end;
+
+function TSrvAutoSC.TemObservacoes: Boolean;
+begin
+   Result := FdmAutoSC.cdsPainelQtd_Observacoes.AsInteger > 0;
 end;
 
 function TSrvAutoSC.TemRegistros: Boolean;

@@ -55,9 +55,14 @@ uses
   Forms.Importacoes.ControlPc in 'Forms\Importacoes\Forms.Importacoes.ControlPc.pas' {frmImportacoesControlPc},
   Providers.Panels.ControlPc in 'Providers\Panels\Providers.Panels.ControlPc.pas' {dtmPainelControlPc: TDataModule},
   Services.Panels.ControlPc in 'Services\Panels\Services.Panels.ControlPc.pas',
-  Forms.Listagens.Designacoes in 'Forms\Listagens\Forms.Listagens.Designacoes.pas' {frmListagemDesignacoes},
-  Providers.Listagens.Designacoes in 'Providers\Listagens\Providers.Listagens.Designacoes.pas' {dtmListagensDesinacoes: TDataModule},
-  Services.Listagens.Designacoes in 'Services\Listagens\Services.Listagens.Designacoes.pas';
+  Forms.Relatorios.Designacoes in 'Forms\Relatorios\Forms.Relatorios.Designacoes.pas' {frmRelatorioDesignacoes},
+  Services.Relatorios.Designacoes in 'Services\Relatorios\Services.Relatorios.Designacoes.pas',
+  Providers.Relatorios in 'Providers\Relatorios\Providers.Relatorios.pas' {dtmRelatorios: TDataModule},
+  Providers.Relatorios.Designacoes in 'Providers\Relatorios\Providers.Relatorios.Designacoes.pas' {dtmRelatoriosDesinacoes: TDataModule},
+  Providers.Relatorios.Encerramentos in 'Providers\Relatorios\Providers.Relatorios.Encerramentos.pas' {dtmRelatoriosEncerramento: TDataModule},
+  Services.Relatorios.Encerramento in 'Services\Relatorios\Services.Relatorios.Encerramento.pas',
+  Forms.Relatorios.Encerramentos in 'Forms\Relatorios\Forms.Relatorios.Encerramentos.pas' {frmRelatorioEncerramentos},
+  Forms.Relatorios.Extrato in 'Forms\Relatorios\Forms.Relatorios.Extrato.pas' {frmRelatorioExtrato};
 
 {$R *.res}
 

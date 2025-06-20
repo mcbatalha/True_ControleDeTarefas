@@ -1,66 +1,4 @@
-inherited dtmListagensDesinacoes: TdtmListagensDesinacoes
-  OldCreateOrder = True
-  OnCreate = DataModuleCreate
-  OnDestroy = DataModuleDestroy
-  Height = 626
-  Width = 1064
-  inherited DSProviderConnection: TDSProviderConnection
-    ServerClassName = 'TSMAutoSC'
-  end
-  object mtbUsuariosAutoSc: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 576
-    Top = 32
-    object mtbUsuariosAutoScid: TIntegerField
-      FieldName = 'id'
-    end
-    object mtbUsuariosAutoScNome_Usuario: TStringField
-      FieldName = 'Nome_Usuario'
-      Size = 100
-    end
-  end
-  object mtbUsuariosSiags: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 576
-    Top = 108
-    object mtbUsuariosSiagsid: TIntegerField
-      FieldName = 'id'
-    end
-    object mtbUsuariosSiagsNome_Usuario: TStringField
-      FieldName = 'Nome_Usuario'
-      Size = 100
-    end
-  end
-  object mtbUsuariosControlPc: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 576
-    Top = 184
-    object mtbUsuariosControlPcid: TIntegerField
-      FieldName = 'id'
-    end
-    object mtbUsuariosControlPcNome_Usuario: TStringField
-      FieldName = 'Nome_Usuario'
-      Size = 100
-    end
-  end
+inherited dtmRelatoriosDesinacoes: TdtmRelatoriosDesinacoes
   object mtbDesignacoes: TFDMemTable
     OnCalcFields = mtbDesignacoesCalcFields
     FetchOptions.AssignedValues = [evMode]
@@ -330,7 +268,7 @@ inherited dtmListagensDesinacoes: TdtmListagensDesinacoes
         object Memo1: TfrxMemoView
           AllowVectorExport = True
           Left = 421.417595000000000000
-          Top = 7.559060000000000000
+          Top = 7.559059999999999000
           Width = 204.094620000000000000
           Height = 18.897650000000000000
           AutoWidth = True
@@ -340,7 +278,6 @@ inherited dtmListagensDesinacoes: TdtmListagensDesinacoes
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
-          HAlign = haCenter
           Memo.UTF8W = (
             'Listagem de Designa'#231#245'es')
           ParentFont = False
@@ -486,7 +423,7 @@ inherited dtmListagensDesinacoes: TdtmListagensDesinacoes
           Font.Style = [fsBold]
           Frame.Typ = []
           Memo.UTF8W = (
-            'Designa'#231#245'es realizaadas entre:')
+            'Designa'#231#245'es realizadas entre:')
           ParentFont = False
         end
         object Memo20: TfrxMemoView
@@ -503,7 +440,7 @@ inherited dtmListagensDesinacoes: TdtmListagensDesinacoes
           Font.Style = [fsBold]
           Frame.Typ = []
           Memo.UTF8W = (
-            'Respons'#225'vel pela Designa'#231#227'o')
+            'Respons'#225'vel pela designa'#231#227'o')
           ParentFont = False
         end
         object memFiltroNumero: TfrxMemoView
@@ -941,86 +878,6 @@ inherited dtmListagensDesinacoes: TdtmListagensDesinacoes
     DataSet = mtbDesignacoes
     BCDToCurrency = False
     Left = 64
-    Top = 320
-  end
-  object frxPDFExport: TfrxPDFExport
-    UseFileCache = True
-    ShowProgress = True
-    OverwritePrompt = False
-    DataOnly = False
-    InteractiveFormsFontSubset = 'A-Z,a-z,0-9,#43-#47 '
-    OpenAfterExport = False
-    PrintOptimized = False
-    Outline = False
-    Background = False
-    HTMLTags = True
-    Quality = 95
-    Transparency = False
-    Author = 'FastReport'
-    Subject = 'FastReport PDF export'
-    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
-    HideToolbar = False
-    HideMenubar = False
-    HideWindowUI = False
-    FitWindow = False
-    CenterWindow = False
-    PrintScaling = False
-    PdfA = False
-    PDFStandard = psNone
-    PDFVersion = pv17
-    Left = 184
-    Top = 392
-  end
-  object mtbTitulos: TFDMemTable
-    OnCalcFields = mtbDesignacoesCalcFields
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 184
-    Top = 248
-    object mtbTitulosmemTipo: TStringField
-      FieldName = 'memTipo'
-      Size = 50
-    end
-    object mtbTitulosmemTituloFiltroNumero: TStringField
-      FieldName = 'memTituloFiltroNumero'
-      Size = 50
-    end
-    object mtbTitulosmemFiltroNumero: TStringField
-      FieldName = 'memFiltroNumero'
-      Size = 50
-    end
-    object mtbTitulosmemFiltroPeriodo: TStringField
-      FieldName = 'memFiltroPeriodo'
-      Size = 50
-    end
-    object mtbTitulosmemFiltroResponsavel: TStringField
-      FieldName = 'memFiltroResponsavel'
-      Size = 50
-    end
-    object mtbTitulosmemTituloTipo: TStringField
-      FieldName = 'memTituloTipo'
-      Size = 50
-    end
-  end
-  object fdbTitulos: TfrxDBDataset
-    UserName = 'fdbTitulos'
-    CloseDataSource = True
-    FieldAliases.Strings = (
-      'memTipo=memTipo'
-      'memTituloFiltroNumero=memTituloFiltroNumero'
-      'memFiltroNumero=memFiltroNumero'
-      'memFiltroPeriodo=memFiltroPeriodo'
-      'memFiltroResponsavel=memFiltroResponsavel'
-      'memTituloTipo=memTituloTipo')
-    OpenDataSource = False
-    DataSet = mtbTitulos
-    BCDToCurrency = False
-    Left = 184
     Top = 320
   end
 end

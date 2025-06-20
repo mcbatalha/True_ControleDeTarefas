@@ -282,6 +282,14 @@ object SMAutoSC: TSMAutoSC
       Origin = 'Justificativa_Designacao'
       Size = 100
     end
+    object qryAutoScUltima_Atualizacao: TDateTimeField
+      FieldName = 'Ultima_Atualizacao'
+      Origin = 'Ultima_Atualizacao'
+    end
+    object qryAutoScid_Usuario_Ultima_Atualizacao: TIntegerField
+      FieldName = 'id_Usuario_Ultima_Atualizacao'
+      Origin = 'id_Usuario_Ultima_Atualizacao'
+    end
   end
   object qryAutoScHistorico: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -343,6 +351,9 @@ object SMAutoSC: TSMAutoSC
       
         '   a.id as id_Processo, a.Numero_Processo, a.Data_Status, a.Qtd_' +
         'Arquivos, a.uf,'
+      
+        '   a.Data_Hora_Importacao, a.Ultima_Atualizacao, a.Data_Hora_Enc' +
+        'erramento, a.Justificativa_Encerramento,'
       '   b.Tipo_Auditoria,'
       '   c.Tipo_Prazo_Caixa,'
       '   d.Tipo_Prazo_Caixa_Hoje,'
@@ -351,21 +362,32 @@ object SMAutoSC: TSMAutoSC
       '   g.Tipo_Processo_E,'
       '   h.Tipo_Prazo_Caixa as Tipo_Prazo_Ans,'
       '   i.Nome_Usuario as Usuario_Designado,'
+      '   j.Nome_Setor as Setor_Designado,'
+      '   k.Nome_Usuario as Usuario_Importacao,'
+      '   l.Nome_Usuario as Usuario_Atualizacao,'
+      '   m.Nome_Usuario as Usuario_Encerrameto,'
       '   1 as Qtd_Historicos,'
       '   1 as Qtd_Designacoes,'
       '   1 as Qtd_Observacoes'
       'From AutoSc a'
-      '     INNER JOIN Tipos_Auditoria b on b.id = a.id_Tipo_Auditoria'
-      #9' INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo_Caixa '
+      '   INNER JOIN Tipos_Auditoria b on b.id = a.id_Tipo_Auditoria'
+      #9' INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo_Caixa'
       
         #9' INNER JOIN Tipos_Prazo_Hoje d on d.id = a.id_Tipo_Prazo_Caixa_' +
-        'Hoje '
+        'Hoje'
       #9' INNER JOIN Tipos_Status e on e.id = a.id_Tipo_Status'
-      'left outer join Tipos_Processo f on f.id = a.id_Tipo_Processo'
+      '   left outer join Tipos_Processo f on f.id = a.id_Tipo_Processo'
       #9' INNER JOIN Tipos_Processo_E g on g.id = a.id_Tipo_Processo_E'
       #9' INNER JOIN Tipos_Prazo h on h.id = a.id_Tipo_Prazo_ANS'
       #9' LEFT OUTER JOIN Usuarios i on i.id = a.id_Usuario_Designado'
       #9' LEFT OUTER JOIN Setores j on j.id = a.id_Setor_Designado'
+      '   LEFT OUTER JOIN Usuarios k on k.id = a.id_Usuario_Importacao'
+      
+        '   LEFT OUTER JOIN Usuarios l on l.id = a.id_Usuario_Ultima_Atua' +
+        'lizacao'
+      
+        '   LEFT OUTER JOIN Usuarios m on m.id = a.id_Usuario_Encerrament' +
+        'o'
       'where 1 = 1')
     Left = 368
     Top = 24
@@ -449,6 +471,43 @@ object SMAutoSC: TSMAutoSC
       Origin = 'Qtd_Observacoes'
       ReadOnly = True
       Required = True
+    end
+    object qryPainelAutoScData_Hora_Importacao: TDateTimeField
+      FieldName = 'Data_Hora_Importacao'
+      Origin = 'Data_Hora_Importacao'
+    end
+    object qryPainelAutoScUltima_Atualizacao: TDateTimeField
+      FieldName = 'Ultima_Atualizacao'
+      Origin = 'Ultima_Atualizacao'
+    end
+    object qryPainelAutoScData_Hora_Encerramento: TDateTimeField
+      FieldName = 'Data_Hora_Encerramento'
+      Origin = 'Data_Hora_Encerramento'
+    end
+    object qryPainelAutoScJustificativa_Encerramento: TStringField
+      FieldName = 'Justificativa_Encerramento'
+      Origin = 'Justificativa_Encerramento'
+      Size = 100
+    end
+    object qryPainelAutoScSetor_Designado: TStringField
+      FieldName = 'Setor_Designado'
+      Origin = 'Setor_Designado'
+      Size = 50
+    end
+    object qryPainelAutoScUsuario_Importacao: TStringField
+      FieldName = 'Usuario_Importacao'
+      Origin = 'Usuario_Importacao'
+      Size = 100
+    end
+    object qryPainelAutoScUsuario_Atualizacao: TStringField
+      FieldName = 'Usuario_Atualizacao'
+      Origin = 'Usuario_Atualizacao'
+      Size = 100
+    end
+    object qryPainelAutoScUsuario_Encerrameto: TStringField
+      FieldName = 'Usuario_Encerrameto'
+      Origin = 'Usuario_Encerrameto'
+      Size = 100
     end
   end
   object qrySetores: TFDQuery

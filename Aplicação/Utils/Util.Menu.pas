@@ -68,8 +68,9 @@ begin
            {$endRegion}
 
            {$Region 'Listagens'}
-           5000 : frmPrincipal.mngListagens.Visible           := True;
-           5001 : frmPrincipal.mniListagemDesignacoes.Visible := True;
+           5000 : frmPrincipal.mngRelatorios.Visible           := True;
+           5001 : frmPrincipal.mniRelatorioDesignacoes.Visible := True;
+           5002 : frmPrincipal.mniRelatorioEncerramentos.Visible := True;
            {$endRegion}
         end;
      end;

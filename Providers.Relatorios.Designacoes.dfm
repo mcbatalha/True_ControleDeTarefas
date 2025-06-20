@@ -1,11 +1,13 @@
-inherited dtmPainel: TdtmPainel
+inherited dtmRelatoriosDesinacoes: TdtmRelatoriosDesinacoes
   OldCreateOrder = True
-  Height = 780
-  Width = 736
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 626
+  Width = 1064
   inherited DSProviderConnection: TDSProviderConnection
-    ServerClassName = 'TMAutoSC'
+    ServerClassName = 'TSMAutoSC'
   end
-  object mtbPainel: TFDMemTable
+  object mtbUsuariosAutoSc: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -13,85 +15,17 @@ inherited dtmPainel: TdtmPainel
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
-    Left = 64
-    Top = 176
-  end
-  object cdsPainel: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspPainel'
-    Left = 64
-    Top = 328
-  end
-  object dspPainel: TDataSetProvider
-    DataSet = mtbPainel
-    Left = 64
-    Top = 256
-  end
-  object mtbHistoricoDesignacoes: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 64
-    Top = 400
-    object mtbHistoricoDesignacoesJustificativa: TStringField
-      FieldName = 'Justificativa'
-      Size = 100
+    Left = 576
+    Top = 32
+    object mtbUsuariosAutoScid: TIntegerField
+      FieldName = 'id'
     end
-    object mtbHistoricoDesignacoesData_Hora_Log: TDateTimeField
-      Alignment = taCenter
-      FieldName = 'Data_Hora_Log'
-    end
-    object mtbHistoricoDesignacoesNome_Setor: TStringField
-      FieldName = 'Nome_Setor'
-      Size = 50
-    end
-    object mtbHistoricoDesignacoesUsuario_Designado: TStringField
-      FieldName = 'Usuario_Designado'
-      Size = 100
-    end
-    object mtbHistoricoDesignacoesUsuario_Responsavel: TStringField
-      FieldName = 'Usuario_Responsavel'
-      Size = 100
-    end
-  end
-  object dtsHistoricoDesignacoes: TDataSource
-    DataSet = mtbHistoricoDesignacoes
-    Left = 256
-    Top = 400
-  end
-  object mtbObservacoes: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 56
-    Top = 472
-    object mtbObservacoesData_Hora: TDateTimeField
-      FieldName = 'Data_Hora'
-    end
-    object mtbObservacoesNome_Usuario: TStringField
+    object mtbUsuariosAutoScNome_Usuario: TStringField
       FieldName = 'Nome_Usuario'
       Size = 100
     end
-    object mtbObservacoesObservacao: TStringField
-      FieldName = 'Observacao'
-      Size = 500
-    end
   end
-  object dtsObservacoes: TDataSource
-    DataSet = mtbObservacoes
-    Left = 256
-    Top = 472
-  end
-  object mtbHistoricoAtualizacoes: TFDMemTable
+  object mtbUsuariosSiags: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -99,15 +33,94 @@ inherited dtmPainel: TdtmPainel
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
-    Left = 57
-    Top = 536
+    Left = 576
+    Top = 108
+    object mtbUsuariosSiagsid: TIntegerField
+      FieldName = 'id'
+    end
+    object mtbUsuariosSiagsNome_Usuario: TStringField
+      FieldName = 'Nome_Usuario'
+      Size = 100
+    end
   end
-  object dtsHistoricoAtualizacoes: TDataSource
-    DataSet = mtbHistoricoAtualizacoes
-    Left = 257
-    Top = 536
+  object mtbUsuariosControlPc: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 576
+    Top = 184
+    object mtbUsuariosControlPcid: TIntegerField
+      FieldName = 'id'
+    end
+    object mtbUsuariosControlPcNome_Usuario: TStringField
+      FieldName = 'Nome_Usuario'
+      Size = 100
+    end
   end
-  object frpExtrato: TfrxReport
+  object mtbDesignacoes: TFDMemTable
+    OnCalcFields = mtbDesignacoesCalcFields
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 64
+    Top = 248
+    object mtbDesignacoesid: TLargeintField
+      FieldName = 'id'
+    end
+    object mtbDesignacoesUsuario_Designado: TStringField
+      FieldName = 'Usuario_Designado'
+      OnGetText = mtbDesignacoesUsuario_DesignadoGetText
+      Size = 100
+    end
+    object mtbDesignacoesSetor_Designado: TStringField
+      FieldName = 'Setor_Designado'
+      OnGetText = mtbDesignacoesUsuario_DesignadoGetText
+      Size = 50
+    end
+    object mtbDesignacoesUsuario_Responsavel: TStringField
+      FieldName = 'Usuario_Responsavel'
+      Size = 100
+    end
+    object mtbDesignacoesJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Size = 100
+    end
+    object mtbDesignacoesNumero: TStringField
+      FieldName = 'Numero'
+      Size = 50
+    end
+    object mtbDesignacoesData_Hora_Inicial: TDateTimeField
+      FieldName = 'Data_Hora_Inicial'
+    end
+    object mtbDesignacoesData_Hora_Final: TDateTimeField
+      FieldName = 'Data_Hora_Final'
+      OnGetText = mtbDesignacoesData_Hora_FinalGetText
+    end
+    object mtbDesignacoesDias: TIntegerField
+      FieldName = 'Dias'
+    end
+    object mtbDesignacoesHoras: TIntegerField
+      FieldName = 'Horas'
+    end
+    object mtbDesignacoesMinutos: TIntegerField
+      FieldName = 'Minutos'
+    end
+    object mtbDesignacoesccTempo: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'ccTempo'
+      Size = 30
+      Calculated = True
+    end
+  end
+  object frpDesignacoes: TfrxReport
     Version = '6.9.3'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
@@ -115,55 +128,23 @@ inherited dtmPainel: TdtmPainel
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 45827.844200000000000000
-    ReportOptions.LastChange = 45827.844200000000000000
+    ReportOptions.CreateDate = 45825.790280370370000000
+    ReportOptions.LastChange = 45825.881808101850000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
-      'procedure MasterData4OnBeforePrint(Sender: TfrxComponent);'
-      'begin'
-      '  if Frac(<Line> / 2) = 0.5 then'
-      '     memBackGroundObservacoes.Color := clWhite'
-      '  else'
-      '     memBackGroundObservacoes.Color := $00E1E1E1;  '
-      'end;'
-      ''
-      'procedure MasterData2OnBeforePrint(Sender: TfrxComponent);'
-      'begin'
-      '  if Frac(<Line> / 2) = 0.5 then'
-      '     memBackGroundAtualizacoes.Color := clWhite'
-      '  else'
-      '     memBackGroundAtualizacoes.Color := $00E1E1E1;  '
-      'end;'
-      ''
-      'procedure MasterData3OnBeforePrint(Sender: TfrxComponent);'
-      'begin'
-      '  if Frac(<Line> / 2) = 0.5 then'
-      '     memBackgroudDesignacoes.Color := clWhite'
-      '  else'
-      '     memBackgroudDesignacoes.Color := $00E1E1E1;  '
-      'end;'
-      ''
       'begin'
       ''
       'end.')
-    Left = 424
-    Top = 256
+    Left = 64
+    Top = 392
     Datasets = <
-      item
-        DataSet = fdbAtualizacoes
-        DataSetName = 'fdbAtualizacoes'
-      end
       item
         DataSet = fdbDesignacoes
         DataSetName = 'fdbDesignacoes'
       end
       item
-        DataSet = fdbExtrato
-        DataSetName = 'fdbExtrato'
-      end
-      item
-        DataSet = fdbObservacoes
-        DataSetName = 'fdbObservacoes'
+        DataSet = fdbTitulos
+        DataSetName = 'fdbTitulos'
       end>
     Variables = <>
     Style = <>
@@ -171,9 +152,10 @@ inherited dtmPainel: TdtmPainel
       Height = 1000.000000000000000000
       Width = 1000.000000000000000000
     end
-    object pagExtrato: TfrxReportPage
-      PaperWidth = 210.000000000000000000
-      PaperHeight = 297.000000000000000000
+    object Page1: TfrxReportPage
+      Orientation = poLandscape
+      PaperWidth = 297.000000000000000000
+      PaperHeight = 210.000000000000000000
       PaperSize = 9
       LeftMargin = 10.000000000000000000
       RightMargin = 10.000000000000000000
@@ -183,14 +165,14 @@ inherited dtmPainel: TdtmPainel
       MirrorMode = []
       object PageHeader1: TfrxPageHeader
         FillType = ftBrush
-        Frame.Typ = [ftBottom]
-        Height = 79.370130000000000000
+        Frame.Typ = []
+        Height = 113.385900000000000000
         Top = 18.897650000000000000
-        Width = 718.110700000000000000
+        Width = 1046.929810000000000000
         object Picture1: TfrxPictureView
           AllowVectorExport = True
-          Left = 7.559060000000000000
-          Top = 3.779530000000000000
+          Left = 18.897650000000000000
+          Top = 7.559060000000000000
           Width = 151.000000000000000000
           Height = 50.000000000000000000
           AutoSize = True
@@ -347,7 +329,7 @@ inherited dtmPainel: TdtmPainel
         end
         object Memo1: TfrxMemoView
           AllowVectorExport = True
-          Left = 258.897805000000000000
+          Left = 421.417595000000000000
           Top = 7.559060000000000000
           Width = 204.094620000000000000
           Height = 18.897650000000000000
@@ -358,14 +340,52 @@ inherited dtmPainel: TdtmPainel
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
+          HAlign = haCenter
           Memo.UTF8W = (
-            'Extrato de ')
+            'Listagem de Designa'#231#245'es')
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          AllowVectorExport = True
+          Left = 421.417595000000000000
+          Top = 30.236240000000000000
+          Width = 34.015770000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Tipo:')
+          ParentFont = False
+        end
+        object memTipo: TfrxMemoView
+          AllowVectorExport = True
+          Left = 456.323130000000000000
+          Top = 30.236240000000000000
+          Width = 34.015770000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          DataField = 'memTipo'
+          DataSet = fdbTitulos
+          DataSetName = 'fdbTitulos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbTitulos."memTipo"]')
           ParentFont = False
         end
         object Page: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 635.181510000000000000
+          Left = 964.000620000000000000
           Top = 1.779530000000000000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
@@ -383,8 +403,8 @@ inherited dtmPainel: TdtmPainel
         end
         object Memo3: TfrxMemoView
           AllowVectorExport = True
-          Left = 258.897805000000000000
-          Top = 28.133890000000000000
+          Left = 421.417595000000000000
+          Top = 49.133890000000000000
           Width = 71.811070000000000000
           Height = 18.897650000000000000
           AutoWidth = True
@@ -400,8 +420,8 @@ inherited dtmPainel: TdtmPainel
         end
         object Memo4: TfrxMemoView
           AllowVectorExport = True
-          Left = 332.598640000000000000
-          Top = 28.133890000000000000
+          Left = 495.118430000000000000
+          Top = 49.133890000000000000
           Width = 86.929190000000000000
           Height = 18.897650000000000000
           AutoWidth = True
@@ -415,152 +435,223 @@ inherited dtmPainel: TdtmPainel
             '[Date] | [Time]')
           ParentFont = False
         end
-      end
-      object MasterData1: TfrxMasterData
-        FillType = ftBrush
-        Frame.Typ = []
-        Height = 22.677180000000000000
-        Top = 158.740260000000000000
-        Width = 718.110700000000000000
-        DataSet = fdbExtrato
-        DataSetName = 'fdbExtrato'
-        RowCount = 0
-      end
-    end
-    object pagAtualizacoes: TfrxReportPage
-      PaperWidth = 210.000000000000000000
-      PaperHeight = 297.000000000000000000
-      PaperSize = 9
-      LeftMargin = 10.000000000000000000
-      RightMargin = 10.000000000000000000
-      TopMargin = 10.000000000000000000
-      BottomMargin = 10.000000000000000000
-      Frame.Typ = []
-      MirrorMode = []
-      PrintIfEmpty = False
-      PrintOnPreviousPage = True
-      object GroupHeader1: TfrxGroupHeader
-        FillType = ftBrush
-        Frame.Typ = [ftTop, ftBottom]
-        Height = 22.677180000000000000
-        Top = 18.897650000000000000
-        Width = 718.110700000000000000
-        Condition = '1=1'
-        ReprintOnNewPage = True
-        object Memo5: TfrxMemoView
-          Align = baClient
-          AllowVectorExport = True
-          Width = 718.110700000000000000
-          Height = 22.677180000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          HAlign = haCenter
-          Memo.UTF8W = (
-            'Atualiza'#231#245'es')
-          ParentFont = False
-        end
-      end
-      object MasterData2: TfrxMasterData
-        FillType = ftBrush
-        Frame.Typ = []
-        Height = 22.677180000000000000
-        Top = 64.252010000000000000
-        Width = 718.110700000000000000
-        OnBeforePrint = 'MasterData2OnBeforePrint'
-        DataSet = fdbAtualizacoes
-        DataSetName = 'fdbAtualizacoes'
-        RowCount = 0
-        object memBackGroundAtualizacoes: TfrxMemoView
-          Align = baClient
-          AllowVectorExport = True
-          Width = 718.110700000000000000
-          Height = 22.677180000000000000
-          Frame.Typ = []
-        end
-      end
-      object Footer1: TfrxFooter
-        FillType = ftBrush
-        Frame.Typ = [ftTop]
-        Height = 22.677180000000000000
-        Top = 109.606370000000000000
-        Width = 718.110700000000000000
-      end
-    end
-    object pagDesignacoes: TfrxReportPage
-      PaperWidth = 210.000000000000000000
-      PaperHeight = 297.000000000000000000
-      PaperSize = 9
-      LeftMargin = 10.000000000000000000
-      RightMargin = 10.000000000000000000
-      TopMargin = 10.000000000000000000
-      BottomMargin = 10.000000000000000000
-      Frame.Typ = []
-      MirrorMode = []
-      PrintIfEmpty = False
-      PrintOnPreviousPage = True
-      object GroupHeader2: TfrxGroupHeader
-        FillType = ftBrush
-        Frame.Typ = []
-        Height = 22.677180000000000000
-        Top = 18.897650000000000000
-        Width = 718.110700000000000000
-        Condition = 'fdbDesignacoes."Numero"'
-        ReprintOnNewPage = True
         object Memo18: TfrxMemoView
-          Align = baClient
           AllowVectorExport = True
-          Width = 718.110700000000000000
-          Height = 22.677180000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          HAlign = haCenter
-          Memo.UTF8W = (
-            'Designa'#231#245'es Realizadas')
-          ParentFont = False
-        end
-      end
-      object MasterData3: TfrxMasterData
-        FillType = ftBrush
-        Frame.Typ = [ftBottom]
-        Height = 86.929190000000000000
-        Top = 64.252010000000000000
-        Width = 718.110700000000000000
-        OnBeforePrint = 'MasterData3OnBeforePrint'
-        DataSet = fdbDesignacoes
-        DataSetName = 'fdbDesignacoes'
-        RowCount = 0
-        Stretched = True
-        object memBackgroudDesignacoes: TfrxMemoView
-          Align = baClient
-          AllowVectorExport = True
-          Width = 718.110700000000000000
-          Height = 86.929190000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          ParentFont = False
-        end
-        object Memo6: TfrxMemoView
-          AllowVectorExport = True
-          Left = 11.338590000000000000
-          Top = 7.559060000000003000
-          Width = 128.504020000000000000
+          Left = 7.559060000000000000
+          Top = 79.370130000000000000
+          Width = 117.165430000000000000
           Height = 15.118120000000000000
           AutoWidth = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Filtros Selecionados:')
+          ParentFont = False
+        end
+        object memTituloFiltroNumero: TfrxMemoView
+          AllowVectorExport = True
+          Left = 132.283550000000000000
+          Top = 79.370130000000000000
+          Width = 117.165430000000000000
+          Height = 15.118120000000000000
+          AutoWidth = True
+          DataField = 'memTituloFiltroNumero'
+          DataSet = fdbTitulos
+          DataSetName = 'fdbTitulos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbTitulos."memTituloFiltroNumero"]')
+          ParentFont = False
+        end
+        object Memo19: TfrxMemoView
+          AllowVectorExport = True
+          Left = 289.905690000000000000
+          Top = 79.370130000000000000
+          Width = 170.078850000000000000
+          Height = 15.118120000000000000
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Designa'#231#245'es realizaadas entre:')
+          ParentFont = False
+        end
+        object Memo20: TfrxMemoView
+          AllowVectorExport = True
+          Left = 509.118430000000000000
+          Top = 79.370130000000000000
+          Width = 170.078850000000000000
+          Height = 15.118120000000000000
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Respons'#225'vel pela Designa'#231#227'o')
+          ParentFont = False
+        end
+        object memFiltroNumero: TfrxMemoView
+          AllowVectorExport = True
+          Left = 132.181200000000000000
+          Top = 98.267780000000000000
+          Width = 117.165430000000000000
+          Height = 15.118120000000000000
+          AutoWidth = True
+          DataField = 'memFiltroNumero'
+          DataSet = fdbTitulos
+          DataSetName = 'fdbTitulos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbTitulos."memFiltroNumero"]')
+          ParentFont = False
+        end
+        object memFiltroPeriodo: TfrxMemoView
+          AllowVectorExport = True
+          Left = 289.803340000000000000
+          Top = 98.267780000000000000
+          Width = 170.078850000000000000
+          Height = 15.118120000000000000
+          AutoWidth = True
+          DataField = 'memFiltroPeriodo'
+          DataSet = fdbTitulos
+          DataSetName = 'fdbTitulos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbTitulos."memFiltroPeriodo"]')
+          ParentFont = False
+        end
+        object memFiltroResponsavel: TfrxMemoView
+          AllowVectorExport = True
+          Left = 509.016080000000000000
+          Top = 98.267780000000000000
+          Width = 170.078850000000000000
+          Height = 15.118120000000000000
+          AutoWidth = True
+          DataField = 'memFiltroResponsavel'
+          DataSet = fdbTitulos
+          DataSetName = 'fdbTitulos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbTitulos."memFiltroResponsavel"]')
+          ParentFont = False
+        end
+      end
+      object GroupHeader1: TfrxGroupHeader
+        FillType = ftBrush
+        Frame.Typ = [ftTop]
+        Height = 18.897650000000000000
+        Top = 192.756030000000000000
+        Width = 1046.929810000000000000
+        Condition = 'fdbDesignacoes."Numero"'
+        ReprintOnNewPage = True
+        object memoBackGround: TfrxMemoView
+          Align = baClient
+          AllowVectorExport = True
+          Width = 1046.929810000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Fill.BackColor = 14803425
+          HAlign = haCenter
+          ParentFont = False
+        end
+        object memTituloTipo: TfrxMemoView
+          AllowVectorExport = True
+          Left = 7.559060000000000000
+          Top = 3.779530000000000000
+          Width = 52.913420000000000000
+          Height = 11.338590000000000000
+          DataField = 'memTituloTipo'
+          DataSet = fdbTitulos
+          DataSetName = 'fdbTitulos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbTitulos."memTituloTipo"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object fdbDesignacoesNumero: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 62.811070000000000000
+          Top = 3.779530000000000000
+          Width = 400.630180000000000000
+          Height = 11.338590000000000000
+          DataField = 'Numero'
+          DataSet = fdbDesignacoes
+          DataSetName = 'fdbDesignacoes'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbDesignacoes."Numero"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Frame.Typ = [ftTop]
+        Height = 68.031540000000000000
+        Top = 234.330860000000000000
+        Width = 1046.929810000000000000
+        OnBeforePrint = 'MasterData1OnBeforePrint'
+        DataSet = fdbDesignacoes
+        DataSetName = 'fdbDesignacoes'
+        RowCount = 0
+        Stretched = True
+        object Memo5: TfrxMemoView
+          AllowVectorExport = True
+          Left = 7.559060000000000000
+          Top = 3.779530000000000000
+          Width = 86.929190000000000000
+          Height = 11.338590000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -569,20 +660,19 @@ inherited dtmPainel: TdtmPainel
           ParentFont = False
           VAlign = vaCenter
         end
-        object Memo7: TfrxMemoView
+        object Memo6: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 11.338590000000000000
-          Top = 20.677180000000010000
-          Width = 200.315090000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Left = 7.559060000000000000
+          Top = 16.897650000000000000
+          Width = 192.756030000000000000
+          Height = 11.338590000000000000
           DataField = 'Usuario_Designado'
           DataSet = fdbDesignacoes
           DataSetName = 'fdbDesignacoes'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = []
@@ -591,16 +681,15 @@ inherited dtmPainel: TdtmPainel
           ParentFont = False
           VAlign = vaCenter
         end
-        object Memo8: TfrxMemoView
+        object Memo7: TfrxMemoView
           AllowVectorExport = True
-          Left = 279.976500000000000000
-          Top = 7.559060000000003000
-          Width = 113.385900000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Left = 207.874150000000000000
+          Top = 3.779530000000000000
+          Width = 86.929190000000000000
+          Height = 11.338590000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -609,20 +698,19 @@ inherited dtmPainel: TdtmPainel
           ParentFont = False
           VAlign = vaCenter
         end
-        object Memo9: TfrxMemoView
+        object Memo8: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 279.976500000000000000
-          Top = 20.677180000000010000
-          Width = 136.063080000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Left = 207.874150000000000000
+          Top = 16.897650000000000000
+          Width = 192.756030000000000000
+          Height = 11.338590000000000000
           DataField = 'Usuario_Designado'
           DataSet = fdbDesignacoes
           DataSetName = 'fdbDesignacoes'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = []
@@ -631,16 +719,15 @@ inherited dtmPainel: TdtmPainel
           ParentFont = False
           VAlign = vaCenter
         end
-        object Memo10: TfrxMemoView
+        object Memo9: TfrxMemoView
           AllowVectorExport = True
-          Left = 477.189240000000000000
-          Top = 7.559060000000003000
+          Left = 419.527830000000000000
+          Top = 3.779530000000000000
           Width = 86.929190000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Height = 11.338590000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -649,20 +736,19 @@ inherited dtmPainel: TdtmPainel
           ParentFont = False
           VAlign = vaCenter
         end
-        object Memo11: TfrxMemoView
+        object Memo10: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 477.189240000000000000
-          Top = 20.677180000000010000
+          Left = 419.527830000000000000
+          Top = 16.897650000000000000
           Width = 86.929190000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Height = 11.338590000000000000
           DataField = 'Data_Hora_Inicial'
           DataSet = fdbDesignacoes
           DataSetName = 'fdbDesignacoes'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = []
@@ -671,16 +757,54 @@ inherited dtmPainel: TdtmPainel
           ParentFont = False
           VAlign = vaCenter
         end
-        object Memo13: TfrxMemoView
+        object Memo11: TfrxMemoView
           AllowVectorExport = True
-          Left = 12.133890000000000000
-          Top = 52.913420000000000000
-          Width = 94.488250000000000000
-          Height = 15.118120000000000000
+          Left = 532.913730000000000000
+          Top = 3.779530000000000000
+          Width = 124.724490000000000000
+          Height = 11.338590000000000000
           AutoWidth = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Respons'#225'vel pela designa'#231#227'o')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo12: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 532.913730000000000000
+          Top = 16.897650000000000000
+          Width = 166.299320000000000000
+          Height = 11.338590000000000000
+          DataField = 'Usuario_Responsavel'
+          DataSet = fdbDesignacoes
+          DataSetName = 'fdbDesignacoes'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[fdbDesignacoes."Usuario_Responsavel"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo13: TfrxMemoView
+          AllowVectorExport = True
+          Left = 710.551640000000000000
+          Top = 3.779530000000000000
+          Width = 86.929190000000000000
+          Height = 11.338590000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -692,17 +816,16 @@ inherited dtmPainel: TdtmPainel
         object Memo14: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 12.133890000000000000
-          Top = 66.031539999999990000
+          Left = 710.551640000000000000
+          Top = 16.897650000000000000
           Width = 86.929190000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Height = 11.338590000000000000
           DataField = 'Data_Hora_Final'
           DataSet = fdbDesignacoes
           DataSetName = 'fdbDesignacoes'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = []
@@ -713,14 +836,13 @@ inherited dtmPainel: TdtmPainel
         end
         object Memo15: TfrxMemoView
           AllowVectorExport = True
-          Left = 147.181200000000000000
-          Top = 52.913420000000000000
-          Width = 105.826840000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Left = 823.937540000000000000
+          Top = 3.779530000000000000
+          Width = 86.929190000000000000
+          Height = 11.338590000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -732,17 +854,16 @@ inherited dtmPainel: TdtmPainel
         object Memo16: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 147.181200000000000000
-          Top = 66.031539999999990000
+          Left = 823.937540000000000000
+          Top = 16.897650000000000000
           Width = 86.929190000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Height = 11.338590000000000000
           DataField = 'ccTempo'
           DataSet = fdbDesignacoes
           DataSetName = 'fdbDesignacoes'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = []
@@ -753,14 +874,13 @@ inherited dtmPainel: TdtmPainel
         end
         object Memo17: TfrxMemoView
           AllowVectorExport = True
-          Left = 279.976500000000000000
-          Top = 52.913420000000000000
-          Width = 162.519790000000000000
-          Height = 15.118120000000000000
-          AutoWidth = True
+          Left = 7.559060000000000000
+          Top = 34.015770000000000000
+          Width = 117.165430000000000000
+          Height = 11.338590000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -772,232 +892,34 @@ inherited dtmPainel: TdtmPainel
         object Memo: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 279.976500000000000000
-          Top = 66.031539999999990000
-          Width = 430.866175910000000000
-          Height = 15.118120000000000000
+          Left = 7.559060000000000000
+          Top = 49.133890000000000000
+          Width = 1024.252630000000000000
+          Height = 11.338590000000000000
           StretchMode = smMaxHeight
           DataField = 'Justificativa'
           DataSet = fdbDesignacoes
           DataSetName = 'fdbDesignacoes'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -8
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = []
           Memo.UTF8W = (
             '[fdbDesignacoes."Justificativa"]')
           ParentFont = False
+          VAlign = vaCenter
         end
       end
       object GroupFooter1: TfrxGroupFooter
         FillType = ftBrush
-        Frame.Typ = []
-        Height = 22.677180000000000000
-        Top = 173.858380000000000000
-        Width = 718.110700000000000000
-      end
-    end
-    object pagObservacoes: TfrxReportPage
-      PaperWidth = 210.000000000000000000
-      PaperHeight = 297.000000000000000000
-      PaperSize = 9
-      LeftMargin = 10.000000000000000000
-      RightMargin = 10.000000000000000000
-      TopMargin = 10.000000000000000000
-      BottomMargin = 10.000000000000000000
-      Frame.Typ = []
-      MirrorMode = []
-      PrintIfEmpty = False
-      PrintOnPreviousPage = True
-      object GroupHeader3: TfrxGroupHeader
-        FillType = ftBrush
-        Frame.Typ = []
-        Height = 22.677180000000000000
-        Top = 18.897650000000000000
-        Width = 718.110700000000000000
-        Child = frpExtrato.Child1
-        Condition = '1=1'
-        ReprintOnNewPage = True
-        object Memo19: TfrxMemoView
-          Align = baClient
-          AllowVectorExport = True
-          Width = 718.110700000000000000
-          Height = 22.677180000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = [ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            'Observa'#231#245'es Registradas')
-          ParentFont = False
-        end
-      end
-      object Child1: TfrxChild
-        FillType = ftBrush
-        Frame.Typ = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        Height = 22.677180000000000000
-        ParentFont = False
-        Top = 64.252010000000000000
-        Width = 718.110700000000000000
-        ToNRows = 0
-        ToNRowsMode = rmCount
-        object Memo20: TfrxMemoView
-          AllowVectorExport = True
-          Left = 7.559060000000000000
-          Top = 3.779530000000000000
-          Width = 94.488250000000000000
-          Height = 15.118120000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = []
-          Memo.UTF8W = (
-            'Data | Hora')
-          ParentFont = False
-        end
-        object Memo21: TfrxMemoView
-          AllowVectorExport = True
-          Left = 132.283550000000000000
-          Top = 3.779530000000000000
-          Width = 94.488250000000000000
-          Height = 15.118120000000000000
-          Frame.Typ = []
-          Memo.UTF8W = (
-            'Respons'#225'vel')
-        end
-        object Memo22: TfrxMemoView
-          AllowVectorExport = True
-          Left = 272.126160000000000000
-          Top = 3.779530000000000000
-          Width = 94.488250000000000000
-          Height = 15.118120000000000000
-          Frame.Typ = []
-          Memo.UTF8W = (
-            'Observa'#231#227'o')
-        end
-      end
-      object MasterData4: TfrxMasterData
-        FillType = ftBrush
-        Frame.Typ = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = []
-        Height = 22.677180000000000000
-        ParentFont = False
-        Top = 109.606370000000000000
-        Width = 718.110700000000000000
-        OnBeforePrint = 'MasterData4OnBeforePrint'
-        DataSet = fdbObservacoes
-        DataSetName = 'fdbObservacoes'
-        RowCount = 0
-        Stretched = True
-        object memBackGroundObservacoes: TfrxMemoView
-          Align = baClient
-          AllowVectorExport = True
-          Width = 718.110700000000000000
-          Height = 22.677180000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          ParentFont = False
-        end
-        object fdbObservacoesData_Hora: TfrxMemoView
-          IndexTag = 1
-          AllowVectorExport = True
-          Left = 7.559060000000000000
-          Top = 2.834652992125984000
-          Width = 109.606370000000000000
-          Height = 17.007874015748030000
-          DataField = 'Data_Hora'
-          DataSet = fdbObservacoes
-          DataSetName = 'fdbObservacoes'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[fdbObservacoes."Data_Hora"]')
-          ParentFont = False
-        end
-        object fdbObservacoesNome_Usuario: TfrxMemoView
-          IndexTag = 1
-          AllowVectorExport = True
-          Left = 132.283550000000000000
-          Top = 2.834652992125984000
-          Width = 128.504020000000000000
-          Height = 17.007874015748030000
-          StretchMode = smMaxHeight
-          DataField = 'Nome_Usuario'
-          DataSet = fdbObservacoes
-          DataSetName = 'fdbObservacoes'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[fdbObservacoes."Nome_Usuario"]')
-          ParentFont = False
-        end
-        object fdbObservacoesObservacao: TfrxMemoView
-          IndexTag = 1
-          AllowVectorExport = True
-          Left = 272.126160000000000000
-          Top = 2.834652992125984000
-          Width = 438.425480000000000000
-          Height = 17.007874015748030000
-          StretchMode = smMaxHeight
-          DataField = 'Observacao'
-          DataSet = fdbObservacoes
-          DataSetName = 'fdbObservacoes'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[fdbObservacoes."Observacao"]')
-          ParentFont = False
-        end
-      end
-      object GroupFooter2: TfrxGroupFooter
-        FillType = ftBrush
         Frame.Typ = [ftTop]
-        Height = 22.677180000000000000
-        Top = 154.960730000000000000
-        Width = 718.110700000000000000
+        Height = 18.897650000000000000
+        Top = 325.039580000000000000
+        Width = 1046.929810000000000000
       end
     end
-  end
-  object fdbExtrato: TfrxDBDataset
-    UserName = 'fdbExtrato'
-    CloseDataSource = False
-    OpenDataSource = False
-    DataSet = cdsPainel
-    BCDToCurrency = False
-    Left = 544
-    Top = 256
   end
   object fdbDesignacoes: TfrxDBDataset
     UserName = 'fdbDesignacoes'
@@ -1018,32 +940,38 @@ inherited dtmPainel: TdtmPainel
     OpenDataSource = False
     DataSet = mtbDesignacoes
     BCDToCurrency = False
-    Left = 536
-    Top = 336
+    Left = 64
+    Top = 320
   end
-  object fdbObservacoes: TfrxDBDataset
-    UserName = 'fdbObservacoes'
-    CloseDataSource = False
-    FieldAliases.Strings = (
-      'Data_Hora=Data_Hora'
-      'Nome_Usuario=Nome_Usuario'
-      'Observacao=Observacao')
-    OpenDataSource = False
-    DataSet = mtbObservacoes
-    BCDToCurrency = False
-    Left = 536
-    Top = 400
+  object frxPDFExport: TfrxPDFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    InteractiveFormsFontSubset = 'A-Z,a-z,0-9,#43-#47 '
+    OpenAfterExport = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Quality = 95
+    Transparency = False
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
+    PdfA = False
+    PDFStandard = psNone
+    PDFVersion = pv17
+    Left = 184
+    Top = 392
   end
-  object fdbAtualizacoes: TfrxDBDataset
-    UserName = 'fdbAtualizacoes'
-    CloseDataSource = False
-    OpenDataSource = False
-    DataSet = mtbHistoricoAtualizacoes
-    BCDToCurrency = False
-    Left = 544
-    Top = 480
-  end
-  object mtbDesignacoes: TFDMemTable
+  object mtbTitulos: TFDMemTable
     OnCalcFields = mtbDesignacoesCalcFields
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
@@ -1052,54 +980,47 @@ inherited dtmPainel: TdtmPainel
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
-    Left = 424
-    Top = 336
-    object mtbDesignacoesid: TLargeintField
-      FieldName = 'id'
-    end
-    object mtbDesignacoesUsuario_Designado: TStringField
-      FieldName = 'Usuario_Designado'
-      OnGetText = mtbDesignacoesSetor_DesignadoGetText
-      Size = 100
-    end
-    object mtbDesignacoesSetor_Designado: TStringField
-      FieldName = 'Setor_Designado'
-      OnGetText = mtbDesignacoesSetor_DesignadoGetText
+    Left = 184
+    Top = 248
+    object mtbTitulosmemTipo: TStringField
+      FieldName = 'memTipo'
       Size = 50
     end
-    object mtbDesignacoesUsuario_Responsavel: TStringField
-      FieldName = 'Usuario_Responsavel'
-      Size = 100
-    end
-    object mtbDesignacoesJustificativa: TStringField
-      FieldName = 'Justificativa'
-      Size = 100
-    end
-    object mtbDesignacoesNumero: TStringField
-      FieldName = 'Numero'
+    object mtbTitulosmemTituloFiltroNumero: TStringField
+      FieldName = 'memTituloFiltroNumero'
       Size = 50
     end
-    object mtbDesignacoesData_Hora_Inicial: TDateTimeField
-      FieldName = 'Data_Hora_Inicial'
+    object mtbTitulosmemFiltroNumero: TStringField
+      FieldName = 'memFiltroNumero'
+      Size = 50
     end
-    object mtbDesignacoesData_Hora_Final: TDateTimeField
-      FieldName = 'Data_Hora_Final'
-      OnGetText = mtbDesignacoesData_Hora_FinalGetText
+    object mtbTitulosmemFiltroPeriodo: TStringField
+      FieldName = 'memFiltroPeriodo'
+      Size = 50
     end
-    object mtbDesignacoesDias: TIntegerField
-      FieldName = 'Dias'
+    object mtbTitulosmemFiltroResponsavel: TStringField
+      FieldName = 'memFiltroResponsavel'
+      Size = 50
     end
-    object mtbDesignacoesHoras: TIntegerField
-      FieldName = 'Horas'
+    object mtbTitulosmemTituloTipo: TStringField
+      FieldName = 'memTituloTipo'
+      Size = 50
     end
-    object mtbDesignacoesMinutos: TIntegerField
-      FieldName = 'Minutos'
-    end
-    object mtbDesignacoesccTempo: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'ccTempo'
-      Size = 30
-      Calculated = True
-    end
+  end
+  object fdbTitulos: TfrxDBDataset
+    UserName = 'fdbTitulos'
+    CloseDataSource = True
+    FieldAliases.Strings = (
+      'memTipo=memTipo'
+      'memTituloFiltroNumero=memTituloFiltroNumero'
+      'memFiltroNumero=memFiltroNumero'
+      'memFiltroPeriodo=memFiltroPeriodo'
+      'memFiltroResponsavel=memFiltroResponsavel'
+      'memTituloTipo=memTituloTipo')
+    OpenDataSource = False
+    DataSet = mtbTitulos
+    BCDToCurrency = False
+    Left = 184
+    Top = 320
   end
 end

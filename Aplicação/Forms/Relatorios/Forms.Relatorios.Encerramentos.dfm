@@ -1,27 +1,27 @@
-inherited frmListagemDesignacoes: TfrmListagemDesignacoes
-  Caption = 'frmListagemDesignacoes'
-  ClientHeight = 329
-  ClientWidth = 608
+inherited frmRelatorioEncerramentos: TfrmRelatorioEncerramentos
+  Caption = 'Relat'#243'rio de Encerramentos'
+  ClientHeight = 283
+  ClientWidth = 607
   OnDestroy = FormDestroy
-  ExplicitWidth = 626
-  ExplicitHeight = 376
+  ExplicitWidth = 625
+  ExplicitHeight = 330
   PixelsPerInch = 120
   TextHeight = 16
   inherited pnlForm: TPanel
-    Width = 598
-    Height = 319
-    ExplicitWidth = 598
-    ExplicitHeight = 319
+    Width = 597
+    Height = 273
+    ExplicitWidth = 597
+    ExplicitHeight = 273
     object Label1: TLabel [0]
       Left = 40
-      Top = 186
-      Width = 172
+      Top = 139
+      Width = 103
       Height = 16
-      Caption = 'Designa'#231#245'es realizadas entre:'
+      Caption = 'Encerrados entre:'
     end
     object Label2: TLabel [1]
-      Left = 319
-      Top = 186
+      Left = 256
+      Top = 139
       Width = 7
       Height = 16
       Caption = 'e'
@@ -33,17 +33,10 @@ inherited frmListagemDesignacoes: TfrmListagemDesignacoes
       Height = 16
       Caption = 'Tipo:'
     end
-    object lblTipo: TLabel [3]
-      Left = 40
-      Top = 138
-      Width = 92
-      Height = 16
-      Caption = 'N'#186' do Processo:'
-    end
     inherited pnlBotoes: TPanel
-      Width = 594
+      Width = 593
       TabOrder = 6
-      ExplicitWidth = 594
+      ExplicitWidth = 593
       inherited btnExportar: TSpeedButton
         OnClick = btnExportarClick
       end
@@ -51,29 +44,29 @@ inherited frmListagemDesignacoes: TfrmListagemDesignacoes
         OnClick = btnImprimirClick
       end
       inherited pnlSair: TPanel
-        Left = 457
-        ExplicitLeft = 457
+        Left = 456
+        ExplicitLeft = 456
       end
     end
     object edtDataInicial: TMaskEdit
-      Left = 218
-      Top = 182
+      Left = 155
+      Top = 135
+      Width = 94
+      Height = 24
+      EditMask = '99/99/9999'
+      MaxLength = 10
+      TabOrder = 3
+      Text = '  /  /    '
+      OnExit = edtDataInicialExit
+    end
+    object edtDataFinal: TMaskEdit
+      Left = 269
+      Top = 135
       Width = 95
       Height = 24
       EditMask = '99/99/9999'
       MaxLength = 10
       TabOrder = 4
-      Text = '  /  /    '
-      OnExit = edtDataInicialExit
-    end
-    object edtDataFinal: TMaskEdit
-      Left = 332
-      Top = 182
-      Width = 95
-      Height = 24
-      EditMask = '99/99/9999'
-      MaxLength = 10
-      TabOrder = 5
       Text = '  /  /    '
       OnExit = edtDataInicialExit
     end
@@ -104,29 +97,21 @@ inherited frmListagemDesignacoes: TfrmListagemDesignacoes
       TabOrder = 2
       OnClick = rdbControlPcClick
     end
-    object edtNumero: TEdit
-      Left = 140
-      Top = 135
-      Width = 230
-      Height = 24
-      TabOrder = 3
-      Text = 'edtNumero'
-    end
     inline fraPesquisaUsuario: TfraPesquisaUsuario
       AlignWithMargins = True
       Left = 5
-      Top = 218
-      Width = 588
+      Top = 172
+      Width = 587
       Height = 74
       Margins.Bottom = 25
       Align = alBottom
       Color = clWhite
       ParentBackground = False
       ParentColor = False
-      TabOrder = 7
-      ExplicitLeft = 5
-      ExplicitTop = 218
-      ExplicitWidth = 588
+      TabOrder = 5
+      ExplicitLeft = 2
+      ExplicitTop = 165
+      ExplicitWidth = 587
       inherited Label9: TLabel
         Left = 35
         Width = 87

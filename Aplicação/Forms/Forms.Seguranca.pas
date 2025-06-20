@@ -37,10 +37,11 @@ type
     pnlPaineis: TPanel;
     chbMenuPaineis: TCheckBox;
     chbPaineisAcompanhamento: TCheckBox;
-    tbsListagens: TTabSheet;
-    pnlListagens: TPanel;
-    chbMenuListagens: TCheckBox;
-    chbListagemDesignacoes: TCheckBox;
+    tbsRelatorios: TTabSheet;
+    pnlRelatorios: TPanel;
+    chbMenuRelatorios: TCheckBox;
+    chbRelatorioDesignacoes: TCheckBox;
+    chbRelatorioEncerramentos: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -55,7 +56,7 @@ type
     procedure btnDesmarcarTodosClick(Sender: TObject);
     procedure chbMenuImportacoesClick(Sender: TObject);
     procedure chbMenuPaineisClick(Sender: TObject);
-    procedure chbMenuListagensClick(Sender: TObject);
+    procedure chbMenuRelatoriosClick(Sender: TObject);
 
   private
 
@@ -139,10 +140,11 @@ begin
       if chbPaineisAcompanhamento.Checked then LItens.Add(4001);
    end;
 
-   if chbMenuListagens.Checked then
+   if chbMenuRelatorios.Checked then
       begin
       LItens.Add(5000);
-      if chbListagemDesignacoes.Checked then LItens.Add(5001);
+      if chbRelatorioDesignacoes.Checked then LItens.Add(5001);
+      if chbRelatorioEncerramentos.Checked then LItens.Add(5002);
    end;
 
 
@@ -214,20 +216,21 @@ begin
    chbImportacaoControlPc.Enabled := LMarcar;
 end;
 
-procedure TfrmSeguranca.chbMenuListagensClick(Sender: TObject);
+procedure TfrmSeguranca.chbMenuRelatoriosClick(Sender: TObject);
 var
    LMarcar : Boolean;
 begin
   inherited;
 
-   if chbMenuListagens.Checked then
+   if chbMenuRelatorios.Checked then
       LMarcar := True
    else
       begin
       LMarcar := False;
       MarcarItensDoGrupo(False,5000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
    end;
-   chbListagemDesignacoes.Enabled := LMarcar;
+   chbRelatorioDesignacoes.Enabled   := LMarcar;
+   chbRelatorioEncerramentos.Enabled := LMarcar;
 end;
 
 procedure TfrmSeguranca.chbMenuManutencaoClick(Sender: TObject);
@@ -276,7 +279,7 @@ begin
    pnlManutencao.Enabled         := AHabilitar;
    pnlImportacaoPlanihas.Enabled := AHabilitar;
    pnlPaineis.Enabled            := AHabilitar;
-   pnlListagens.Enabled          := AHabilitar;
+   pnlRelatorios.Enabled         := AHabilitar;
 
    BotoesDeEdicao(AHabilitar);
 end;
@@ -373,9 +376,10 @@ begin
         4001 : chbPaineisAcompanhamento.Checked := True;
         {$endRegion}
 
-        {$Region 'Listagens'}
-        5000 : chbMenuListagens.Checked           := True;
-        5001 : chbListagemDesignacoes.Checked := True;
+        {$Region 'Relatorios'}
+        5000 : chbMenuRelatorios.Checked         := True;
+        5001 : chbRelatorioDesignacoes.Checked   := True;
+        5002 : chbRelatorioEncerramentos.Checked := True;
         {$endRegion}
      end;
    end;
@@ -410,10 +414,11 @@ begin
       chbPaineisAcompanhamento.Checked := AMarcar;
    end;
 
-   if (AGrupo = 0) or (AGrupo = 5000) then     // Listagens
+   if (AGrupo = 0) or (AGrupo = 5000) then     // Relatorios
       begin
-      chbMenuListagens.Checked       := AMarcar;
-      chbListagemDesignacoes.Checked := AMarcar;
+      chbMenuRelatorios.Checked         := AMarcar;
+      chbRelatorioDesignacoes.Checked   := AMarcar;
+      chbRelatorioEncerramentos.Checked := AMarcar;
    end;
 end;
 
@@ -427,7 +432,7 @@ begin
        MarcarItensDoGrupo(AMarcar, 3000)
     else if APainel = pnlImportacaoPlanihas  then
        MarcarItensDoGrupo(AMarcar, 4000)
-    else if APainel = pnlListagens  then
+    else if APainel = pnlRelatorios  then
        MarcarItensDoGrupo(AMarcar, 5000)
 end;
 
@@ -449,8 +454,8 @@ begin
      RealocarBotoesDeMarcacao(pnlImportacaoPlanihas)
   else if pgcSeguranca.ActivePage = tbsPaineis then
      RealocarBotoesDeMarcacao(pnlPaineis)
-  else if pgcSeguranca.ActivePage = tbsListagens then
-     RealocarBotoesDeMarcacao(pnlListagens)
+  else if pgcSeguranca.ActivePage = tbsRelatorios then
+     RealocarBotoesDeMarcacao(pnlRelatorios)
 
 end;
 
