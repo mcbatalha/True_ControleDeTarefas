@@ -20,7 +20,7 @@ inherited frmSeguranca: TfrmSeguranca
       Top = 111
       Width = 902
       Height = 421
-      ActivePage = tbsRelatorios
+      ActivePage = tbsManutencao
       Align = alClient
       TabOrder = 1
       TabWidth = 150
@@ -138,6 +138,14 @@ inherited frmSeguranca: TfrmSeguranca
             Height = 17
             Caption = 'Paineis de Acompanhamento'
             TabOrder = 1
+          end
+          object chbQuadroResumo: TCheckBox
+            Left = 80
+            Top = 115
+            Width = 192
+            Height = 17
+            Caption = 'Quadro Resumo'
+            TabOrder = 2
           end
         end
       end

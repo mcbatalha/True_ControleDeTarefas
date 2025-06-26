@@ -6,6 +6,7 @@ interface
 uses
    System.JSON,
    Vcl.Menus,
+   Vcl.Buttons,
    Libs.TSeguranca,
    Forms.Principal;
 
@@ -26,6 +27,12 @@ begin
          begin
          if (frmPrincipal.Components[i] as TMenuItem).Tag <> 1 then
            (frmPrincipal.Components[i] as TMenuItem).Visible := False;
+      end;
+
+      if (frmPrincipal.Components[i] is TSpeedButton) then
+         begin
+         if (frmPrincipal.Components[i] as TSpeedButton).Tag <> 1 then
+           (frmPrincipal.Components[i] as TSpeedButton).Visible := False;
       end;
    end;
 end;
@@ -65,6 +72,7 @@ begin
            {$Region 'Paineis'}
            4000 : frmPrincipal.mngPaineis.Visible              := True;
            4001 : frmPrincipal.mniPainelAcompanhamento.Visible := True;
+           4002 : frmPrincipal.mniQuadroResumo.Visible         := True;
            {$endRegion}
 
            {$Region 'Listagens'}
@@ -75,6 +83,11 @@ begin
         end;
      end;
    finally
+     frmPrincipal.btnQuadroResumo.Visible         := frmPrincipal.mniQuadroResumo.Visible;
+     frmPrincipal.btnPainelAcompanhamento.Visible := frmPrincipal.mniPainelAcompanhamento.Visible;
+     frmPrincipal.btnImportacaoControlPc.Visible  := frmPrincipal.mniImportacaoControlPc.Visible;
+     frmPrincipal.btnImportacaoSiags.Visible      := frmPrincipal.mniImportacaoSiags.Visible;
+     frmPrincipal.btnImportacaoAutoSc.Visible     := frmPrincipal.mniImportacaoAutoSC.Visible;
 //      LItens.Free;
    end;
 end;

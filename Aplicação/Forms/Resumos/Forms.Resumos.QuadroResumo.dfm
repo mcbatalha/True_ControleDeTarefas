@@ -1,0 +1,909 @@
+inherited frmQuadroResumo: TfrmQuadroResumo
+  Margins.Top = 50
+  BorderStyle = bsNone
+  Caption = 'Quadro de Resumo'
+  ClientHeight = 422
+  ClientWidth = 1167
+  OnDestroy = FormDestroy
+  ExplicitWidth = 1167
+  ExplicitHeight = 422
+  PixelsPerInch = 120
+  TextHeight = 16
+  inherited pnlForm: TPanel
+    Width = 1157
+    Height = 412
+    ExplicitLeft = 0
+    ExplicitTop = 0
+    ExplicitWidth = 1157
+    ExplicitHeight = 323
+    inherited pnlBotoes: TPanel
+      Top = 43
+      Width = 1153
+      ExplicitWidth = 1153
+      inherited pnlSair: TPanel
+        Left = 1016
+        ExplicitLeft = 1016
+      end
+    end
+    object Panel6: TPanel
+      Left = 2
+      Top = 2
+      Width = 1153
+      Height = 41
+      Align = alTop
+      Caption = 'QUADRO RESUMO'
+      Color = 8404992
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -20
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 1
+      ExplicitTop = -1
+    end
+    object pnlQuadroResumo: TPanel
+      Left = 2
+      Top = 84
+      Width = 1153
+      Height = 189
+      Align = alTop
+      BevelOuter = bvNone
+      Caption = 'pnlQuadroResumo'
+      TabOrder = 2
+      object pnlTotaisSiags: TPanel
+        AlignWithMargins = True
+        Left = 30
+        Top = 30
+        Width = 345
+        Height = 154
+        Margins.Left = 30
+        Margins.Top = 30
+        Margins.Right = 30
+        Margins.Bottom = 5
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        ParentBackground = False
+        TabOrder = 0
+        ExplicitLeft = 32
+        ExplicitTop = 158
+        ExplicitHeight = 136
+        object Label1: TLabel
+          AlignWithMargins = True
+          Left = 5
+          Top = 12
+          Width = 335
+          Height = 18
+          Margins.Top = 10
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'SIAGS'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -15
+          Font.Name = 'Roboto'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitWidth = 42
+        end
+        object Panel1: TPanel
+          AlignWithMargins = True
+          Left = 17
+          Top = 43
+          Width = 323
+          Height = 106
+          Margins.Left = 15
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitHeight = 311
+          object Shape4: TShape
+            Left = -1
+            Top = 63
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape3: TShape
+            Left = -1
+            Top = 31
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape1: TShape
+            Left = -1
+            Top = -1
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape2: TShape
+            Left = 184
+            Top = -1
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Label2: TLabel
+            Left = 16
+            Top = 6
+            Width = 35
+            Height = 18
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label3: TLabel
+            Left = 16
+            Top = 38
+            Width = 153
+            Height = 18
+            Caption = 'Vencidos (Prazo True)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label4: TLabel
+            Left = 16
+            Top = 70
+            Width = 151
+            Height = 18
+            Caption = 'Vencidos (Prazo ANS)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Shape5: TShape
+            Left = 184
+            Top = 31
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape6: TShape
+            Left = 184
+            Top = 63
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object lblTotalSiags: TLabel
+            Left = 191
+            Top = 7
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblSiagsVencidosTrue: TLabel
+            Left = 191
+            Top = 38
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblSiagsVencidosAns: TLabel
+            Left = 191
+            Top = 70
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+        end
+      end
+      object Panel2: TPanel
+        AlignWithMargins = True
+        Left = 405
+        Top = 30
+        Width = 345
+        Height = 154
+        Margins.Left = 0
+        Margins.Top = 30
+        Margins.Right = 30
+        Margins.Bottom = 5
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        ParentBackground = False
+        TabOrder = 1
+        ExplicitLeft = 407
+        ExplicitTop = 73
+        ExplicitHeight = 159
+        object Label5: TLabel
+          AlignWithMargins = True
+          Left = 5
+          Top = 12
+          Width = 335
+          Height = 18
+          Margins.Top = 10
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'AUTOSC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -15
+          Font.Name = 'Roboto'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitWidth = 58
+        end
+        object Panel3: TPanel
+          AlignWithMargins = True
+          Left = 17
+          Top = 43
+          Width = 323
+          Height = 106
+          Margins.Left = 15
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitHeight = 311
+          object Shape10: TShape
+            Left = -1
+            Top = 63
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape9: TShape
+            Left = -1
+            Top = 31
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Label7: TLabel
+            Left = 16
+            Top = 38
+            Width = 153
+            Height = 18
+            Caption = 'Vencidos (Prazo True)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label8: TLabel
+            Left = 16
+            Top = 70
+            Width = 151
+            Height = 18
+            Caption = 'Vencidos (Prazo ANS)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Shape7: TShape
+            Left = -1
+            Top = -1
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape8: TShape
+            Left = 184
+            Top = -1
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape12: TShape
+            Left = 184
+            Top = 63
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape11: TShape
+            Left = 184
+            Top = 31
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Label6: TLabel
+            Left = 16
+            Top = 6
+            Width = 35
+            Height = 18
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblAutoScVencidosTrue: TLabel
+            Left = 191
+            Top = 38
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblAutoScVencidosAns: TLabel
+            Left = 191
+            Top = 70
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblTotalAutoSc: TLabel
+            Left = 191
+            Top = 6
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+        end
+      end
+      object Panel4: TPanel
+        AlignWithMargins = True
+        Left = 780
+        Top = 30
+        Width = 345
+        Height = 154
+        Margins.Left = 0
+        Margins.Top = 30
+        Margins.Right = 30
+        Margins.Bottom = 5
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        ParentBackground = False
+        TabOrder = 2
+        ExplicitLeft = 782
+        ExplicitTop = 73
+        ExplicitHeight = 159
+        object Label9: TLabel
+          AlignWithMargins = True
+          Left = 5
+          Top = 12
+          Width = 335
+          Height = 18
+          Margins.Top = 10
+          Margins.Bottom = 10
+          Align = alTop
+          Alignment = taCenter
+          Caption = 'CONTROLPC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -15
+          Font.Name = 'Roboto'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitWidth = 88
+        end
+        object Panel5: TPanel
+          AlignWithMargins = True
+          Left = 17
+          Top = 43
+          Width = 323
+          Height = 106
+          Margins.Left = 15
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitHeight = 311
+          object Shape18: TShape
+            Left = 184
+            Top = 63
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape17: TShape
+            Left = 184
+            Top = 31
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape14: TShape
+            Left = 184
+            Top = -1
+            Width = 92
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape13: TShape
+            Left = -1
+            Top = -1
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape15: TShape
+            Left = -1
+            Top = 31
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Shape16: TShape
+            Left = -1
+            Top = 63
+            Width = 186
+            Height = 33
+            Pen.Color = 8404992
+          end
+          object Label10: TLabel
+            Left = 16
+            Top = 6
+            Width = 35
+            Height = 18
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label11: TLabel
+            Left = 16
+            Top = 38
+            Width = 153
+            Height = 18
+            Caption = 'Vencidos (Prazo True)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label12: TLabel
+            Left = 16
+            Top = 70
+            Width = 151
+            Height = 18
+            Caption = 'Vencidos (Prazo ANS)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblControlPcVencidosTrue: TLabel
+            Left = 191
+            Top = 38
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblControlPcVencidosAns: TLabel
+            Left = 191
+            Top = 70
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblTotalControlPc: TLabel
+            Left = 191
+            Top = 6
+            Width = 78
+            Height = 18
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Total'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -15
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentFont = False
+          end
+        end
+      end
+    end
+    object pnlTotaisVencidos: TPanel
+      Left = 2
+      Top = 273
+      Width = 1153
+      Height = 137
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'Panel7'
+      TabOrder = 3
+      ExplicitTop = 301
+      ExplicitHeight = 391
+      object Panel9: TPanel
+        AlignWithMargins = True
+        Left = 30
+        Top = 5
+        Width = 345
+        Height = 102
+        Margins.Left = 30
+        Margins.Top = 5
+        Margins.Right = 30
+        Margins.Bottom = 30
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        ParentBackground = False
+        TabOrder = 0
+        ExplicitTop = 30
+        ExplicitHeight = 161
+        object Label13: TLabel
+          Left = 246
+          Top = 9
+          Width = 65
+          Height = 15
+          Caption = 'Vence Hoje'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label14: TLabel
+          Left = 174
+          Top = 9
+          Width = 53
+          Height = 15
+          Caption = 'Vencidos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Panel10: TPanel
+          AlignWithMargins = True
+          Left = 17
+          Top = 32
+          Width = 323
+          Height = 65
+          Margins.Left = 15
+          Margins.Top = 30
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitTop = 43
+          ExplicitHeight = 113
+          object dbgSiagsVencidos: TwwDBGrid
+            Left = 0
+            Top = 0
+            Width = 323
+            Height = 65
+            Margins.Left = 0
+            Margins.Top = 110
+            Margins.Right = 0
+            Margins.Bottom = 0
+            TabStop = False
+            Selected.Strings = (
+              'Nome_Setor'#9'20'#9#9'F'
+              'Qtd_Vencido'#9'10'#9'Vencidos'#9'F'
+              'Qtd_VenceHoje'#9'10'#9'Vence~Hoje'#9'F')
+            IniAttributes.Delimiter = ';;'
+            IniAttributes.UnicodeIniFile = False
+            TitleColor = clWhite
+            FixedCols = 0
+            ShowHorzScrollBar = True
+            Align = alClient
+            Color = clWhite
+            DataSource = dtmQuadroResumo.dtsSiagsVencidos
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Options = [dgColumnResize, dgColLines, dgRowLines, dgConfirmDelete, dgCancelOnExit, dgWordWrap]
+            ParentFont = False
+            TabOrder = 0
+            TitleAlignment = taCenter
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = 8404992
+            TitleFont.Height = -13
+            TitleFont.Name = 'Roboto'
+            TitleFont.Style = []
+            TitleLines = 2
+            TitleButtons = False
+            UseTFields = False
+            LineColors.HighlightColor = clNone
+            FooterCellColor = 8404992
+            ExplicitHeight = 252
+          end
+        end
+      end
+      object Panel11: TPanel
+        AlignWithMargins = True
+        Left = 405
+        Top = 5
+        Width = 345
+        Height = 102
+        Margins.Left = 0
+        Margins.Top = 5
+        Margins.Right = 30
+        Margins.Bottom = 30
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        ParentBackground = False
+        TabOrder = 1
+        ExplicitTop = 30
+        ExplicitHeight = 161
+        object Label15: TLabel
+          Left = 246
+          Top = 9
+          Width = 65
+          Height = 15
+          Caption = 'Vence Hoje'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label16: TLabel
+          Left = 174
+          Top = 9
+          Width = 53
+          Height = 15
+          Caption = 'Vencidos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Panel12: TPanel
+          AlignWithMargins = True
+          Left = 17
+          Top = 32
+          Width = 323
+          Height = 65
+          Margins.Left = 15
+          Margins.Top = 30
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitLeft = 15
+          ExplicitTop = 43
+          ExplicitHeight = 252
+          object dbgAutoScVencidos: TwwDBGrid
+            Left = 0
+            Top = 0
+            Width = 323
+            Height = 65
+            TabStop = False
+            Selected.Strings = (
+              'Nome_Setor'#9'20'#9#9'F'
+              'Qtd_Vencido'#9'10'#9'Vencidos'#9'F'
+              'Qtd_VenceHoje'#9'10'#9'Vence~Hoje'#9'F')
+            IniAttributes.Delimiter = ';;'
+            IniAttributes.UnicodeIniFile = False
+            TitleColor = clWhite
+            FixedCols = 0
+            ShowHorzScrollBar = True
+            Align = alClient
+            Color = clWhite
+            DataSource = dtmQuadroResumo.dtsAutoScVencidos
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Options = [dgColumnResize, dgColLines, dgRowLines, dgConfirmDelete, dgCancelOnExit, dgWordWrap]
+            ParentFont = False
+            TabOrder = 0
+            TitleAlignment = taCenter
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = 8404992
+            TitleFont.Height = -13
+            TitleFont.Name = 'Roboto'
+            TitleFont.Style = []
+            TitleLines = 2
+            TitleButtons = False
+            UseTFields = False
+            FooterCellColor = 8404992
+            ExplicitHeight = 252
+          end
+        end
+      end
+      object Panel13: TPanel
+        AlignWithMargins = True
+        Left = 780
+        Top = 5
+        Width = 345
+        Height = 102
+        Margins.Left = 0
+        Margins.Top = 5
+        Margins.Right = 30
+        Margins.Bottom = 30
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvLowered
+        Color = 8404992
+        ParentBackground = False
+        TabOrder = 2
+        ExplicitTop = 30
+        ExplicitHeight = 161
+        object Label17: TLabel
+          Left = 246
+          Top = 9
+          Width = 65
+          Height = 15
+          Caption = 'Vence Hoje'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label18: TLabel
+          Left = 174
+          Top = 9
+          Width = 53
+          Height = 15
+          Caption = 'Vencidos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Panel14: TPanel
+          AlignWithMargins = True
+          Left = 17
+          Top = 32
+          Width = 323
+          Height = 65
+          Margins.Left = 15
+          Margins.Top = 30
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 0
+          ExplicitTop = 43
+          ExplicitHeight = 113
+          object dbgControPcVencidos: TwwDBGrid
+            Left = 0
+            Top = 0
+            Width = 323
+            Height = 65
+            TabStop = False
+            Selected.Strings = (
+              'Nome_Setor'#9'20'#9#9'F'
+              'Qtd_Vencido'#9'10'#9'Vencidos'#9'F'
+              'Qtd_VenceHoje'#9'10'#9'Vence~Hoje'#9'F')
+            IniAttributes.Delimiter = ';;'
+            IniAttributes.UnicodeIniFile = False
+            TitleColor = clWhite
+            FixedCols = 0
+            ShowHorzScrollBar = True
+            Align = alClient
+            Color = clWhite
+            DataSource = dtmQuadroResumo.dtsControlPcVencidos
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 8404992
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            Options = [dgColumnResize, dgColLines, dgRowLines, dgConfirmDelete, dgCancelOnExit, dgWordWrap]
+            ParentFont = False
+            TabOrder = 0
+            TitleAlignment = taCenter
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = 8404992
+            TitleFont.Height = -13
+            TitleFont.Name = 'Roboto'
+            TitleFont.Style = []
+            TitleLines = 2
+            TitleButtons = False
+            UseTFields = False
+            FooterCellColor = 8404992
+            ExplicitHeight = 252
+          end
+        end
+      end
+    end
+  end
+end

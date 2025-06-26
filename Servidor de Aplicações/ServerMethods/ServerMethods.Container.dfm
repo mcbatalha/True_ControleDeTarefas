@@ -124,4 +124,10 @@ object ServerContainer: TServerContainer
     Left = 736
     Top = 91
   end
+  object dsscResumos: TDSServerClass
+    OnGetClass = dsscResumosGetClass
+    Server = DSServer
+    Left = 880
+    Top = 91
+  end
 end

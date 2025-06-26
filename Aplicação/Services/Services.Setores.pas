@@ -133,6 +133,9 @@ begin
    FPxySetores.Incluir;
    Fdm.cdsCadastro.Open;
    Fdm.cdsCadastro.Append;
+   Fdm.cdsCadastroAUTOSC.AsString    := C_NAO;
+   Fdm.cdsCadastroSIAGS.AsString     := C_NAO;
+   Fdm.cdsCadastroCONTROLPC.AsString := C_NAO;
 end;
 
 function TSrvSetores.LocalizarRegistro(const AId: Integer) : Boolean;

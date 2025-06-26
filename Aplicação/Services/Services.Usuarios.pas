@@ -223,7 +223,8 @@ begin
    FPxyUsuarios.Incluir;
    Fdm.cdsCadastro.Open;
    Fdm.cdsCadastro.Append;
-   Fdm.cdsCadastroPerfil.AsString := C_PERFIL_USUARIO;
+   Fdm.cdsCadastroPerfil.AsString       := C_PERFIL_USUARIO;
+   Fdm.cdsCadastroTrocar_Senha.AsString := C_SIM;
 
    AbrirTabelaDeSetores;
 end;

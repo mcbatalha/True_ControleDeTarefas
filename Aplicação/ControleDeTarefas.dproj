@@ -69,6 +69,9 @@
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_ExeOutput>.\Exe</DCC_ExeOutput>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+        <Icon_MainIcon>logo.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>..\..\Documentos\Imagens\Olho 48 x 48.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>..\..\Documentos\Imagens\Olho 150 x 150.png</UWP_DelphiLogo150>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;RESTComponents;fmxase;DBXDb2Driver;DBXInterBaseDriver;vclactnband;vclFireDAC;bindcompvclsmp;emsclientfiredac;tethering;DataSnapFireDAC;FireDACADSDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;FireDACMSSQLDriver;vcltouch;vcldb;bindcompfmx;DBXOracleDriver;inetdb;emsedge;fmx;FireDACIBDriver;fmxdae;vcledge;FireDACDBXDriver;dbexpress;IndyCore;vclx;dsnap;emsclient;DataSnapCommon;FireDACCommon;RESTBackendComponents;DataSnapConnectors;VCLRESTComponents;soapserver;vclie;bindengine;DBXMySQLDriver;CloudService;FireDACOracleDriver;FireDACMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;FireDACCommonDriver;DataSnapClient;inet;IndyIPCommon;bindcompdbx;vcl;IndyIPServer;DBXSybaseASEDriver;IndySystem;FireDACDb2Driver;bindcompvclwinx;dsnapcon;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;FireDAC;emshosting;FireDACSqliteDriver;FireDACPgDriver;FireDACASADriver;DBXOdbcDriver;FireDACTDataDriver;soaprtl;DbxCommonDriver;DataSnapServer;xmlrtl;soapmidas;DataSnapNativeClient;fmxobj;vclwinx;FireDACDSDriver;rtl;emsserverresource;DbxClientDriver;DBXSybaseASADriver;CustomIPTransport;vcldsnap;bindcomp;appanalytics;ipstudiowin;DBXInformixDriver;IndyIPClient;bindcompvcl;dbxcds;VclSmp;adortl;FireDACODBCDriver;DataSnapIndy10ServerTransport;dsnapxml;DataSnapProviderClient;dbrtl;IndyProtocols;inetdbxpress;FireDACMongoDBDriver;DataSnapServerMidas;$(DCC_UsePackage)</DCC_UsePackage>
@@ -103,6 +106,7 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <Icon_MainIcon>logo.ico</Icon_MainIcon>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -122,7 +126,6 @@
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="Services\Services.Setores.pas"/>
-        <DCCReference Include="Forms\Cadastros\Forms.Cadastro.Setores.pas"/>
         <DCCReference Include="Forms\Cadastros\Forms.Cadastro.pas">
             <Form>frmCadastro</Form>
         </DCCReference>
@@ -297,6 +300,20 @@
             <Form>frmRelatorioExtrato</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Forms\Cadastros\Forms.Cadastro.Setores.pas">
+            <Form>frmCadastroSetores</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\Resumos\Forms.Resumos.QuadroResumo.pas">
+            <Form>frmQuadroResumo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Providers\Resumos\Providers.Resumos.QuadroResumo.pas">
+            <Form>dtmQuadroResumo</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Services\Resumos\Services.Resumos.QuadroResumo.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -11,7 +11,6 @@ type
   TfrmPrincipal = class(TForm)
     imgLogo: TImage;
     Timer: TTimer;
-    BitBtn1: TBitBtn;
     MainMenu1: TMainMenu;
     mngCadastros: TMenuItem;
     mniCadastroSetores: TMenuItem;
@@ -31,6 +30,15 @@ type
     mniRelatorioDesignacoes: TMenuItem;
     mniRelatorioEncerramentos: TMenuItem;
     mniRelatorioExtrato: TMenuItem;
+    mniQuadroResumo: TMenuItem;
+    N1: TMenuItem;
+    pnlBotoes: TPanel;
+    btnImportacaoAutoSc: TSpeedButton;
+    btnImportacaoSiags: TSpeedButton;
+    btnImportacaoControlPc: TSpeedButton;
+    btnPainelAcompanhamento: TSpeedButton;
+    btnQuadroResumo: TSpeedButton;
+    btnSair: TSpeedButton;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
@@ -44,8 +52,11 @@ type
     procedure mniRelatorioDesignacoesClick(Sender: TObject);
     procedure mniRelatorioEncerramentosClick(Sender: TObject);
     procedure mniRelatorioExtratoClick(Sender: TObject);
+    procedure mniQuadroResumoClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
+    FEncerrar : Boolean;
   public
     { Public declarations }
   end;
@@ -61,7 +72,30 @@ uses Forms.Cadastro.Setores,
      Forms.Cadastro.Usuarios,
      Libs.TSeguranca,
      Forms.Login,
-     Forms.Importacoes.AutoSc, Forms.Importacoes.Siags, Forms.Importacoes.ControlPc, Forms.Relatorios.Encerramentos, Forms.Relatorios.Extrato;
+     Forms.Importacoes.AutoSc,
+     Forms.Importacoes.Siags,
+     Forms.Importacoes.ControlPc,
+     Forms.Relatorios.Encerramentos,
+     Forms.Relatorios.Extrato,
+     Forms.Resumos.QuadroResumo;
+
+procedure TfrmPrincipal.FormActivate(Sender: TObject);
+begin
+//   mniQuadroResumoClick(Self);
+   if (FEncerrar) or (not mniQuadroResumo.Visible) then  Exit;
+
+   TThread.CreateAnonymousThread(
+      procedure
+         begin
+         TThread.Synchronize(nil,
+          procedure
+            begin
+            mniQuadroResumoClick(Self);
+          end
+        );
+      end
+    ).Start;
+end;
 
 procedure TfrmPrincipal.FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
@@ -72,16 +106,14 @@ end;
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 var
    frmLogin : TfrmLogin;
-
-   LEncerrar : Boolean;
 begin
    Application.CreateForm(TfrmLogin, frmLogin);
    frmLogin.Seguranca := Seguranca;
    frmLogin.ShowModal;
-   LEncerrar := frmLogin.Encerrar;
+   FEncerrar := frmLogin.Encerrar;
    FreeAndNil(frmLogin);
 
-   if LEncerrar then
+   if FEncerrar then
       begin
       Application.Terminate;
       Exit;
@@ -114,6 +146,18 @@ begin
 
 
    Application.CreateForm(TfrmPaineis, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.mniQuadroResumoClick(Sender: TObject);
+var
+   LForm   : TfrmQuadroResumo;
+   LAltura : Integer;
+begin
+   Application.CreateForm(TfrmQuadroResumo, LForm);
+   LAltura := frmPrincipal.ClientHeight-50;
+   LForm.Height := LAltura;
    LForm.ShowModal;
    FreeAndNil(LForm);
 end;

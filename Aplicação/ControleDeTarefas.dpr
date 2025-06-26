@@ -10,7 +10,6 @@ uses
   Libs.Constantes in '..\Libs\Libs.Constantes.pas',
   FrameBotoes in '..\..\..\GeralAppServer\FrameBotoes.pas' {fraBotoes: TFrame},
   Services.Setores in 'Services\Services.Setores.pas',
-  Forms.Cadastro.Setores in 'Forms\Cadastros\Forms.Cadastro.Setores.pas',
   Forms.Cadastro in 'Forms\Cadastros\Forms.Cadastro.pas' {frmCadastro},
   Forms.Pesquisa in 'Forms\Forms.Pesquisa.pas' {frmPesquisa},
   Providers.Connection in 'Providers\Providers.Connection.pas',
@@ -62,7 +61,11 @@ uses
   Providers.Relatorios.Encerramentos in 'Providers\Relatorios\Providers.Relatorios.Encerramentos.pas' {dtmRelatoriosEncerramento: TDataModule},
   Services.Relatorios.Encerramento in 'Services\Relatorios\Services.Relatorios.Encerramento.pas',
   Forms.Relatorios.Encerramentos in 'Forms\Relatorios\Forms.Relatorios.Encerramentos.pas' {frmRelatorioEncerramentos},
-  Forms.Relatorios.Extrato in 'Forms\Relatorios\Forms.Relatorios.Extrato.pas' {frmRelatorioExtrato};
+  Forms.Relatorios.Extrato in 'Forms\Relatorios\Forms.Relatorios.Extrato.pas' {frmRelatorioExtrato},
+  Forms.Cadastro.Setores in 'Forms\Cadastros\Forms.Cadastro.Setores.pas' {frmCadastroSetores},
+  Forms.Resumos.QuadroResumo in 'Forms\Resumos\Forms.Resumos.QuadroResumo.pas' {frmQuadroResumo},
+  Providers.Resumos.QuadroResumo in 'Providers\Resumos\Providers.Resumos.QuadroResumo.pas' {dtmQuadroResumo: TDataModule},
+  Services.Resumos.QuadroResumo in 'Services\Resumos\Services.Resumos.QuadroResumo.pas';
 
 {$R *.res}
 

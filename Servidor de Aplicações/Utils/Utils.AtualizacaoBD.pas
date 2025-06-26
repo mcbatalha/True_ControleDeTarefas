@@ -64,6 +64,38 @@ begin
    try
       LQuery := TFDQuery.Create(nil);
       LQuery.Connection := ServerContainer.FDConnection;
+
+      LQuery.sql.Clear;
+      LQuery.sql.add('CREATE TABLE TabidController ');
+      LQuery.sql.add('(Tabela varchar(100) NOT NULL, ');
+      LQuery.sql.add(' id int, ');
+      LQuery.sql.add(' CONSTRAINT PK_idController PRIMARY KEY (Tabela) ');
+      LQuery.sql.add(')');
+      LQuery.ExecSQL;
+
+      LQuery.sql.Clear;
+      LQuery.sql.add('CREATE Procedure ProximoId ');
+      LQuery.sql.add('(@NomeDaTabela varchar(50), ');
+      LQuery.sql.add(' @NovoId int = 1 output ');
+      LQuery.sql.add(')');
+      LQuery.sql.add(' as ');
+      LQuery.sql.add(' Begin ');
+      LQuery.sql.add('   if not exists (Select id from TabidController where Tabela = @NomeDaTabela) ');
+      LQuery.sql.add('      Begin ');
+      LQuery.sql.add('      INSERT INTO TabidController (Tabela, id) values(@NomeDaTabela, 1) ');
+      LQuery.sql.add('      SET @NovoId = 1 ');
+      LQuery.sql.add('   End Else ');
+      LQuery.sql.add('      Begin ');
+      LQuery.sql.add('      UPDATE TabidController ');
+      LQuery.sql.add('      set id = id + 1 ');
+      LQuery.sql.add('      where Tabela = @NomeDaTabela ');
+      LQuery.sql.add('      SET @NovoId = (Select id from TabidController where Tabela = @NomeDaTabela) ');
+      LQuery.sql.add('   End ');
+      LQuery.sql.add('   Return @NovoId ');
+      LQuery.sql.add('End ');
+      LQuery.ExecSQL;
+
+      LQuery.sql.Clear;
       LQuery.sql.add('Create Table Versao_BD (Versao_Atual int)');
       LQuery.ExecSQL;
 
@@ -681,6 +713,7 @@ begin
          LQuery.SQL.Add('               REFERENCES Usuarios (id),');
          LQuery.SQL.Add('    CONSTRAINT FK_AutoSC_Usuarios_Encerramento FOREIGN KEY (id_Usuario_Encerramento) ');
          LQuery.SQL.Add('               REFERENCES Usuarios (id)');
+         LQuery.ExecSQL;
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('ALTER TABLE AutoSc_Historico');
@@ -1021,6 +1054,47 @@ begin
          LQuery.Connection := ServerContainer.FDConnection;
 
          LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Usuarios');
+         LQuery.SQL.Add('(id int NOT NULL, Nome_Usuario varchar(100), Login varchar(20), ');
+         LQuery.SQL.Add(' Senha varchar(50), E_Mail varchar(100), ');
+         LQuery.SQL.Add(' Trocar_Senha varchar(3) DEFAULT(' + QuotedStr(C_SIM) +'), ');
+         LQuery.SQL.Add(' Ativo varchar(3) DEFAULT(' + QuotedStr(C_SIM) +'), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Usuarios PRIMARY KEY (id)');
+         LQuery.SQL.Add(')');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Setores ');
+         LQuery.SQL.Add('(id int NOT NULL, Nome_Setor varchar(50), ');
+         LQuery.SQL.Add(' Ativo varchar(3) DEFAULT(' + QuotedStr(C_SIM) +'), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Setores PRIMARY KEY (id) ');
+         LQuery.SQL.Add(')');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Usuarios_Setores ');
+         LQuery.SQL.Add('(id_Usuario int NOT NULL, id_Setor int NOT NULL, ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Usuarios_Setores PRIMARY KEY (id_Usuario, id_Setor) ');
+         LQuery.SQL.Add(')');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE Usuarios_Setores ');
+         LQuery.SQL.Add('ADD CONSTRAINT FK_Usuarios_Setores_Setores FOREIGN KEY (id_Setor) ');
+         LQuery.SQL.Add('REFERENCES Setores (id) ');
+         LQuery.SQL.Add('ON UPDATE CASCADE ');
+         LQuery.SQL.Add('ON DELETE CASCADE ');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE Usuarios_Setores ');
+         LQuery.SQL.Add('ADD CONSTRAINT FK_Usuarios_Setores_Usuarios FOREIGN KEY (id_Usuario) ');
+         LQuery.SQL.Add('REFERENCES Usuarios (id) ');
+         LQuery.SQL.Add('ON UPDATE CASCADE ');
+         LQuery.SQL.Add('ON DELETE CASCADE ');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE Seguranca ');
          LQuery.SQL.Add('(id_Usuario int, Item_Menu int, ');
          LQuery.SQL.Add(' CONSTRAINT PK_Seguranca PRIMARY KEY (id_Usuario, Item_Menu), ');
@@ -1028,7 +1102,6 @@ begin
          LQuery.SQL.Add('            REFERENCES Usuarios (id) ');
          LQuery.SQL.Add('            ON DELETE CASCADE ');
          LQuery.SQL.Add('            ON UPDATE CASCADE) ');
-
          LQuery.ExecSQL;
 
          AtualizarVersao;

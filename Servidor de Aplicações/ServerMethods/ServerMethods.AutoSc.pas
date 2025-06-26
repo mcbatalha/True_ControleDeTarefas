@@ -870,8 +870,8 @@ begin
    FDataHora  := Now;
 
    try
-      AbrirTabelasDeCadastro;
       TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+      AbrirTabelasDeCadastro;
       try
          for I := 0 to ARegistros.Count - 1 do
             begin

@@ -21,7 +21,8 @@ uses
   Utils.TFuncoesServer in 'Utils\Utils.TFuncoesServer.pas',
   Libs.Constantes in '..\Libs\Libs.Constantes.pas',
   ServerMethods.Siags in 'ServerMethods\ServerMethods.Siags.pas' {SMSiags: TDSServerModule},
-  ServerMethods.ControlPc in 'ServerMethods\ServerMethods.ControlPc.pas' {SMControlPc: TDSServerModule};
+  ServerMethods.ControlPc in 'ServerMethods\ServerMethods.ControlPc.pas' {SMControlPc: TDSServerModule},
+  ServerMethods.Resumos in 'ServerMethods\ServerMethods.Resumos.pas' {SMResumos: TDSServerModule};
 
 {$R *.res}
 

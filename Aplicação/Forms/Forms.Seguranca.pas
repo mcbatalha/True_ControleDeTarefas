@@ -42,6 +42,7 @@ type
     chbMenuRelatorios: TCheckBox;
     chbRelatorioDesignacoes: TCheckBox;
     chbRelatorioEncerramentos: TCheckBox;
+    chbQuadroResumo: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -138,6 +139,7 @@ begin
       begin
       LItens.Add(4000);
       if chbPaineisAcompanhamento.Checked then LItens.Add(4001);
+      if chbQuadroResumo.Checked then LItens.Add(4002);
    end;
 
    if chbMenuRelatorios.Checked then
@@ -263,6 +265,7 @@ begin
       MarcarItensDoGrupo(False,4000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
    end;
    chbPaineisAcompanhamento.Enabled := LMarcar;
+   chbQuadroResumo.Enabled := LMarcar;
 end;
 
 procedure TfrmSeguranca.ConfigurarBotoes;
@@ -374,6 +377,7 @@ begin
         {$Region 'Paineis'}
         4000 : chbMenuPaineis.Checked           := True;
         4001 : chbPaineisAcompanhamento.Checked := True;
+        4002 : chbQuadroResumo.Checked          := True;
         {$endRegion}
 
         {$Region 'Relatorios'}
@@ -412,6 +416,7 @@ begin
       begin
       chbMenuPaineis.Checked           := AMarcar;
       chbPaineisAcompanhamento.Checked := AMarcar;
+      chbQuadroResumo.Checked          := AMarcar;
    end;
 
    if (AGrupo = 0) or (AGrupo = 5000) then     // Relatorios
@@ -430,7 +435,7 @@ begin
        MarcarItensDoGrupo(AMarcar, 2000)
     else if APainel = pnlImportacaoPlanihas  then
        MarcarItensDoGrupo(AMarcar, 3000)
-    else if APainel = pnlImportacaoPlanihas  then
+    else if APainel = pnlPaineis  then
        MarcarItensDoGrupo(AMarcar, 4000)
     else if APainel = pnlRelatorios  then
        MarcarItensDoGrupo(AMarcar, 5000)

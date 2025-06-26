@@ -54,6 +54,7 @@ type
     dsscImportacaoAutoSC: TDSServerClass;
     dsscImportacaoSiags: TDSServerClass;
     dsscImportacaoControlPc: TDSServerClass;
+    dsscResumos: TDSServerClass;
     procedure dsscMetodosGerais(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure DSAuthenticationManagerUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean; UserRoles: TStrings);
@@ -65,6 +66,7 @@ type
     procedure dsscImportacaoAutoSCGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsscImportacaoSiagsGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsscImportacaoControlPcGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsscResumosGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
   private
     { Private declarations }
   public
@@ -84,7 +86,7 @@ uses
   ServerMethods.Cadastro.Usuarios,
   ServerMethods.Cadastro.Setores,
   ServerMethods.AutoSc,
-  ServerMethods.Siags, ServerMethods.ControlPc;
+  ServerMethods.Siags, ServerMethods.ControlPc, ServerMethods.Resumos;
 
 procedure TServerContainer.DSAuthenticationManagerUserAuthenticate(Sender: TObject; const Protocol, Context, User, Password: string; var valid: Boolean; UserRoles: TStrings);
 begin
@@ -126,7 +128,6 @@ end;
 procedure TServerContainer.dsscImportacaoControlPcGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethods.ControlPc.TSMControlPc;
-
 end;
 
 procedure TServerContainer.dsscImportacaoSiagsGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -138,6 +139,11 @@ procedure TServerContainer.dsscMetodosGerais(
   DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethods.MetodosGerais.TSMMetodosGerais;
+end;
+
+procedure TServerContainer.dsscResumosGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := ServerMethods.Resumos.TSMResumos;
 end;
 
 procedure TServerContainer.DSServerConnect(DSConnectEventObject: TDSConnectEventObject);

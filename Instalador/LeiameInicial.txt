@@ -1,0 +1,18 @@
+====================================================
+True Auditoria - Instalador Controle de Tarefas
+Junho / 2025
+Versão 1.0
+====================================================
+
+1 - O Programa "Controle de Tarefas" é instalado, por padrão, na pasta "C:\SistemasTrue\ConroleDeTarefas", mas você pode alterar o local.
+    
+2 - Configure seu antivírus para não verificar o conteúdo da pasta de instalação.
+    Essa configuração não é obrigatória, mas evita demora nas atualizações do programa. O executável já foi previamente analisado.
+
+    Abaixo estão links para auxiliar na configuração dos 4 principais antivírus utilizados no mercado:
+
+    AVG   : https://www.youtube.com/watch?v=cGgrV62pOTY
+    Avast : https://www.youtube.com/watch?v=qktyexcCHvw
+    McAfee: https://www.youtube.com/watch?v=edkaJVHWYWI
+    Windows Defender: https://www.youtube.com/watch?v=eW-xgGm09UE
+

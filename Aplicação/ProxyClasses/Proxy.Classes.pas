@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 19/06/2025 22:33:56
+// 26/06/2025 16:17:43
 //
 
 unit Proxy.Classes;
@@ -192,6 +192,16 @@ type
     function Usuarios: TJSONArray;
     function RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
     function RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
+  end;
+
+  TSMResumosClient = class(TDSAdminClient)
+  private
+    FQuadroResumoCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function QuadroResumo: TJSONArray;
   end;
 
 implementation
@@ -1336,6 +1346,35 @@ begin
   FUsuariosCommand.DisposeOf;
   FRelatorioDeDesignacoesCommand.DisposeOf;
   FRelatorioDeEncerramentosCommand.DisposeOf;
+  inherited;
+end;
+
+function TSMResumosClient.QuadroResumo: TJSONArray;
+begin
+  if FQuadroResumoCommand = nil then
+  begin
+    FQuadroResumoCommand := FDBXConnection.CreateCommand;
+    FQuadroResumoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FQuadroResumoCommand.Text := 'TSMResumos.QuadroResumo';
+    FQuadroResumoCommand.Prepare;
+  end;
+  FQuadroResumoCommand.ExecuteUpdate;
+  Result := TJSONArray(FQuadroResumoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+constructor TSMResumosClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSMResumosClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSMResumosClient.Destroy;
+begin
+  FQuadroResumoCommand.DisposeOf;
   inherited;
 end;
 

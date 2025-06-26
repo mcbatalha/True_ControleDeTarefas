@@ -1,0 +1,16 @@
+====================================================
+True Auditoria - Instalador Controle de Tarefas
+====================================================
+
+A instalação foi concluída.
+
+Não se esqueça de configurar seu antivírus
+
+Abaixo estão links para auxiliar na configuração dos 4 principais antivírus utilizados no mercado:
+
+AVG   : https://www.youtube.com/watch?v=cGgrV62pOTY
+Avast : https://www.youtube.com/watch?v=qktyexcCHvw
+McAfee: https://www.youtube.com/watch?v=edkaJVHWYWI
+Windows Defender: https://www.youtube.com/watch?v=eW-xgGm09UE
+
+

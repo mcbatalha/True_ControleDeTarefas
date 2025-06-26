@@ -104,7 +104,7 @@ begin
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
       LColuna := 'SOLICITAÇÃO DO CLIENTE';
-      LDado.AddPair(LColuna, TJSONNumber.Create(StrToIntDef(DadoDaColuna(ASheet, LColuna, i),0)));
+      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
       LColuna := 'TIPO RECLAME';
       LAux    := DadoDaColuna(ASheet, LColuna, i);
