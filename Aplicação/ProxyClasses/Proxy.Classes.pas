@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 26/06/2025 16:17:43
+// 15/07/2025 18:35:28
 //
 
 unit Proxy.Classes;
@@ -202,6 +202,22 @@ type
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function QuadroResumo: TJSONArray;
+  end;
+
+  TSMStatusTrueClient = class(TDSAdminClient)
+  private
+    FIncluirCommand: TDBXCommand;
+    FLocalizarCommand: TDBXCommand;
+    FJaExisteCommand: TDBXCommand;
+    FPesquisarCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    procedure Incluir;
+    function Localizar(AId: Integer): Boolean;
+    function JaExiste(AId: Integer; ADescricao: string): Boolean;
+    procedure Pesquisar(ACampo: Integer; ATipo: Integer; AChave: string; AIncluirInativos: Boolean);
   end;
 
 implementation
@@ -1375,6 +1391,82 @@ end;
 destructor TSMResumosClient.Destroy;
 begin
   FQuadroResumoCommand.DisposeOf;
+  inherited;
+end;
+
+procedure TSMStatusTrueClient.Incluir;
+begin
+  if FIncluirCommand = nil then
+  begin
+    FIncluirCommand := FDBXConnection.CreateCommand;
+    FIncluirCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FIncluirCommand.Text := 'TSMStatusTrue.Incluir';
+    FIncluirCommand.Prepare;
+  end;
+  FIncluirCommand.ExecuteUpdate;
+end;
+
+function TSMStatusTrueClient.Localizar(AId: Integer): Boolean;
+begin
+  if FLocalizarCommand = nil then
+  begin
+    FLocalizarCommand := FDBXConnection.CreateCommand;
+    FLocalizarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FLocalizarCommand.Text := 'TSMStatusTrue.Localizar';
+    FLocalizarCommand.Prepare;
+  end;
+  FLocalizarCommand.Parameters[0].Value.SetInt32(AId);
+  FLocalizarCommand.ExecuteUpdate;
+  Result := FLocalizarCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TSMStatusTrueClient.JaExiste(AId: Integer; ADescricao: string): Boolean;
+begin
+  if FJaExisteCommand = nil then
+  begin
+    FJaExisteCommand := FDBXConnection.CreateCommand;
+    FJaExisteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FJaExisteCommand.Text := 'TSMStatusTrue.JaExiste';
+    FJaExisteCommand.Prepare;
+  end;
+  FJaExisteCommand.Parameters[0].Value.SetInt32(AId);
+  FJaExisteCommand.Parameters[1].Value.SetWideString(ADescricao);
+  FJaExisteCommand.ExecuteUpdate;
+  Result := FJaExisteCommand.Parameters[2].Value.GetBoolean;
+end;
+
+procedure TSMStatusTrueClient.Pesquisar(ACampo: Integer; ATipo: Integer; AChave: string; AIncluirInativos: Boolean);
+begin
+  if FPesquisarCommand = nil then
+  begin
+    FPesquisarCommand := FDBXConnection.CreateCommand;
+    FPesquisarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPesquisarCommand.Text := 'TSMStatusTrue.Pesquisar';
+    FPesquisarCommand.Prepare;
+  end;
+  FPesquisarCommand.Parameters[0].Value.SetInt32(ACampo);
+  FPesquisarCommand.Parameters[1].Value.SetInt32(ATipo);
+  FPesquisarCommand.Parameters[2].Value.SetWideString(AChave);
+  FPesquisarCommand.Parameters[3].Value.SetBoolean(AIncluirInativos);
+  FPesquisarCommand.ExecuteUpdate;
+end;
+
+constructor TSMStatusTrueClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSMStatusTrueClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSMStatusTrueClient.Destroy;
+begin
+  FIncluirCommand.DisposeOf;
+  FLocalizarCommand.DisposeOf;
+  FJaExisteCommand.DisposeOf;
+  FPesquisarCommand.DisposeOf;
   inherited;
 end;
 

@@ -743,7 +743,7 @@ object frmPaineis: TfrmPaineis
     Top = 91
     Width = 1345
     Height = 657
-    ActivePage = TabSheet1
+    ActivePage = TabSheet5
     MultiLine = True
     TabOrder = 1
     Visible = False

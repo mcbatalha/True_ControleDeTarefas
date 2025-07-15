@@ -1,29 +1,28 @@
-unit Services.Setores;
+unit Services.StatusTrue;
 
 interface
-
 uses
   Vcl.Forms,
   System.SysUtils,
   System.Classes,
-  Providers.Cadastros.Setores,
+  Providers.Cadastros.StatusTrue,
   Proxy.Classes,
   Funcoes,
   Libs.Constantes;
 
 type
 
-  TSrvSetores = class
+  TSrvStatusTrue= class
   private
-     FPxySetores : TSMSetoresClient;
-     Fdm : TdtmCadastroSetores;
+     FPxyStatusTrue : TSMStatusTrueClient;
+     Fdm            : TdtmCadastroStatusTrue;
 
 
      function TudoPreenchido : Boolean;
      function LocalizarRegistro(const AId : Integer) : Boolean;
 
      const
-        C_TITULO_MENSAGENS = 'Cadastro de Setores';
+        C_TITULO_MENSAGENS = 'Cadastro de Status True';
 
   public
 
@@ -36,23 +35,25 @@ type
      function Gravar: Boolean;
      function Pesquisar : Boolean;
 
+     procedure LimparPrazo(const ALimpar : Boolean);
+
 
      destructor Destroy; override;
   end;
 
 implementation
 
-{ TSrvSetores }
+{ TSrvStatusTrue }
 
 uses Forms.Pesquisa;
 
-function TSrvSetores.Alterar : Boolean;
+function TSrvStatusTrue.Alterar: Boolean;
 begin
    Result := False;
 
    if Fdm.cdsCadastroAtivo.AsString <> C_SIM then
       begin
-      if not QuestionMessage('Este setor está inativo. Para realizar altearação é necessário reativá-lo.' + chr(13) + 'Deseja continuar ?',C_TITULO_MENSAGENS ) then
+      if not QuestionMessage('Este status está inativo. Para realizar altearação é necessário reativá-lo.' + chr(13) + 'Deseja continuar ?',C_TITULO_MENSAGENS ) then
          Exit;
    end;
 
@@ -61,7 +62,7 @@ begin
    Result := true;
 end;
 
-function TSrvSetores.Cancelar: Boolean;
+function TSrvStatusTrue.Cancelar: Boolean;
 begin
    Result := QuestionMessage('Deseja cancelar ?',C_TITULO_MENSAGENS);
 
@@ -72,30 +73,28 @@ begin
    end;
 end;
 
-constructor TSrvSetores.Create();
+constructor TSrvStatusTrue.Create;
 begin
    inherited;
-   Application.CreateForm(TdtmCadastroSetores, Fdm);
-   FPxySetores := TSMSetoresClient.Create(Fdm.SQLConnection.DBXConnection);
+   Application.CreateForm(TdtmCadastroStatusTrue, Fdm);
+   FPxyStatusTrue:= TSMStatusTrueClient.Create(Fdm.SQLConnection.DBXConnection);
    Fdm.SQLConnection.Connected := True;
 end;
 
-
-destructor TSrvSetores.Destroy;
+destructor TSrvStatusTrue.Destroy;
 begin
    Fdm.SQLConnection.Connected := False;
-   FreeAndNil(FPxySetores);
+   FreeAndNil(FPxyStatusTrue);
    FreeAndNil(Fdm);
 
    inherited;
 end;
 
-
-function TSrvSetores.Excluir: Boolean;
+function TSrvStatusTrue.Excluir: Boolean;
 begin
    Result := False;
 
-   if not QuestionMessage('Deseja desativar o setor ? ',C_TITULO_MENSAGENS) then
+   if not QuestionMessage('Deseja desativar o status ? ',C_TITULO_MENSAGENS) then
       exit;
 
    Fdm.cdsCadastro.Edit;
@@ -104,15 +103,15 @@ begin
    Result := True;
 end;
 
-function TSrvSetores.Gravar: Boolean;
+function TSrvStatusTrue.Gravar: Boolean;
 begin
    Result := False;
 
    if not TudoPreenchido then Exit;
 
-   if FPxySetores.JaExiste(Fdm.cdsCadastroid.AsInteger, Fdm.cdsCadastroNome_Setor.AsString) then
+   if FPxyStatusTrue.JaExiste(Fdm.cdsCadastroid.AsInteger, Fdm.cdsCadastroStatus.AsString) then
       begin
-      InformationMessage('Setor já cadastrado !', C_TITULO_MENSAGENS);
+      InformationMessage('Status já cadastrado !', C_TITULO_MENSAGENS);
       Result := False;
       Exit;
    end;
@@ -128,30 +127,36 @@ begin
    end;
 end;
 
-procedure TSrvSetores.Incluir;
+procedure TSrvStatusTrue.Incluir;
 begin
-   FPxySetores.Incluir;
+   FPxyStatusTrue.Incluir;
    Fdm.cdsCadastro.Open;
    Fdm.cdsCadastro.Append;
-   Fdm.cdsCadastroAUTOSC.AsString    := C_NAO;
-   Fdm.cdsCadastroSIAGS.AsString     := C_NAO;
-   Fdm.cdsCadastroCONTROLPC.AsString := C_NAO;
+   Fdm.cdsCadastroTipo_Prazo.AsString := C_TIPO_PRAZO_NAO_CONTA;
+   Fdm.cdsCadastroEncerra.AsString    := C_NAO;
+   Fdm.cdsCadastroAtivo.AsString      := C_SIM;
 end;
 
-function TSrvSetores.LocalizarRegistro(const AId: Integer) : Boolean;
+procedure TSrvStatusTrue.LimparPrazo(const ALimpar: Boolean);
+begin
+   if (ALimpar) then
+      Fdm.LimparPrazo;
+end;
+
+function TSrvStatusTrue.LocalizarRegistro(const AId: Integer): Boolean;
 begin
    Result := False;
    Fdm.cdsCadastro.close;
 
    if AId > 0 then
       begin
-      FPxySetores.Localizar(AId);
+      FPxyStatusTrue.Localizar(AId);
       Fdm.cdsCadastro.Open;
       Result := not Fdm.cdsCadastro.IsEmpty;
    end;
 end;
 
-function TSrvSetores.Pesquisar : Boolean;
+function TSrvStatusTrue.Pesquisar: Boolean;
 var
    LForm : TfrmPesquisa;
 begin
@@ -159,13 +164,13 @@ begin
    Application.CreateForm(TfrmPesquisa, LForm);
    LForm.SetParameter(Fdm.cdsPesquisa,
                       Fdm.SQLConnection.DBXConnection,
-                      C_PESQUISA_SETOR);
+                      C_PESQUISA_STATUS);
    LForm.ShowModal;
    Result := LocalizarRegistro(LForm.getId);
    FreeAndNil(LForm);
 end;
 
-function TSrvSetores.TudoPreenchido: Boolean;
+function TSrvStatusTrue.TudoPreenchido: Boolean;
 var
    LMensagem : String;
 begin
@@ -173,19 +178,15 @@ begin
 
    LMensagem := '';
 
-   if Fdm.cdsCadastroNome_Setor.AsString = '' then
-      LMensagem := LMensagem + ' - Nome do Setor ';
+   if Fdm.cdsCadastroStatus.AsString = '' then
+      LMensagem := LMensagem + ' - Nome do Status';
+
+   if (Fdm.cdsCadastroTipo_Prazo.AsString <> C_TIPO_PRAZO_NAO_CONTA) and (Fdm.cdsCadastroPrazo.AsString = '') then
+      LMensagem := LMensagem + ' - Prazo';
 
    if LMensagem <> '' then
       begin
       LMensagem := C_TUDO_PREENCHIDO + LMensagem;
-      Result := False;
-      InformationMessage(LMensagem, C_TITULO_MENSAGENS);
-   end else if (Fdm.cdsCadastroCONTROLPC.AsString = C_NAO) and
-               (Fdm.cdsCadastroAUTOSC.AsString = C_NAO) and
-               (Fdm.cdsCadastroSIAGS.AsString = C_NAO) then
-      begin
-      LMensagem := 'É necessário definir ao menos uma área de atuação par ao setor.';
       Result := False;
       InformationMessage(LMensagem, C_TITULO_MENSAGENS);
    end;

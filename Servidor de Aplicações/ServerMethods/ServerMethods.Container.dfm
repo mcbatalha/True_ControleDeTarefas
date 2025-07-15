@@ -109,25 +109,31 @@ object ServerContainer: TServerContainer
   object dsscImportacaoAutoSC: TDSServerClass
     OnGetClass = dsscImportacaoAutoSCGetClass
     Server = DSServer
-    Left = 416
+    Left = 584
     Top = 91
   end
   object dsscImportacaoSiags: TDSServerClass
     OnGetClass = dsscImportacaoSiagsGetClass
     Server = DSServer
-    Left = 576
+    Left = 744
     Top = 91
   end
   object dsscImportacaoControlPc: TDSServerClass
     OnGetClass = dsscImportacaoControlPcGetClass
     Server = DSServer
-    Left = 736
+    Left = 904
     Top = 91
   end
   object dsscResumos: TDSServerClass
     OnGetClass = dsscResumosGetClass
     Server = DSServer
-    Left = 880
+    Left = 1048
+    Top = 91
+  end
+  object dsscStatusTrue: TDSServerClass
+    OnGetClass = dsscStatusTrueGetClass
+    Server = DSServer
+    Left = 408
     Top = 91
   end
 end

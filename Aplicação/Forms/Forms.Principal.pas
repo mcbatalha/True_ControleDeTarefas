@@ -39,6 +39,8 @@ type
     btnPainelAcompanhamento: TSpeedButton;
     btnQuadroResumo: TSpeedButton;
     btnSair: TSpeedButton;
+    mniCadastroStatusTrue: TMenuItem;
+    BitBtn1: TBitBtn;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
     procedure mniCadastroSetoresClick(Sender: TObject);
     procedure mniCadastroUsuariosClick(Sender: TObject);
@@ -54,9 +56,13 @@ type
     procedure mniRelatorioExtratoClick(Sender: TObject);
     procedure mniQuadroResumoClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure mniCadastroStatusTrueClick(Sender: TObject);
   private
     { Private declarations }
-    FEncerrar : Boolean;
+    FEncerrar      : Boolean;
+    FInicializacao : Boolean;
+
   public
     { Public declarations }
   end;
@@ -77,12 +83,12 @@ uses Forms.Cadastro.Setores,
      Forms.Importacoes.ControlPc,
      Forms.Relatorios.Encerramentos,
      Forms.Relatorios.Extrato,
-     Forms.Resumos.QuadroResumo;
+     Forms.Resumos.QuadroResumo, Forms.Cadastro.StatusTrue;
 
 procedure TfrmPrincipal.FormActivate(Sender: TObject);
 begin
 //   mniQuadroResumoClick(Self);
-   if (FEncerrar) or (not mniQuadroResumo.Visible) then  Exit;
+   if (FEncerrar) or (not mniQuadroResumo.Visible) or (not FInicializacao) then  Exit;
 
    TThread.CreateAnonymousThread(
       procedure
@@ -95,12 +101,18 @@ begin
         );
       end
     ).Start;
+   FInicializacao := False;
 end;
 
 procedure TfrmPrincipal.FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
    imgLogo.Top  := round ((frmPrincipal.ClientHeight - imgLogo.Height) / 2);
    imgLogo.Left := round ((frmPrincipal.ClientWidth - imgLogo.Width) / 2);
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+   FInicializacao := True;
 end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
@@ -167,6 +179,15 @@ var
    LForm : TfrmCadastroSetores;
 begin
    Application.CreateForm(TfrmCadastroSetores, LForm);
+   LForm.ShowModal;
+   FreeAndNil(LForm);
+end;
+
+procedure TfrmPrincipal.mniCadastroStatusTrueClick(Sender: TObject);
+var
+   LForm : TfrmCadastroStatusTrue;
+begin
+   Application.CreateForm(TfrmCadastroStatusTrue, LForm);
    LForm.ShowModal;
    FreeAndNil(LForm);
 end;

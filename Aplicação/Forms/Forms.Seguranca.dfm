@@ -20,7 +20,7 @@ inherited frmSeguranca: TfrmSeguranca
       Top = 111
       Width = 902
       Height = 421
-      ActivePage = tbsManutencao
+      ActivePage = tbsCadastro
       Align = alClient
       TabOrder = 1
       TabWidth = 150
@@ -53,13 +53,21 @@ inherited frmSeguranca: TfrmSeguranca
             Caption = 'Setores'
             TabOrder = 1
           end
-          object chbCadastroUsusarios: TCheckBox
+          object chbCadastroUsuarios: TCheckBox
             Left = 80
             Top = 115
             Width = 192
             Height = 17
             Caption = 'Usu'#225'rios'
             TabOrder = 2
+          end
+          object chbCadastroStatusTrue: TCheckBox
+            Left = 80
+            Top = 145
+            Width = 192
+            Height = 17
+            Caption = 'Status True'
+            TabOrder = 3
           end
         end
       end

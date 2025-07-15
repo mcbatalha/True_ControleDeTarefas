@@ -52,9 +52,10 @@ begin
 
         case LIemMenu of
            {$Region 'Cadastros'}
-           1000 : frmPrincipal.mngCadastros.Visible := True;
-           1001 : frmPrincipal.mniCadastroSetores.Visible := True;
-           1002 : frmPrincipal.mniCadastroUsuarios.Visible := True;
+           1000 : frmPrincipal.mngCadastros.Visible          := True;
+           1001 : frmPrincipal.mniCadastroSetores.Visible    := True;
+           1002 : frmPrincipal.mniCadastroUsuarios.Visible   := True;
+           1003 : frmPrincipal.mniCadastroStatusTrue.Visible := True;
            {$endRegion}
 
            {$Region 'Manutencao'}

@@ -17,7 +17,6 @@ type
     DBCheckBox1: TDBCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure BitBtn1Click(Sender: TObject);
     procedure fraBotoesbtnNovoClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
@@ -38,11 +37,6 @@ implementation
 
 uses Providers.Cadastros.Setores;
 
-procedure TfrmCadastroSetores.BitBtn1Click(Sender: TObject);
-begin
-   inherited;
-   FService.Incluir;
-end;
 
 procedure TfrmCadastroSetores.btnCancelarClick(Sender: TObject);
 begin
@@ -81,7 +75,7 @@ end;
 
 procedure TfrmCadastroSetores.fraBotoesbtnExcluirClick(Sender: TObject);
 begin
-  inherited;
+   inherited;
    if not FService.Excluir then exit;
 
    HabilitarAlterarExcluir(False);

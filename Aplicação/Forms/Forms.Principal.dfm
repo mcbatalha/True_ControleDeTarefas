@@ -17,6 +17,7 @@ object frmPrincipal: TfrmPrincipal
   OnActivate = FormActivate
   OnCanResize = FormCanResize
   OnClick = mniPainelAcompanhamentoClick
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
@@ -1510,6 +1511,15 @@ object frmPrincipal: TfrmPrincipal
       ExplicitLeft = 458
     end
   end
+  object BitBtn1: TBitBtn
+    Left = 88
+    Top = 144
+    Width = 75
+    Height = 25
+    Caption = 'BitBtn1'
+    TabOrder = 2
+    OnClick = mniCadastroStatusTrueClick
+  end
   object Timer: TTimer
     Left = 952
     Top = 56
@@ -1527,6 +1537,10 @@ object frmPrincipal: TfrmPrincipal
       object mniCadastroUsuarios: TMenuItem
         Caption = 'Usu'#225'rios'
         OnClick = mniCadastroUsuariosClick
+      end
+      object mniCadastroStatusTrue: TMenuItem
+        Caption = 'Status True'
+        OnClick = mniCadastroStatusTrueClick
       end
     end
     object mngImportaoPlanilhas: TMenuItem

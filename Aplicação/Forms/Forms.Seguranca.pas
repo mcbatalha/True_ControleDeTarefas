@@ -21,7 +21,7 @@ type
     btnPesquisar: TSpeedButton;
     chbMenuCadastros: TCheckBox;
     chbCadastroSetores: TCheckBox;
-    chbCadastroUsusarios: TCheckBox;
+    chbCadastroUsuarios: TCheckBox;
     pnlManutencao: TPanel;
     chbMenuManutencao: TCheckBox;
     chbSeguranca: TCheckBox;
@@ -43,6 +43,7 @@ type
     chbRelatorioDesignacoes: TCheckBox;
     chbRelatorioEncerramentos: TCheckBox;
     chbQuadroResumo: TCheckBox;
+    chbCadastroStatusTrue: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -117,8 +118,9 @@ begin
    if chbMenuCadastros.Checked then
       begin
       LItens.Add(1000);
-      if chbCadastroSetores.Checked   then LItens.Add(1001);
-      if chbCadastroUsusarios.Checked then LItens.Add(1002);
+      if chbCadastroSetores.Checked    then LItens.Add(1001);
+      if chbCadastroUsuarios.Checked   then LItens.Add(1002);
+      if chbCadastroStatusTrue.Checked then LItens.Add(1003);
    end;
 
    if chbMenuManutencao.Checked then
@@ -196,8 +198,9 @@ begin
       LMarcar := False;
       MarcarItensDoGrupo(False,1000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
    end;
-   chbCadastroSetores.Enabled   := LMarcar;
-   chbCadastroUsusarios.Enabled := LMarcar;
+   chbCadastroSetores.Enabled    := LMarcar;
+   chbCadastroUsuarios.Enabled   := LMarcar;
+   chbCadastroStatusTrue.Enabled := LMarcar;
 end;
 
 procedure TfrmSeguranca.chbMenuImportacoesClick(Sender: TObject);
@@ -357,9 +360,10 @@ begin
       
      case LIemMenu of
         {$Region 'Cadastros'}
-        1000 : chbMenuCadastros.Checked     := True;
-        1001 : chbCadastroSetores.Checked   := True;
-        1002 : chbCadastroUsusarios.Checked := True;
+        1000 : chbMenuCadastros.Checked      := True;
+        1001 : chbCadastroSetores.Checked    := True;
+        1002 : chbCadastroUsuarios.Checked   := True;
+        1003 : chbCadastroStatusTrue.Checked := True;
         {$endRegion}
 
         {$Region 'Manutenção do Sistema'}
@@ -393,9 +397,10 @@ procedure TfrmSeguranca.MarcarItensDoGrupo(const AMarcar: Boolean; const AGrupo:
 begin
    if (AGrupo = 0) or (AGrupo = 1000) then     // Cadastro ou Todos
       begin
-      chbMenuCadastros.Checked     := AMarcar;
-      chbCadastroSetores.Checked   := AMarcar;
-      chbCadastroUsusarios.Checked := AMarcar;
+      chbMenuCadastros.Checked      := AMarcar;
+      chbCadastroSetores.Checked    := AMarcar;
+      chbCadastroUsuarios.Checked   := AMarcar;
+      chbCadastroStatusTrue.Checked := AMarcar;
    end;
 
    if (AGrupo = 0) or (AGrupo = 2000) then     // Manutenção ou Todos

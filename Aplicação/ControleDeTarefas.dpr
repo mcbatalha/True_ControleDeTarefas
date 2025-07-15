@@ -65,7 +65,10 @@ uses
   Forms.Cadastro.Setores in 'Forms\Cadastros\Forms.Cadastro.Setores.pas' {frmCadastroSetores},
   Forms.Resumos.QuadroResumo in 'Forms\Resumos\Forms.Resumos.QuadroResumo.pas' {frmQuadroResumo},
   Providers.Resumos.QuadroResumo in 'Providers\Resumos\Providers.Resumos.QuadroResumo.pas' {dtmQuadroResumo: TDataModule},
-  Services.Resumos.QuadroResumo in 'Services\Resumos\Services.Resumos.QuadroResumo.pas';
+  Services.Resumos.QuadroResumo in 'Services\Resumos\Services.Resumos.QuadroResumo.pas',
+  Forms.Cadastro.StatusTrue in 'Forms\Cadastros\Forms.Cadastro.StatusTrue.pas' {frmCadastroStatusTrue},
+  Providers.Cadastros.StatusTrue in 'Providers\Models\Providers.Cadastros.StatusTrue.pas' {dtmCadastroStatusTrue: TDataModule},
+  Services.StatusTrue in 'Services\Services.StatusTrue.pas';
 
 {$R *.res}
 

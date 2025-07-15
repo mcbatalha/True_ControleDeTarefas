@@ -79,13 +79,16 @@ type
 
     procedure TratarCamposUsuario;
     procedure TratarCamposSetor;
+    procedure TratarCamposStatusTrue;
     procedure TratarCampos;
 
     procedure PesquisarUsuarios;
     procedure PesquisarSetores;
+    procedure PesquisarStatusTrue;
 
     procedure ConfigurarPesquisaDeUsuarios;
     procedure ConfigurarPesquisaDeSetores;
+    procedure ConfigurarPesquisaDeStatusTrue;
     procedure ConfigurarPesquisa;
 
     procedure Pesquisar;
@@ -140,6 +143,18 @@ begin
    FreeAndNil(LPxyPesquisa);
 end;
 
+procedure TfrmPesquisa.PesquisarStatusTrue;
+var
+   LPxyPesquisa : TSMStatusTrueClient;
+begin
+   LPxyPesquisa := TSMStatusTrueClient.Create(FDBXConnection);
+   LPxyPesquisa.Pesquisar(cmbCampo.ItemIndex,
+                          rdgTipo.ItemIndex,
+                          trim(edtChave.Text),
+                          chbPesquisarInativos.Checked);
+   FreeAndNil(LPxyPesquisa);
+end;
+
 procedure TfrmPesquisa.PesquisarUsuarios;
 var
    LPxyPesquisa : TSMUsuariosClient;
@@ -176,6 +191,7 @@ begin
    case FTipoPesquisa of
        C_PESQUISA_USUARIO : TratarCampoSUsuario;
        C_PESQUISA_SETOR   : TratarCamposSetor;
+       C_PESQUISA_STATUS  : TratarCamposStatusTrue;
    end;
 end;
 
@@ -204,6 +220,26 @@ begin
    dbgPesquisa.ColumnByName('AUTOSC').DisplayWidth    := 15;
    dbgPesquisa.ColumnByName('CONTROLPC').DisplayWidth := 15;
    dbgPesquisa.ColumnByName('SIAGS').DisplayWidth     := 15;
+end;
+
+procedure TfrmPesquisa.TratarCamposStatusTrue;
+begin
+   dbgPesquisa.TitleLines := 2;
+   dbgPesquisa.AddField('Status');
+   dbgPesquisa.ColumnByName('Status').DisplayLabel := 'Nome do Status';
+
+   dbgPesquisa.AddField('Tipo_Prazo');
+   dbgPesquisa.ColumnByName('Tipo_Prazo').DisplayLabel := 'Tipo~do Prazo';
+
+   dbgPesquisa.AddField('Prazo');
+   dbgPesquisa.ColumnByName('Prazo').DisplayLabel := 'Prazo';
+
+
+   FCdsPesquisa.FieldByName('Tipo_Prazo').Alignment := taCenter;
+   FCdsPesquisa.FieldByName('Prazo').Alignment      := taCenter;
+
+   dbgPesquisa.ColumnByName('Tipo_Prazo').DisplayWidth := 30;
+   dbgPesquisa.ColumnByName('Prazo').DisplayWidth      := 15;
 end;
 
 procedure TfrmPesquisa.TratarCamposUsuario;
@@ -276,6 +312,7 @@ begin
    case FTipoPesquisa of
       C_PESQUISA_SETOR   : ConfigurarPesquisaDeSetores;
       C_PESQUISA_USUARIO : ConfigurarPesquisaDeUsuarios;
+      C_PESQUISA_STATUS  : ConfigurarPesquisaDeStatusTrue;
    end;
 end;
 
@@ -283,6 +320,13 @@ procedure TfrmPesquisa.ConfigurarPesquisaDeSetores;
 begin
    (Self as TForm).Caption := 'Pesquisa de Setores';
    cmbCampo.Items.Add('Nome do Setor');
+   cmbCampo.ItemIndex := 0;
+end;
+
+procedure TfrmPesquisa.ConfigurarPesquisaDeStatusTrue;
+begin
+   (Self as TForm).Caption := 'Pesquisa de Status True';
+   cmbCampo.Items.Add('Nome do Status');
    cmbCampo.ItemIndex := 0;
 end;
 
@@ -465,6 +509,7 @@ begin
    case FTipoPesquisa of
       C_PESQUISA_USUARIO : PesquisarUsuarios;
       C_PESQUISA_SETOR   : PesquisarSetores;
+      C_PESQUISA_STATUS  : PesquisarStatusTrue;
    else;
 //      PxyPesquisa.Pesquisar(FSql, FClausula);
    end;

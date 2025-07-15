@@ -21,6 +21,8 @@ var
    function VersaoAtual : integer;
    procedure AtualizarVersao;
    procedure AtualizarBD;
+
+   procedure Atualizacao013;
    procedure Atualizacao012;
    procedure Atualizacao011;
    procedure Atualizacao010;
@@ -160,6 +162,63 @@ begin
    if FVersaoAtual =  9 then Atualizacao010;
    if FVersaoAtual = 10 then Atualizacao011;
    if FVersaoAtual = 11 then Atualizacao012;
+   if FVersaoAtual = 12 then Atualizacao013;
+end;
+
+procedure Atualizacao013;
+var LQuery : TFDQuery;
+begin
+   FAtualizou := False;
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+         LQuery := TFDQuery.Create(nil);
+         LQuery.Connection := ServerContainer.FDConnection;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Status_True');
+         LQuery.SQL.Add('(id int, Status varchar(30), Tipo_Prazo varchar(10), Prazo int, ');
+         LQuery.SQL.Add(' Encerra varchar(3), Ativo varchar(3) Default('+ QuotedStr(C_SIM) +'), ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Status_True PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT IK_Status_True UNIQUE NONCLUSTERED (Status))');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSC ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_AutoSc_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE Siags ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_Siags_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE ControlPc ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_ControlPc_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         AtualizarVersao;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         FAtualizou := True;
+         Inc(FVersaoAtual);
+      except
+         on E: Exception do
+            begin
+            TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+            ShowMessage('Erro ao processar a atualização ' + IntToStrZero(VersaoAtual +1,3) + chr(13) + E.Message );
+         end;
+      end;
+   finally
+      LQuery.Close;
+      FreeAndNil(LQuery);
+   end;
 end;
 
 

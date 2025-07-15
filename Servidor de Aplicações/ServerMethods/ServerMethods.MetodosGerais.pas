@@ -143,17 +143,17 @@ begin
    qryAux.Close;
    qryAux.Sql.Clear;
    qryAux.Sql.Add('Select id, Nome_Usuario, Senha, E_Mail, Trocar_Senha, Perfil, Ativo, ');
-   qryAux.Sql.Add('       isnull((Select 1 ');
+   qryAux.Sql.Add('       isnull((Select count(*) ');
    qryAux.Sql.Add('               From Usuarios_Setores us ');
    qryAux.Sql.Add('                    Inner Join Setores st on st.id = us.id_Setor ');
    qryAux.Sql.Add('               where st.AUTOSC = ' + QuotedStr('Sim') + '),0) as AutoSC, ');
 
-   qryAux.Sql.Add('       isnull((Select 1 ');
+   qryAux.Sql.Add('       isnull((Select count(*) ');
    qryAux.Sql.Add('               From Usuarios_Setores us ');
    qryAux.Sql.Add('                    Inner Join Setores st on st.id = us.id_Setor ');
    qryAux.Sql.Add('               where st.SIAGS = ' + QuotedStr('Sim') + '),0) as SIAGS, ');
 
-   qryAux.Sql.Add('       isnull((Select 1 ');
+   qryAux.Sql.Add('       isnull((Select count(*) ');
    qryAux.Sql.Add('               From Usuarios_Setores us ');
    qryAux.Sql.Add('                    Inner Join Setores st on st.id = us.id_Setor ');
    qryAux.Sql.Add('               where st.CONTROLPC = ' + QuotedStr('Sim') + '),0) as CONTROLPC ');
@@ -192,9 +192,9 @@ begin
       Result.AddPair('trocarSenha',TJSONBool.Create(qryAux.FieldByName('Trocar_Senha').AsString = C_SIM));
       Result.AddPair('perfil',TJSONString.Create(qryAux.FieldByName('Perfil').AsString));
 
-      Result.AddPair('autosc',TJSONBool.Create(qryAux.FieldByName('AUTOSC').AsInteger = 1));
-      Result.AddPair('siags',TJSONBool.Create(qryAux.FieldByName('SIAGS').AsInteger = 1));
-      Result.AddPair('controlpc',TJSONBool.Create(qryAux.FieldByName('CONTROLPC').AsInteger = 1));
+      Result.AddPair('autosc',TJSONBool.Create(qryAux.FieldByName('AUTOSC').AsInteger >= 1));
+      Result.AddPair('siags',TJSONBool.Create(qryAux.FieldByName('SIAGS').AsInteger >= 1));
+      Result.AddPair('controlpc',TJSONBool.Create(qryAux.FieldByName('CONTROLPC').AsInteger >= 1));
    finally
       qryAux.Close;
    end;

@@ -22,7 +22,8 @@ uses
   Libs.Constantes in '..\Libs\Libs.Constantes.pas',
   ServerMethods.Siags in 'ServerMethods\ServerMethods.Siags.pas' {SMSiags: TDSServerModule},
   ServerMethods.ControlPc in 'ServerMethods\ServerMethods.ControlPc.pas' {SMControlPc: TDSServerModule},
-  ServerMethods.Resumos in 'ServerMethods\ServerMethods.Resumos.pas' {SMResumos: TDSServerModule};
+  ServerMethods.Resumos in 'ServerMethods\ServerMethods.Resumos.pas' {SMResumos: TDSServerModule},
+  ServerMethods.Cadastro.StatusTrue in 'ServerMethods\ServerMethods.Cadastro.StatusTrue.pas' {SMStatusTrue: TDSServerModule};
 
 {$R *.res}
 

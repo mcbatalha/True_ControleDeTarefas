@@ -45,6 +45,7 @@ const
 // Tipos de pesquisa
    C_PESQUISA_USUARIO = 1;
    C_PESQUISA_SETOR   = 2;
+   C_PESQUISA_STATUS  = 3;
 
 // Ambientes
    C_AMBIENTE_HOMOLOGACAO     = 'Homologação';
@@ -69,7 +70,13 @@ const
    C_TIPO_SIAGS     = 'SIAGS';
    C_TIPO_CONTROLPC = 'CONTROLPC';
 
-   implementation
+
+// Tipos de pesquisa
+   C_TIPO_PRAZO_NAO_CONTA = 'Não Conta';
+   C_TIPO_PRAZO_DIAS      = 'Dias';
+   C_TIPO_PRAZO_HORAS     = 'Horas';
+
+implementation
 
 
 

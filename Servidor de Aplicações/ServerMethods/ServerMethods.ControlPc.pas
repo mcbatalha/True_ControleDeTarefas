@@ -995,36 +995,30 @@ begin
 
    try
       TTransacao.IniciarTransacao(ServerContainer.FDConnection);
-
       ADataHora := Now;
-      try
-         qryAux.Close;
-         qryAux.Sql.Clear;
-         qryAux.Sql.Add('Insert into ControlPc_Observacoes');
-         qryAux.Sql.Add('   (id_ControlPc, id_Usuario, Data_Hora, Observacao)');
-         qryAux.Sql.Add('Values ');
-         qryAux.Sql.Add('   (:pIdControlPc, :pIdUsuario, :pDataHora, :pObservacao)');
-         qryAux.ParamByName('pIdControlPc').AsInteger := AIdProtocolo;
-         qryAux.ParamByName('pIdUsuario').AsInteger   := AIdUsuarioResponsavel;
-         qryAux.ParamByName('pDataHora').AsDateTime   := ADataHora;
-         qryAux.ParamByName('pObservacao').AsString   := AObservacao;
-         qryAux.ExecSQL;
 
-         if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
-            Result := True;
-      except
-         begin
-         Result := False;
-         TTransacao.CancelarTransacao(ServerContainer.FDConnection);
-         Exit;
-         end;
+      qryAux.Close;
+      qryAux.Sql.Clear;
+      qryAux.Sql.Add('Insert into ControlPc_Observacoes');
+      qryAux.Sql.Add('   (id_ControlPc, id_Usuario, Data_Hora, Observacao)');
+      qryAux.Sql.Add('Values ');
+      qryAux.Sql.Add('   (:pIdControlPc, :pIdUsuario, :pDataHora, :pObservacao)');
+      qryAux.ParamByName('pIdControlPc').AsInteger := AIdProtocolo;
+      qryAux.ParamByName('pIdUsuario').AsInteger   := AIdUsuarioResponsavel;
+      qryAux.ParamByName('pDataHora').AsDateTime   := ADataHora;
+      qryAux.ParamByName('pObservacao').AsString   := AObservacao;
+      qryAux.ExecSQL;
+
+      if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
+         Result := True;
+   except
+      begin
+      Result := False;
+      TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+      Exit;
       end;
-
-   finally
-      qryControlPcLog.Close;
-      qryControlPcHistorico.Close;
-      qryControlPc.Close;
    end;
+
 end;
 
 
@@ -1073,7 +1067,7 @@ begin
    qryAux.Sql.Add('   (Select ');
    qryAux.Sql.Add('       id, Nome_Usuario, ');
 
-   qryAux.Sql.Add('       isnull((Select 1 ');
+   qryAux.Sql.Add('       isnull((Select count(*) ');
    qryAux.Sql.Add('               From Usuarios_Setores us ');
    qryAux.Sql.Add('                    Inner Join Setores st on st.id = us.id_Setor ');
    qryAux.Sql.Add('               where st.ControlPc = ' + QuotedStr('Sim') + '),0) as ControlPc ');
@@ -1083,7 +1077,7 @@ begin
    qryAux.Sql.Add('       u.ativo = ' + QuotedStr(C_SIM));
    qryAux.Sql.Add('   ) as usu');
    qryAux.Sql.Add('where ');
-   qryAux.Sql.Add('   usu.ControlPc = 1');
+   qryAux.Sql.Add('   usu.ControlPc >= 1');
 
    Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
