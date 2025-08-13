@@ -1,4 +1,5 @@
 inherited dtmRelatorios: TdtmRelatorios
+  OldCreateOrder = True
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
   Height = 462

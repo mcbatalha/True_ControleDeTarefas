@@ -37,32 +37,14 @@ type
     qrySetores: TFDQuery;
     qrySetoresid: TIntegerField;
     qrySetoresNome_Setor: TStringField;
-    qryTiposStatus: TFDQuery;
-    qryTiposStatusid: TFDAutoIncField;
-    qryTiposStatusTipo_Status: TStringField;
-    qryTiposStatusAUTOSC: TIntegerField;
-    qryTiposStatusSIAGS: TIntegerField;
-    qryTiposStatusCONTROLPC: TIntegerField;
-    qryTiposPrazo: TFDQuery;
-    qryTiposPrazoid: TFDAutoIncField;
-    qryTiposPrazoTipo_Prazo_Caixa: TStringField;
-    qryTiposPrazoAUTOSC: TIntegerField;
-    qryTiposPrazoSIAGS: TIntegerField;
-    qryTiposPrazoCONTROLPC: TIntegerField;
     qryControlPc: TFDQuery;
     qryControlPcHistorico: TFDQuery;
     qryControlPcLog: TFDQuery;
     qryControlPcid: TLargeintField;
     qryControlPcProtocolo: TStringField;
-    qryControlPcid_Tipo_Status: TIntegerField;
     qryControlPcData_Abertura: TDateTimeField;
-    qryControlPcData_Transferencia: TDateTimeField;
-    qryControlPcData_Fechamento: TDateTimeField;
     qryControlPcPrevisao_Solucao: TDateTimeField;
-    qryControlPcid_Tipo_Prazo: TIntegerField;
     qryControlPcid_Tipo_Cliente: TIntegerField;
-    qryControlPcid_Tipo_Classificacao: TIntegerField;
-    qryControlPcSolicitacao_Cliente: TStringField;
     qryControlPcTipo_Reclame: TStringField;
     qryControlPcTipo_Nip: TStringField;
     qryControlPcData_Hora_Importacao: TDateTimeField;
@@ -77,31 +59,11 @@ type
     qryControlPcJustificativa_Encerramento: TStringField;
     qryControlPcHistoricoid: TLargeintField;
     qryControlPcHistoricoid_ControlPc: TLargeintField;
-    qryControlPcHistoricoid_Tipo_Status: TIntegerField;
-    qryControlPcHistoricoid_Tipo_Prazo: TIntegerField;
     qryControlPcHistoricoid_Tecnico: TIntegerField;
     qryControlPcHistoricoid_Tipo_Cliente: TIntegerField;
-    qryControlPcHistoricoid_Tipo_Classifiacao: TIntegerField;
     qryControlPcHistoricoid_Usuario_Responsavel: TIntegerField;
     qryControlPcHistoricoData_Hora_Historico: TDateTimeField;
     qryPainelControlPc: TFDQuery;
-    qryPainelControlPcid_Protocolo: TLargeintField;
-    qryPainelControlPcData_Abertura: TDateTimeField;
-    qryPainelControlPcData_Transferencia: TDateTimeField;
-    qryPainelControlPcData_Fechamento: TDateTimeField;
-    qryPainelControlPcPrevisao_Solucao: TDateTimeField;
-    qryPainelControlPcSolicitacao_Cliente: TStringField;
-    qryPainelControlPcTipo_Reclame: TStringField;
-    qryPainelControlPcTipo_Nip: TStringField;
-    qryPainelControlPcTipo_Status: TStringField;
-    qryPainelControlPcTipo_Prazo_Caixa: TStringField;
-    qryPainelControlPcNome_Tecnico: TStringField;
-    qryPainelControlPcTipo_Cliente: TStringField;
-    qryPainelControlPcUsuario_Designado: TStringField;
-    qryPainelControlPcSetor_Designado: TStringField;
-    qryPainelControlPcQtd_Historicos: TIntegerField;
-    qryPainelControlPcQtd_Designacoes: TIntegerField;
-    qryPainelControlPcQtd_Observacoes: TIntegerField;
     qryAux: TFDQuery;
     qryControlPcid_Tecnico: TIntegerField;
     qryControlPcLogid: TLargeintField;
@@ -117,39 +79,65 @@ type
     qryTiposCliente: TFDQuery;
     qryTiposClienteid: TFDAutoIncField;
     qryTiposClienteTipo_Cliente: TStringField;
-    qryTiposClassificacao: TFDQuery;
-    qryTiposClassificacaoid: TFDAutoIncField;
-    qryTiposClassificacaoTipo_Classificacao: TStringField;
-    qryClassificacao: TFDQuery;
-    qryClassificacaoid: TFDAutoIncField;
-    qryClassificacaoTipo_Classificacao: TStringField;
     qryControlPcHistoricoTipo_Reclame: TStringField;
     qryControlPcHistoricoTipo_Nip: TStringField;
-    qryPainelControlPcProtocolo: TStringField;
-    qryPainelControlPcTipo_Classificacao: TStringField;
     qryControlPcUltima_Atualizacao: TDateTimeField;
     qryControlPcid_Usuario_Ultima_Atualizacao: TIntegerField;
-    qryPainelControlPcData_Hora_Importacao: TDateTimeField;
-    qryPainelControlPcUltima_Atualizacao: TDateTimeField;
-    qryPainelControlPcData_Hora_Encerramento: TDateTimeField;
-    qryPainelControlPcUsuario_Importacao: TStringField;
-    qryPainelControlPcUsuario_Atualizacao: TStringField;
-    qryPainelControlPcUsuario_Encerrameto: TStringField;
-    qryPainelControlPcJustificativa_Encerramento: TStringField;
+    qryControlPcid_Status_True: TIntegerField;
+    qryControlPcHistoricoid_Status_True: TIntegerField;
+    qryPainelControlPcid_Protocolo: TLargeintField;
+    qryPainelControlPcProtocolo: TStringField;
+    qryPainelControlPcData_Abertura: TDateTimeField;
+    qryPainelControlPcPrevisao_Solucao: TDateTimeField;
+    qryPainelControlPcTipo_Reclame: TStringField;
+    qryPainelControlPcTipo_Nip: TStringField;
+    qryPainelControlPcNome_Tecnico: TStringField;
+    qryPainelControlPcTipo_Cliente: TStringField;
+    qryPainelControlPcStatus_True: TStringField;
+    qryPainelControlPcUsuario_Designado: TStringField;
+    qryPainelControlPcSetor_Designado: TStringField;
+    qryPainelControlPcQtd_Historicos: TIntegerField;
+    qryPainelControlPcQtd_Designacoes: TIntegerField;
+    qryPainelControlPcQtd_Observacoes: TIntegerField;
+    qryPainelControlPcid_Usuario_Designado: TIntegerField;
+    qryPainelControlPcid_Setor_Designado: TIntegerField;
+    qryControlPcDesignacao_Pendente: TStringField;
+    qryPainelControlPcDesignacao_Pendente: TStringField;
+    qryIncluirDesignacao: TFDQuery;
+    qryIncluirDesignacaoid: TLargeintField;
+    qryIncluirDesignacaoid_Protocolo: TLargeintField;
+    qryIncluirDesignacaoid_Usuario_Solicitante: TIntegerField;
+    qryIncluirDesignacaoData_Solicitacao: TDateTimeField;
+    qryIncluirDesignacaoid_Usuario_Designado: TIntegerField;
+    qryIncluirDesignacaoid_Usuario_Solicitado: TIntegerField;
+    qryIncluirDesignacaoid_Setor_Designado: TIntegerField;
+    qryIncluirDesignacaoid_Setor_Solicitado: TIntegerField;
+    qryIncluirDesignacaoAutorizado: TStringField;
+    qryIncluirDesignacaoData_Hora_Autorizacao: TDateTimeField;
+    qryIncluirDesignacaoJustificativa: TStringField;
+    qryIncluirDesignacaoid_Usuario_Autorizador: TIntegerField;
+    qryPainelControlPcid_Status_True: TIntegerField;
+    qryDesignacoesPendentes: TFDQuery;
+    qryDesignacoesPendentesData_Solicitacao: TDateTimeField;
+    qryDesignacoesPendentesJustificativa: TStringField;
+    qryDesignacoesPendentesid_Protocolo: TLargeintField;
+    qryDesignacoesPendentesProtocolo: TStringField;
+    qryDesignacoesPendentesUsuario_Solicitante: TStringField;
+    qryDesignacoesPendentesUsuario_Atual: TStringField;
+    qryDesignacoesPendentesUsuario_Solicitado: TStringField;
+    qryDesignacoesPendentesSetor_Atual: TStringField;
+    qryDesignacoesPendentesSetor_Solicitado: TStringField;
+    qryDesignacoesPendentesStatus_True: TStringField;
+    qryDesignacoesPendentesid_Solicitacao: TLargeintField;
   private
 
     FIdTecnico            : integer;
-    FIdTipoPrazo          : integer;
     FIdTipoCliente        : integer;
-    FIdTipoClassificacao  : integer;
-    FIdTipoStatus         : integer;
+    FIdUsuarioDesignado   : integer;
 
     FNumeroProtocolo      : String;
     FDataAbertura         : TDateTime;
-    FDataTransferencia    : TDateTime;
-    FDataFechamento       : TDateTime;
     FPrevisaoSolucao      : TDateTime;
-    FSolicitacaoCliente   : String;
     FTipoReclame          : String;
     FTipoNip              : String;
 
@@ -162,30 +150,29 @@ type
     FDataHora             : TDateTime;
 
     FTemDataAbertura      : Boolean;
-    FTemDataTransferencia : Boolean;
-    FTemDataFechamento    : Boolean;
     FTemPrevisaoSolucao   : Boolean;
 
     procedure AbrirTabelasDeCadastro;
     procedure FecharTabelasDeCadastro;
 
     function ObterIdTecnico(const AValor : String) : integer;
-    function ObterIdTipoPrazo(const AValor : String) : integer;
     function ObterIdTipoCliente(const AValor : String) : integer;
-    function ObterIdTipoClassificacao(const AValor : String) : integer;
-    function ObterIdTipoStatus(const AValor : String) : integer;
 
     procedure GravarProtocolo;
     procedure GravarHistorico(const AId : Largeint);
+    procedure GravarLogDesigancao(const AIdProtocolo,
+                                        AIdUsuarioResponsavel,
+                                        AIdUsuario,
+                                        AIdSetor : Integer;
+                                  const AJustificativa : String);
 
     procedure MontarQueryPainel;
-
-
   public
     function Importar(const ARegistros : TJSONArray; const AIdUsuario : integer) : TJSONObject;
 
     function FiltrarProtocolos(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean) : TJSONArray;
-    function Designar(const AJustificativa: String;
+    function Designar(const AProtocolos : TJSONArray;
+                      const AJustificativa: String;
                       const AIdSetor, AIdUsuario, AIdUsuarioResponsavel : integer;
                       const AIdProtocolo : LongInt ): Boolean;
 
@@ -194,22 +181,24 @@ type
                                  const AIdUsuarioResponsavel : integer;
                                  out ADataHora : TDateTime): Boolean;
 
-    function EncerrarProtocolo(const AIdProtocolo : LongInt;
-                              const AJustificativa: String;
-                              const AIdUsuarioResponsavel : integer): Boolean;
+    function AlterarStatus(const AIdProtocolo : LongInt;
+                           const AIdStatus   : Integer;
+                           const AJustificativa: String;
+                           const AIdUsuarioResponsavel : integer): Boolean;
 
     function HistoricoDeDesignacoes(const AIdProtocolo : LongInt) : TJSONArray;
     function HistoricoDeAtualizacoes(const AIdProtocolo : LongInt) : TJSONArray;
     function ObservacoesDoProtocolo(const AIdProtocolo : LongInt) : TJSONArray;
 
 
-    function Tecnicos    : TJSONArray;
-    function TiposDePrazo : TJSONArray;
-    function TiposDeCliente  : TJSONArray;
-    function TiposDeClassificacao : TJSONArray;
-    function TiposDeStatus    : TJSONArray;
-    function Setores          : TJSONArray;
-    function Usuarios         : TJSONArray;
+    function Tecnicos         : TJSONArray;
+    function TiposDeCliente   : TJSONArray;
+    function StatusTrue       : TJSONArray;
+    function ProtocolosAtivos : TJSONArray;
+
+    function Setores(const AIdUsuario : Integer)      : TJSONArray;
+    function Usuarios(const AIdUsuario : Integer)     : TJSONArray;
+    function UsuariosDoSetor(const AIdSetor: Integer) : TJSONArray;
 
     function RelatorioDeDesignacoes(const AUsaDatas : Boolean;
                                     const ADataInicial, ADataFinal : TDateTime;
@@ -219,6 +208,11 @@ type
     function RelatorioDeEncerramentos(const ADataInicial, ADataFinal : TDateTime;
                                       const AIdUsuarioResponsavel : integer) : TJSONArray;
 
+    function DesignacoesPendentes : TJSONArray;
+
+    function AutorizarDesiganacao(const AIdProtocolo, AIdSolicitacao : LongInt;
+                                  const AAutorizado : Boolean;
+                                  const AIdUsuario : Integer)  : Boolean;
 
 end;
 
@@ -237,17 +231,25 @@ procedure TSMControlPc.AbrirTabelasDeCadastro;
 begin
    FecharTabelasDeCadastro;
 
-   qryTiposPrazo.ParamByName('CONTROLPC').AsInteger     := 9;
-   qryTiposStatus.ParamByName('CONTROLPC').AsInteger    := 9;
-
-   qryTiposPrazo.Open;
-   qryTiposStatus.Open;
    qryTecnicos.Open;
    qryTiposCliente.Open;
-   qryTiposClassificacao.Open;
 end;
 
-function TSMControlPc.Designar(const AJustificativa: String; const AIdSetor, AIdUsuario, AIdUsuarioResponsavel: integer; const AIdProtocolo: LongInt): Boolean;
+function TSMControlPc.DesignacoesPendentes: TJSONArray;
+begin
+   qryDesignacoesPendentes.Close;
+
+   Result := TFuncoesJSON.MontarJSON(qryDesignacoesPendentes);
+end;
+
+function TSMControlPc.Designar(
+   const AProtocolos : TJSONArray;
+   const AJustificativa: String;
+   const AIdSetor, AIdUsuario, AIdUsuarioResponsavel: integer; const AIdProtocolo: LongInt): Boolean;
+var
+   i : integer;
+   LQtd       : integer;
+   LPerfil    : String;
 begin
    Result := False;
 
@@ -255,46 +257,84 @@ begin
       FIdUsuarioResponsavel := AIdUsuarioResponsavel;
       FDataHora             := Now;
       TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+
+      LPerfil := TFuncoesServer.PerfilUsuario(AIdUsuarioResponsavel);
+
       try
+         LQtd := AProtocolos.Count -1;
+
          qryControlPc.Close;
          qryControlPc.Sql.Clear;
          qryControlPc.Sql.Add('Select * from ControlPc');
-         qryControlPc.Sql.Add('where id = :pIdProtocolo');
-         qryControlPc.ParamByName('pIdProtocolo').AsInteger := AIdProtocolo;
+         qryControlPc.Sql.Add('where Protocolo in (');
+         for I := 0 to LQtd do
+            begin
+            if i < LQtd then
+               qryControlPc.Sql.Add(QuotedStr(AProtocolos.Items[i].GetValue<String>) + ',')
+            else
+               qryControlPc.Sql.Add(QuotedStr(AProtocolos.Items[i].GetValue<String>));
+         end;
+         qryControlPc.Sql.Add(')');
          qryControlPc.Open;
 
          if qryControlPc.isEmpty then
             Exit;
 
-         GravarHistorico(AIdProtocolo);
+         qryIncluirDesignacao.Open;
+         while not qryControlPc.Eof do
+            begin
+            qryControlPc.Edit;
+            if LPerfil = C_PERFIL_USUARIO then
+               begin
+               qryControlPcDesignacao_Pendente.AsString := C_SIM;
 
-         qryControlPcLog.Close;
-         qryControlPcLog.ParamByName('pIdControlPc').AsInteger := AIdProtocolo;
-         qryControlPcLog.Open;
+               qryIncluirDesignacao.Append;
+               qryIncluirDesignacaoid_Protocolo.AsInteger           := qryControlPcid.AsInteger;
+               qryIncluirDesignacaoid_Usuario_Solicitante.AsInteger := AIdUsuarioResponsavel;
+               qryIncluirDesignacaoData_Solicitacao.AsDateTime      := FDataHora;
+               qryIncluirDesignacaoAutorizado.AsString              := 'Pendente';
+               qryIncluirDesignacaoJustificativa.AsString           := AJustificativa;
 
-         qryControlPcLog.Append;
-         qryControlPcLogid_ControlPc.AsInteger           := AIdProtocolo;
-         qryControlPcLogid_Usuario_Responsavel.AsInteger := AIdUsuarioResponsavel;
-         qryControlPcLogJustificativa.AsString           := AJustificativa;
-         qryControlPcLogData_Hora_Log.AsDateTime         := FDataHora;
+               if (qryControlPcid_Usuario_Designado.AsInteger <> 0) then
+                  qryIncluirDesignacaoid_Usuario_Designado.AsInteger  := qryControlPcid_Usuario_Designado.AsInteger;
 
-         if AIdSetor <> C_CODIGO_NAO_DESIGNADO then
-            qryControlPcLogid_Setor_Designado.AsInteger  := AIdSetor;
-         if AIdUsuario <> C_CODIGO_NAO_DESIGNADO then
-            qryControlPcLogid_Usuario_Designado.AsInteger := AIdUsuario;
-         qryControlPcLog.Post;
+               if (AIdUsuario <> 0) and (AIdUsuario <> C_CODIGO_NAO_DESIGNADO) then
+                  qryIncluirDesignacaoid_Usuario_Solicitado.AsInteger := AIdUsuario;
 
+               if qryControlPcid_Setor_Designado.AsInteger > 0 then
+                  qryIncluirDesignacaoid_Setor_Designado.AsInteger    := qryControlPcid_Setor_Designado.AsInteger;
 
-         qryControlPc.Edit;
-         if AIdSetor <> C_CODIGO_NAO_DESIGNADO then
-            qryControlPcid_Setor_Designado.AsInteger  := AIdSetor;
-         if AIdUsuario <> C_CODIGO_NAO_DESIGNADO then
-            qryControlPcid_Usuario_Designado.AsInteger := AIdUsuario;
+               if (AIdSetor <> 0) and (AIdSetor <> C_CODIGO_NAO_DESIGNADO) then
+                  qryIncluirDesignacaoid_Setor_Solicitado.AsInteger   := AIdSetor;
+               qryIncluirDesignacao.Post;
+            end else
+               begin
+               if (AIdSetor = 0) or (AIdSetor = C_CODIGO_NAO_DESIGNADO) then
+                  qryControlPcid_Setor_Designado.Clear
+               else
+                  qryControlPcid_Setor_Designado.AsInteger  := AIdSetor;
 
-         qryControlPcid_Responsavel_Designacao.AsInteger := AIdUsuarioResponsavel;
-         qryControlPcData_Hora_Designacao.AsDateTime     := FDataHora;
-         qryControlPcJustificativa_Designacao.AsString   := AJustificativa;
-         qryControlPc.Post;
+               if (AIdUsuario = 0) or (AIdUsuario = C_CODIGO_NAO_DESIGNADO) then
+                  qryControlPcid_Usuario_Designado.Clear
+               else
+                  qryControlPcid_Usuario_Designado.AsInteger := AIdUsuario;
+
+               qryControlPcid_Responsavel_Designacao.AsInteger := AIdUsuarioResponsavel;
+               qryControlPcData_Hora_Designacao.AsDateTime     := FDataHora;
+               qryControlPcJustificativa_Designacao.AsString   := AJustificativa;
+
+               GravarLogDesigancao(qryControlPcid.AsInteger,
+                                   AIdUsuarioResponsavel,
+                                   AIdUsuario,
+                                   AIdSetor,
+                                   AJustificativa);
+            end;
+            qryControlPc.Post;
+
+            qryControlPc.Next;
+         end;
+         qryIncluirDesignacao.Close;
+
 
          if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
             Result := True;
@@ -314,13 +354,30 @@ begin
 end;
 
 
-function TSMControlPc.EncerrarProtocolo(const AIdProtocolo: LongInt; const AJustificativa: String; const AIdUsuarioResponsavel: integer): Boolean;
+function TSMControlPc.AlterarStatus(
+   const AIdProtocolo  : LongInt;
+   const AIdStatus     : Integer;
+   const AJustificativa: String;
+   const AIdUsuarioResponsavel : integer): Boolean;
+var
+   LEncerrarProcesso : Boolean;
+   LDataHora         : TDateTime;
 begin
-   Result := False;
+   Result    := False;
+   LDataHora := Now;
 
    try
       TTransacao.IniciarTransacao(ServerContainer.FDConnection);
       try
+         qryAux.Close;
+         qryAux.Sql.Clear;
+         qryAux.Sql.Add('Select * from Status_True');
+         qryAux.Sql.Add('where id = :pIdStatus');
+         qryAux.ParamByName('pIdStatus').AsInteger := AIdStatus;
+         qryAux.Open;
+         LEncerrarProcesso := qryAux.FieldByName('Encerra').AsString = C_SIM;
+         qryAux.Close;
+
          qryControlPc.Close;
          qryControlPc.Sql.Clear;
          qryControlPc.Sql.Add('Select * from ControlPc');
@@ -331,10 +388,33 @@ begin
          if qryControlPc.isEmpty then
             Exit;
 
+         qryAux.Close;
+         qryAux.Sql.Clear;
+         qryAux.Sql.Add('Insert Into ControlPc_Historico');
+         qryAux.Sql.Add('   (id_ControlPc, id_Tecnico, id_Tipo_Cliente,  ');
+         qryAux.Sql.Add('    id_Usuario_Responsavel, Data_Hora_Historico, id_Status_True)');
+         qryAux.Sql.Add('Select ');
+         qryAux.Sql.Add('   id, id_Tecnico, id_Tipo_Cliente, ');
+         qryAux.Sql.Add('   :pIdUsuario, :pDataHora, :pIdStatus ');
+         qryAux.Sql.Add('From ');
+         qryAux.Sql.Add('   ControlPc ');
+         qryAux.Sql.Add('where');
+         qryAux.Sql.Add('   id = :pId');
+         qryAux.ParamByName('pId').AsInteger        := AIdProtocolo;
+         qryAux.ParamByName('pIdUsuario').AsInteger := AIdUsuarioResponsavel;
+         qryAux.ParamByName('pDataHora').AsDateTime := LDataHora;
+         qryAux.ParamByName('pIdStatus').AsInteger  := AIdStatus;
+         qryAux.ExecSQL;
+
          qryControlPc.Edit;
-         qryControlPcid_Usuario_Encerramento.AsInteger   := AIdUsuarioResponsavel;
-         qryControlPcData_Hora_Encerramento.AsDateTime   := Now;
-         qryControlPcJustificativa_Encerramento.AsString := AJustificativa;
+         qryControlPcid_Status_True.AsInteger := AIdStatus;
+
+         if LEncerrarProcesso then
+            begin
+            qryControlPcid_Usuario_Encerramento.AsInteger   := AIdUsuarioResponsavel;
+            qryControlPcData_Hora_Encerramento.AsDateTime   := LDataHora;
+            qryControlPcJustificativa_Encerramento.AsString := AJustificativa;
+         end;
          qryControlPc.Post;
 
          if TTransacao.ComitarTransacao(ServerContainer.FDConnection) then
@@ -351,16 +431,81 @@ begin
       qryControlPcLog.Close;
       qryControlPcHistorico.Close;
       qryControlPc.Close;
+   end;
+end;
+
+function TSMControlPc.AutorizarDesiganacao(const AIdProtocolo, AIdSolicitacao: LongInt; const AAutorizado: Boolean; const AIdUsuario: Integer): Boolean;
+begin
+   Result    := False;
+   FDataHora := Now;
+
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+
+         qryAux.Close;
+         qryAux.Sql.Clear;
+         qryAux.Sql.Add('Select * from ControlPc_Designacao_Solicitacao');
+         qryAux.Sql.Add('where id = :pId');
+         qryAux.ParamByName('pId').AsInteger := AIdSolicitacao;
+         qryAux.Open;
+
+         qryControlPc.Close;
+         qryControlPc.ParamByName('pIdProtocolo').AsInteger := AIdProtocolo;
+         qryControlPc.Open;
+
+         qryAux.Edit;
+         qryControlPc.Edit;
+
+         if not AAutorizado then
+            begin
+            qryAux.FieldByName('Autorizado').AsString := C_NAO;
+         end else
+            begin
+            qryAux.FieldByName('Autorizado').AsString := C_SIM;
+            if qryAux.FieldByName('id_Setor_Solicitado').AsInteger > 0 then
+               qryControlPcid_Setor_Designado.AsInteger := qryAux.FieldByName('id_Setor_Solicitado').AsInteger;
+            if qryAux.FieldByName('id_Usuario_Solicitado').AsInteger > 0 then
+               qryControlPcid_Usuario_Designado.AsInteger := qryAux.FieldByName('id_Usuario_Solicitado').AsInteger;
+
+            qryControlPcData_Hora_Designacao.AsDateTime     := FDataHora;
+            qryControlPcid_Responsavel_Designacao.AsInteger := qryAux.FieldByName('id_Usuario_Solicitante').AsInteger;
+            qryControlPcJustificativa_Designacao.AsString   := qryAux.FieldByName('Justificativa').AsString;
+         end;
+
+         qryControlPcDesignacao_Pendente.AsString := C_NAO;
+         qryControlPc.Post;
+
+         qryAux.FieldByName('Data_Hora_Autorizacao').AsDateTime := FDataHora;
+         qryAux.FieldByName('id_Usuario_Autorizador').AsInteger := AIdUsuario;
+         qryAux.Post;
+
+         if AAutorizado then
+            begin
+            GravarLogDesigancao(qryControlPcid.AsInteger,
+                                qryAux.FieldByName('id_Usuario_Solicitante').AsInteger,
+                                qryAux.FieldByName('id_Usuario_Solicitado').AsInteger,
+                                qryAux.FieldByName('id_Setor_Solicitado').AsInteger,
+                                qryAux.FieldByName('Justificativa').AsString);
+         end;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         Result := True;
+
+      except
+         TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+         Result := False;
+      end;
+
+   finally
+      qryAux.Open;
+      qryControlPc.Open;
    end;
 end;
 
 procedure TSMControlPc.FecharTabelasDeCadastro;
 begin
-   qryTiposPrazo.Close;
-   qryTiposStatus.Close;
    qryTecnicos.Close;
    qryTiposCliente.Close;
-   qryTiposClassificacao.Close;
 end;
 
 function TSMControlPc.FiltrarProtocolos(const AFiltros: TJSONObject; const AIncluirEncerrados : Boolean): TJSONArray;
@@ -369,14 +514,11 @@ var
 begin
 
    LFiltros.numeroDoProtocolo    := AFiltros.GetValue<String>('numeroDoProtocolo');
-   LFiltros.idTipoStatus         := AFiltros.GetValue<integer>('idTipoStatus');
-   LFiltros.idTipoPrazo          := AFiltros.GetValue<integer>('idTipoPrazo');
    LFiltros.idTecnico            := AFiltros.GetValue<integer>('idTecnico');
    LFiltros.idTipoCliente        := AFiltros.GetValue<integer>('idTipoCliente');
+   LFiltros.idStatusTrue         := AFiltros.GetValue<integer>('idStatusTrue');
 
    LFiltros.usaDataAbertura      := AFiltros.GetValue<Boolean>('usaDataAbertura');
-   LFiltros.usaDataFechamento    := AFiltros.GetValue<Boolean>('usaDataFechamento');
-   LFiltros.usaDataTransferencia := AFiltros.GetValue<Boolean>('usaDataTransferencia');
    LFiltros.usaPrevisaoSolucao   := AFiltros.GetValue<Boolean>('usaPrevisaoSolucao');
    LFiltros.tipoReclame          := AFiltros.GetValue<String>('tipoReclame');
    LFiltros.tipoNip              := AFiltros.GetValue<String>('tipoNip');
@@ -388,12 +530,6 @@ begin
 
    if LFiltros.usaDataAbertura then
      LFiltros.dataAbertura       := AFiltros.GetValue<TDateTime>('dataAbertura');
-
-   if LFiltros.usaDataFechamento then
-     LFiltros.dataFechamento     := AFiltros.GetValue<TDateTime>('dataFechamento');
-
-   if LFiltros.usaDataTransferencia then
-     LFiltros.dataTransferencia  := AFiltros.GetValue<TDateTime>('dataTransferencia');
 
    if LFiltros.usaPrevisaoSolucao then
      LFiltros.previsaoSolucao    := AFiltros.GetValue<TDateTime>('previsaoSolucao');
@@ -409,16 +545,10 @@ begin
       qryPainelControlPc.ParamByName('pNumeroDoProtocolo').AsString := '%' + LFiltros.numeroDoProtocolo + '%';
    end;
 
-   if LFiltros.idTipoStatus > 0 then
+   if LFiltros.idStatusTrue > 0 then
       begin
-      qryPainelControlPc.Sql.Add(' and a.id_Tipo_Status = :pIdTipoStatus');
-      qryPainelControlPc.ParamByName('pIdTipoStatus').AsInteger := LFiltros.idTipoStatus;
-   end;
-
-   if LFiltros.idTipoPrazo > 0 then
-      begin
-      qryPainelControlPc.Sql.Add(' and a.id_Tipo_Prazo = :pIdTipoPrazo');
-      qryPainelControlPc.ParamByName('pIdTipoPrazo').AsInteger := LFiltros.idTipoPrazo;
+      qryPainelControlPc.Sql.Add(' and a.id_Status_True = :pIdStatusTrue');
+      qryPainelControlPc.ParamByName('pIdStatusTrue').AsInteger := LFiltros.idStatusTrue;
    end;
 
    if LFiltros.idTecnico > 0 then
@@ -439,18 +569,6 @@ begin
       qryPainelControlPc.ParamByName('pDataAbertura').AsDate := LFiltros.dataAbertura;
    end;
 
-   if LFiltros.usaDataFechamento then
-      begin
-      qryPainelControlPc.Sql.Add(' and cast(a.Data_Fechamento as Date) = :pDataFechamento');
-      qryPainelControlPc.ParamByName('pDataFechamento').AsDate := LFiltros.dataFechamento;
-   end;
-
-   if LFiltros.usaDataTransferencia then
-      begin
-      qryPainelControlPc.Sql.Add(' and cast(a.Data_Transferencia as Date) = :pDataTransferencia');
-      qryPainelControlPc.ParamByName('pDataTransferencia').AsDate := LFiltros.dataTransferencia;
-   end;
-
    if LFiltros.usaPrevisaoSolucao then
       begin
       qryPainelControlPc.Sql.Add(' and cast(a.Previsao_Solucao  as Date)= :pPrevisaoSolucao');
@@ -469,14 +587,13 @@ begin
       qryPainelControlPc.ParamByName('pTipoNip').AsString := LFiltros.tipoNip;
    end;
 
-
-   if LFiltros.idSetorDesignado > 0 then
+   if (LFiltros.idSetorDesignado <> 0) and  (LFiltros.idSetorDesignado <> C_CODIGO_NAO_DESIGNADO)then
       begin
       qryPainelControlPc.Sql.Add(' and a.id_Setor_Designado = :pIdSetorDesignado');
       qryPainelControlPc.ParamByName('pIdSetorDesignado').AsInteger := LFiltros.idSetorDesignado;
    end;
 
-   if LFiltros.idUsuarioDesignado > 0 then
+   if (LFiltros.idUsuarioDesignado <> 0) and  (LFiltros.idUsuarioDesignado <> C_CODIGO_NAO_DESIGNADO) then
       begin
       if LFiltros.idUsuarioDesignado = C_CODIGO_NAO_DESIGNADO then
          qryPainelControlPc.Sql.Add(' and a.id_Usuario_Designado is null')
@@ -500,13 +617,11 @@ begin
       qryControlPcHistorico.Open;
       qryControlPcHistorico.Append;
       qryControlPcHistoricoid_ControlPc.AsInteger           := AId;
-      qryControlPcHistoricoid_Tipo_Status.AsInteger         := qryControlPcid_Tipo_Status.AsInteger;
-      qryControlPcHistoricoid_Tipo_Prazo.AsInteger          := qryControlPcid_Tipo_Prazo.AsInteger;
       qryControlPcHistoricoid_Tecnico.AsInteger             := qryControlPcid_Tecnico.AsInteger;
       qryControlPcHistoricoid_Tipo_Cliente.AsInteger        := qryControlPcid_Tipo_Cliente.AsInteger;
-      qryControlPcHistoricoid_Tipo_Classifiacao.AsInteger   := qryControlPcid_Tipo_Classificacao.AsInteger;
       qryControlPcHistoricoTipo_Reclame.AsString            := qryControlPcTipo_Reclame.AsString;
       qryControlPcHistoricoTipo_Nip.AsString                := qryControlPcTipo_Nip.AsString;
+      qryControlPcHistoricoid_Status_True.AsInteger         := qryControlPcid_Status_True.AsInteger;
       qryControlPcHistoricoid_Usuario_Responsavel.AsInteger := qryControlPcid_Usuario_Importacao.AsInteger;
       qryControlPcHistoricoData_Hora_Historico.AsDateTime   := FDataHora;
       qryControlPcHistorico.Post;
@@ -515,10 +630,36 @@ begin
    end;
 end;
 
+procedure TSMControlPc.GravarLogDesigancao(const AIdProtocolo,
+                                                 AIdUsuarioResponsavel,
+                                                 AIdUsuario,
+                                                 AIdSetor : Integer;
+                                           const AJustificativa : String);
+begin
+   qryControlPcLog.Close;
+   qryControlPcLog.ParamByName('pIdControlPc').AsInteger := AIdProtocolo;
+   qryControlPcLog.Open;
+
+   qryControlPcLog.Append;
+   qryControlPcLogid_ControlPc.AsInteger            := AIdProtocolo;
+   qryControlPcLogid_Usuario_Responsavel.AsInteger  := AIdUsuarioResponsavel;
+   qryControlPcLogJustificativa.AsString            := AJustificativa;
+   qryControlPcLogData_Hora_Log.AsDateTime          := FDataHora;
+
+   if (AIdSetor > 0) and (AIdSetor <> C_CODIGO_NAO_DESIGNADO) then
+      qryControlPcLogid_Setor_Designado.AsInteger   := AIdSetor;
+   if (AIdUsuario > 0) and (AIdUsuario <> C_CODIGO_NAO_DESIGNADO) then
+      qryControlPcLogid_Usuario_Designado.AsInteger := AIdUsuario;
+   qryControlPcLog.Post;
+   qryControlPcLog.Close;
+end;
+
 procedure TSMControlPc.GravarProtocolo;
 var
    LNovo      : Boolean;
    LAtualizar : Boolean;
+
+   LSetor     : Integer;
 begin
    qryControlPc.Close;
    qryControlPc.Sql.Clear;
@@ -538,11 +679,8 @@ begin
          qryControlPcProtocolo.AsString := FNumeroProtocolo;
       end else
          begin
-         if (qryControlPcid_Tipo_Status.AsInteger        <> FIdTipoStatus) or
-            (qryControlPcid_Tipo_Prazo.AsInteger         <> FIdTipoPrazo) or
-            (qryControlPcid_Tecnico.AsInteger            <> FIdTecnico) or
+         if (qryControlPcid_Tecnico.AsInteger            <> FIdTecnico) or
             (qryControlPcid_Tipo_Cliente.AsInteger       <> FIdTipoCliente) or
-            (qryControlPcid_Tipo_Classificacao.AsInteger <> FIdTipoClassificacao) or
             (qryControlPcTipo_Reclame.AsString           <> FTipoReclame) or
             (qryControlPcTipo_Nip.AsString               <> FTipoNip) then
             begin
@@ -560,24 +698,22 @@ begin
          end else
             FTotalNovos := FTotalNovos + 1;
 
-         qryControlPcid_Tipo_Status.AsInteger         := FIdTipoStatus;
-         qryControlPcid_Tipo_Prazo.AsInteger          := FIdTipoPrazo;
          qryControlPcid_Tecnico.AsInteger             := FIdTecnico;
          qryControlPcid_Tipo_Cliente.AsInteger        := FIdTipoCliente;
-         qryControlPcid_Tipo_Classificacao.AsInteger  := FIdTipoClassificacao;
 
          if FTemDataAbertura then
             qryControlPcData_Abertura.AsDateTime      := FDataAbertura;
-         if FTemDataFechamento then
-            qryControlPcData_Fechamento.AsDateTime    := FDataFechamento;
-         if FTemDataTransferencia then
-            qryControlPcData_Transferencia.AsDateTime := FDataTransferencia;
          if FTemPrevisaoSolucao then
             qryControlPcPrevisao_Solucao.AsDateTime   := FPrevisaoSolucao;
-
-         qryControlPcSolicitacao_Cliente.AsString     := FSolicitacaoCliente;
          qryControlPcTipo_Reclame.AsString            := FTipoReclame;
          qryControlPcTipo_Nip.AsString                := FTipoNip;
+         if FIdUsuarioDesignado > 0 then
+            begin
+            qryControlPcid_Usuario_Designado.AsInteger := FIdUsuarioDesignado;
+            LSetor := TFuncoesServer.SetorDoUsuario(FIdUsuarioDesignado);
+            if LSetor > 0 then
+               qryControlPcid_Setor_Designado.AsInteger := FIdUsuarioDesignado;
+         end;
 
          qryControlPcid_Usuario_Ultima_Atualizacao.AsInteger := FIdUsuarioResponsavel;
          qryControlPcUltima_Atualizacao.AsDateTime           := FDataHora;
@@ -599,19 +735,15 @@ begin
    qryAux.Close;
    qryAux.Sql.Clear;
    qryAux.Sql.Add('Select ');
-   qryAux.Sql.Add('   a.Data_Hora_Historico, a.Tipo_Reclame, a.Tipo_Nip,  ');
-   qryAux.Sql.Add('   b.Tipo_Status,                                      ');
-   qryAux.Sql.Add('   c.Tipo_Prazo_Caixa,                                 ');
+   qryAux.Sql.Add('   a.Data_Hora_Historico, ');
    qryAux.Sql.Add('   d.Nome_Tecnico,                                     ');
-   qryAux.Sql.Add('   e.Tipo_Classificacao,                               ');
+   qryAux.Sql.Add('   e.Status as Status_True,                            ');
    qryAux.Sql.Add('   f.Tipo_Cliente,                                     ');
    qryAux.Sql.Add('   g.Nome_Usuario                                      ');
    qryAux.Sql.Add('From ');
    qryAux.Sql.Add('   ControlPc_Historico a ');
-   qryAux.Sql.Add('   INNER JOIN Tipos_Status b on b.id = a.id_Tipo_Status                   ');
-   qryAux.Sql.Add('   INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo                     ');
    qryAux.Sql.Add('   INNER JOIN Tecnicos d on d.id = a.id_Tecnico                           ');
-   qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Classificacao e on e.id = a.id_Tipo_Classifiacao ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Status_True e on e.id = a.id_Status_True');
    qryAux.Sql.Add('   LEFT OUTER JOIN Tipos_Cliente f on f.id = a.id_Tipo_Cliente            ');
    qryAux.Sql.Add('   INNER JOIN Usuarios g on g.id = a.id_Usuario_Responsavel               ');
    qryAux.Sql.Add('where ');
@@ -629,8 +761,8 @@ begin
    qryAux.Sql.Clear;
    qryAux.Sql.Add('Select ');
    qryAux.Sql.Add('   al.Justificativa, al.Data_Hora_Log, ');
-   qryAux.Sql.Add('   isnull(sd.Nome_Setor, ' + QuotedStr(C_PROCESSO_NAO_DESIGNADO) + ') as Nome_Setor, ');
-   qryAux.Sql.Add('   isnull(ud.Nome_Usuario, ' + QuotedStr(C_PROCESSO_NAO_DESIGNADO) + ') as Usuario_Designado, ');
+   qryAux.Sql.Add('   isnull(sd.Nome_Setor, ' + QuotedStr(C_DESCRICAO_NAO_DESIGNADO) + ') as Nome_Setor, ');
+   qryAux.Sql.Add('   isnull(ud.Nome_Usuario, ' + QuotedStr(C_DESCRICAO_NAO_DESIGNADO) + ') as Usuario_Designado, ');
    qryAux.Sql.Add('   ur.Nome_Usuario as Usuario_Responsavel ');
    qryAux.Sql.Add('from ');
    qryAux.Sql.Add('   ControlPc_Log al ');
@@ -670,35 +802,15 @@ begin
             LObject := ARegistros[i] as TJSONObject;
 
             FTemDataAbertura      := False;
-            FTemDataTransferencia := False;
-            FTemDataFechamento    := False;
             FTemPrevisaoSolucao   := False;
 
             FIdTecnico            := ObterIdTecnico(LObject.Values['TÉCNICO'].Value);
-            FIdTipoPrazo          := ObterIdTipoPrazo(LObject.Values['PRAZO'].Value);
             FIdTipoCliente        := ObterIdTipoCliente(LObject.Values['TIPO CLIENTE'].Value);
-            FIdTipoClassificacao  := ObterIdTipoClassificacao(LObject.Values['CLASSIFICAÇÃO'].Value);
-            FIdTipoStatus         := ObterIdTipoStatus(LObject.Values['STATUS'].Value);
-
-            FSolicitacaoCliente   := LObject.Values['SOLICITAÇÃO DO CLIENTE'].Value;
-
             LData                 := LObject.Values['DT. ABERTURA'].Value;
             if LData <> '' then
                begin
                FTemDataAbertura   := True;
                FDataAbertura      := StrToDateTime(LData);
-            end;
-            LData := LObject.Values['DT. TRANSFERÊNCIA'].Value;
-            if LData <> '' then
-               begin
-               FTemDataFechamento := True;
-               FDataFechamento    := StrToDateTime(LData);
-            end;
-            LData := LObject.Values['DT. FECHAMENTO'].Value;
-            if LData <> '' then
-               begin
-               FTemDataTransferencia := True;
-               FDataTransferencia    := StrToDateTime(LData);
             end;
             LData := LObject.Values['PREVISÃO SOLUÇÃO'].Value;
             if LData <> '' then
@@ -707,8 +819,9 @@ begin
                FPrevisaoSolucao    := StrToDateTime(LData);
             end;
 
-            FTipoReclame     := LObject.Values['TIPO RECLAME'].AsType<String>;
-            FTipoNip         := LObject.Values['TIPO NIP/JUDICIAL'].AsType<String>;
+            FTipoReclame        := LObject.Values['TIPO RECLAME'].AsType<String>;
+            FTipoNip            := LObject.Values['TIPO NIP/JUDICIAL'].AsType<String>;
+            FIdUsuarioDesignado := LObject.Values['ID_USUARIO_DESIGNADO'].AsType<Integer>;
 
             FNumeroProtocolo     := LObject.Values['PROTOCOLO'].AsType<String>;
 
@@ -840,16 +953,13 @@ begin
       Close;
       Sql.Clear;
       Sql.Add('Select ');
-      Sql.Add('   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, a.Data_Transferencia,  ');
-      Sql.Add('   a.Data_Fechamento,a.Previsao_Solucao, a.Solicitacao_Cliente, a.Tipo_Reclame, ');
-      Sql.Add('   a.Tipo_Nip,');
-      Sql.Add('   a.Data_Hora_Importacao, a.Ultima_Atualizacao, a.Data_Hora_Encerramento, ');
-      Sql.Add('   a.Justificativa_Encerramento, ');
-      Sql.Add('   b.Tipo_Status,');
-      Sql.Add('   c.Tipo_Prazo_Caixa,');
+      Sql.Add('   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, a.Previsao_Solucao, a.Tipo_Reclame, ');
+      Sql.Add('   a.Tipo_Nip, a.id_Status_True, a.Data_Hora_Importacao, a.Ultima_Atualizacao, ');
+      Sql.Add('   a.Data_Hora_Encerramento, a.Justificativa_Encerramento,  ');
+      Sql.Add('   a.id_Usuario_Designado, a.id_Setor_Designado, a.Designacao_Pendente, ');
       Sql.Add('   d.Nome_Tecnico,');
       Sql.Add('   e.Tipo_Cliente,');
-      Sql.Add('   f.Tipo_Classificacao,');
+      Sql.Add('   f.Status as Status_True,');
       Sql.Add('   g.Nome_Usuario as Usuario_Designado,');
       Sql.Add('   h.Nome_Setor as Setor_Designado,');
       Sql.Add('   i.Nome_Usuario as Usuario_Importacao, ');
@@ -867,19 +977,15 @@ begin
       Sql.Add('           where ao.id_ControlPc = a.id),0) as Qtd_Observacoes');
       Sql.Add('From ');
       Sql.Add('   ControlPc a ');
-      Sql.Add('   INNER JOIN Tipos_Status b on b.id = a.id_Tipo_Status');
-      Sql.Add('   INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo');
       Sql.Add('   INNER JOIN Tecnicos d on d.id = a.id_Tecnico');
       Sql.Add('   INNER JOIN Tipos_Cliente e on e.id = a.id_Tipo_Cliente');
-      Sql.Add('   INNER JOIN Tipos_Classificacao f on f.id = a.id_Tipo_Classificacao');
+      Sql.Add('   LEFT OUTER JOIN Status_True f on f.id = a.id_Status_True');
       Sql.Add('   LEFT OUTER JOIN Usuarios g on g.id = a.id_Usuario_Designado');
       Sql.Add('   LEFT OUTER JOIN Setores h on h.id = a.id_Setor_Designado');
       Sql.Add('   LEFT OUTER JOIN Usuarios i on i.id = a.id_Usuario_Importacao ');
       Sql.Add('   LEFT OUTER JOIN Usuarios j on j.id = a.id_Usuario_Ultima_Atualizacao ');
       Sql.Add('   LEFT OUTER JOIN Usuarios k on k.id = a.id_Usuario_Encerramento');
       Sql.Add('where 1 = 1');
-
-
    end;
 end;
 
@@ -914,34 +1020,6 @@ begin
    Result := qryTecnicosid.AsInteger
 end;
 
-function TSMControlPc.ObterIdTipoClassificacao(const AValor: String): integer;
-begin
-
-(*
-   if not qryTiposClassificacao.Locate('Tipo_Classificacao',AValor) then
-      begin
-      qryTiposClassificacao.Append;
-      qryTiposClassificacaoTipo_Classificacao.AsString := AValor;
-      qryTiposClassificacao.Post;
-   end;
-   Result := qryTiposClassificacaoid.AsInteger
-*)
-   qryClassificacao.Close;
-   qryClassificacao.ParamByName('pTipoClassificacao').AsString := AValor;
-   qryClassificacao.Open;
-   if qryClassificacao.IsEmpty then
-      begin
-      qryClassificacao.Append;
-      qryClassificacaoTipo_Classificacao.AsString := AValor;
-      qryClassificacao.Post;
-   end;
-   Result := qryClassificacaoid.AsInteger;
-   qryClassificacao.Close;
-
-
-
-end;
-
 function TSMControlPc.ObterIdTipoCliente(const AValor: String): integer;
 begin
    if not qryTiposCliente.Locate('Tipo_Cliente',AValor) then
@@ -951,42 +1029,25 @@ begin
       qryTiposCliente.Post;
    end;
    Result := qryTiposClienteid.AsInteger
-
 end;
 
-function TSMControlPc.ObterIdTipoPrazo(const AValor: String): integer;
-begin
-   if not qryTiposPrazo.Locate('Tipo_Prazo_Caixa',AValor) then
-      begin
-      qryTiposPrazo.Append;
-      qryTiposPrazoTipo_Prazo_Caixa.AsString := AValor;
-      qryTiposPrazoCONTROLPC.AsInteger       := 1;
-      qryTiposPrazo.Post;
-   end else if qryTiposPrazoCONTROLPC.AsInteger = 0 then
-      begin
-      qryTiposPrazo.Edit;
-      qryTiposPrazoCONTROLPC.AsInteger := 1;
-      qryTiposPrazo.Post;
-   end;
 
-   Result := qryTiposPrazoid.AsInteger
-end;
-
-function TSMControlPc.ObterIdTipoStatus(const AValor: String): integer;
+function TSMControlPc.ProtocolosAtivos: TJSONArray;
 begin
-   if not qryTiposStatus.Locate('Tipo_Status',AValor) then
-      begin
-      qryTiposStatus.Append;
-      qryTiposStatusTipo_Status.AsString := AValor;
-      qryTiposStatusCONTROLPC.AsInteger  := 1;
-      qryTiposStatus.Post;
-   end else if qryTiposStatusCONTROLPC.AsInteger = 0 then
-      begin
-      qryTiposStatus.Edit;
-      qryTiposStatusCONTROLPC.AsInteger := 1;
-      qryTiposStatus.Post;
-   end;
-   Result := qryTiposStatusid.AsInteger
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select ');
+   qryAux.Sql.Add('   a.Protocolo, a.id_Usuario_Designado, ');
+   qryAux.Sql.Add('   b.Nome_Usuario');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   ControlPc a ');
+   qryAux.Sql.Add('   LEFT OUTER JOIN Usuarios b on b.id = a.id_Usuario ');
+   qryAux.Sql.Add('Where ');
+   qryAux.Sql.Add('   a.Data_Hora_Encerramento is null');
+   qryAux.Sql.Add('Order by ');
+   qryAux.Sql.Add('   a.Protocolo');
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
 function TSMControlPc.RegistrarObservacao(const AIdProtocolo: LongInt; const AObservacao: String; const AIdUsuarioResponsavel: integer; out ADataHora: TDateTime): Boolean;
@@ -1022,9 +1083,29 @@ begin
 end;
 
 
-function TSMControlPc.Setores: TJSONArray;
+function TSMControlPc.Setores(const AIdUsuario : Integer) : TJSONArray;
 begin
+  qrySetores.Close;
+  qrySetores.ParamByName('pIdUsuario').AsInteger := AIdUsuario;
   Result := TFuncoesJSON.MontarJSON(qrySetores);
+end;
+
+function TSMControlPc.StatusTrue: TJSONArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select ');
+   qryAux.Sql.Add('   id, Status, Tipo_Prazo, Prazo, Encerra');
+   qryAux.Sql.Add('From');
+   qryAux.Sql.Add('   Status_True ');
+   qryAux.Sql.Add('where ');
+   qryAux.Sql.Add('   Ativo = ' + QuotedStr(C_SIM));
+   qryAux.Sql.Add('   and isnull(ControlPC,:pNao) = :pSim');
+
+   qryAux.ParamByName('pSim').AsString := C_SIM;
+   qryAux.ParamByName('pNao').AsString := C_NAO;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
 function TSMControlPc.Tecnicos: TJSONArray;
@@ -1032,54 +1113,68 @@ begin
   Result := TFuncoesJSON.MontarJSON(qryTecnicos);
 end;
 
-function TSMControlPc.TiposDeClassificacao: TJSONArray;
-begin
-  Result := TFuncoesJSON.MontarJSON(qryTiposClassificacao);
-end;
 
 function TSMControlPc.TiposDeCliente: TJSONArray;
 begin
   Result := TFuncoesJSON.MontarJSON(qryTiposCliente);
 end;
 
-function TSMControlPc.TiposDePrazo: TJSONArray;
-begin
-   qryTiposPrazo.Close;
-   qryTiposPrazo.ParamByName('CONTROLPC').AsInteger := 1;
 
-   Result := TFuncoesJSON.MontarJSON(qryTiposPrazo);
-end;
-
-function TSMControlPc.TiposDeStatus: TJSONArray;
-begin
-   qryTiposStatus.Close;
-   qryTiposStatus.ParamByName('CONTROLPC').AsInteger := 1;
-   Result := TFuncoesJSON.MontarJSON(qryTiposStatus);
-
-end;
-
-function TSMControlPc.Usuarios: TJSONArray;
+function TSMControlPc.Usuarios(const AIdUsuario : Integer): TJSONArray;
 begin
    qryAux.Close;
    qryAux.Sql.Clear;
-   qryAux.Sql.Add('Select id, Nome_Usuario From');
-
-   qryAux.Sql.Add('   (Select ');
-   qryAux.Sql.Add('       id, Nome_Usuario, ');
-
-   qryAux.Sql.Add('       isnull((Select count(*) ');
-   qryAux.Sql.Add('               From Usuarios_Setores us ');
-   qryAux.Sql.Add('                    Inner Join Setores st on st.id = us.id_Setor ');
-   qryAux.Sql.Add('               where st.ControlPc = ' + QuotedStr('Sim') + '),0) as ControlPc ');
-   qryAux.Sql.Add('    from ');
-   qryAux.Sql.Add('       Usuarios u ');
-   qryAux.Sql.Add('    where ');
-   qryAux.Sql.Add('       u.ativo = ' + QuotedStr(C_SIM));
-   qryAux.Sql.Add('   ) as usu');
+   qryAux.Sql.Add('Select ');
+   qryAux.Sql.Add('   us.id, us.Nome_Usuario ');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   Usuarios us ');
    qryAux.Sql.Add('where ');
-   qryAux.Sql.Add('   usu.ControlPc >= 1');
+   qryAux.Sql.Add('   id in (Select ');
+   qryAux.Sql.Add('             distinct u.id_Usuario ');
+   qryAux.Sql.Add('          From ');
+   qryAux.Sql.Add('             Usuarios_Setores u ');
+   qryAux.Sql.Add('          where u.id_Setor in (Select ');
+   qryAux.Sql.Add('                                  id_Setor ');
+   qryAux.Sql.Add('                               From Usuarios_Setores a ');
+   qryAux.Sql.Add('                                    inner join Setores b on a.id_Setor = b.id ');
+   qryAux.Sql.Add('                               where id_Usuario =  :pIdUsuario');
+   qryAux.Sql.Add('                                     and isnull(b.CONTROLPC,' + QuotedStr(C_NAO) + ') = ' + QuotedStr(C_SIM));
+   qryAux.Sql.Add('                              )');
+   qryAux.Sql.Add('         ) ');
+   qryAux.Sql.Add('   and us.Ativo = ' + QuotedStr(C_SIM));
+   qryAux.ParamByName('pIdUsuario').AsInteger := AIdUsuario;
 
    Result := TFuncoesJSON.MontarJSON(qryAux);
+end;
+
+function TSMControlPc.UsuariosDoSetor(const AIdSetor: Integer): TJSONArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+
+   qryAux.Sql.Add('Declare @pIdSetor int ');
+   qryAux.Sql.Add('Declare @pSim varchar(3) ');
+   qryAux.Sql.Add('Declare @pNao varchar(3) ');
+
+   qryAux.Sql.Add('Set @pIdSetor = :pIdSetor');
+   qryAux.Sql.Add('Set @pSim = ' + QuotedStr(C_SIM));
+   qryAux.Sql.Add('Set @pNao = ' + QuotedStr(C_NAO));
+
+   qryAux.Sql.Add('Select ');
+   qryAux.Sql.Add('   c.id, c.Nome_Usuario ');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   Usuarios_Setores a ');
+   qryAux.Sql.Add('   INNER JOIN Setores b on b.id = a.id_Setor ');
+   qryAux.Sql.Add('   INNER JOIN Usuarios c on c.id = a.id_Usuario ');
+   qryAux.Sql.Add('where ');
+   qryAux.Sql.Add('   isnull(b.ControlPc, @pNao) = @pSim');
+   qryAux.Sql.Add('   and c.Ativo = @pSim');
+   qryAux.Sql.Add('   and (@pIdSetor = 0 or a.id_Setor = @pIdSetor)');
+
+   qryAux.ParamByName('pIdSetor').AsInteger := AIdSetor;
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+
 end;
 
 end.

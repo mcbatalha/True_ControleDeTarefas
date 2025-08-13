@@ -80,4 +80,9 @@ object SMSetores: TSMSetores
     Left = 288
     Top = 112
   end
+  object qryAux: TFDQuery
+    Connection = ServerContainer.FDConnection
+    Left = 765
+    Top = 40
+  end
 end

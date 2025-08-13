@@ -38,8 +38,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmQuadroResumo: TdtmQuadroResumo;
+*)
 
 implementation
 

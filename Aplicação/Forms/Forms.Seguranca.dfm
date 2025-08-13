@@ -1,10 +1,20 @@
 inherited frmSeguranca: TfrmSeguranca
   Caption = 'Seguran'#231'a do Sistema'
+  ClientHeight = 551
+  ClientWidth = 942
   OnDestroy = FormDestroy
+  ExplicitWidth = 960
+  ExplicitHeight = 598
   PixelsPerInch = 120
   TextHeight = 16
   inherited pnlForm: TPanel
+    Width = 932
+    Height = 541
+    ExplicitWidth = 932
+    ExplicitHeight = 541
     inherited pnlBotoes: TPanel
+      Width = 928
+      ExplicitWidth = 928
       inherited btnCancelar: TSpeedButton
         OnClick = btnCancelarClick
       end
@@ -13,14 +23,18 @@ inherited frmSeguranca: TfrmSeguranca
         ExplicitLeft = 605
         ExplicitTop = 0
       end
+      inherited pnlSair: TPanel
+        Left = 791
+        ExplicitLeft = 791
+      end
     end
     object pgcSeguranca: TPageControl
       AlignWithMargins = True
       Left = 5
       Top = 111
-      Width = 902
-      Height = 421
-      ActivePage = tbsCadastro
+      Width = 922
+      Height = 425
+      ActivePage = tbsPaineis
       Align = alClient
       TabOrder = 1
       TabWidth = 150
@@ -30,8 +44,8 @@ inherited frmSeguranca: TfrmSeguranca
         object pnlCadastros: TPanel
           Left = 0
           Top = 0
-          Width = 894
-          Height = 390
+          Width = 914
+          Height = 394
           Align = alClient
           BevelInner = bvRaised
           BevelOuter = bvLowered
@@ -77,8 +91,8 @@ inherited frmSeguranca: TfrmSeguranca
         object pnlImportacaoPlanihas: TPanel
           Left = 0
           Top = 0
-          Width = 894
-          Height = 390
+          Width = 914
+          Height = 394
           Align = alClient
           BevelInner = bvRaised
           BevelOuter = bvLowered
@@ -124,8 +138,8 @@ inherited frmSeguranca: TfrmSeguranca
         object pnlPaineis: TPanel
           Left = 0
           Top = 0
-          Width = 894
-          Height = 390
+          Width = 914
+          Height = 394
           Align = alClient
           BevelInner = bvRaised
           BevelOuter = bvLowered
@@ -149,11 +163,82 @@ inherited frmSeguranca: TfrmSeguranca
           end
           object chbQuadroResumo: TCheckBox
             Left = 80
-            Top = 115
+            Top = 145
             Width = 192
             Height = 17
             Caption = 'Quadro Resumo'
+            TabOrder = 3
+          end
+          object chbPaineisDesigancoesPendentes: TCheckBox
+            Left = 80
+            Top = 115
+            Width = 297
+            Height = 17
+            Caption = 'Designa'#231#245'es Pendentes de Autoriza'#231#227'o'
             TabOrder = 2
+          end
+        end
+      end
+      object tbsExportacaoDados: TTabSheet
+        Caption = 'Exporta'#231#227'o de Dados'
+        ImageIndex = 5
+        object pnlExportacoes: TPanel
+          Left = 0
+          Top = 0
+          Width = 914
+          Height = 394
+          Align = alClient
+          BevelInner = bvRaised
+          BevelOuter = bvLowered
+          TabOrder = 0
+          object chbMenuExportacoes: TCheckBox
+            Left = 55
+            Top = 55
+            Width = 288
+            Height = 17
+            Caption = 'Acesso ao Menu Exporta'#231#227'o de Dados'
+            TabOrder = 0
+            OnClick = chbMenuExportacoesClick
+          end
+          object chbExportacaoAutoSc: TCheckBox
+            Left = 80
+            Top = 86
+            Width = 192
+            Height = 17
+            Caption = 'AUTOSC - Processos Ativos'
+            TabOrder = 1
+          end
+          object chbExportacaoSiags: TCheckBox
+            Left = 80
+            Top = 117
+            Width = 192
+            Height = 17
+            Caption = 'SIAGS - Autoriza'#231#245'es Ativas'
+            TabOrder = 2
+          end
+          object chbExportacaoControlPc: TCheckBox
+            Left = 80
+            Top = 148
+            Width = 220
+            Height = 17
+            Caption = 'CONTROPC - Protocolos Ativos'
+            TabOrder = 3
+          end
+          object chbExportacaoSetores: TCheckBox
+            Left = 80
+            Top = 179
+            Width = 220
+            Height = 17
+            Caption = 'Setores Cadastrados'
+            TabOrder = 4
+          end
+          object chbExportacaoUsuarios: TCheckBox
+            Left = 80
+            Top = 210
+            Width = 220
+            Height = 17
+            Caption = 'Usu'#225'rios Cadastrados'
+            TabOrder = 5
           end
         end
       end
@@ -163,8 +248,8 @@ inherited frmSeguranca: TfrmSeguranca
         object pnlRelatorios: TPanel
           Left = 0
           Top = 0
-          Width = 894
-          Height = 390
+          Width = 914
+          Height = 394
           Align = alClient
           BevelInner = bvRaised
           BevelOuter = bvLowered
@@ -202,8 +287,8 @@ inherited frmSeguranca: TfrmSeguranca
         object pnlManutencao: TPanel
           Left = 0
           Top = 0
-          Width = 894
-          Height = 390
+          Width = 914
+          Height = 394
           Align = alClient
           BevelInner = bvRaised
           BevelOuter = bvLowered
@@ -247,7 +332,7 @@ inherited frmSeguranca: TfrmSeguranca
     object pnlPesquisaUsuario: TPanel
       Left = 2
       Top = 43
-      Width = 908
+      Width = 928
       Height = 65
       Align = alTop
       TabOrder = 2

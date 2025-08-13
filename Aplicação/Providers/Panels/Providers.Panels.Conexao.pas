@@ -15,8 +15,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmPaineisConexao: TdtmPaineisConexao;
+*)
 
 implementation
 

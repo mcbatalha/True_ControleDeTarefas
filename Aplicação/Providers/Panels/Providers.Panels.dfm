@@ -1,7 +1,7 @@
 inherited dtmPainel: TdtmPainel
   OldCreateOrder = True
   Height = 780
-  Width = 736
+  Width = 1303
   inherited DSProviderConnection: TDSProviderConnection
     ServerClassName = 'TMAutoSC'
   end

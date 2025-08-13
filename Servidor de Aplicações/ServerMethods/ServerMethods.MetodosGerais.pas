@@ -35,6 +35,8 @@ type
     function AlterarSenha(const AIdUsuario : integer; ASenha : String): Boolean;
     function GravarSeguranca(const AIdUsuario : integer; AItensMenu : TJSONArray) : Boolean;
 
+    function DesignacoesPendentes(const AIdUsuario : Integer) : TJSONArray;
+
   end;
 {$METHODINFO OFF}
 
@@ -68,6 +70,52 @@ begin
       Result := True;
    except
    end;
+
+end;
+
+function TSMMetodosGerais.DesignacoesPendentes(const AIdUsuario: Integer): TJSONArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select Tipo, Qtd ');
+   qryAux.Sql.Add('From (Select ' + QuotedStr('Protocolo(s) CONTROLPC') + ' as Tipo, count(*) as Qtd ');
+   qryAux.Sql.Add('      From ControlPc_Designacao_Solicitacao ');
+   qryAux.Sql.Add('      where Autorizado = ' + QuotedStr('Pendente'));
+   qryAux.Sql.Add('            and id_Setor_Solicitado in (Select us.id_Setor ');
+   qryAux.Sql.Add('                                        From Usuarios_Setores us ');
+   qryAux.Sql.Add('                                             Inner Join Setores st on st.id = us.id_Setor ');
+   qryAux.Sql.Add('                                        where st.CONTROLPC = ' + QuotedStr('Sim'));
+   qryAux.Sql.Add('                                              and us.id_Usuario = ' + IntToStr(AIdUsuario));
+   qryAux.Sql.Add('                                       )');
+
+   qryAux.Sql.Add('      UNION ');
+
+   qryAux.Sql.Add('      Select ' + QuotedStr('Autorização(ões) SIAGS') + ' as Tipo, count(*) as Qtd ');
+   qryAux.Sql.Add('      From SIAGS_Designacao_Solicitacao ');
+   qryAux.Sql.Add('      where Autorizado = ' + QuotedStr('Pendente'));
+   qryAux.Sql.Add('            and id_Setor_Solicitado in (Select us.id_Setor ');
+   qryAux.Sql.Add('                                        From Usuarios_Setores us ');
+   qryAux.Sql.Add('                                             Inner Join Setores st on st.id = us.id_Setor ');
+   qryAux.Sql.Add('                                        where st.SIAGS = ' + QuotedStr('Sim'));
+   qryAux.Sql.Add('                                              and us.id_Usuario = ' + IntToStr(AIdUsuario));
+   qryAux.Sql.Add('                                       )');
+
+   qryAux.Sql.Add('      UNION ');
+
+   qryAux.Sql.Add('      Select ' + QuotedStr('Processo(s) AUTOSC') + ' as Tipo, count(*) as Qtd ');
+   qryAux.Sql.Add('      From AUTOSC_Designacao_Solicitacao ');
+   qryAux.Sql.Add('      where Autorizado = ' + QuotedStr('Pendente'));
+   qryAux.Sql.Add('            and id_Setor_Solicitado in (Select us.id_Setor ');
+   qryAux.Sql.Add('                                        From Usuarios_Setores us ');
+   qryAux.Sql.Add('                                             Inner Join Setores st on st.id = us.id_Setor ');
+   qryAux.Sql.Add('                                        where st.AUTOSC = ' + QuotedStr('Sim'));
+   qryAux.Sql.Add('                                              and us.id_Usuario = ' + IntToStr(AIdUsuario));
+   qryAux.Sql.Add('                                       )');
+   qryAux.Sql.Add('     ) as Solicitacoes ');
+   qryAux.Sql.Add('where Qtd > 0 ');
+
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
 
 end;
 

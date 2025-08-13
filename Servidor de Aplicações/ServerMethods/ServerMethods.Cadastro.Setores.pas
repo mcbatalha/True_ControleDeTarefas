@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils,
   System.Classes,
+  System.JSON,
 
   Datasnap.DSServer,
   Datasnap.DSAuth,
@@ -40,6 +41,7 @@ type
     qryCadastroSIAGS: TStringField;
     qryCadastroCONTROLPC: TStringField;
     qryCadastroAUTOSC: TStringField;
+    qryAux: TFDQuery;
   private
     { Private declarations }
     procedure MontarQueryCadastro(AQuery : TFDQuery);
@@ -53,10 +55,12 @@ type
     procedure Pesquisar(const ACampo, ATipo : Integer;
                         const AChave : String;
                         const AIncluirInativos : Boolean);
+
+    function Setores : TJSonArray;
   end;
 
 implementation
-uses ServerMethods.Container;
+uses ServerMethods.Container, Libs.TFuncoesJSON;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -143,6 +147,22 @@ begin
 
 
    qryPesquisa.Sql.Add('Order by Nome_Setor');
+end;
+
+function TSMSetores.Setores: TJSonArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select id, Nome_Setor ');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   Setores ');
+   qryAux.Sql.Add('where ');
+   qryAux.Sql.Add('   Ativo = ' + QuotedStr(C_SIM));
+   qryAux.Sql.Add('Order By id');
+
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
+
 end;
 
 end.

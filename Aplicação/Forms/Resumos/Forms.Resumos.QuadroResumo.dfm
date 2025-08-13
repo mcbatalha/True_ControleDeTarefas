@@ -12,13 +12,12 @@ inherited frmQuadroResumo: TfrmQuadroResumo
   inherited pnlForm: TPanel
     Width = 1157
     Height = 412
-    ExplicitLeft = 0
-    ExplicitTop = 0
     ExplicitWidth = 1157
-    ExplicitHeight = 323
+    ExplicitHeight = 412
     inherited pnlBotoes: TPanel
       Top = 43
       Width = 1153
+      ExplicitTop = 43
       ExplicitWidth = 1153
       inherited pnlSair: TPanel
         Left = 1016
@@ -41,7 +40,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
       ParentBackground = False
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = -1
     end
     object pnlQuadroResumo: TPanel
       Left = 2
@@ -68,9 +66,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
         Color = 8404992
         ParentBackground = False
         TabOrder = 0
-        ExplicitLeft = 32
-        ExplicitTop = 158
-        ExplicitHeight = 136
         object Label1: TLabel
           AlignWithMargins = True
           Left = 5
@@ -102,7 +97,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 311
           object Shape4: TShape
             Left = -1
             Top = 63
@@ -247,9 +241,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
         Color = 8404992
         ParentBackground = False
         TabOrder = 1
-        ExplicitLeft = 407
-        ExplicitTop = 73
-        ExplicitHeight = 159
         object Label5: TLabel
           AlignWithMargins = True
           Left = 5
@@ -281,7 +272,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 311
           object Shape10: TShape
             Left = -1
             Top = 63
@@ -426,9 +416,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
         Color = 8404992
         ParentBackground = False
         TabOrder = 2
-        ExplicitLeft = 782
-        ExplicitTop = 73
-        ExplicitHeight = 159
         object Label9: TLabel
           AlignWithMargins = True
           Left = 5
@@ -460,7 +447,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitHeight = 311
           object Shape18: TShape
             Left = 184
             Top = 63
@@ -599,8 +585,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
       BevelOuter = bvNone
       Caption = 'Panel7'
       TabOrder = 3
-      ExplicitTop = 301
-      ExplicitHeight = 391
       object Panel9: TPanel
         AlignWithMargins = True
         Left = 30
@@ -617,8 +601,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
         Color = 8404992
         ParentBackground = False
         TabOrder = 0
-        ExplicitTop = 30
-        ExplicitHeight = 161
         object Label13: TLabel
           Left = 246
           Top = 9
@@ -658,8 +640,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitTop = 43
-          ExplicitHeight = 113
           object dbgSiagsVencidos: TwwDBGrid
             Left = 0
             Top = 0
@@ -701,7 +681,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
             UseTFields = False
             LineColors.HighlightColor = clNone
             FooterCellColor = 8404992
-            ExplicitHeight = 252
           end
         end
       end
@@ -721,8 +700,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
         Color = 8404992
         ParentBackground = False
         TabOrder = 1
-        ExplicitTop = 30
-        ExplicitHeight = 161
         object Label15: TLabel
           Left = 246
           Top = 9
@@ -762,9 +739,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 15
-          ExplicitTop = 43
-          ExplicitHeight = 252
           object dbgAutoScVencidos: TwwDBGrid
             Left = 0
             Top = 0
@@ -801,7 +775,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
             TitleButtons = False
             UseTFields = False
             FooterCellColor = 8404992
-            ExplicitHeight = 252
           end
         end
       end
@@ -821,8 +794,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
         Color = 8404992
         ParentBackground = False
         TabOrder = 2
-        ExplicitTop = 30
-        ExplicitHeight = 161
         object Label17: TLabel
           Left = 246
           Top = 9
@@ -862,8 +833,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
-          ExplicitTop = 43
-          ExplicitHeight = 113
           object dbgControPcVencidos: TwwDBGrid
             Left = 0
             Top = 0
@@ -900,7 +869,6 @@ inherited frmQuadroResumo: TfrmQuadroResumo
             TitleButtons = False
             UseTFields = False
             FooterCellColor = 8404992
-            ExplicitHeight = 252
           end
         end
       end

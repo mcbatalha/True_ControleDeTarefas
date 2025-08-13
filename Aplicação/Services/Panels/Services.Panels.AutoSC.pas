@@ -46,20 +46,22 @@ type
      function DataSetPesquisaDeUsuario : TDataSet;
      function DataSourceDesignacao : TDataSource;
      function DataSourceObservacao : TDataSource;
+     function DataSourceStatusTrue : TDataSource;
+     function DataSourceSetores    : TDataSource;
      function Filtrar(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
      function NumeroDoProcesso  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
-     function SetorDesignado   : integer;
-     function UsuarioDesignado : integer;
+     function idSetorDesignado   : integer;
+     function idUsuarioDesignado : integer;
      function TemRegistros     : Boolean;
      function TemDesignacoes   : Boolean;
      function TemAtualizacoes  : Boolean;
      function TemObservacoes   : Boolean;
 
      function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
-     function Encerrar(const AJustificativa : String) : Boolean;
+     function AlterarStatusTrue(const AIdNovoStatus : integer; const AJustificativa : String) : Boolean;
 
 
      function HistoricoDeDesignacoes : String;
@@ -94,6 +96,16 @@ end;
 function TSrvAutoSC.DataSourceObservacao: TDataSource;
 begin
    Result := FdmAutoSC.dtsObservacoes;
+end;
+
+function TSrvAutoSC.DataSourceSetores: TDataSource;
+begin
+   Result := FdmAutoSC.dtsSetores;
+end;
+
+function TSrvAutoSC.DataSourceStatusTrue: TDataSource;
+begin
+   Result := FdmAutoSC.dtsSetores;
 end;
 
 function TSrvAutoSC.DataSetPesquisaDeUsuario : TDataSet;
@@ -165,10 +177,10 @@ begin
    end;
 
    if not FPxyAutoSC.Designar(AJustificativa,
-                          AIdSetor,
-                          AIdUsuario,
-                          Seguranca.id,
-                          FdmAutoSC.cdsPainelid_Processo.AsInteger ) then
+                              AIdSetor,
+                              AIdUsuario,
+                              Seguranca.id,
+                              FdmAutoSC.cdsPainelid_Processo.AsInteger ) then
       begin
       InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
       Exit;
@@ -181,6 +193,10 @@ begin
       FdmAutoSC.mtbSetores.Locate('id',AIdSetor);
       FdmAutoSC.cdsPainelid_Setor_Designado.AsInteger := AIdSetor;
       FdmAutoSC.cdsPainelSetor_Designado.AsString     := FdmAutoSC.mtbSetoresNome_Setor.AsString;
+   end else
+      begin
+      FdmAutoSC.cdsPainelid_Setor_Designado.Clear;
+      FdmAutoSC.cdsPainelSetor_Designado.AsString := C_DESCRICAO_NAO_DESIGNADO;
    end;
 
    if AIdUsuario <> C_CODIGO_NAO_DESIGNADO then
@@ -188,6 +204,10 @@ begin
       FdmAutoSC.mtbUsuarios.Locate('id',AIdUsuario);
       FdmAutoSC.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
       FdmAutoSC.cdsPainelUsuario_Designado.AsString     := FdmAutoSC.mtbUsuariosNome_Usuario.AsString;
+   end else
+      begin
+      FdmAutoSC.cdsPainelid_Usuario_Designado.Clear;
+      FdmAutoSC.cdsPainelUsuario_Designado.AsString := C_DESCRICAO_NAO_DESIGNADO;
    end;
 
    FdmAutoSC.cdsPainelQtd_Designacoes.AsInteger := FdmAutoSC.cdsPainelQtd_Designacoes.AsInteger + 1;
@@ -205,13 +225,13 @@ begin
    inherited;
 end;
 
-function TSrvAutoSC.Encerrar(const AJustificativa: String): Boolean;
+function TSrvAutoSC.AlterarStatusTrue(const AIdNovoStatus : integer; const AJustificativa: String): Boolean;
 begin
    Result := False;
    if not QuestionMessage('Confirma o encerramento do processo ' + FdmAutoSC.cdsPainelNumero_Processo.AsString + ' ? ','Encerramento de Processo') then
       Exit;
 
-   if FPxyAutoSC.EncerrarProcesso(FdmAutoSC.cdsPainelid_Processo.AsInteger, AJustificativa, Seguranca.id) then
+   if FPxyAutoSC.AlterarStatus(FdmAutoSC.cdsPainelid_Processo.AsInteger, AIdNovoStatus, AJustificativa, Seguranca.id) then
       begin
       FdmAutoSC.cdsPainel.Delete;
       InformationMessage('Processo encerrado com sucesso !','Encerramento de Processo');
@@ -387,9 +407,9 @@ begin
    IncluirRegistro(FdmAutoSC.mtbTiposProcesso, 'Tipo_Processo', C_TODOS);
    IncluirRegistro(FdmAutoSC.mtbTiposProcessoE, 'Tipo_Processo_E', C_TODOS);
    IncluirRegistro(FdmAutoSC.mtbTiposStatus, 'Tipo_Status', C_TODOS);
-   IncluirRegistro(FdmAutoSC.mtbSetores, 'Nome_Setor', C_PROCESSO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+   IncluirRegistro(FdmAutoSC.mtbSetores, 'Nome_Setor', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
 
-   IncluirRegistro(FdmAutoSC.mtbUsuarios, 'Nome_Usuario', C_PROCESSO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+   IncluirRegistro(FdmAutoSC.mtbUsuarios, 'Nome_Usuario', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
    IncluirRegistro(FdmAutoSC.mtbUF, 'Sigla', C_TODOS);
 
    DesignacaoIncluirTodos;
@@ -415,12 +435,12 @@ begin
    Result := (FdmAutoSC.cdsPainel.State = dsBrowse) and (not FdmAutoSC.cdsPainel.IsEmpty);
 end;
 
-function TSrvAutoSC.SetorDesignado : integer;
+function TSrvAutoSC.idSetorDesignado : integer;
 begin
    Result := FdmAutoSC.cdsPainelid_Setor_Designado.asinteger;
 end;
 
-function TSrvAutoSC.UsuarioDesignado: integer;
+function TSrvAutoSC.idUsuarioDesignado: integer;
 begin
    Result := FdmAutoSC.cdsPainelid_Usuario_Designado.asinteger;
 end;

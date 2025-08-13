@@ -68,7 +68,14 @@ uses
   Services.Resumos.QuadroResumo in 'Services\Resumos\Services.Resumos.QuadroResumo.pas',
   Forms.Cadastro.StatusTrue in 'Forms\Cadastros\Forms.Cadastro.StatusTrue.pas' {frmCadastroStatusTrue},
   Providers.Cadastros.StatusTrue in 'Providers\Models\Providers.Cadastros.StatusTrue.pas' {dtmCadastroStatusTrue: TDataModule},
-  Services.StatusTrue in 'Services\Services.StatusTrue.pas';
+  Services.StatusTrue in 'Services\Services.StatusTrue.pas',
+  Services.Exportacoes in 'Services\Exportacoes\Services.Exportacoes.pas',
+  Forms.Designacoes.Pendentes in 'Forms\Designacoes\Forms.Designacoes.Pendentes.pas' {frmDesignacoesPendentes},
+  Services.Designacoes.Pendentes.ControlPC in 'Services\Designacoes\Services.Designacoes.Pendentes.ControlPC.pas',
+  Providers.Designacoes.Pendentes.ControlPC in 'Providers\Designacoes\Providers.Designacoes.Pendentes.ControlPC.pas' {dtmDesignacoesPendentesControlPC: TDataModule},
+  Util.Funcoes in 'Utils\Util.Funcoes.pas',
+  Providers.Designacoes.Pendentes.Siags in 'Providers\Designacoes\Providers.Designacoes.Pendentes.Siags.pas' {dtmDesignacoesPendentesSiags: TDataModule},
+  Services.Designacoes.Pendentes.Siags in 'Services\Designacoes\Services.Designacoes.Pendentes.Siags.pas';
 
 {$R *.res}
 

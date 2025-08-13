@@ -324,6 +324,24 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Services\Services.StatusTrue.pas"/>
+        <DCCReference Include="Services\Exportacoes\Services.Exportacoes.pas"/>
+        <DCCReference Include="Forms\Designacoes\Forms.Designacoes.Pendentes.pas">
+            <Form>frmDesignacoesPendentes</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Services\Designacoes\Services.Designacoes.Pendentes.ControlPC.pas"/>
+        <DCCReference Include="Providers\Designacoes\Providers.Designacoes.Pendentes.ControlPC.pas">
+            <Form>dtmDesignacoesPendentesControlPC</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Utils\Util.Funcoes.pas"/>
+        <DCCReference Include="Providers\Designacoes\Providers.Designacoes.Pendentes.Siags.pas">
+            <Form>dtmDesignacoesPendentesSiags</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Services\Designacoes\Services.Designacoes.Pendentes.Siags.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

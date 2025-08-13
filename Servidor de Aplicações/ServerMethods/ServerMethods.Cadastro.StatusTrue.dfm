@@ -28,6 +28,21 @@ object SMStatusTrue: TSMStatusTrue
       FieldName = 'Prazo'
       Origin = 'Prazo'
     end
+    object qryCadastroAutoSC: TStringField
+      FieldName = 'AutoSC'
+      Origin = 'AutoSC'
+      Size = 3
+    end
+    object qryCadastroSiags: TStringField
+      FieldName = 'Siags'
+      Origin = 'Siags'
+      Size = 3
+    end
+    object qryCadastroControlPC: TStringField
+      FieldName = 'ControlPC'
+      Origin = 'ControlPC'
+      Size = 3
+    end
     object qryCadastroEncerra: TStringField
       FieldName = 'Encerra'
       Origin = 'Encerra'

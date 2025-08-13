@@ -34,14 +34,9 @@ uses
 type
   TdtmPainelControlPc = class(TdtmPainel)
     mtbPainelData_Abertura: TDateTimeField;
-    mtbPainelData_Transferencia: TDateTimeField;
-    mtbPainelData_Fechamento: TDateTimeField;
     mtbPainelPrevisao_Solucao: TDateTimeField;
-    mtbPainelSolicitacao_Cliente: TStringField;
     mtbPainelTipo_Reclame: TStringField;
     mtbPainelTipo_Nip: TStringField;
-    mtbPainelTipo_Status: TStringField;
-    mtbPainelTipo_Prazo_Caixa: TStringField;
     mtbPainelNome_Tecnico: TStringField;
     mtbPainelTipo_Cliente: TStringField;
     mtbPainelUsuario_Designado: TStringField;
@@ -51,21 +46,11 @@ type
     mtbPainelQtd_Designacoes: TIntegerField;
     mtbPainelQtd_Observacoes: TIntegerField;
     mtbHistoricoAtualizacoesData_Hora_Historico: TDateTimeField;
-    mtbHistoricoAtualizacoesTipo_Status: TStringField;
-    mtbHistoricoAtualizacoesTipo_Prazo_Caixa: TStringField;
     mtbHistoricoAtualizacoesNome_Tecnico: TStringField;
     mtbHistoricoAtualizacoesTipo_Cliente: TStringField;
-    mtbHistoricoAtualizacoesTipo_Classificacao: TStringField;
     mtbHistoricoAtualizacoesNome_Usuario: TStringField;
     mtbHistoricoAtualizacoesTipo_Reclame: TStringField;
     mtbHistoricoAtualizacoesTipo_Nip: TStringField;
-    mtbUsuarios: TFDMemTable;
-    mtbUsuariosid: TIntegerField;
-    mtbUsuariosNome_Usuario: TStringField;
-    dtsTiposStatus: TDataSource;
-    mtbTiposStatus: TFDMemTable;
-    mtbTiposStatusid: TFDAutoIncField;
-    mtbTiposStatusTipo_Status: TStringField;
     dtsSetores: TDataSource;
     mtbSetores: TFDMemTable;
     mtbSetoresid: TIntegerField;
@@ -76,22 +61,13 @@ type
     mtbTecnicosNome_Tecnico: TStringField;
     mtbTiposCliente: TFDMemTable;
     dtsTiposCliente: TDataSource;
-    mtbTiposClassificacao: TFDMemTable;
-    dtsTiposClassificacao: TDataSource;
     mtbTiposClienteTipo_Cliente: TStringField;
     mtbTiposClienteid: TIntegerField;
-    mtbTiposClassificacaoTipo_Classificacao: TStringField;
-    mtbTiposClassificacaoid: TIntegerField;
     cdsPainelid_Protocolo: TLargeintField;
     cdsPainelData_Abertura: TDateTimeField;
-    cdsPainelData_Transferencia: TDateTimeField;
-    cdsPainelData_Fechamento: TDateTimeField;
     cdsPainelPrevisao_Solucao: TDateTimeField;
-    cdsPainelSolicitacao_Cliente: TStringField;
     cdsPainelTipo_Reclame: TStringField;
     cdsPainelTipo_Nip: TStringField;
-    cdsPainelTipo_Status: TStringField;
-    cdsPainelTipo_Prazo_Caixa: TStringField;
     cdsPainelNome_Tecnico: TStringField;
     cdsPainelTipo_Cliente: TStringField;
     cdsPainelUsuario_Designado: TStringField;
@@ -106,12 +82,6 @@ type
     cdsPainelProtocolo: TStringField;
     mtbPainelProtocolo: TStringField;
     dtsPainel: TDataSource;
-    mtbPainelTipo_Classificacao: TStringField;
-    cdsPainelTipo_Classificacao: TStringField;
-    mtbTiposPrazo: TFDMemTable;
-    mtbTiposPrazoid: TIntegerField;
-    mtbTiposPrazoTipo_Prazo_Caixa: TStringField;
-    dtsTiposPrazo: TDataSource;
     mtbPainelData_Hora_Importacao: TDateTimeField;
     mtbPainelUltima_Atualizacao: TDateTimeField;
     mtbPainelData_Hora_Encerramento: TDateTimeField;
@@ -126,6 +96,28 @@ type
     cdsPainelUsuario_Importacao: TStringField;
     cdsPainelUsuario_Atualizacao: TStringField;
     cdsPainelUsuario_Encerrameto: TStringField;
+    dtsStatusTrue: TDataSource;
+    mtbStatusTrue: TFDMemTable;
+    mtbStatusTrueid: TIntegerField;
+    mtbStatusTrueStatus: TStringField;
+    mtbStatusTrueTipo_Prazo: TStringField;
+    mtbStatusTruePrazo: TIntegerField;
+    mtbStatusTrueEncerra: TStringField;
+    mtbPainelStatus_True: TStringField;
+    cdsPainelStatus_True: TStringField;
+    mtbHistoricoAtualizacoesStatus_True: TStringField;
+    mtbUsuarios: TFDMemTable;
+    mtbUsuariosid: TIntegerField;
+    mtbUsuariosNome_Usuario: TStringField;
+    mtbUsuariosDoSetor: TFDMemTable;
+    mtbUsuariosDoSetorid: TIntegerField;
+    mtbUsuariosDoSetorNome_Usuario: TStringField;
+    mtbPainelSelecionado: TIntegerField;
+    cdsPainelSelecionado: TIntegerField;
+    mtbPainelDesignacao_Pendente: TStringField;
+    cdsPainelDesignacao_Pendente: TStringField;
+    mtbPainelid_Status_True: TIntegerField;
+    cdsPainelid_Status_True: TIntegerField;
     procedure cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
     { Private declarations }
@@ -133,23 +125,28 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmPainelControlPc: TdtmPainelControlPc;
+*)
 
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses Libs.Constantes;
 
 {$R *.dfm}
 
 procedure TdtmPainelControlPc.cdsPainelUsuario_DesignadoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
 begin
    inherited;
-   if Sender.AsString = '' then
+   if cdsPainelDesignacao_Pendente.AsString = C_SIM then
+      Text := 'Designação aguardando autorização'
+   else if Sender.AsString = '' then
       Text := 'Não designado'
    else
       Text := Sender.AsString;
-
 end;
 
 end.

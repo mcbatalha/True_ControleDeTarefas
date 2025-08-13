@@ -27,8 +27,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmConexao: TdtmConexao;
+*)
 
 implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}

@@ -1147,9 +1147,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     inherited pagAtualizacoes: TfrxReportPage
       inherited GroupHeader1: TfrxGroupHeader
         Top = 158.740260000000000000
-        Width = 718.110700000000000000
         inherited Memo5: TfrxMemoView
-          Width = 718.110700000000000000
           Memo.UTF8W = (
             'Atualiza'#231#245'es do Processo')
         end
@@ -1157,10 +1155,8 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       inherited MasterData2: TfrxMasterData
         Height = 90.708720000000000000
         Top = 204.094620000000000000
-        Width = 718.110700000000000000
         OnBeforePrint = 'MasterData2OnBeforePrint_inherited'
         inherited memBackGroundAtualizacoes: TfrxMemoView
-          Width = 718.110700000000000000
           Height = 90.708720000000000000
         end
         object Memo63: TfrxMemoView
@@ -1382,7 +1378,6 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       end
       inherited Footer1: TfrxFooter
         Top = 317.480520000000000000
-        Width = 718.110700000000000000
       end
       object PageHeader2: TfrxPageHeader
         FillType = ftBrush
@@ -2237,11 +2232,6 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
       'Tipo_Status=Tipo_Status'
       'Nome_Usuario=Nome_Usuario')
   end
-  inherited mtbDesignacoes: TFDMemTable
-    inherited mtbDesignacoesUsuario_Designado: TStringField
-      OnGetText = mtbDesignacoesSetor_DesignadoGetText
-    end
-  end
   object mtbTiposAuditoria: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
@@ -2276,7 +2266,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 149
+    Top = 150
     object mtbTiposPrazoHojeid: TIntegerField
       FieldName = 'id'
     end
@@ -2298,7 +2288,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 295
+    Top = 292
     object mtbTiposProcessoid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -2327,7 +2317,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 365
+    Top = 363
     object mtbTiposProcessoEid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -2355,7 +2345,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 436
+    Top = 434
     object mtbTiposStatusid: TFDAutoIncField
       AutoGenerateValue = arNone
       FieldName = 'id'
@@ -2384,7 +2374,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 78
+    Top = 79
     object mtbTiposPrazoid: TIntegerField
       FieldName = 'id'
     end
@@ -2406,7 +2396,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 507
+    Top = 505
     object mtbSetoresid: TIntegerField
       FieldName = 'id'
     end
@@ -2423,32 +2413,32 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   object dtsTiposPrazo: TDataSource
     DataSet = mtbTiposPrazo
     Left = 832
-    Top = 78
+    Top = 79
   end
   object dtsTiposPrazoHoje: TDataSource
     DataSet = mtbTiposPrazoHoje
     Left = 832
-    Top = 149
+    Top = 150
   end
   object dtsTiposProcesso: TDataSource
     DataSet = mtbTiposProcesso
     Left = 832
-    Top = 295
+    Top = 292
   end
   object dtsTiposProcessoE: TDataSource
     DataSet = mtbTiposProcessoE
     Left = 832
-    Top = 365
+    Top = 363
   end
   object dtsTiposStatus: TDataSource
     DataSet = mtbTiposStatus
     Left = 832
-    Top = 436
+    Top = 434
   end
   object dtsSetores: TDataSource
     DataSet = mtbSetores
     Left = 832
-    Top = 507
+    Top = 505
   end
   object mtbTiposPrazoANS: TFDMemTable
     FieldDefs = <>
@@ -2461,8 +2451,8 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 1009
-    Top = 219
+    Left = 1008
+    Top = 221
     object mtbTiposPrazoANSid: TIntegerField
       FieldName = 'id'
     end
@@ -2474,8 +2464,8 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   end
   object dtsTiposPrazoANS: TDataSource
     DataSet = mtbTiposPrazoANS
-    Left = 833
-    Top = 219
+    Left = 832
+    Top = 221
   end
   object dtsPainel: TDataSource
     DataSet = cdsPainel
@@ -2512,7 +2502,7 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 1008
-    Top = 579
+    Top = 576
     object mtbUFSigla: TStringField
       Alignment = taCenter
       FieldName = 'Sigla'
@@ -2522,6 +2512,47 @@ inherited dtmPainelAutoSC: TdtmPainelAutoSC
   object dtsUF: TDataSource
     DataSet = mtbUF
     Left = 832
-    Top = 579
+    Top = 576
+  end
+  object dtsStatusTrue: TDataSource
+    DataSet = mtbStatusTrue
+    Left = 832
+    Top = 648
+  end
+  object mtbStatusTrue: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 1008
+    Top = 648
+    object mtbStatusTrueid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object mtbStatusTrueStatus: TStringField
+      FieldName = 'Status'
+      Origin = 'Status'
+      Size = 30
+    end
+    object mtbStatusTrueTipo_Prazo: TStringField
+      FieldName = 'Tipo_Prazo'
+      Origin = 'Tipo_Prazo'
+      Size = 10
+    end
+    object mtbStatusTruePrazo: TIntegerField
+      FieldName = 'Prazo'
+      Origin = 'Prazo'
+    end
+    object mtbStatusTrueEncerra: TStringField
+      FieldName = 'Encerra'
+      Origin = 'Encerra'
+      Size = 3
+    end
   end
 end

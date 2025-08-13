@@ -5,13 +5,23 @@ object SMControlPc: TSMControlPc
   object qrySetores: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'Select id, Nome_Setor'
-      'from Setores'
-      'where Ativo = '#39'Sim'#39
-      '      and AutoSC = '#39'Sim'#39
+      'Select a.id, a.Nome_Setor'
+      'from Setores a'
+      '     Inner Join Usuarios_Setores b on b.id_Setor = a.id'
+      '     Inner Join Usuarios c on c.id = b.id_Usuario'
+      'where a.Ativo = '#39'Sim'#39
+      '      and a.ControlPc = '#39'Sim'#39
+      '      and b.id_Usuario = :pIdUsuario'
+      #9'     and c.Ativo = '#39'Sim'#39
       'Order by Nome_Setor')
-    Left = 80
-    Top = 456
+    Left = 72
+    Top = 240
+    ParamData = <
+      item
+        Name = 'PIDUSUARIO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
     object qrySetoresid: TIntegerField
       FieldName = 'id'
       Origin = 'id'
@@ -24,105 +34,24 @@ object SMControlPc: TSMControlPc
       Size = 50
     end
   end
-  object qryTiposStatus: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Status'
-    SQL.Strings = (
-      'Declare @CONTROLPC int;'
-      'Set @CONTROLPC = :CONTROLPC;'
-      ''
-      'Select * from Tipos_Status'
-      'where @CONTROLPC = 9 or CONTROLPC = @CONTROLPC '
-      'Order by Tipo_Status')
-    Left = 80
-    Top = 376
-    ParamData = <
-      item
-        Name = 'CONTROLPC'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qryTiposStatusid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposStatusTipo_Status: TStringField
-      FieldName = 'Tipo_Status'
-      Origin = 'Tipo_Status'
-      Size = 30
-    end
-    object qryTiposStatusAUTOSC: TIntegerField
-      FieldName = 'AUTOSC'
-      Origin = 'AUTOSC'
-    end
-    object qryTiposStatusSIAGS: TIntegerField
-      FieldName = 'SIAGS'
-      Origin = 'SIAGS'
-    end
-    object qryTiposStatusCONTROLPC: TIntegerField
-      FieldName = 'CONTROLPC'
-      Origin = 'CONTROLPC'
-    end
-  end
-  object qryTiposPrazo: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
-    SQL.Strings = (
-      'Declare @CONTROLPC int;'
-      'Set @CONTROLPC = :CONTROLPC;'
-      ''
-      'select * from Tipos_Prazo'
-      'where @CONTROLPC = 9 or CONTROLPC = @CONTROLPC '
-      'Order by Tipo_Prazo_Caixa')
-    Left = 80
-    Top = 136
-    ParamData = <
-      item
-        Name = 'CONTROLPC'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qryTiposPrazoid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposPrazoTipo_Prazo_Caixa: TStringField
-      FieldName = 'Tipo_Prazo_Caixa'
-      Origin = 'Tipo_Prazo_Caixa'
-      Size = 30
-    end
-    object qryTiposPrazoAUTOSC: TIntegerField
-      FieldName = 'AUTOSC'
-      Origin = 'AUTOSC'
-    end
-    object qryTiposPrazoSIAGS: TIntegerField
-      FieldName = 'SIAGS'
-      Origin = 'SIAGS'
-    end
-    object qryTiposPrazoCONTROLPC: TIntegerField
-      FieldName = 'CONTROLPC'
-      Origin = 'CONTROLPC'
-    end
-  end
   object qryControlPc: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'Select * from ControlPc'
-      'where Protocolo = :pProtocolo')
-    Left = 320
-    Top = 40
+      'where Protocolo = :pProtocolo'
+      '      or id = :pIdProtocolo')
+    Left = 234
+    Top = 48
     ParamData = <
       item
         Name = 'PPROTOCOLO'
         DataType = ftString
         ParamType = ptInput
         Value = Null
+      end
+      item
+        Name = 'PIDPROTOCOLO'
+        ParamType = ptInput
       end>
     object qryControlPcid: TLargeintField
       AutoGenerateValue = arAutoInc
@@ -136,46 +65,25 @@ object SMControlPc: TSMControlPc
       Origin = 'Protocolo'
       Size = 50
     end
-    object qryControlPcid_Tipo_Status: TIntegerField
-      FieldName = 'id_Tipo_Status'
-      Origin = 'id_Tipo_Status'
-    end
     object qryControlPcData_Abertura: TDateTimeField
       FieldName = 'Data_Abertura'
       Origin = 'Data_Abertura'
-    end
-    object qryControlPcData_Transferencia: TDateTimeField
-      FieldName = 'Data_Transferencia'
-      Origin = 'Data_Transferencia'
-    end
-    object qryControlPcData_Fechamento: TDateTimeField
-      FieldName = 'Data_Fechamento'
-      Origin = 'Data_Fechamento'
     end
     object qryControlPcPrevisao_Solucao: TDateTimeField
       FieldName = 'Previsao_Solucao'
       Origin = 'Previsao_Solucao'
     end
-    object qryControlPcid_Tipo_Prazo: TIntegerField
-      FieldName = 'id_Tipo_Prazo'
-      Origin = 'id_Tipo_Prazo'
-    end
     object qryControlPcid_Tipo_Cliente: TIntegerField
       FieldName = 'id_Tipo_Cliente'
       Origin = 'id_Tipo_Cliente'
-    end
-    object qryControlPcid_Tipo_Classificacao: TIntegerField
-      FieldName = 'id_Tipo_Classificacao'
-      Origin = 'id_Tipo_Classificacao'
     end
     object qryControlPcid_Tecnico: TIntegerField
       FieldName = 'id_Tecnico'
       Origin = 'id_Tecnico'
     end
-    object qryControlPcSolicitacao_Cliente: TStringField
-      FieldName = 'Solicitacao_Cliente'
-      Origin = 'Solicitacao_Cliente'
-      Size = 500
+    object qryControlPcid_Status_True: TIntegerField
+      FieldName = 'id_Status_True'
+      Origin = 'id_Status_True'
     end
     object qryControlPcTipo_Reclame: TStringField
       FieldName = 'Tipo_Reclame'
@@ -237,14 +145,19 @@ object SMControlPc: TSMControlPc
       FieldName = 'id_Usuario_Ultima_Atualizacao'
       Origin = 'id_Usuario_Ultima_Atualizacao'
     end
+    object qryControlPcDesignacao_Pendente: TStringField
+      FieldName = 'Designacao_Pendente'
+      Origin = 'Designacao_Pendente'
+      Size = 3
+    end
   end
   object qryControlPcHistorico: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'Select * from ControlPc_Historico'
       'where id_ControlPc = :pIdControlPc')
-    Left = 320
-    Top = 120
+    Left = 234
+    Top = 128
     ParamData = <
       item
         Name = 'PIDCONTROLPC'
@@ -263,14 +176,6 @@ object SMControlPc: TSMControlPc
       FieldName = 'id_ControlPc'
       Origin = 'id_ControlPc'
     end
-    object qryControlPcHistoricoid_Tipo_Status: TIntegerField
-      FieldName = 'id_Tipo_Status'
-      Origin = 'id_Tipo_Status'
-    end
-    object qryControlPcHistoricoid_Tipo_Prazo: TIntegerField
-      FieldName = 'id_Tipo_Prazo'
-      Origin = 'id_Tipo_Prazo'
-    end
     object qryControlPcHistoricoid_Tecnico: TIntegerField
       FieldName = 'id_Tecnico'
       Origin = 'id_Tecnico'
@@ -279,9 +184,9 @@ object SMControlPc: TSMControlPc
       FieldName = 'id_Tipo_Cliente'
       Origin = 'id_Tipo_Cliente'
     end
-    object qryControlPcHistoricoid_Tipo_Classifiacao: TIntegerField
-      FieldName = 'id_Tipo_Classifiacao'
-      Origin = 'id_Tipo_Classifiacao'
+    object qryControlPcHistoricoid_Status_True: TIntegerField
+      FieldName = 'id_Status_True'
+      Origin = 'id_Status_True'
     end
     object qryControlPcHistoricoTipo_Reclame: TStringField
       FieldName = 'Tipo_Reclame'
@@ -307,8 +212,8 @@ object SMControlPc: TSMControlPc
     SQL.Strings = (
       'Select * from ControlPc_Log'
       'where id_ControlPc = :pIdControlPc')
-    Left = 320
-    Top = 192
+    Left = 234
+    Top = 200
     ParamData = <
       item
         Name = 'PIDCONTROLPC'
@@ -353,30 +258,22 @@ object SMControlPc: TSMControlPc
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'select '
-      
-        '   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, a.Data_Tr' +
-        'ansferencia, a.Data_Fechamento,'
-      
-        '   a.Previsao_Solucao, a.Solicitacao_Cliente, a.Tipo_Reclame, a.' +
-        'Tipo_Nip,'
-      '   b.Tipo_Status,'
-      '   c.Tipo_Prazo_Caixa,'
+      '   a.id as id_Protocolo, a.Protocolo, a.Data_Abertura, '
+      '   a.Previsao_Solucao, a.Tipo_Reclame, a.Tipo_Nip,'
+      '   a.id_Usuario_Designado, a.id_Setor_Designado,'
+      '   a.Designacao_Pendente,'
       '   d.Nome_Tecnico,'
       '   e.Tipo_Cliente,'
-      '   f.Tipo_Classificacao,'
+      '   f.Status as Status_True,'
       '   g.Nome_Usuario as Usuario_Designado,'
       '   h.Nome_Setor as Setor_Designado,'
       '   1 as Qtd_Historicos,'
       '   1 as Qtd_Designacoes,'
       '   1 as Qtd_Observacoes'
       'From ControlPc a'
-      '     INNER JOIN Tipos_Status b on b.id = a.id_Tipo_Status'
-      '     INNER JOIN Tipos_Prazo c on c.id = a.id_Tipo_Prazo'
       '     INNER JOIN Tecnicos d on d.id = a.id_Tecnico'
       '     INNER JOIN Tipos_Cliente e on e.id = a.id_Tipo_Cliente'
-      
-        '     INNER JOIN Tipos_Classificacao f on f.id = a.id_Tipo_Classi' +
-        'ficacao'
+      '     INNER JOIN Status_True f on f.id = a.id_Status_True'
       '     LEFT OUTER JOIN Usuarios g on g.id = a.id_Usuario_Designado'
       '     LEFT OUTER JOIN Setores h on h.id = a.id_Setor_Designado'
       'where 1 = 1')
@@ -398,22 +295,9 @@ object SMControlPc: TSMControlPc
       FieldName = 'Data_Abertura'
       Origin = 'Data_Abertura'
     end
-    object qryPainelControlPcData_Transferencia: TDateTimeField
-      FieldName = 'Data_Transferencia'
-      Origin = 'Data_Transferencia'
-    end
-    object qryPainelControlPcData_Fechamento: TDateTimeField
-      FieldName = 'Data_Fechamento'
-      Origin = 'Data_Fechamento'
-    end
     object qryPainelControlPcPrevisao_Solucao: TDateTimeField
       FieldName = 'Previsao_Solucao'
       Origin = 'Previsao_Solucao'
-    end
-    object qryPainelControlPcSolicitacao_Cliente: TStringField
-      FieldName = 'Solicitacao_Cliente'
-      Origin = 'Solicitacao_Cliente'
-      Size = 500
     end
     object qryPainelControlPcTipo_Reclame: TStringField
       FieldName = 'Tipo_Reclame'
@@ -425,21 +309,6 @@ object SMControlPc: TSMControlPc
       Origin = 'Tipo_Nip'
       Size = 3
     end
-    object qryPainelControlPcTipo_Status: TStringField
-      FieldName = 'Tipo_Status'
-      Origin = 'Tipo_Status'
-      Size = 30
-    end
-    object qryPainelControlPcTipo_Prazo_Caixa: TStringField
-      FieldName = 'Tipo_Prazo_Caixa'
-      Origin = 'Tipo_Prazo_Caixa'
-      Size = 30
-    end
-    object qryPainelControlPcTipo_Classificacao: TStringField
-      FieldName = 'Tipo_Classificacao'
-      Origin = 'Tipo_Classificacao'
-      Size = 350
-    end
     object qryPainelControlPcNome_Tecnico: TStringField
       FieldName = 'Nome_Tecnico'
       Origin = 'Nome_Tecnico'
@@ -449,6 +318,14 @@ object SMControlPc: TSMControlPc
       FieldName = 'Tipo_Cliente'
       Origin = 'Tipo_Cliente'
       Size = 50
+    end
+    object qryPainelControlPcid_Status_True: TIntegerField
+      FieldName = 'id_Status_True'
+    end
+    object qryPainelControlPcStatus_True: TStringField
+      FieldName = 'Status_True'
+      Origin = 'Status_True'
+      Size = 30
     end
     object qryPainelControlPcUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'
@@ -478,37 +355,18 @@ object SMControlPc: TSMControlPc
       ReadOnly = True
       Required = True
     end
-    object qryPainelControlPcData_Hora_Importacao: TDateTimeField
-      FieldName = 'Data_Hora_Importacao'
-      Origin = 'Data_Hora_Importacao'
+    object qryPainelControlPcid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      Origin = 'id_Usuario_Designado'
     end
-    object qryPainelControlPcUltima_Atualizacao: TDateTimeField
-      FieldName = 'Ultima_Atualizacao'
-      Origin = 'Ultima_Atualizacao'
+    object qryPainelControlPcid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+      Origin = 'id_Setor_Designado'
     end
-    object qryPainelControlPcData_Hora_Encerramento: TDateTimeField
-      FieldName = 'Data_Hora_Encerramento'
-      Origin = 'Data_Hora_Encerramento'
-    end
-    object qryPainelControlPcUsuario_Importacao: TStringField
-      FieldName = 'Usuario_Importacao'
-      Origin = 'Usuario_Importacao'
-      Size = 100
-    end
-    object qryPainelControlPcUsuario_Atualizacao: TStringField
-      FieldName = 'Usuario_Atualizacao'
-      Origin = 'Usuario_Atualizacao'
-      Size = 100
-    end
-    object qryPainelControlPcUsuario_Encerrameto: TStringField
-      FieldName = 'Usuario_Encerrameto'
-      Origin = 'Usuario_Encerrameto'
-      Size = 100
-    end
-    object qryPainelControlPcJustificativa_Encerramento: TStringField
-      FieldName = 'Justificativa_Encerramento'
-      Origin = 'Justificativa_Encerramento'
-      Size = 100
+    object qryPainelControlPcDesignacao_Pendente: TStringField
+      FieldName = 'Designacao_Pendente'
+      Origin = 'Designacao_Pendente'
+      Size = 3
     end
   end
   object qryAux: TFDQuery
@@ -540,8 +398,8 @@ object SMControlPc: TSMControlPc
     SQL.Strings = (
       'select * from Tipos_Cliente'
       'Order by Tipo_Cliente')
-    Left = 80
-    Top = 208
+    Left = 72
+    Top = 152
     object qryTiposClienteid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -554,51 +412,152 @@ object SMControlPc: TSMControlPc
       Size = 50
     end
   end
-  object qryTiposClassificacao: TFDQuery
+  object qryIncluirDesignacao: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * from Tipos_Classificacao'
-      'Order by Tipo_Classificacao')
-    Left = 80
+      'Select * from ControlPc_Designacao_Solicitacao'
+      'where 1 = 2')
+    Left = 234
     Top = 296
-    object qryTiposClassificacaoid: TFDAutoIncField
+    object qryIncluirDesignacaoid: TLargeintField
+      AutoGenerateValue = arAutoInc
       FieldName = 'id'
       Origin = 'id'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
-    object qryTiposClassificacaoTipo_Classificacao: TStringField
-      FieldName = 'Tipo_Classificacao'
-      Origin = 'Tipo_Classificacao'
-      Size = 350
+    object qryIncluirDesignacaoid_Protocolo: TLargeintField
+      FieldName = 'id_Protocolo'
+      Origin = 'id_Protocolo'
+    end
+    object qryIncluirDesignacaoid_Usuario_Solicitante: TIntegerField
+      FieldName = 'id_Usuario_Solicitante'
+      Origin = 'id_Usuario_Solicitante'
+    end
+    object qryIncluirDesignacaoData_Solicitacao: TDateTimeField
+      FieldName = 'Data_Solicitacao'
+      Origin = 'Data_Solicitacao'
+    end
+    object qryIncluirDesignacaoid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      Origin = 'id_Usuario_Designado'
+    end
+    object qryIncluirDesignacaoid_Usuario_Solicitado: TIntegerField
+      FieldName = 'id_Usuario_Solicitado'
+      Origin = 'id_Usuario_Solicitado'
+    end
+    object qryIncluirDesignacaoid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+      Origin = 'id_Setor_Designado'
+    end
+    object qryIncluirDesignacaoid_Setor_Solicitado: TIntegerField
+      FieldName = 'id_Setor_Solicitado'
+      Origin = 'id_Setor_Solicitado'
+    end
+    object qryIncluirDesignacaoAutorizado: TStringField
+      FieldName = 'Autorizado'
+      Origin = 'Autorizado'
+      Size = 10
+    end
+    object qryIncluirDesignacaoData_Hora_Autorizacao: TDateTimeField
+      FieldName = 'Data_Hora_Autorizacao'
+      Origin = 'Data_Hora_Autorizacao'
+    end
+    object qryIncluirDesignacaoJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Origin = 'Justificativa'
+      Size = 500
+    end
+    object qryIncluirDesignacaoid_Usuario_Autorizador: TIntegerField
+      FieldName = 'id_Usuario_Autorizador'
+      Origin = 'id_Usuario_Autorizador'
     end
   end
-  object qryClassificacao: TFDQuery
+  object qryDesignacoesPendentes: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'select * '
-      'from Tipos_Classificacao'
-      'where Tipo_Classificacao = :pTipoClassificacao'
-      'Order by Tipo_Classificacao')
-    Left = 224
-    Top = 304
-    ParamData = <
-      item
-        Name = 'PTIPOCLASSIFICACAO'
-        DataType = ftString
-        ParamType = ptInput
-        Value = Null
-      end>
-    object qryClassificacaoid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
+      'Select '
+      '   a.id as id_Solicitacao,'
+      '   a.Data_Solicitacao,'
+      '   a.Justificativa,'
+      '   a.id_Protocolo,'
+      '   b.Protocolo,'
+      '   c.Nome_Usuario as Usuario_Solicitante,'
+      '   d.Nome_Usuario as Usuario_Atual,'
+      '   e.Nome_Usuario as Usuario_Solicitado,'
+      '   f.Nome_Setor as Setor_Atual,'
+      '   g.Nome_Setor as Setor_Solicitado,'
+      '   h.Status as Status_True'
+      'From '
+      '   ControlPc_Designacao_Solicitacao a'
+      '   Inner Join ControlPc b on b.id = a.id_Protocolo'
+      '   Inner Join Usuarios c on c.id = a.id_Usuario_Solicitante'
+      '   Left Outer Join Usuarios d on d.id = a.id_Usuario_Designado'
+      '   Left Outer Join Usuarios e on e.id = a.id_Usuario_Solicitado'
+      '   Left Outer Join Setores f on f.id = a.id_Setor_Designado'
+      '   Left Outer Join Setores g on g.id = a.id_Setor_Solicitado'
+      '   Left Outer Join Status_True h on h.id = b.id_Status_True'
+      'where'
+      '   b.Designacao_Pendente = '#39'Sim'#39
+      'Order by'
+      '   a.Data_Solicitacao,'
+      '   b.Protocolo')
+    Left = 234
+    Top = 400
+    object qryDesignacoesPendentesData_Solicitacao: TDateTimeField
+      FieldName = 'Data_Solicitacao'
+      Origin = 'Data_Solicitacao'
     end
-    object qryClassificacaoTipo_Classificacao: TStringField
-      FieldName = 'Tipo_Classificacao'
-      Origin = 'Tipo_Classificacao'
-      Size = 350
+    object qryDesignacoesPendentesJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Origin = 'Justificativa'
+      Size = 500
+    end
+    object qryDesignacoesPendentesid_Protocolo: TLargeintField
+      FieldName = 'id_Protocolo'
+      Origin = 'id_Protocolo'
+    end
+    object qryDesignacoesPendentesProtocolo: TStringField
+      FieldName = 'Protocolo'
+      Origin = 'Protocolo'
+      Size = 50
+    end
+    object qryDesignacoesPendentesUsuario_Solicitante: TStringField
+      FieldName = 'Usuario_Solicitante'
+      Origin = 'Usuario_Solicitante'
+      Size = 100
+    end
+    object qryDesignacoesPendentesUsuario_Atual: TStringField
+      FieldName = 'Usuario_Atual'
+      Origin = 'Usuario_Atual'
+      Size = 100
+    end
+    object qryDesignacoesPendentesUsuario_Solicitado: TStringField
+      FieldName = 'Usuario_Solicitado'
+      Origin = 'Usuario_Solicitado'
+      Size = 100
+    end
+    object qryDesignacoesPendentesSetor_Atual: TStringField
+      FieldName = 'Setor_Atual'
+      Origin = 'Setor_Atual'
+      Size = 50
+    end
+    object qryDesignacoesPendentesSetor_Solicitado: TStringField
+      FieldName = 'Setor_Solicitado'
+      Origin = 'Setor_Solicitado'
+      Size = 50
+    end
+    object qryDesignacoesPendentesStatus_True: TStringField
+      FieldName = 'Status_True'
+      Origin = 'Status_True'
+      Size = 30
+    end
+    object qryDesignacoesPendentesid_Solicitacao: TLargeintField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'id_Solicitacao'
+      Origin = 'id_Solicitacao'
+      ProviderFlags = [pfInWhere]
+      ReadOnly = True
     end
   end
 end

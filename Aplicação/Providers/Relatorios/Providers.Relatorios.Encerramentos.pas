@@ -55,8 +55,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmRelatoriosEncerramento: TdtmRelatoriosEncerramento;
+*)
 
 implementation
 

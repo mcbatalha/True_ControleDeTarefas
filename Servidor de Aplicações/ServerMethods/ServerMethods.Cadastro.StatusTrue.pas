@@ -38,6 +38,9 @@ type
     qryCadastroPrazo: TIntegerField;
     qryCadastroEncerra: TStringField;
     qryCadastroAtivo: TStringField;
+    qryCadastroAutoSC: TStringField;
+    qryCadastroSiags: TStringField;
+    qryCadastroControlPC: TStringField;
   private
     procedure MontarQueryCadastro(AQuery : TFDQuery);
   public
@@ -94,7 +97,7 @@ procedure TSMStatusTrue.MontarQueryCadastro(AQuery: TFDQuery);
 begin
    AQuery.Close;
    AQuery.Sql.Clear;
-   AQuery.Sql.Add('Select id, Status, Tipo_Prazo, Prazo, Encerra, Ativo');
+   AQuery.Sql.Add('Select id, Status, Tipo_Prazo, Prazo, AutoSc, Siags, ControlPC, Encerra, Ativo');
    AQuery.Sql.Add('From Status_True');
 end;
 

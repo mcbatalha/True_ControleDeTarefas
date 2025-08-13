@@ -27,35 +27,27 @@ end;
 type
     TFiltrosSiags = record
        numeroDaAutorizacao       : string;
-       idTipoAuditoria           : integer;
-       idTipoPrazoCaixa          : integer;
-       idTipoPrazoANS            : integer;
 
        idTipoAutorizacao         : integer;
        idTipoAtendimento         : integer;
-       idTipoSituacaoAutorizacao : integer;
-       idTipoUltimaAnotacao      : integer;
        idBeneficiarios           : integer;
+       idStatusTrue              : integer;
+       dataPrazoCaixa            : String;
+       dataPrazoAns              : String;
 
        idSetorDesignado          : integer;
        idUsuarioDesignado        : integer;
-       UF                        : String;
        nomeUsuario               : String;
 end;
 
 type
     TFiltrosControlPc = record
        numeroDoProtocolo    : string;
-       idTipoStatus         : integer;
-       idTipoPrazo          : integer;
        idTecnico            : integer;
        idTipoCliente        : integer;
+       idStatusTrue         : integer;
        usaDataAbertura      : Boolean;
        dataAbertura         : TDateTime;
-       usaDataFechamento    : Boolean;
-       dataFechamento       : TDateTime;
-       usaDataTransferencia : Boolean;
-       dataTransferencia    : TDateTime;
        usaPrevisaoSolucao   : Boolean;
        previsaoSolucao      : TDateTime;
 
@@ -160,32 +152,23 @@ function TFiltros.getFiltrosControlPcAsJSON: TJSONObject;
 begin
    Result := TJSONObject.Create;
    Result.AddPair('numeroDoProtocolo',    TJSONString.Create(FFiltrosControlPc.numeroDoProtocolo));
-   Result.AddPair('idTipoStatus',         TJSONNumber.Create(FFiltrosControlPc.idTipoStatus));
-   Result.AddPair('idTipoPrazo',          TJSONNumber.Create(FFiltrosControlPc.idTipoPrazo));
    Result.AddPair('idTecnico',            TJSONNumber.Create(FFiltrosControlPc.idTecnico));
    Result.AddPair('idTipoCliente',        TJSONNumber.Create(FFiltrosControlPc.idTipoCliente));
+   Result.AddPair('idStatusTrue',         TJSONNumber.Create(FFiltrosControlPc.idStatusTrue));
    Result.AddPair('tipoReclame',          TJSONString.Create(FFiltrosControlPc.tipoReclame));
    Result.AddPair('tipoNip',              TJSONString.Create(FFiltrosControlPc.tipoNip));
 
    Result.AddPair('usaDataAbertura',      TJSONBool.Create(FFiltrosControlPc.usaDataAbertura));
-   Result.AddPair('usaDataFechamento',    TJSONBool.Create(FFiltrosControlPc.usaDataFechamento));
-   Result.AddPair('usaDataTransferencia', TJSONBool.Create(FFiltrosControlPc.usaDataTransferencia));
    Result.AddPair('usaPrevisaoSolucao',   TJSONBool.Create(FFiltrosControlPc.usaPrevisaoSolucao));
 
    if FFiltrosControlPc.usaDataAbertura then
       Result.AddPair('dataAbertura',         TJSONString.Create(DateToStr(FFiltrosControlPc.dataAbertura)));
-   if FFiltrosControlPc.usaDataFechamento then
-      Result.AddPair('dataFechamento',       TJSONString.Create(DateToStr(FFiltrosControlPc.dataFechamento)));
-   if FFiltrosControlPc.usaDataTransferencia then
-      Result.AddPair('dataTransferencia',    TJSONString.Create(DateToStr(FFiltrosControlPc.dataTransferencia)));
    if FFiltrosControlPc.usaPrevisaoSolucao then
       Result.AddPair('PrevisaoSolucao',      TJSONString.Create(DateToStr(FFiltrosControlPc.previsaoSolucao)));
 
-
-   Result.AddPair('idSetorDesignado',     TJSONNumber.Create(FFiltrosAutoSc.idSetorDesignado));
-   Result.AddPair('idUsuarioDesignado',   TJSONNumber.Create(FFiltrosAutoSc.idUsuarioDesignado));
-   Result.AddPair('nomeUsuario',          TJSONString.Create(FFiltrosAutoSc.nomeUsuario));
-
+   Result.AddPair('idSetorDesignado',     TJSONNumber.Create(FFiltrosControlPc.idSetorDesignado));
+   Result.AddPair('idUsuarioDesignado',   TJSONNumber.Create(FFiltrosControlPc.idUsuarioDesignado));
+   Result.AddPair('nomeUsuario',          TJSONString.Create(FFiltrosControlPc.nomeUsuario));
 end;
 
 function TFiltros.getFiltrosControlPcAsRecord: TFiltrosControlPc;
@@ -198,19 +181,20 @@ begin
    Result := TJSONObject.Create;
 
    Result.AddPair('numeroDaAutorizacao',       TJSONString.Create(FFiltrosSiags.numeroDaAutorizacao));
-   Result.AddPair('idTipoAuditoria',           TJSONNumber.Create(FFiltrosSiags.idTipoAuditoria));
-   Result.AddPair('idTipoPrazoCaixa',          TJSONNumber.Create(FFiltrosSiags.idTipoPrazoCaixa));
-   Result.AddPair('idTipoPrazoANS',            TJSONNumber.Create(FFiltrosSiags.idTipoPrazoANS));
 
    Result.AddPair('idTipoAutorizacao',         TJSONNumber.Create(FFiltrosSiags.idTipoAutorizacao));
    Result.AddPair('idTipoAtendimento',         TJSONNumber.Create(FFiltrosSiags.idTipoAtendimento));
-   Result.AddPair('idTipoSituacaoAutorizacao', TJSONNumber.Create(FFiltrosSiags.idTipoSituacaoAutorizacao));
-   Result.AddPair('idTipoUltimaAnotacao',      TJSONNumber.Create(FFiltrosSiags.idTipoUltimaAnotacao));
    Result.AddPair('idBeneficiarios',           TJSONNumber.Create(FFiltrosSiags.idBeneficiarios));
+   Result.AddPair('idStatusTrue',              TJSONNumber.Create(FFiltrosSiags.idStatusTrue));
+
+   if FFiltrosSiags.dataPrazoCaixa <> '' then
+      Result.AddPair('dataPrazoCaixa',         TJSONString.Create(FFiltrosSiags.dataPrazoCaixa));
+
+   if FFiltrosSiags.dataPrazoAns <> '' then
+      Result.AddPair('dataPrazoAns',           TJSONString.Create(FFiltrosSiags.dataPrazoAns));
 
    Result.AddPair('idSetorDesignado',          TJSONNumber.Create(FFiltrosSiags.idSetorDesignado));
    Result.AddPair('idUsuarioDesignado',        TJSONNumber.Create(FFiltrosSiags.idUsuarioDesignado));
-   Result.AddPair('UF',                        TJSONString.Create(FFiltrosSiags.UF));
    Result.AddPair('nomeUsuario',               TJSONString.Create(FFiltrosSiags.nomeUsuario));
 end;
 
@@ -232,27 +216,30 @@ begin
    FFiltrosAutoSc.idSetorDesignado     := 0;
    FFiltrosAutoSc.UF                   := C_TODOS;
 
-   FFiltrosAutoSc.idUsuarioDesignado   := Seguranca.Id;
-   FFiltrosAutoSc.nomeUsuario          := Seguranca.Nome;
    FFiltrosAutoSc.usaDataStatus        := False;
+
+   if Seguranca.Perfil = C_PERFIL_USUARIO then
+      begin
+      FFiltrosAutoSc.idUsuarioDesignado   := Seguranca.Id;
+      FFiltrosAutoSc.nomeUsuario          := Seguranca.Nome;
+   end else
+      begin
+      FFiltrosAutoSc.idUsuarioDesignado   := 0;
+      FFiltrosAutoSc.nomeUsuario          := C_TODOS;
+   end;
 end;
 
 procedure TFiltros.LimparFiltrosControlPc;
 begin
    FFiltrosControlPc.numeroDoProtocolo    := '';
-   FFiltrosControlPc.idTipoStatus         := 0;
-   FFiltrosControlPc.idTipoPrazo          := 0;
    FFiltrosControlPc.idTecnico            := 0;
    FFiltrosControlPc.idTipoCliente        := 0;
+   FFiltrosControlPc.idStatusTrue         := 0;
    FFiltrosControlPc.tipoReclame          := C_TODOS;
    FFiltrosControlPc.tipoNip              := C_TODOS;
 
    FFiltrosControlPc.usaDataAbertura      := False;
    FFiltrosControlPc.dataAbertura         := Date;
-   FFiltrosControlPc.usaDataFechamento    := False;
-   FFiltrosControlPc.dataFechamento       := Date;
-   FFiltrosControlPc.usaDataTransferencia := False;
-   FFiltrosControlPc.dataTransferencia    := Date;
    FFiltrosControlPc.usaPrevisaoSolucao   := False;
    FFiltrosControlPc.previsaoSolucao      := Date;
 
@@ -264,19 +251,23 @@ end;
 procedure TFiltros.LimparFiltrosSiags;
 begin
    FFiltrosSiags.numeroDaAutorizacao       := '';
-   FFiltrosSiags.idTipoAuditoria           := 0;
-   FFiltrosSiags.idTipoPrazoCaixa          := 0;
-   FFiltrosSiags.idTipoPrazoANS            := 0;
    FFiltrosSiags.idTipoAutorizacao         := 0;
    FFiltrosSiags.idTipoAtendimento         := 0;
-   FFiltrosSiags.idTipoSituacaoAutorizacao := 0;
-   FFiltrosSiags.idTipoUltimaAnotacao      := 0;
+   FFiltrosSiags.idStatusTrue              := 0;
+   FFiltrosSiags.dataPrazoCaixa            := '';
+   FFiltrosSiags.dataPrazoAns              := '';
    FFiltrosSiags.idBeneficiarios           := 0;
-   FFiltrosSiags.UF                        := C_TODOS;
 
    FFiltrosSiags.idSetorDesignado          := 0;
-   FFiltrosSiags.idUsuarioDesignado   := Seguranca.Id;
-   FFiltrosSiags.nomeUsuario          := Seguranca.Nome;
+   if Seguranca.Perfil = C_PERFIL_USUARIO then
+      begin
+      FFiltrosSiags.idUsuarioDesignado        := Seguranca.Id;
+      FFiltrosSiags.nomeUsuario               := Seguranca.Nome;
+   end else
+      begin
+      FFiltrosSiags.idUsuarioDesignado        := 0;
+      FFiltrosSiags.nomeUsuario               := C_TODOS;
+   end;
 end;
 
 procedure TFiltros.setFiltrosAutoSC(const AFiltro: TFiltrosAutoSc);

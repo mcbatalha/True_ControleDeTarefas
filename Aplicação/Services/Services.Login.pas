@@ -11,7 +11,8 @@ uses
      Providers.Cadastros,
      Proxy.Classes,
      Funcoes,
-     Libs.Constantes, Util.Menu;
+     Libs.Constantes,
+     Util.Menu;
 type
 
   TSrvLogin = class
@@ -132,7 +133,8 @@ begin
    Seguranca.Login         := ALogin;
    Seguranca.Perfil        := LLogin.Values['perfil'].AsType<String>;
    Seguranca.TrocarSenha   := LLogin.Values['trocarSenha'].AsType<Boolean>;
-   Seguranca.PodeAUTOSC    := LLogin.Values['autosc'].AsType<Boolean>;
+//   Seguranca.PodeAUTOSC    := LLogin.Values['autosc'].AsType<Boolean>;
+   Seguranca.PodeAUTOSC    := False;
    Seguranca.PodeSIAGS     := LLogin.Values['siags'].AsType<Boolean>;
    Seguranca.PodeCONTROLPC := LLogin.Values['controlpc'].AsType<Boolean>;
 

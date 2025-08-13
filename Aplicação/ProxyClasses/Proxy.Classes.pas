@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 15/07/2025 18:35:28
+// 08/08/2025 17:14:32
 //
 
 unit Proxy.Classes;
@@ -17,6 +17,7 @@ type
     FLoginCommand: TDBXCommand;
     FAlterarSenhaCommand: TDBXCommand;
     FGravarSegurancaCommand: TDBXCommand;
+    FDesignacoesPendentesCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -26,6 +27,7 @@ type
     function Login(ALogin: string; ASenha: string): TJSONObject;
     function AlterarSenha(AIdUsuario: Integer; ASenha: string): Boolean;
     function GravarSeguranca(AIdUsuario: Integer; AItensMenu: TJSONArray): Boolean;
+    function DesignacoesPendentes(AIdUsuario: Integer): TJSONArray;
   end;
 
   TSMSetoresClient = class(TDSAdminClient)
@@ -34,6 +36,7 @@ type
     FLocalizarCommand: TDBXCommand;
     FJaExisteCommand: TDBXCommand;
     FPesquisarCommand: TDBXCommand;
+    FSetoresCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -42,6 +45,7 @@ type
     function Localizar(AId: Integer): Boolean;
     function JaExiste(AId: Integer; ADescricao: string): Boolean;
     procedure Pesquisar(ACampo: Integer; ATipo: Integer; AChave: string; AIncluirInativos: Boolean);
+    function Setores: TJSONArray;
   end;
 
   TSMUsuariosClient = class(TDSAdminClient)
@@ -52,6 +56,7 @@ type
     FPesquisarCommand: TDBXCommand;
     FLocalizarLoginCommand: TDBXCommand;
     FGravarLogLimpesaSenhaCommand: TDBXCommand;
+    FUsuariosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -62,6 +67,7 @@ type
     procedure Pesquisar(ACampo: Integer; ATipo: Integer; AChave: string; AIncluirInativos: Boolean);
     function LocalizarLogin(ALogin: string): TJSONArray;
     procedure GravarLogLimpesaSenha(AIdUsuario: Integer; AIdUsuarioResponsavel: Integer);
+    function Usuarios: TJSONArray;
   end;
 
   TSMAutoSCClient = class(TDSAdminClient)
@@ -70,7 +76,7 @@ type
     FFiltrarProcessosCommand: TDBXCommand;
     FDesignarCommand: TDBXCommand;
     FRegistrarObservacaoCommand: TDBXCommand;
-    FEncerrarProcessoCommand: TDBXCommand;
+    FAlterarStatusCommand: TDBXCommand;
     FHistoricoDeDesignacoesCommand: TDBXCommand;
     FHistoricoDeAtualizacoesCommand: TDBXCommand;
     FObservacoesDoProcessoCommand: TDBXCommand;
@@ -92,7 +98,7 @@ type
     function FiltrarProcessos(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
     function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProcesso: Integer): Boolean;
     function RegistrarObservacao(AIdProcesso: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
-    function EncerrarProcesso(AIdProcesso: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+    function AlterarStatus(AIdProcesso: Integer; AIdStatus: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
     function HistoricoDeDesignacoes(AIdProcesso: Integer): TJSONArray;
     function HistoricoDeAtualizacoes(AIdProcesso: Integer): TJSONArray;
     function ObservacoesDoProcesso(AIdProcesso: Integer): TJSONArray;
@@ -114,42 +120,44 @@ type
     FFiltrarAutorizacoesCommand: TDBXCommand;
     FDesignarCommand: TDBXCommand;
     FRegistrarObservacaoCommand: TDBXCommand;
-    FEncerrarAutorizacaoCommand: TDBXCommand;
+    FAlterarStatusCommand: TDBXCommand;
     FHistoricoDeDesignacoesCommand: TDBXCommand;
     FHistoricoDeAtualizacoesCommand: TDBXCommand;
     FObservacoesDaAutorizacaoCommand: TDBXCommand;
-    FTiposDeAuditoriaCommand: TDBXCommand;
-    FTiposDePrazoCommand: TDBXCommand;
     FTiposDeAutoriazacaoCommand: TDBXCommand;
     FTiposDeAtendimentoCommand: TDBXCommand;
-    FTiposDeSituacaoAutorizacaoCommand: TDBXCommand;
-    FTiposDeUltimaAnotacaoCommand: TDBXCommand;
+    FStatusTrueCommand: TDBXCommand;
+    FAutorizacoesAtivasCommand: TDBXCommand;
     FSetoresCommand: TDBXCommand;
     FUsuariosCommand: TDBXCommand;
+    FUsuariosDoSetorCommand: TDBXCommand;
     FRelatorioDeDesignacoesCommand: TDBXCommand;
     FRelatorioDeEncerramentosCommand: TDBXCommand;
+    FDesignacoesPendentesCommand: TDBXCommand;
+    FAutorizarDesiganacaoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
     function FiltrarAutorizacoes(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
-    function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
+    function Designar(AAutorizacoes: TJSONArray; AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
     function RegistrarObservacao(AIdAutorizacao: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
-    function EncerrarAutorizacao(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+    function AlterarStatus(AIdAutorizacao: Integer; AIdStatus: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
     function HistoricoDeDesignacoes(AIdAutorizacao: Integer): TJSONArray;
     function HistoricoDeAtualizacoes(AIdAutorizacao: Integer): TJSONArray;
     function ObservacoesDaAutorizacao(AIdAutorizacao: Integer): TJSONArray;
-    function TiposDeAuditoria: TJSONArray;
-    function TiposDePrazo: TJSONArray;
     function TiposDeAutoriazacao: TJSONArray;
     function TiposDeAtendimento: TJSONArray;
-    function TiposDeSituacaoAutorizacao: TJSONArray;
-    function TiposDeUltimaAnotacao: TJSONArray;
-    function Setores: TJSONArray;
-    function Usuarios: TJSONArray;
+    function StatusTrue: TJSONArray;
+    function AutorizacoesAtivas: TJSONArray;
+    function Setores(AIdUsuario: Integer): TJSONArray;
+    function Usuarios(AIdUsuario: Integer): TJSONArray;
+    function UsuariosDoSetor(AIdSetor: Integer): TJSONArray;
     function RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroAutorizacao: string; AIdUsuarioResponsavel: Integer): TJSONArray;
     function RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function DesignacoesPendentes: TJSONArray;
+    function AutorizarDesiganacao(AIdAutorizacao: Integer; AIdSolicitacao: Integer; AAutorizado: Boolean; AIdUsuario: Integer): Boolean;
   end;
 
   TSMControlPcClient = class(TDSAdminClient)
@@ -158,40 +166,44 @@ type
     FFiltrarProtocolosCommand: TDBXCommand;
     FDesignarCommand: TDBXCommand;
     FRegistrarObservacaoCommand: TDBXCommand;
-    FEncerrarProtocoloCommand: TDBXCommand;
+    FAlterarStatusCommand: TDBXCommand;
     FHistoricoDeDesignacoesCommand: TDBXCommand;
     FHistoricoDeAtualizacoesCommand: TDBXCommand;
     FObservacoesDoProtocoloCommand: TDBXCommand;
     FTecnicosCommand: TDBXCommand;
-    FTiposDePrazoCommand: TDBXCommand;
     FTiposDeClienteCommand: TDBXCommand;
-    FTiposDeClassificacaoCommand: TDBXCommand;
-    FTiposDeStatusCommand: TDBXCommand;
+    FStatusTrueCommand: TDBXCommand;
+    FProtocolosAtivosCommand: TDBXCommand;
     FSetoresCommand: TDBXCommand;
     FUsuariosCommand: TDBXCommand;
+    FUsuariosDoSetorCommand: TDBXCommand;
     FRelatorioDeDesignacoesCommand: TDBXCommand;
     FRelatorioDeEncerramentosCommand: TDBXCommand;
+    FDesignacoesPendentesCommand: TDBXCommand;
+    FAutorizarDesiganacaoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function Importar(ARegistros: TJSONArray; AIdUsuario: Integer): TJSONObject;
     function FiltrarProtocolos(AFiltros: TJSONObject; AIncluirEncerrados: Boolean): TJSONArray;
-    function Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
+    function Designar(AProtocolos: TJSONArray; AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
     function RegistrarObservacao(AIdProtocolo: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
-    function EncerrarProtocolo(AIdProtocolo: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+    function AlterarStatus(AIdProtocolo: Integer; AIdStatus: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
     function HistoricoDeDesignacoes(AIdProtocolo: Integer): TJSONArray;
     function HistoricoDeAtualizacoes(AIdProtocolo: Integer): TJSONArray;
     function ObservacoesDoProtocolo(AIdProtocolo: Integer): TJSONArray;
     function Tecnicos: TJSONArray;
-    function TiposDePrazo: TJSONArray;
     function TiposDeCliente: TJSONArray;
-    function TiposDeClassificacao: TJSONArray;
-    function TiposDeStatus: TJSONArray;
-    function Setores: TJSONArray;
-    function Usuarios: TJSONArray;
+    function StatusTrue: TJSONArray;
+    function ProtocolosAtivos: TJSONArray;
+    function Setores(AIdUsuario: Integer): TJSONArray;
+    function Usuarios(AIdUsuario: Integer): TJSONArray;
+    function UsuariosDoSetor(AIdSetor: Integer): TJSONArray;
     function RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
     function RelatorioDeEncerramentos(ADataInicial: TDateTime; ADataFinal: TDateTime; AIdUsuarioResponsavel: Integer): TJSONArray;
+    function DesignacoesPendentes: TJSONArray;
+    function AutorizarDesiganacao(AIdProtocolo: Integer; AIdSolicitacao: Integer; AAutorizado: Boolean; AIdUsuario: Integer): Boolean;
   end;
 
   TSMResumosClient = class(TDSAdminClient)
@@ -295,6 +307,20 @@ begin
   Result := FGravarSegurancaCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TSMMetodosGeraisClient.DesignacoesPendentes(AIdUsuario: Integer): TJSONArray;
+begin
+  if FDesignacoesPendentesCommand = nil then
+  begin
+    FDesignacoesPendentesCommand := FDBXConnection.CreateCommand;
+    FDesignacoesPendentesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDesignacoesPendentesCommand.Text := 'TSMMetodosGerais.DesignacoesPendentes';
+    FDesignacoesPendentesCommand.Prepare;
+  end;
+  FDesignacoesPendentesCommand.Parameters[0].Value.SetInt32(AIdUsuario);
+  FDesignacoesPendentesCommand.ExecuteUpdate;
+  Result := TJSONArray(FDesignacoesPendentesCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
 constructor TSMMetodosGeraisClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -312,6 +338,7 @@ begin
   FLoginCommand.DisposeOf;
   FAlterarSenhaCommand.DisposeOf;
   FGravarSegurancaCommand.DisposeOf;
+  FDesignacoesPendentesCommand.DisposeOf;
   inherited;
 end;
 
@@ -372,6 +399,19 @@ begin
   FPesquisarCommand.ExecuteUpdate;
 end;
 
+function TSMSetoresClient.Setores: TJSONArray;
+begin
+  if FSetoresCommand = nil then
+  begin
+    FSetoresCommand := FDBXConnection.CreateCommand;
+    FSetoresCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FSetoresCommand.Text := 'TSMSetores.Setores';
+    FSetoresCommand.Prepare;
+  end;
+  FSetoresCommand.ExecuteUpdate;
+  Result := TJSONArray(FSetoresCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
 constructor TSMSetoresClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -388,6 +428,7 @@ begin
   FLocalizarCommand.DisposeOf;
   FJaExisteCommand.DisposeOf;
   FPesquisarCommand.DisposeOf;
+  FSetoresCommand.DisposeOf;
   inherited;
 end;
 
@@ -476,6 +517,19 @@ begin
   FGravarLogLimpesaSenhaCommand.ExecuteUpdate;
 end;
 
+function TSMUsuariosClient.Usuarios: TJSONArray;
+begin
+  if FUsuariosCommand = nil then
+  begin
+    FUsuariosCommand := FDBXConnection.CreateCommand;
+    FUsuariosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUsuariosCommand.Text := 'TSMUsuarios.Usuarios';
+    FUsuariosCommand.Prepare;
+  end;
+  FUsuariosCommand.ExecuteUpdate;
+  Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
 constructor TSMUsuariosClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -494,6 +548,7 @@ begin
   FPesquisarCommand.DisposeOf;
   FLocalizarLoginCommand.DisposeOf;
   FGravarLogLimpesaSenhaCommand.DisposeOf;
+  FUsuariosCommand.DisposeOf;
   inherited;
 end;
 
@@ -562,20 +617,21 @@ begin
   Result := FRegistrarObservacaoCommand.Parameters[4].Value.GetBoolean;
 end;
 
-function TSMAutoSCClient.EncerrarProcesso(AIdProcesso: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+function TSMAutoSCClient.AlterarStatus(AIdProcesso: Integer; AIdStatus: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
 begin
-  if FEncerrarProcessoCommand = nil then
+  if FAlterarStatusCommand = nil then
   begin
-    FEncerrarProcessoCommand := FDBXConnection.CreateCommand;
-    FEncerrarProcessoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FEncerrarProcessoCommand.Text := 'TSMAutoSC.EncerrarProcesso';
-    FEncerrarProcessoCommand.Prepare;
+    FAlterarStatusCommand := FDBXConnection.CreateCommand;
+    FAlterarStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FAlterarStatusCommand.Text := 'TSMAutoSC.AlterarStatus';
+    FAlterarStatusCommand.Prepare;
   end;
-  FEncerrarProcessoCommand.Parameters[0].Value.SetInt32(AIdProcesso);
-  FEncerrarProcessoCommand.Parameters[1].Value.SetWideString(AJustificativa);
-  FEncerrarProcessoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
-  FEncerrarProcessoCommand.ExecuteUpdate;
-  Result := FEncerrarProcessoCommand.Parameters[3].Value.GetBoolean;
+  FAlterarStatusCommand.Parameters[0].Value.SetInt32(AIdProcesso);
+  FAlterarStatusCommand.Parameters[1].Value.SetInt32(AIdStatus);
+  FAlterarStatusCommand.Parameters[2].Value.SetWideString(AJustificativa);
+  FAlterarStatusCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
+  FAlterarStatusCommand.ExecuteUpdate;
+  Result := FAlterarStatusCommand.Parameters[4].Value.GetBoolean;
 end;
 
 function TSMAutoSCClient.HistoricoDeDesignacoes(AIdProcesso: Integer): TJSONArray;
@@ -774,7 +830,7 @@ begin
   FFiltrarProcessosCommand.DisposeOf;
   FDesignarCommand.DisposeOf;
   FRegistrarObservacaoCommand.DisposeOf;
-  FEncerrarProcessoCommand.DisposeOf;
+  FAlterarStatusCommand.DisposeOf;
   FHistoricoDeDesignacoesCommand.DisposeOf;
   FHistoricoDeAtualizacoesCommand.DisposeOf;
   FObservacoesDoProcessoCommand.DisposeOf;
@@ -821,7 +877,7 @@ begin
   Result := TJSONArray(FFiltrarAutorizacoesCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
+function TSMSiagsClient.Designar(AAutorizacoes: TJSONArray; AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdAutorizacao: Integer): Boolean;
 begin
   if FDesignarCommand = nil then
   begin
@@ -830,13 +886,14 @@ begin
     FDesignarCommand.Text := 'TSMSiags.Designar';
     FDesignarCommand.Prepare;
   end;
-  FDesignarCommand.Parameters[0].Value.SetWideString(AJustificativa);
-  FDesignarCommand.Parameters[1].Value.SetInt32(AIdSetor);
-  FDesignarCommand.Parameters[2].Value.SetInt32(AIdUsuario);
-  FDesignarCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
-  FDesignarCommand.Parameters[4].Value.SetInt32(AIdAutorizacao);
+  FDesignarCommand.Parameters[0].Value.SetJSONValue(AAutorizacoes, FInstanceOwner);
+  FDesignarCommand.Parameters[1].Value.SetWideString(AJustificativa);
+  FDesignarCommand.Parameters[2].Value.SetInt32(AIdSetor);
+  FDesignarCommand.Parameters[3].Value.SetInt32(AIdUsuario);
+  FDesignarCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
+  FDesignarCommand.Parameters[5].Value.SetInt32(AIdAutorizacao);
   FDesignarCommand.ExecuteUpdate;
-  Result := FDesignarCommand.Parameters[5].Value.GetBoolean;
+  Result := FDesignarCommand.Parameters[6].Value.GetBoolean;
 end;
 
 function TSMSiagsClient.RegistrarObservacao(AIdAutorizacao: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
@@ -856,20 +913,21 @@ begin
   Result := FRegistrarObservacaoCommand.Parameters[4].Value.GetBoolean;
 end;
 
-function TSMSiagsClient.EncerrarAutorizacao(AIdAutorizacao: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+function TSMSiagsClient.AlterarStatus(AIdAutorizacao: Integer; AIdStatus: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
 begin
-  if FEncerrarAutorizacaoCommand = nil then
+  if FAlterarStatusCommand = nil then
   begin
-    FEncerrarAutorizacaoCommand := FDBXConnection.CreateCommand;
-    FEncerrarAutorizacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FEncerrarAutorizacaoCommand.Text := 'TSMSiags.EncerrarAutorizacao';
-    FEncerrarAutorizacaoCommand.Prepare;
+    FAlterarStatusCommand := FDBXConnection.CreateCommand;
+    FAlterarStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FAlterarStatusCommand.Text := 'TSMSiags.AlterarStatus';
+    FAlterarStatusCommand.Prepare;
   end;
-  FEncerrarAutorizacaoCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
-  FEncerrarAutorizacaoCommand.Parameters[1].Value.SetWideString(AJustificativa);
-  FEncerrarAutorizacaoCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
-  FEncerrarAutorizacaoCommand.ExecuteUpdate;
-  Result := FEncerrarAutorizacaoCommand.Parameters[3].Value.GetBoolean;
+  FAlterarStatusCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
+  FAlterarStatusCommand.Parameters[1].Value.SetInt32(AIdStatus);
+  FAlterarStatusCommand.Parameters[2].Value.SetWideString(AJustificativa);
+  FAlterarStatusCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
+  FAlterarStatusCommand.ExecuteUpdate;
+  Result := FAlterarStatusCommand.Parameters[4].Value.GetBoolean;
 end;
 
 function TSMSiagsClient.HistoricoDeDesignacoes(AIdAutorizacao: Integer): TJSONArray;
@@ -914,32 +972,6 @@ begin
   Result := TJSONArray(FObservacoesDaAutorizacaoCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.TiposDeAuditoria: TJSONArray;
-begin
-  if FTiposDeAuditoriaCommand = nil then
-  begin
-    FTiposDeAuditoriaCommand := FDBXConnection.CreateCommand;
-    FTiposDeAuditoriaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDeAuditoriaCommand.Text := 'TSMSiags.TiposDeAuditoria';
-    FTiposDeAuditoriaCommand.Prepare;
-  end;
-  FTiposDeAuditoriaCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDeAuditoriaCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
-end;
-
-function TSMSiagsClient.TiposDePrazo: TJSONArray;
-begin
-  if FTiposDePrazoCommand = nil then
-  begin
-    FTiposDePrazoCommand := FDBXConnection.CreateCommand;
-    FTiposDePrazoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDePrazoCommand.Text := 'TSMSiags.TiposDePrazo';
-    FTiposDePrazoCommand.Prepare;
-  end;
-  FTiposDePrazoCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDePrazoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
-end;
-
 function TSMSiagsClient.TiposDeAutoriazacao: TJSONArray;
 begin
   if FTiposDeAutoriazacaoCommand = nil then
@@ -966,33 +998,33 @@ begin
   Result := TJSONArray(FTiposDeAtendimentoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.TiposDeSituacaoAutorizacao: TJSONArray;
+function TSMSiagsClient.StatusTrue: TJSONArray;
 begin
-  if FTiposDeSituacaoAutorizacaoCommand = nil then
+  if FStatusTrueCommand = nil then
   begin
-    FTiposDeSituacaoAutorizacaoCommand := FDBXConnection.CreateCommand;
-    FTiposDeSituacaoAutorizacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDeSituacaoAutorizacaoCommand.Text := 'TSMSiags.TiposDeSituacaoAutorizacao';
-    FTiposDeSituacaoAutorizacaoCommand.Prepare;
+    FStatusTrueCommand := FDBXConnection.CreateCommand;
+    FStatusTrueCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FStatusTrueCommand.Text := 'TSMSiags.StatusTrue';
+    FStatusTrueCommand.Prepare;
   end;
-  FTiposDeSituacaoAutorizacaoCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDeSituacaoAutorizacaoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  FStatusTrueCommand.ExecuteUpdate;
+  Result := TJSONArray(FStatusTrueCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.TiposDeUltimaAnotacao: TJSONArray;
+function TSMSiagsClient.AutorizacoesAtivas: TJSONArray;
 begin
-  if FTiposDeUltimaAnotacaoCommand = nil then
+  if FAutorizacoesAtivasCommand = nil then
   begin
-    FTiposDeUltimaAnotacaoCommand := FDBXConnection.CreateCommand;
-    FTiposDeUltimaAnotacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDeUltimaAnotacaoCommand.Text := 'TSMSiags.TiposDeUltimaAnotacao';
-    FTiposDeUltimaAnotacaoCommand.Prepare;
+    FAutorizacoesAtivasCommand := FDBXConnection.CreateCommand;
+    FAutorizacoesAtivasCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FAutorizacoesAtivasCommand.Text := 'TSMSiags.AutorizacoesAtivas';
+    FAutorizacoesAtivasCommand.Prepare;
   end;
-  FTiposDeUltimaAnotacaoCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDeUltimaAnotacaoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  FAutorizacoesAtivasCommand.ExecuteUpdate;
+  Result := TJSONArray(FAutorizacoesAtivasCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.Setores: TJSONArray;
+function TSMSiagsClient.Setores(AIdUsuario: Integer): TJSONArray;
 begin
   if FSetoresCommand = nil then
   begin
@@ -1001,11 +1033,12 @@ begin
     FSetoresCommand.Text := 'TSMSiags.Setores';
     FSetoresCommand.Prepare;
   end;
+  FSetoresCommand.Parameters[0].Value.SetInt32(AIdUsuario);
   FSetoresCommand.ExecuteUpdate;
-  Result := TJSONArray(FSetoresCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FSetoresCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMSiagsClient.Usuarios: TJSONArray;
+function TSMSiagsClient.Usuarios(AIdUsuario: Integer): TJSONArray;
 begin
   if FUsuariosCommand = nil then
   begin
@@ -1014,8 +1047,23 @@ begin
     FUsuariosCommand.Text := 'TSMSiags.Usuarios';
     FUsuariosCommand.Prepare;
   end;
+  FUsuariosCommand.Parameters[0].Value.SetInt32(AIdUsuario);
   FUsuariosCommand.ExecuteUpdate;
-  Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FUsuariosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMSiagsClient.UsuariosDoSetor(AIdSetor: Integer): TJSONArray;
+begin
+  if FUsuariosDoSetorCommand = nil then
+  begin
+    FUsuariosDoSetorCommand := FDBXConnection.CreateCommand;
+    FUsuariosDoSetorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUsuariosDoSetorCommand.Text := 'TSMSiags.UsuariosDoSetor';
+    FUsuariosDoSetorCommand.Prepare;
+  end;
+  FUsuariosDoSetorCommand.Parameters[0].Value.SetInt32(AIdSetor);
+  FUsuariosDoSetorCommand.ExecuteUpdate;
+  Result := TJSONArray(FUsuariosDoSetorCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMSiagsClient.RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroAutorizacao: string; AIdUsuarioResponsavel: Integer): TJSONArray;
@@ -1052,6 +1100,36 @@ begin
   Result := TJSONArray(FRelatorioDeEncerramentosCommand.Parameters[3].Value.GetJSONValue(FInstanceOwner));
 end;
 
+function TSMSiagsClient.DesignacoesPendentes: TJSONArray;
+begin
+  if FDesignacoesPendentesCommand = nil then
+  begin
+    FDesignacoesPendentesCommand := FDBXConnection.CreateCommand;
+    FDesignacoesPendentesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDesignacoesPendentesCommand.Text := 'TSMSiags.DesignacoesPendentes';
+    FDesignacoesPendentesCommand.Prepare;
+  end;
+  FDesignacoesPendentesCommand.ExecuteUpdate;
+  Result := TJSONArray(FDesignacoesPendentesCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMSiagsClient.AutorizarDesiganacao(AIdAutorizacao: Integer; AIdSolicitacao: Integer; AAutorizado: Boolean; AIdUsuario: Integer): Boolean;
+begin
+  if FAutorizarDesiganacaoCommand = nil then
+  begin
+    FAutorizarDesiganacaoCommand := FDBXConnection.CreateCommand;
+    FAutorizarDesiganacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FAutorizarDesiganacaoCommand.Text := 'TSMSiags.AutorizarDesiganacao';
+    FAutorizarDesiganacaoCommand.Prepare;
+  end;
+  FAutorizarDesiganacaoCommand.Parameters[0].Value.SetInt32(AIdAutorizacao);
+  FAutorizarDesiganacaoCommand.Parameters[1].Value.SetInt32(AIdSolicitacao);
+  FAutorizarDesiganacaoCommand.Parameters[2].Value.SetBoolean(AAutorizado);
+  FAutorizarDesiganacaoCommand.Parameters[3].Value.SetInt32(AIdUsuario);
+  FAutorizarDesiganacaoCommand.ExecuteUpdate;
+  Result := FAutorizarDesiganacaoCommand.Parameters[4].Value.GetBoolean;
+end;
+
 constructor TSMSiagsClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1068,20 +1146,21 @@ begin
   FFiltrarAutorizacoesCommand.DisposeOf;
   FDesignarCommand.DisposeOf;
   FRegistrarObservacaoCommand.DisposeOf;
-  FEncerrarAutorizacaoCommand.DisposeOf;
+  FAlterarStatusCommand.DisposeOf;
   FHistoricoDeDesignacoesCommand.DisposeOf;
   FHistoricoDeAtualizacoesCommand.DisposeOf;
   FObservacoesDaAutorizacaoCommand.DisposeOf;
-  FTiposDeAuditoriaCommand.DisposeOf;
-  FTiposDePrazoCommand.DisposeOf;
   FTiposDeAutoriazacaoCommand.DisposeOf;
   FTiposDeAtendimentoCommand.DisposeOf;
-  FTiposDeSituacaoAutorizacaoCommand.DisposeOf;
-  FTiposDeUltimaAnotacaoCommand.DisposeOf;
+  FStatusTrueCommand.DisposeOf;
+  FAutorizacoesAtivasCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
   FUsuariosCommand.DisposeOf;
+  FUsuariosDoSetorCommand.DisposeOf;
   FRelatorioDeDesignacoesCommand.DisposeOf;
   FRelatorioDeEncerramentosCommand.DisposeOf;
+  FDesignacoesPendentesCommand.DisposeOf;
+  FAutorizarDesiganacaoCommand.DisposeOf;
   inherited;
 end;
 
@@ -1115,7 +1194,7 @@ begin
   Result := TJSONArray(FFiltrarProtocolosCommand.Parameters[2].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.Designar(AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
+function TSMControlPcClient.Designar(AProtocolos: TJSONArray; AJustificativa: string; AIdSetor: Integer; AIdUsuario: Integer; AIdUsuarioResponsavel: Integer; AIdProtocolo: Integer): Boolean;
 begin
   if FDesignarCommand = nil then
   begin
@@ -1124,13 +1203,14 @@ begin
     FDesignarCommand.Text := 'TSMControlPc.Designar';
     FDesignarCommand.Prepare;
   end;
-  FDesignarCommand.Parameters[0].Value.SetWideString(AJustificativa);
-  FDesignarCommand.Parameters[1].Value.SetInt32(AIdSetor);
-  FDesignarCommand.Parameters[2].Value.SetInt32(AIdUsuario);
-  FDesignarCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
-  FDesignarCommand.Parameters[4].Value.SetInt32(AIdProtocolo);
+  FDesignarCommand.Parameters[0].Value.SetJSONValue(AProtocolos, FInstanceOwner);
+  FDesignarCommand.Parameters[1].Value.SetWideString(AJustificativa);
+  FDesignarCommand.Parameters[2].Value.SetInt32(AIdSetor);
+  FDesignarCommand.Parameters[3].Value.SetInt32(AIdUsuario);
+  FDesignarCommand.Parameters[4].Value.SetInt32(AIdUsuarioResponsavel);
+  FDesignarCommand.Parameters[5].Value.SetInt32(AIdProtocolo);
   FDesignarCommand.ExecuteUpdate;
-  Result := FDesignarCommand.Parameters[5].Value.GetBoolean;
+  Result := FDesignarCommand.Parameters[6].Value.GetBoolean;
 end;
 
 function TSMControlPcClient.RegistrarObservacao(AIdProtocolo: Integer; AObservacao: string; AIdUsuarioResponsavel: Integer; out ADataHora: TDateTime): Boolean;
@@ -1150,20 +1230,21 @@ begin
   Result := FRegistrarObservacaoCommand.Parameters[4].Value.GetBoolean;
 end;
 
-function TSMControlPcClient.EncerrarProtocolo(AIdProtocolo: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
+function TSMControlPcClient.AlterarStatus(AIdProtocolo: Integer; AIdStatus: Integer; AJustificativa: string; AIdUsuarioResponsavel: Integer): Boolean;
 begin
-  if FEncerrarProtocoloCommand = nil then
+  if FAlterarStatusCommand = nil then
   begin
-    FEncerrarProtocoloCommand := FDBXConnection.CreateCommand;
-    FEncerrarProtocoloCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FEncerrarProtocoloCommand.Text := 'TSMControlPc.EncerrarProtocolo';
-    FEncerrarProtocoloCommand.Prepare;
+    FAlterarStatusCommand := FDBXConnection.CreateCommand;
+    FAlterarStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FAlterarStatusCommand.Text := 'TSMControlPc.AlterarStatus';
+    FAlterarStatusCommand.Prepare;
   end;
-  FEncerrarProtocoloCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
-  FEncerrarProtocoloCommand.Parameters[1].Value.SetWideString(AJustificativa);
-  FEncerrarProtocoloCommand.Parameters[2].Value.SetInt32(AIdUsuarioResponsavel);
-  FEncerrarProtocoloCommand.ExecuteUpdate;
-  Result := FEncerrarProtocoloCommand.Parameters[3].Value.GetBoolean;
+  FAlterarStatusCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FAlterarStatusCommand.Parameters[1].Value.SetInt32(AIdStatus);
+  FAlterarStatusCommand.Parameters[2].Value.SetWideString(AJustificativa);
+  FAlterarStatusCommand.Parameters[3].Value.SetInt32(AIdUsuarioResponsavel);
+  FAlterarStatusCommand.ExecuteUpdate;
+  Result := FAlterarStatusCommand.Parameters[4].Value.GetBoolean;
 end;
 
 function TSMControlPcClient.HistoricoDeDesignacoes(AIdProtocolo: Integer): TJSONArray;
@@ -1221,19 +1302,6 @@ begin
   Result := TJSONArray(FTecnicosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.TiposDePrazo: TJSONArray;
-begin
-  if FTiposDePrazoCommand = nil then
-  begin
-    FTiposDePrazoCommand := FDBXConnection.CreateCommand;
-    FTiposDePrazoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDePrazoCommand.Text := 'TSMControlPc.TiposDePrazo';
-    FTiposDePrazoCommand.Prepare;
-  end;
-  FTiposDePrazoCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDePrazoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
-end;
-
 function TSMControlPcClient.TiposDeCliente: TJSONArray;
 begin
   if FTiposDeClienteCommand = nil then
@@ -1247,33 +1315,33 @@ begin
   Result := TJSONArray(FTiposDeClienteCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.TiposDeClassificacao: TJSONArray;
+function TSMControlPcClient.StatusTrue: TJSONArray;
 begin
-  if FTiposDeClassificacaoCommand = nil then
+  if FStatusTrueCommand = nil then
   begin
-    FTiposDeClassificacaoCommand := FDBXConnection.CreateCommand;
-    FTiposDeClassificacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDeClassificacaoCommand.Text := 'TSMControlPc.TiposDeClassificacao';
-    FTiposDeClassificacaoCommand.Prepare;
+    FStatusTrueCommand := FDBXConnection.CreateCommand;
+    FStatusTrueCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FStatusTrueCommand.Text := 'TSMControlPc.StatusTrue';
+    FStatusTrueCommand.Prepare;
   end;
-  FTiposDeClassificacaoCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDeClassificacaoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  FStatusTrueCommand.ExecuteUpdate;
+  Result := TJSONArray(FStatusTrueCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.TiposDeStatus: TJSONArray;
+function TSMControlPcClient.ProtocolosAtivos: TJSONArray;
 begin
-  if FTiposDeStatusCommand = nil then
+  if FProtocolosAtivosCommand = nil then
   begin
-    FTiposDeStatusCommand := FDBXConnection.CreateCommand;
-    FTiposDeStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FTiposDeStatusCommand.Text := 'TSMControlPc.TiposDeStatus';
-    FTiposDeStatusCommand.Prepare;
+    FProtocolosAtivosCommand := FDBXConnection.CreateCommand;
+    FProtocolosAtivosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FProtocolosAtivosCommand.Text := 'TSMControlPc.ProtocolosAtivos';
+    FProtocolosAtivosCommand.Prepare;
   end;
-  FTiposDeStatusCommand.ExecuteUpdate;
-  Result := TJSONArray(FTiposDeStatusCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  FProtocolosAtivosCommand.ExecuteUpdate;
+  Result := TJSONArray(FProtocolosAtivosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.Setores: TJSONArray;
+function TSMControlPcClient.Setores(AIdUsuario: Integer): TJSONArray;
 begin
   if FSetoresCommand = nil then
   begin
@@ -1282,11 +1350,12 @@ begin
     FSetoresCommand.Text := 'TSMControlPc.Setores';
     FSetoresCommand.Prepare;
   end;
+  FSetoresCommand.Parameters[0].Value.SetInt32(AIdUsuario);
   FSetoresCommand.ExecuteUpdate;
-  Result := TJSONArray(FSetoresCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FSetoresCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TSMControlPcClient.Usuarios: TJSONArray;
+function TSMControlPcClient.Usuarios(AIdUsuario: Integer): TJSONArray;
 begin
   if FUsuariosCommand = nil then
   begin
@@ -1295,8 +1364,23 @@ begin
     FUsuariosCommand.Text := 'TSMControlPc.Usuarios';
     FUsuariosCommand.Prepare;
   end;
+  FUsuariosCommand.Parameters[0].Value.SetInt32(AIdUsuario);
   FUsuariosCommand.ExecuteUpdate;
-  Result := TJSONArray(FUsuariosCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+  Result := TJSONArray(FUsuariosCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.UsuariosDoSetor(AIdSetor: Integer): TJSONArray;
+begin
+  if FUsuariosDoSetorCommand = nil then
+  begin
+    FUsuariosDoSetorCommand := FDBXConnection.CreateCommand;
+    FUsuariosDoSetorCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUsuariosDoSetorCommand.Text := 'TSMControlPc.UsuariosDoSetor';
+    FUsuariosDoSetorCommand.Prepare;
+  end;
+  FUsuariosDoSetorCommand.Parameters[0].Value.SetInt32(AIdSetor);
+  FUsuariosDoSetorCommand.ExecuteUpdate;
+  Result := TJSONArray(FUsuariosDoSetorCommand.Parameters[1].Value.GetJSONValue(FInstanceOwner));
 end;
 
 function TSMControlPcClient.RelatorioDeDesignacoes(AUsaDatas: Boolean; ADataInicial: TDateTime; ADataFinal: TDateTime; ANumeroProtocolo: string; AIdUsuarioResponsavel: Integer): TJSONArray;
@@ -1333,6 +1417,36 @@ begin
   Result := TJSONArray(FRelatorioDeEncerramentosCommand.Parameters[3].Value.GetJSONValue(FInstanceOwner));
 end;
 
+function TSMControlPcClient.DesignacoesPendentes: TJSONArray;
+begin
+  if FDesignacoesPendentesCommand = nil then
+  begin
+    FDesignacoesPendentesCommand := FDBXConnection.CreateCommand;
+    FDesignacoesPendentesCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FDesignacoesPendentesCommand.Text := 'TSMControlPc.DesignacoesPendentes';
+    FDesignacoesPendentesCommand.Prepare;
+  end;
+  FDesignacoesPendentesCommand.ExecuteUpdate;
+  Result := TJSONArray(FDesignacoesPendentesCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
+end;
+
+function TSMControlPcClient.AutorizarDesiganacao(AIdProtocolo: Integer; AIdSolicitacao: Integer; AAutorizado: Boolean; AIdUsuario: Integer): Boolean;
+begin
+  if FAutorizarDesiganacaoCommand = nil then
+  begin
+    FAutorizarDesiganacaoCommand := FDBXConnection.CreateCommand;
+    FAutorizarDesiganacaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FAutorizarDesiganacaoCommand.Text := 'TSMControlPc.AutorizarDesiganacao';
+    FAutorizarDesiganacaoCommand.Prepare;
+  end;
+  FAutorizarDesiganacaoCommand.Parameters[0].Value.SetInt32(AIdProtocolo);
+  FAutorizarDesiganacaoCommand.Parameters[1].Value.SetInt32(AIdSolicitacao);
+  FAutorizarDesiganacaoCommand.Parameters[2].Value.SetBoolean(AAutorizado);
+  FAutorizarDesiganacaoCommand.Parameters[3].Value.SetInt32(AIdUsuario);
+  FAutorizarDesiganacaoCommand.ExecuteUpdate;
+  Result := FAutorizarDesiganacaoCommand.Parameters[4].Value.GetBoolean;
+end;
+
 constructor TSMControlPcClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1349,19 +1463,21 @@ begin
   FFiltrarProtocolosCommand.DisposeOf;
   FDesignarCommand.DisposeOf;
   FRegistrarObservacaoCommand.DisposeOf;
-  FEncerrarProtocoloCommand.DisposeOf;
+  FAlterarStatusCommand.DisposeOf;
   FHistoricoDeDesignacoesCommand.DisposeOf;
   FHistoricoDeAtualizacoesCommand.DisposeOf;
   FObservacoesDoProtocoloCommand.DisposeOf;
   FTecnicosCommand.DisposeOf;
-  FTiposDePrazoCommand.DisposeOf;
   FTiposDeClienteCommand.DisposeOf;
-  FTiposDeClassificacaoCommand.DisposeOf;
-  FTiposDeStatusCommand.DisposeOf;
+  FStatusTrueCommand.DisposeOf;
+  FProtocolosAtivosCommand.DisposeOf;
   FSetoresCommand.DisposeOf;
   FUsuariosCommand.DisposeOf;
+  FUsuariosDoSetorCommand.DisposeOf;
   FRelatorioDeDesignacoesCommand.DisposeOf;
   FRelatorioDeEncerramentosCommand.DisposeOf;
+  FDesignacoesPendentesCommand.DisposeOf;
+  FAutorizarDesiganacaoCommand.DisposeOf;
   inherited;
 end;
 

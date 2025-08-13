@@ -44,6 +44,15 @@ type
     chbRelatorioEncerramentos: TCheckBox;
     chbQuadroResumo: TCheckBox;
     chbCadastroStatusTrue: TCheckBox;
+    tbsExportacaoDados: TTabSheet;
+    pnlExportacoes: TPanel;
+    chbMenuExportacoes: TCheckBox;
+    chbExportacaoAutoSc: TCheckBox;
+    chbExportacaoSiags: TCheckBox;
+    chbExportacaoControlPc: TCheckBox;
+    chbExportacaoSetores: TCheckBox;
+    chbExportacaoUsuarios: TCheckBox;
+    chbPaineisDesigancoesPendentes: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure edtLoginExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -59,6 +68,7 @@ type
     procedure chbMenuImportacoesClick(Sender: TObject);
     procedure chbMenuPaineisClick(Sender: TObject);
     procedure chbMenuRelatoriosClick(Sender: TObject);
+    procedure chbMenuExportacoesClick(Sender: TObject);
 
   private
 
@@ -84,8 +94,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   frmSeguranca: TfrmSeguranca;
+*)
 
 implementation
 
@@ -142,6 +154,7 @@ begin
       LItens.Add(4000);
       if chbPaineisAcompanhamento.Checked then LItens.Add(4001);
       if chbQuadroResumo.Checked then LItens.Add(4002);
+      if chbPaineisDesigancoesPendentes.Checked then LItens.Add(4003);
    end;
 
    if chbMenuRelatorios.Checked then
@@ -151,13 +164,23 @@ begin
       if chbRelatorioEncerramentos.Checked then LItens.Add(5002);
    end;
 
+   if chbMenuExportacoes.Checked then
+      begin
+      LItens.Add(6000);
+      if chbExportacaoAutoSc.Checked then LItens.Add(6001);
+      if chbExportacaoSiags.Checked then LItens.Add(6002);
+      if chbExportacaoControlPc.Checked then LItens.Add(6003);
+      if chbExportacaoSetores.Checked then LItens.Add(6004);
+      if chbExportacaoUsuarios.Checked then LItens.Add(6005);
+   end;
+
 
    if not FService.Gravar(LItens) then
       begin
       InformationMessage('Ocorreu um erro tentativa de gravar os dados!',C_TITULO_MENSAGENS);
    end else
       begin
-      InformationMessage('Dados gravados com sucesso !',C_TITULO_MENSAGENS);
+      InformationMessage(C_GRAVADO_COM_SUCESSO,C_TITULO_MENSAGENS);
       Editar(False);
       LimparTela(Self);
 
@@ -201,6 +224,26 @@ begin
    chbCadastroSetores.Enabled    := LMarcar;
    chbCadastroUsuarios.Enabled   := LMarcar;
    chbCadastroStatusTrue.Enabled := LMarcar;
+end;
+
+procedure TfrmSeguranca.chbMenuExportacoesClick(Sender: TObject);
+var
+   LMarcar : Boolean;
+begin
+  inherited;
+
+   if chbMenuExportacoes.Checked then
+      LMarcar := True
+   else
+      begin
+      LMarcar := False;
+      MarcarItensDoGrupo(False,6000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
+   end;
+   chbExportacaoAutoSC.Enabled    := LMarcar;
+   chbExportacaoSiags.Enabled     := LMarcar;
+   chbExportacaoControlPc.Enabled := LMarcar;
+   chbExportacaoSetores.Enabled   := LMarcar;
+   chbExportacaoUsuarios.Enabled  := LMarcar;
 end;
 
 procedure TfrmSeguranca.chbMenuImportacoesClick(Sender: TObject);
@@ -267,8 +310,9 @@ begin
       LMarcar := False;
       MarcarItensDoGrupo(False,4000); {chama o procedimento preencher_combo passando o parâmetro false (desmarcar as checkbox)}
    end;
-   chbPaineisAcompanhamento.Enabled := LMarcar;
-   chbQuadroResumo.Enabled := LMarcar;
+   chbPaineisAcompanhamento.Enabled       := LMarcar;
+   chbPaineisDesigancoesPendentes.Enabled := LMarcar;
+   chbQuadroResumo.Enabled                := LMarcar;
 end;
 
 procedure TfrmSeguranca.ConfigurarBotoes;
@@ -379,9 +423,10 @@ begin
         {$endRegion}
 
         {$Region 'Paineis'}
-        4000 : chbMenuPaineis.Checked           := True;
-        4001 : chbPaineisAcompanhamento.Checked := True;
-        4002 : chbQuadroResumo.Checked          := True;
+        4000 : chbMenuPaineis.Checked                 := True;
+        4001 : chbPaineisAcompanhamento.Checked       := True;
+        4002 : chbQuadroResumo.Checked                := True;
+        4003 : chbPaineisDesigancoesPendentes.Checked := True;
         {$endRegion}
 
         {$Region 'Relatorios'}
@@ -389,7 +434,16 @@ begin
         5001 : chbRelatorioDesignacoes.Checked   := True;
         5002 : chbRelatorioEncerramentos.Checked := True;
         {$endRegion}
-     end;
+
+        {$Region 'Exporações'}
+        6000 : chbMenuExportacoes.Checked     := True;
+        6001 : chbExportacaoAutoSc.Checked    := True;
+        6002 : chbExportacaoSiags.Checked     := True;
+        6003 : chbExportacaoControlPc.Checked := True;
+        6004 : chbExportacaoSetores.Checked   := True;
+        6005 : chbExportacaoUsuarios.Checked  := True;
+        {$endRegion}
+  end;
    end;
 end;
 
@@ -419,9 +473,10 @@ begin
 
    if (AGrupo = 0) or (AGrupo = 4000) then     // Paineis
       begin
-      chbMenuPaineis.Checked           := AMarcar;
-      chbPaineisAcompanhamento.Checked := AMarcar;
-      chbQuadroResumo.Checked          := AMarcar;
+      chbMenuPaineis.Checked                 := AMarcar;
+      chbPaineisAcompanhamento.Checked       := AMarcar;
+      chbQuadroResumo.Checked                := AMarcar;
+      chbPaineisDesigancoesPendentes.Checked := AMarcar;
    end;
 
    if (AGrupo = 0) or (AGrupo = 5000) then     // Relatorios
@@ -429,6 +484,16 @@ begin
       chbMenuRelatorios.Checked         := AMarcar;
       chbRelatorioDesignacoes.Checked   := AMarcar;
       chbRelatorioEncerramentos.Checked := AMarcar;
+   end;
+
+   if (AGrupo = 0) or (AGrupo = 6000) then     // Relatorios
+      begin
+      chbMenuExportacoes.Checked     := AMarcar;
+      chbExportacaoAutoSc.Checked    := AMarcar;
+      chbExportacaoSiags.Checked     := AMarcar;
+      chbExportacaoControlPc.Checked := AMarcar;
+      chbExportacaoSetores.Checked   := AMarcar;
+      chbExportacaoUsuarios.Checked  := AMarcar;
    end;
 end;
 
@@ -444,6 +509,8 @@ begin
        MarcarItensDoGrupo(AMarcar, 4000)
     else if APainel = pnlRelatorios  then
        MarcarItensDoGrupo(AMarcar, 5000)
+    else if APainel = pnlExportacoes then
+       MarcarItensDoGrupo(AMarcar, 6000)
 end;
 
 procedure TfrmSeguranca.ObterDados;
@@ -466,6 +533,8 @@ begin
      RealocarBotoesDeMarcacao(pnlPaineis)
   else if pgcSeguranca.ActivePage = tbsRelatorios then
      RealocarBotoesDeMarcacao(pnlRelatorios)
+  else if pgcSeguranca.ActivePage = tbsExportacaoDados then
+     RealocarBotoesDeMarcacao(pnlExportacoes)
 
 end;
 

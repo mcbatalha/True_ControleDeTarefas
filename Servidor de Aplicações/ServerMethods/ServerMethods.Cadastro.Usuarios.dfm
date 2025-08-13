@@ -181,4 +181,9 @@ object SMUsuarios: TSMUsuarios
         ParamType = ptInput
       end>
   end
+  object qryAux: TFDQuery
+    Connection = ServerContainer.FDConnection
+    Left = 789
+    Top = 32
+  end
 end

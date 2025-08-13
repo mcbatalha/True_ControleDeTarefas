@@ -7,54 +7,13 @@ object SMSiags: TSMSiags
     Left = 1112
     Top = 24
   end
-  object qryTiposPrazo: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Prazo'
-    SQL.Strings = (
-      'Declare @SIAGS int;'
-      'Set @SIAGS = :SIAGS;'
-      ''
-      'select * from Tipos_Prazo'
-      'where @SIAGS = 9 or SIAGS = @SIAGS'
-      'Order by Tipo_Prazo_Caixa')
-    Left = 248
-    Top = 180
-    ParamData = <
-      item
-        Name = 'SIAGS'
-        ParamType = ptInput
-      end>
-    object qryTiposPrazoid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposPrazoTipo_Prazo_Caixa: TStringField
-      FieldName = 'Tipo_Prazo_Caixa'
-      Origin = 'Tipo_Prazo_Caixa'
-      Size = 15
-    end
-    object qryTiposPrazoAUTOSC: TIntegerField
-      FieldName = 'AUTOSC'
-      Origin = 'AUTOSC'
-    end
-    object qryTiposPrazoSIAGS: TIntegerField
-      FieldName = 'SIAGS'
-      Origin = 'SIAGS'
-    end
-    object qryTiposPrazoCONTROLPC: TIntegerField
-      FieldName = 'CONTROLPC'
-      Origin = 'CONTROLPC'
-    end
-  end
   object qryTiposAutorizacao: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'select * from Tipos_Autorizacao'
       'order by Tipo_Autorizacao')
     Left = 248
-    Top = 264
+    Top = 112
     object qryTiposAutorizacaoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -73,7 +32,7 @@ object SMSiags: TSMSiags
       'select * from Tipos_Atendimento'
       'Order by Tipo_Atendimento')
     Left = 248
-    Top = 338
+    Top = 186
     object qryTiposAtendimentoid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -86,30 +45,12 @@ object SMSiags: TSMSiags
       Size = 30
     end
   end
-  object qryTiposSituacaoAutorizacao: TFDQuery
-    Connection = ServerContainer.FDConnection
-    SQL.Strings = (
-      'select * from Tipos_Situacao_Autorizacao'
-      'Order by Tipo_Situacao_Autorizacao')
-    Left = 248
-    Top = 412
-    object qryTiposSituacaoAutorizacaoid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposSituacaoAutorizacaoTipo_Situacao_Autorizacao: TStringField
-      FieldName = 'Tipo_Situacao_Autorizacao'
-      Origin = 'Tipo_Situacao_Autorizacao'
-      Size = 30
-    end
-  end
   object qrySiags: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'Select * from Siags'
-      'where Numero_Autorizacao= :pNumeroAutorizacao')
+      'where Numero_Autorizacao= :pNumeroAutorizacao'
+      '      or id = :pIdAutorizacao')
     Left = 616
     Top = 24
     ParamData = <
@@ -118,6 +59,10 @@ object SMSiags: TSMSiags
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
+      end
+      item
+        Name = 'PIDAUTORIZACAO'
+        ParamType = ptInput
       end>
     object qrySiagsid: TLargeintField
       AutoGenerateValue = arAutoInc
@@ -125,11 +70,6 @@ object SMSiags: TSMSiags
       Origin = 'id'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
-    end
-    object qrySiagsUF: TStringField
-      FieldName = 'UF'
-      Origin = 'UF'
-      Size = 2
     end
     object qrySiagsid_Tipo_Autorizacao: TIntegerField
       FieldName = 'id_Tipo_Autorizacao'
@@ -143,76 +83,25 @@ object SMSiags: TSMSiags
       FieldName = 'id_Tipo_Atendimento'
       Origin = 'id_Tipo_Atendimento'
     end
-    object qrySiagsAnexo_Opme: TStringField
-      FieldName = 'Anexo_Opme'
-      Origin = 'Anexo_Opme'
-      Size = 3
-    end
-    object qrySiagsAnexo_Quimio: TStringField
-      FieldName = 'Anexo_Quimio'
-      Origin = 'Anexo_Quimio'
-      Size = 3
-    end
-    object qrySiagsAnexo_Radio: TStringField
-      FieldName = 'Anexo_Radio'
-      Origin = 'Anexo_Radio'
-      Size = 3
-    end
     object qrySiagsid_Beneficiario: TIntegerField
       FieldName = 'id_Beneficiario'
       Origin = 'id_Beneficiario'
-    end
-    object qrySiagsid_Tipo_Situacao_Autorizacao: TIntegerField
-      FieldName = 'id_Tipo_Situacao_Autorizacao'
-      Origin = 'id_Tipo_Situacao_Autorizacao'
-    end
-    object qrySiagsid_Tipo_Ultima_Anotacao: TIntegerField
-      FieldName = 'id_Tipo_Ultima_Anotacao'
-      Origin = 'id_Tipo_Ultima_Anotacao'
-    end
-    object qrySiagsid_Tipo_Auditoria: TIntegerField
-      FieldName = 'id_Tipo_Auditoria'
-      Origin = 'id_Tipo_Auditoria'
-    end
-    object qrySiagsDia_Inclusao: TIntegerField
-      FieldName = 'Dia_Inclusao'
-      Origin = 'Dia_Inclusao'
-    end
-    object qrySiagsDias_Corridos_Base: TIntegerField
-      FieldName = 'Dias_Corridos_Base'
-      Origin = 'Dias_Corridos_Base'
-    end
-    object qrySiagsDias_Uteis_Base: TIntegerField
-      FieldName = 'Dias_Uteis_Base'
-      Origin = 'Dias_Uteis_Base'
-    end
-    object qrySiagsDias_Prazo_Caixa: TIntegerField
-      FieldName = 'Dias_Prazo_Caixa'
-      Origin = 'Dias_Prazo_Caixa'
     end
     object qrySiagsData_Prazo_Caixa: TDateTimeField
       FieldName = 'Data_Prazo_Caixa'
       Origin = 'Data_Prazo_Caixa'
     end
-    object qrySiagsid_Tipo_Prazo_Caixa: TIntegerField
-      FieldName = 'id_Tipo_Prazo_Caixa'
-      Origin = 'id_Tipo_Prazo_Caixa'
-    end
-    object qrySiagsDias_Prazo_ANS: TIntegerField
-      FieldName = 'Dias_Prazo_ANS'
-      Origin = 'Dias_Prazo_ANS'
-    end
     object qrySiagsData_Prazo_ANS: TDateTimeField
       FieldName = 'Data_Prazo_ANS'
       Origin = 'Data_Prazo_ANS'
     end
-    object qrySiagsid_Tipo_Prazo_ANS: TIntegerField
-      FieldName = 'id_Tipo_Prazo_ANS'
-      Origin = 'id_Tipo_Prazo_ANS'
-    end
     object qrySiagsData_Hora_Importacao: TDateTimeField
       FieldName = 'Data_Hora_Importacao'
       Origin = 'Data_Hora_Importacao'
+    end
+    object qrySiagsid_Status_True: TIntegerField
+      FieldName = 'id_Status_True'
+      Origin = 'id_Status_True'
     end
     object qrySiagsid_Usuario_Importacao: TIntegerField
       FieldName = 'id_Usuario_Importacao'
@@ -260,6 +149,11 @@ object SMSiags: TSMSiags
       FieldName = 'id_Usuario_Ultima_Atualizacao'
       Origin = 'id_Usuario_Ultima_Atualizacao'
     end
+    object qrySiagsDesignacao_Pendente: TStringField
+      FieldName = 'Designacao_Pendente'
+      Origin = 'Designacao_Pendente'
+      Size = 3
+    end
   end
   object qrySiagsHistorico: TFDQuery
     Connection = ServerContainer.FDConnection
@@ -294,56 +188,17 @@ object SMSiags: TSMSiags
       FieldName = 'id_Tipo_Atendimento'
       Origin = 'id_Tipo_Atendimento'
     end
-    object qrySiagsHistoricoAnexo_Opme: TStringField
-      FieldName = 'Anexo_Opme'
-      Origin = 'Anexo_Opme'
-      Size = 3
+    object qrySiagsHistoricoid_Status_True: TIntegerField
+      FieldName = 'id_Status_True'
+      Origin = 'id_Status_True'
     end
-    object qrySiagsHistoricoAnexo_Quimio: TStringField
-      FieldName = 'Anexo_Quimio'
-      Origin = 'Anexo_Quimio'
-      Size = 3
+    object qrySiagsHistoricoData_Prazo_Caixa: TDateTimeField
+      FieldName = 'Data_Prazo_Caixa'
+      Origin = 'Data_Prazo_Caixa'
     end
-    object qrySiagsHistoricoAnexo_Radio: TStringField
-      FieldName = 'Anexo_Radio'
-      Origin = 'Anexo_Radio'
-      Size = 3
-    end
-    object qrySiagsHistoricoid_Tipo_Situacao_Autorizacao: TIntegerField
-      FieldName = 'id_Tipo_Situacao_Autorizacao'
-      Origin = 'id_Tipo_Situacao_Autorizacao'
-    end
-    object qrySiagsHistoricoid_Tipo_Ultima_Anotacao: TIntegerField
-      FieldName = 'id_Tipo_Ultima_Anotacao'
-      Origin = 'id_Tipo_Ultima_Anotacao'
-    end
-    object qrySiagsHistoricoid_Tipo_Auditoria: TIntegerField
-      FieldName = 'id_Tipo_Auditoria'
-      Origin = 'id_Tipo_Auditoria'
-    end
-    object qrySiagsHistoricoDias_Corridos_Base: TIntegerField
-      FieldName = 'Dias_Corridos_Base'
-      Origin = 'Dias_Corridos_Base'
-    end
-    object qrySiagsHistoricoDias_Uteis_Base: TIntegerField
-      FieldName = 'Dias_Uteis_Base'
-      Origin = 'Dias_Uteis_Base'
-    end
-    object qrySiagsHistoricoDias_Prazo_Caixa: TIntegerField
-      FieldName = 'Dias_Prazo_Caixa'
-      Origin = 'Dias_Prazo_Caixa'
-    end
-    object qrySiagsHistoricoid_Tipo_Prazo_Caixa: TIntegerField
-      FieldName = 'id_Tipo_Prazo_Caixa'
-      Origin = 'id_Tipo_Prazo_Caixa'
-    end
-    object qrySiagsHistoricoDias_Prazo_ANS: TIntegerField
-      FieldName = 'Dias_Prazo_ANS'
-      Origin = 'Dias_Prazo_ANS'
-    end
-    object qrySiagsHistoricoid_Tipo_Prazo_ANS: TIntegerField
-      FieldName = 'id_Tipo_Prazo_ANS'
-      Origin = 'id_Tipo_Prazo_ANS'
+    object qrySiagsHistoricoData_Prazo_Ans: TDateTimeField
+      FieldName = 'Data_Prazo_Ans'
+      Origin = 'Data_Prazo_Ans'
     end
     object qrySiagsHistoricoid_Usuario_Responsavel: TIntegerField
       FieldName = 'id_Usuario_Responsavel'
@@ -357,21 +212,16 @@ object SMSiags: TSMSiags
   object qryPainelSiags: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
+      'select '
       
-        'select a.id as id_Autorizacao, a.uf, a.Numero_Autorizacao, a.Ane' +
-        'xo_Opme, a.Anexo_Quimio, a.Anexo_Radio,'
-      
-        '   a.Dia_Inclusao, a.Dias_Corridos_Base, a.Dias_Uteis_Base, a.Di' +
-        'as_Prazo_Caixa, a.Data_Prazo_Caixa,'
-      '   a.Dias_Prazo_ANS, a.Data_Prazo_ANS, '
+        '   a.id as id_Autorizacao, a.Numero_Autorizacao, a.Data_Prazo_Ca' +
+        'ixa, '
+      '   a.Data_Prazo_ANS, a.Designacao_Pendente, a.id_Status_True,'
       '   b.Tipo_Autorizacao,'
       '   c.Tipo_Atendimento,'
       '   d.Numero_Beneficiario, d.Nome_Beneficiario,'
-      '   e.Tipo_Situacao_Autorizacao,'
-      '   f.Tipo_Ultima_Anotacao,'
-      '   g.Tipo_Auditoria,'
-      '   h.Tipo_Prazo_Caixa,'
-      '   i.Tipo_Prazo_Caixa as Tipo_Prazo_Ans,'
+      '   e.Status as Status_True, e.Tipo_Prazo, e.Prazo, e.Encerra,'
+      ''
       '   j.Nome_Usuario as Usuario_Designado,'
       '   k.Nome_Setor as Setor_Designado, '
       '   1 as Qtd_Historicos,'
@@ -385,15 +235,7 @@ object SMSiags: TSMSiags
         '     INNER JOIN Tipos_Atendimento c on c.id = a.id_Tipo_Atendime' +
         'nto'
       '     INNER JOIN Beneficiarios d on d.id = a.id_Beneficiario'
-      
-        '     INNER JOIN Tipos_Situacao_Autorizacao e on e.id = a.id_Tipo' +
-        '_Situacao_Autorizacao'
-      
-        '     INNER JOIN Tipos_Ultima_Anotacao f on f.id = a.id_Tipo_Ulti' +
-        'ma_Anotacao'
-      '     INNER JOIN Tipos_Auditoria g on g.id = a.id_Tipo_Auditoria '
-      '     INNER JOIN Tipos_Prazo h on h.id = a.id_Tipo_Prazo_Caixa '
-      '     INNER JOIN Tipos_Prazo i on i.id = a.id_Tipo_Prazo_ANS'
+      '     LEFT OUTER JOIN Status_True e on e.id = a.id_Status_True'
       '     LEFT OUTER JOIN Usuarios j on j.id = a.id_Usuario_Designado'
       '     LEFT OUTER JOIN Setores k on k.id = a.id_Setor_Designado'
       'where 1 = 1')
@@ -406,53 +248,13 @@ object SMSiags: TSMSiags
       ProviderFlags = [pfInWhere]
       ReadOnly = True
     end
-    object qryPainelSiagsuf: TStringField
-      FieldName = 'uf'
-      Origin = 'uf'
-      Size = 2
-    end
     object qryPainelSiagsNumero_Autorizacao: TLargeintField
       FieldName = 'Numero_Autorizacao'
       Origin = 'Numero_Autorizacao'
     end
-    object qryPainelSiagsAnexo_Opme: TStringField
-      FieldName = 'Anexo_Opme'
-      Origin = 'Anexo_Opme'
-      Size = 3
-    end
-    object qryPainelSiagsAnexo_Quimio: TStringField
-      FieldName = 'Anexo_Quimio'
-      Origin = 'Anexo_Quimio'
-      Size = 3
-    end
-    object qryPainelSiagsAnexo_Radio: TStringField
-      FieldName = 'Anexo_Radio'
-      Origin = 'Anexo_Radio'
-      Size = 3
-    end
-    object qryPainelSiagsDia_Inclusao: TIntegerField
-      FieldName = 'Dia_Inclusao'
-      Origin = 'Dia_Inclusao'
-    end
-    object qryPainelSiagsDias_Corridos_Base: TIntegerField
-      FieldName = 'Dias_Corridos_Base'
-      Origin = 'Dias_Corridos_Base'
-    end
-    object qryPainelSiagsDias_Uteis_Base: TIntegerField
-      FieldName = 'Dias_Uteis_Base'
-      Origin = 'Dias_Uteis_Base'
-    end
-    object qryPainelSiagsDias_Prazo_Caixa: TIntegerField
-      FieldName = 'Dias_Prazo_Caixa'
-      Origin = 'Dias_Prazo_Caixa'
-    end
     object qryPainelSiagsData_Prazo_Caixa: TDateTimeField
       FieldName = 'Data_Prazo_Caixa'
       Origin = 'Data_Prazo_Caixa'
-    end
-    object qryPainelSiagsDias_Prazo_ANS: TIntegerField
-      FieldName = 'Dias_Prazo_ANS'
-      Origin = 'Dias_Prazo_ANS'
     end
     object qryPainelSiagsData_Prazo_ANS: TDateTimeField
       FieldName = 'Data_Prazo_ANS'
@@ -478,30 +280,24 @@ object SMSiags: TSMSiags
       Origin = 'Nome_Beneficiario'
       Size = 100
     end
-    object qryPainelSiagsTipo_Situacao_Autorizacao: TStringField
-      FieldName = 'Tipo_Situacao_Autorizacao'
-      Origin = 'Tipo_Situacao_Autorizacao'
+    object qryPainelSiagsStatus_True: TStringField
+      FieldName = 'Status_True'
+      Origin = 'Status_True'
       Size = 30
     end
-    object qryPainelSiagsTipo_Ultima_Anotacao: TStringField
-      FieldName = 'Tipo_Ultima_Anotacao'
-      Origin = 'Tipo_Ultima_Anotacao'
-      Size = 30
+    object qryPainelSiagsTipo_Prazo: TStringField
+      FieldName = 'Tipo_Prazo'
+      Origin = 'Tipo_Prazo'
+      Size = 10
     end
-    object qryPainelSiagsTipo_Auditoria: TStringField
-      FieldName = 'Tipo_Auditoria'
-      Origin = 'Tipo_Auditoria'
-      Size = 15
+    object qryPainelSiagsPrazo: TIntegerField
+      FieldName = 'Prazo'
+      Origin = 'Prazo'
     end
-    object qryPainelSiagsTipo_Prazo_Caixa: TStringField
-      FieldName = 'Tipo_Prazo_Caixa'
-      Origin = 'Tipo_Prazo_Caixa'
-      Size = 15
-    end
-    object qryPainelSiagsTipo_Prazo_Ans: TStringField
-      FieldName = 'Tipo_Prazo_Ans'
-      Origin = 'Tipo_Prazo_Ans'
-      Size = 15
+    object qryPainelSiagsEncerra: TStringField
+      FieldName = 'Encerra'
+      Origin = 'Encerra'
+      Size = 3
     end
     object qryPainelSiagsUsuario_Designado: TStringField
       FieldName = 'Usuario_Designado'
@@ -510,7 +306,7 @@ object SMSiags: TSMSiags
     end
     object qryPainelSiagsSetor_Designado: TStringField
       FieldName = 'Setor_Designado'
-      Origin = 'Nome_Setor'
+      Origin = 'Setor_Designado'
       Size = 50
     end
     object qryPainelSiagsQtd_Historicos: TIntegerField
@@ -531,49 +327,35 @@ object SMSiags: TSMSiags
       ReadOnly = True
       Required = True
     end
-    object qryPainelAutoScData_Hora_Importacao: TDateTimeField
-      FieldName = 'Data_Hora_Importacao'
-      Origin = 'Data_Hora_Importacao'
+    object qryPainelSiagsDesignacao_Pendente: TStringField
+      FieldName = 'Designacao_Pendente'
+      Origin = 'Designacao_Pendente'
+      Size = 3
     end
-    object qryPainelAutoScUltima_Atualizacao: TDateTimeField
-      FieldName = 'Ultima_Atualizacao'
-      Origin = 'Ultima_Atualizacao'
-    end
-    object qryPainelAutoScData_Hora_Encerramento: TDateTimeField
-      FieldName = 'Data_Hora_Encerramento'
-      Origin = 'Data_Hora_Encerramento'
-    end
-    object qryPainelSiagsUsuario_Importacao: TStringField
-      FieldName = 'Usuario_Importacao'
-      Origin = 'Usuario_Importacao'
-      Size = 100
-    end
-    object qryPainelSiagsUsuario_Atualizacao: TStringField
-      FieldName = 'Usuario_Atualizacao'
-      Origin = 'Usuario_Atualizacao'
-      Size = 100
-    end
-    object qryPainelSiagsUsuario_Encerrameto: TStringField
-      FieldName = 'Usuario_Encerrameto'
-      Origin = 'Usuario_Encerrameto'
-      Size = 100
-    end
-    object qryPainelAutoScJustificativa_Encerramento: TStringField
-      FieldName = 'Justificativa_Encerramento'
-      Origin = 'Justificativa_Encerramento'
-      Size = 100
+    object qryPainelSiagsid_Status_True: TIntegerField
+      FieldName = 'id_Status_True'
+      Origin = 'id_Status_True'
     end
   end
   object qrySetores: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
-      'Select id, Nome_Setor'
-      'from Setores'
-      'where Ativo = '#39'Sim'#39
-      '      and Siags = '#39'Sim'#39
+      'Select a.id, a.Nome_Setor'
+      'from Setores a'
+      '     Inner Join Usuarios_Setores b on b.id_Setor = a.id'
+      '     Inner Join Usuarios c on c.id = b.id_Usuario'
+      'where a.Ativo = '#39'Sim'#39
+      '      and a.Siags = '#39'Sim'#39
+      '      and b.id_Usuario = :pIdUsuario'
+      #9'     and c.Ativo = '#39'Sim'#39
       'Order by Nome_Setor')
     Left = 248
     Top = 32
+    ParamData = <
+      item
+        Name = 'PIDUSUARIO'
+        ParamType = ptInput
+      end>
     object qrySetoresid: TIntegerField
       FieldName = 'id'
       Origin = 'id'
@@ -633,72 +415,13 @@ object SMSiags: TSMSiags
       Origin = 'Data_Hora_Log'
     end
   end
-  object qryTiposAuditoria: TFDQuery
-    Connection = ServerContainer.FDConnection
-    UpdateOptions.UpdateTableName = 'ControleDeTarefas.dbo.Tipos_Auditoria'
-    SQL.Strings = (
-      'Declare @SIAGS int;'
-      'Set @SIAGS = :SIAGS;'
-      ''
-      'select * from Tipos_Auditoria'
-      'where @SIAGS = 9 or SIAGS = @SIAGS '
-      'Order by Tipo_Auditoria')
-    Left = 248
-    Top = 106
-    ParamData = <
-      item
-        Name = 'SIAGS'
-        ParamType = ptInput
-      end>
-    object qryTiposAuditoriaid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ReadOnly = True
-    end
-    object qryTiposAuditoriaTipo_Auditoria: TStringField
-      FieldName = 'Tipo_Auditoria'
-      Origin = 'Tipo_Auditoria'
-      Size = 15
-    end
-    object qryTiposAuditoriaAUTOSC: TIntegerField
-      FieldName = 'AUTOSC'
-      Origin = 'AUTOSC'
-    end
-    object qryTiposAuditoriaSIAGS: TIntegerField
-      FieldName = 'SIAGS'
-      Origin = 'SIAGS'
-    end
-    object qryTiposAuditoriaCONTROLPC: TIntegerField
-      FieldName = 'CONTROLPC'
-      Origin = 'CONTROLPC'
-    end
-  end
-  object qryTiposUltimaAnotacao: TFDQuery
-    Connection = ServerContainer.FDConnection
-    SQL.Strings = (
-      'select * from Tipos_Ultima_Anotacao'
-      'Order by Tipo_Ultima_Anotacao')
-    Left = 248
-    Top = 486
-    object qryTiposUltimaAnotacaoid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTiposUltimaAnotacaoTipo_Ultima_Anotacao: TStringField
-      FieldName = 'Tipo_Ultima_Anotacao'
-      Origin = 'Tipo_Ultima_Anotacao'
-      Size = 30
-    end
-  end
   object qryBeneficiarios: TFDQuery
     Connection = ServerContainer.FDConnection
     SQL.Strings = (
       'select * from Beneficiarios'
       'Order by Nome_Beneficiario')
     Left = 248
-    Top = 560
+    Top = 272
     object qryBeneficiariosid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -714,6 +437,153 @@ object SMSiags: TSMSiags
       FieldName = 'Nome_Beneficiario'
       Origin = 'Nome_Beneficiario'
       Size = 100
+    end
+  end
+  object qryDesignacoesPendentes: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'Select '
+      '   a.id as id_Solicitacao,'
+      '   a.Data_Solicitacao,'
+      '   a.Justificativa,'
+      '   a.id_Autorizacao,'
+      '   b.Numero_Autorizacao,'
+      '   c.Nome_Usuario as Usuario_Solicitante,'
+      '   d.Nome_Usuario as Usuario_Atual,'
+      '   e.Nome_Usuario as Usuario_Solicitado,'
+      '   f.Nome_Setor as Setor_Atual,'
+      '   g.Nome_Setor as Setor_Solicitado,'
+      '   h.Status as Status_True'
+      'From '
+      '   Siags_Designacao_Solicitacao a'
+      '   Inner Join Siags b on b.id = a.id_Autorizacao'
+      '   Inner Join Usuarios c on c.id = a.id_Usuario_Solicitante'
+      '   Left Outer Join Usuarios d on d.id = a.id_Usuario_Designado'
+      '   Left Outer Join Usuarios e on e.id = a.id_Usuario_Solicitado'
+      '   Left Outer Join Setores f on f.id = a.id_Setor_Designado'
+      '   Left Outer Join Setores g on g.id = a.id_Setor_Solicitado'
+      '   Left Outer Join Status_True h on h.id = b.id_Status_True'
+      'where'
+      '   b.Designacao_Pendente = '#39'Sim'#39
+      'Order by'
+      '   a.Data_Solicitacao,'
+      '   b.Numero_Autorizacao')
+    Left = 248
+    Top = 448
+    object qryDesignacoesPendentesData_Solicitacao: TDateTimeField
+      FieldName = 'Data_Solicitacao'
+      Origin = 'Data_Solicitacao'
+    end
+    object qryDesignacoesPendentesJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Origin = 'Justificativa'
+      Size = 500
+    end
+    object qryDesignacoesPendentesid_Autorizacao: TLargeintField
+      FieldName = 'id_Autorizacao'
+      Origin = 'id_Autorizacao'
+    end
+    object qryDesignacoesPendentesNumero_Autorizacao: TLargeintField
+      FieldName = 'Numero_Autorizacao'
+      Origin = 'Numero_Autorizacao'
+    end
+    object qryDesignacoesPendentesUsuario_Solicitante: TStringField
+      FieldName = 'Usuario_Solicitante'
+      Origin = 'Usuario_Solicitante'
+      Size = 100
+    end
+    object qryDesignacoesPendentesUsuario_Atual: TStringField
+      FieldName = 'Usuario_Atual'
+      Origin = 'Usuario_Atual'
+      Size = 100
+    end
+    object qryDesignacoesPendentesUsuario_Solicitado: TStringField
+      FieldName = 'Usuario_Solicitado'
+      Origin = 'Usuario_Solicitado'
+      Size = 100
+    end
+    object qryDesignacoesPendentesSetor_Atual: TStringField
+      FieldName = 'Setor_Atual'
+      Origin = 'Setor_Atual'
+      Size = 50
+    end
+    object qryDesignacoesPendentesSetor_Solicitado: TStringField
+      FieldName = 'Setor_Solicitado'
+      Origin = 'Setor_Solicitado'
+      Size = 50
+    end
+    object qryDesignacoesPendentesStatus_True: TStringField
+      FieldName = 'Status_True'
+      Origin = 'Status_True'
+      Size = 30
+    end
+    object qryDesignacoesPendentesid_Solicitacao: TLargeintField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'id_Solicitacao'
+      Origin = 'id_Solicitacao'
+      ProviderFlags = [pfInWhere]
+      ReadOnly = True
+    end
+  end
+  object qryIncluirDesignacao: TFDQuery
+    Connection = ServerContainer.FDConnection
+    SQL.Strings = (
+      'Select * from Siags_Designacao_Solicitacao'
+      'where 1 = 2')
+    Left = 250
+    Top = 360
+    object qryIncluirDesignacaoid: TLargeintField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryIncluirDesignacaoid_Autorizacao: TLargeintField
+      FieldName = 'id_Autorizacao'
+      Origin = 'id_Autorizacao'
+    end
+    object qryIncluirDesignacaoid_Usuario_Solicitante: TIntegerField
+      FieldName = 'id_Usuario_Solicitante'
+      Origin = 'id_Usuario_Solicitante'
+    end
+    object qryIncluirDesignacaoData_Solicitacao: TDateTimeField
+      FieldName = 'Data_Solicitacao'
+      Origin = 'Data_Solicitacao'
+    end
+    object qryIncluirDesignacaoid_Usuario_Designado: TIntegerField
+      FieldName = 'id_Usuario_Designado'
+      Origin = 'id_Usuario_Designado'
+    end
+    object qryIncluirDesignacaoid_Usuario_Solicitado: TIntegerField
+      FieldName = 'id_Usuario_Solicitado'
+      Origin = 'id_Usuario_Solicitado'
+    end
+    object qryIncluirDesignacaoid_Setor_Designado: TIntegerField
+      FieldName = 'id_Setor_Designado'
+      Origin = 'id_Setor_Designado'
+    end
+    object qryIncluirDesignacaoid_Setor_Solicitado: TIntegerField
+      FieldName = 'id_Setor_Solicitado'
+      Origin = 'id_Setor_Solicitado'
+    end
+    object qryIncluirDesignacaoAutorizado: TStringField
+      FieldName = 'Autorizado'
+      Origin = 'Autorizado'
+      Size = 10
+    end
+    object qryIncluirDesignacaoData_Hora_Autorizacao: TDateTimeField
+      FieldName = 'Data_Hora_Autorizacao'
+      Origin = 'Data_Hora_Autorizacao'
+    end
+    object qryIncluirDesignacaoJustificativa: TStringField
+      FieldName = 'Justificativa'
+      Origin = 'Justificativa'
+      Size = 100
+    end
+    object qryIncluirDesignacaoid_Usuario_Autorizador: TIntegerField
+      FieldName = 'id_Usuario_Autorizador'
+      Origin = 'id_Usuario_Autorizador'
     end
   end
 end

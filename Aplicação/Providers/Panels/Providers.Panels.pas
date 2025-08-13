@@ -52,8 +52,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmPainel: TdtmPainel;
+*)
 
 implementation
 

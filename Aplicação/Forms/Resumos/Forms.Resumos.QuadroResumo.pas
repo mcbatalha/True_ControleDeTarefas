@@ -84,8 +84,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   frmQuadroResumo: TfrmQuadroResumo;
+*)
 
 implementation
 

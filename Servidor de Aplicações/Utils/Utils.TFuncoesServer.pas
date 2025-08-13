@@ -19,6 +19,8 @@ type TFuncoesServer = class
                                                  AQtdRegistrosAtualizados : Integer);
 
        class function EstadoParaSigla(const ANomeEstado: string): string;
+       class function SetorDoUsuario(const AIdUsuario : integer): integer;
+       class function PerfilUsuario(const AIdUsuario : integer): String;
 
 end;
 
@@ -66,6 +68,30 @@ begin
 end;
 
 
+class function TFuncoesServer.PerfilUsuario(const AIdUsuario: integer): String;
+var LQuery : TFDQuery;
+begin
+   try
+      LQuery := TFDQuery.Create(nil);
+      LQuery.Connection := ServerContainer.FDConnection;
+
+      LQuery.SQL.Clear;
+      LQuery.SQL.Add('SELECT ');
+      LQuery.SQL.Add('   Perfil ');
+      LQuery.SQL.Add('FROM ');
+      LQuery.SQL.Add('   Usuarios ');
+      LQuery.SQL.Add('WHERE ');
+      LQuery.SQL.Add('   id = :pIdUsuario ');
+      LQuery.ParamByName('pIdUsuario').AsInteger := AIdUsuario;
+      LQuery.Open;
+      if LQuery.RecordCount = 1 then
+         Result := LQuery.FieldByName('Perfil').AsString;
+   finally
+       LQuery.Close;
+       FreeAndNil(LQuery);
+   end;
+end;
+
 class procedure TFuncoesServer.RegistrarImportacao(
     const ATipo:
     String; const ADataHora: TDateTime;
@@ -100,6 +126,31 @@ begin
       FreeAndNil(LQuery);
    end;
 
+end;
+
+class function TFuncoesServer.SetorDoUsuario(const AIdUsuario: integer): integer;
+var LQuery : TFDQuery;
+begin
+   Result := 0;
+   try
+      LQuery := TFDQuery.Create(nil);
+      LQuery.Connection := ServerContainer.FDConnection;
+
+      LQuery.SQL.Clear;
+      LQuery.SQL.Add('SELECT ');
+      LQuery.SQL.Add('   id_Setor ');
+      LQuery.SQL.Add('FROM ');
+      LQuery.SQL.Add('   Usuarios_Setores ');
+      LQuery.SQL.Add('WHERE ');
+      LQuery.SQL.Add('   id_Usuario = :pIdUsuario ');
+      LQuery.ParamByName('pIdUsuario').AsInteger := AIdUsuario;
+      LQuery.Open;
+      if LQuery.RecordCount = 1 then
+         Result := LQuery.FieldByName('id_Setor').AsInteger;
+   finally
+       LQuery.Close;
+       FreeAndNil(LQuery);
+   end;
 end;
 
 end.

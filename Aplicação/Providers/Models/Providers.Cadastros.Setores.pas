@@ -33,8 +33,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmCadastroSetores: TdtmCadastroSetores;
+*)
 
 implementation
 

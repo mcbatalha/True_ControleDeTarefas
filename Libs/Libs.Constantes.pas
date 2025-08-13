@@ -1,7 +1,7 @@
 unit Libs.Constantes;
 
 interface
-
+Uses Vcl.Graphics;
 
 const
 // Host de Conexão
@@ -25,7 +25,7 @@ const
 // Mensagens
 
    C_TUDO_PREENCHIDO     = 'Os seguintes campos devem ser preenchidos:' + chr(13) + chr(13);
-   C_GRAVADO_COM_SUCESSO = 'Dados Gravados com sucesso!';
+   C_GRAVADO_COM_SUCESSO = 'Dados gravados com sucesso!';
 
 // Tipo de Saída dos Relatórios
    C_TIPO_RELATORIO_EXCEL    = 0;
@@ -58,8 +58,8 @@ const
    C_PERFIL_GERENTE    = 'Gerente';
 
 // Situação dos processo
-   C_PROCESSO_NAO_DESIGNADO = 'Não designado';
-   C_CODIGO_NAO_DESIGNADO   = 999999;
+   C_DESCRICAO_NAO_DESIGNADO = 'Não designado';
+   C_CODIGO_NAO_DESIGNADO    = 999999;
 
 // Tipos de Processo
    C_CODIGO_AUTOSC    = 0;
@@ -75,6 +75,27 @@ const
    C_TIPO_PRAZO_NAO_CONTA = 'Não Conta';
    C_TIPO_PRAZO_DIAS      = 'Dias';
    C_TIPO_PRAZO_HORAS     = 'Horas';
+
+// Tipos de Exportacao
+   C_TIPO_EXPORTACAO_AUTOSC    = 0;
+   C_TIPO_EXPORTACAO_SIAGS     = 1;
+   C_TIPO_EXPORTACAO_CONTROLPC = 2;
+   C_TIPO_EXPORTACAO_SETORES   = 3;
+   C_TIPO_EXPORTACAO_USUARIOS  = 4;
+
+   C_ARQUIVO_EXPORTACAO_AUTOSC    = 'AutoSC_Ativos.csv';
+   C_ARQUIVO_EXPORTACAO_SIAGS     = 'Siags_Ativos.csv';
+   C_ARQUIVO_EXPORTACAO_CONTROLPC = 'ControlPc_Ativos.csv';
+   C_ARQUIVO_EXPORTACAO_SETORES   = 'Setores.csv';
+   C_ARQUIVO_EXPORTACAO_USUARIOS  = 'Usuarios.csv';
+
+// Prazos
+   C_PRAZO_VENCIDO      = 'Vencido';
+   C_PRAZO_VENCE_HOJE   = 'Hoje';
+   C_PRAZO_VENCE_AMANHA = 'Amanhã';
+   C_PRAZO_FUTURO       = 'Futuro';
+
+
 
 implementation
 

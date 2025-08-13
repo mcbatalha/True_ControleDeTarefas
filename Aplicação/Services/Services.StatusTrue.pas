@@ -134,6 +134,9 @@ begin
    Fdm.cdsCadastro.Append;
    Fdm.cdsCadastroTipo_Prazo.AsString := C_TIPO_PRAZO_NAO_CONTA;
    Fdm.cdsCadastroEncerra.AsString    := C_NAO;
+   Fdm.cdsCadastroAutoSc.AsString     := C_NAO;
+   Fdm.cdsCadastroSiags.AsString      := C_NAO;
+   Fdm.cdsCadastroControlPC.AsString  := C_NAO;
    Fdm.cdsCadastroAtivo.AsString      := C_SIM;
 end;
 
@@ -189,7 +192,15 @@ begin
       LMensagem := C_TUDO_PREENCHIDO + LMensagem;
       Result := False;
       InformationMessage(LMensagem, C_TITULO_MENSAGENS);
+   end else if (Fdm.cdsCadastroCONTROLPC.AsString = C_NAO) and
+               (Fdm.cdsCadastroAUTOSC.AsString = C_NAO) and
+               (Fdm.cdsCadastroSIAGS.AsString = C_NAO) then
+      begin
+      LMensagem := 'É necessário definir ao menos uma área de aplicação para o status.';
+      Result := False;
+      InformationMessage(LMensagem, C_TITULO_MENSAGENS);
    end;
+
 end;
 
 end.

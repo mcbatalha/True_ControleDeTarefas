@@ -268,8 +268,8 @@ end;
 procedure TSrvRelatorioDesignacoes.PopularTabelasDeUsuarios;
 begin
    TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosAutoSc,    FPxyAutoSC.Usuarios);
-   TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosSiags,     FPxySiags.Usuarios);
-   TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosControlPc, FPxyControlPc.Usuarios);
+   TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosSiags,     FPxySiags.Usuarios(Seguranca.id));
+   TFuncoesJSON.PopularTabela(Fdm.mtbUsuariosControlPc, FPxyControlPc.Usuarios(Seguranca.id));
 
    IncluirRegistro(Fdm.mtbUsuariosAutoSc, 'Nome_Usuario', C_TODOS);
    IncluirRegistro(Fdm.mtbUsuariosSiags, 'Nome_Usuario', C_TODOS);

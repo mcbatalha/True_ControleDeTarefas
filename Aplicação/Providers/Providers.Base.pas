@@ -25,8 +25,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmBase: TdtmBase;
+*)
 
 implementation
 

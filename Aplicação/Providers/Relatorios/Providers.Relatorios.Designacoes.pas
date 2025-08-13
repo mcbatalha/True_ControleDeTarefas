@@ -60,8 +60,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmRelatoriosDesinacoes: TdtmRelatoriosDesinacoes;
+*)
 
 implementation
 

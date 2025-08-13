@@ -23,6 +23,7 @@ uses
   vcl.wwdbgrid,
   Vcl.DBCtrls,
   Vcl.Mask,
+  Vcl.Menus,
 
   Data.DB,
 
@@ -39,9 +40,19 @@ uses
 
   Libs.TFiltros,
   Libs.TSeguranca,
-  Providers.Panels.Conexao,
-  Frames.Pesquisa.Usuario, Vcl.Menus, IdBaseComponent, IdComponent, IdCustomTCPServer, IdMappedPortTCP, IdMappedTelnet;
+  Util.Funcoes,
 
+  Providers.Panels.Conexao,
+
+  Frames.Pesquisa.Usuario;
+
+(*
+  IdBaseComponent,
+  IdComponent,
+  IdCustomTCPServer,
+  IdMappedPortTCP,
+  IdMappedTelnet;
+*)
 type
   TfrmPaineis = class(TForm)
     pnlForm: TPanel;
@@ -74,7 +85,7 @@ type
     pnlBotoesFiltroAutoSc: TPanel;
     btnFiltrarAutoSC: TBitBtn;
     btnCancelarFiltroAutoSC: TBitBtn;
-    Panel4: TPanel;
+    pnlOpcoesFiltrosAutoSc: TPanel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -122,7 +133,7 @@ type
     edtUsuarioDesignacao: TDBEdit;
     memJustificativaDesignacao: TDBMemo;
     Label19: TLabel;
-    btnEncerrar: TSpeedButton;
+    btnAlterarStatusTrue: TSpeedButton;
     TabSheet4: TTabSheet;
     pnlHistoricoAtualizacoesAutoSc: TPanel;
     lblTituloHistoricoAtualizacoesAUTOSC: TLabel;
@@ -145,15 +156,13 @@ type
     Label26: TLabel;
     lblTituloHistoricoDesignacoes: TLabel;
     TabSheet5: TTabSheet;
-    pnlEncerramento: TPanel;
+    pnlMudancaStatus: TPanel;
     lblTituloEncerramento: TLabel;
-    Panel8: TPanel;
-    Panel9: TPanel;
-    btnConfirmaEncerramento: TBitBtn;
-    btnCancelaEncerramento: TBitBtn;
+    pndDadosMudancaStatus: TPanel;
+    btnBotoesMudancaStatus: TPanel;
+    btnConfirmaMudancaStatus: TBitBtn;
+    btnCancelaMudancaStatus: TBitBtn;
     Panel11: TPanel;
-    Label28: TLabel;
-    memJustificativaEncerramento: TMemo;
     TabSheet6: TTabSheet;
     pnlObservacoesProcesso: TPanel;
     lblTituloObservacoesProcesso: TLabel;
@@ -181,23 +190,13 @@ type
     Panel14: TPanel;
     btnFiltrarSiags: TBitBtn;
     btnCancelarFiltroSiags: TBitBtn;
-    Panel15: TPanel;
-    Label31: TLabel;
+    pnlOpcoesFiltrosSiags: TPanel;
     Label32: TLabel;
     Label39: TLabel;
-    Label41: TLabel;
-    cmbAuditoriasSiags: TDBLookupComboBox;
-    cmbPrazosCaixaSiags: TDBLookupComboBox;
-    cmbPrazosANSSiags: TDBLookupComboBox;
-    cmbUFSiags: TDBLookupComboBox;
     cmbAutorizacoesSiags: TDBLookupComboBox;
     Label33: TLabel;
     Label42: TLabel;
     cmbAtendimentosSiags: TDBLookupComboBox;
-    Label43: TLabel;
-    cmbSituacoesSiags: TDBLookupComboBox;
-    cmbUltimasAnotacoesSiags: TDBLookupComboBox;
-    Label44: TLabel;
     TabSheet8: TTabSheet;
     pnlHistoricoAtualizacoesSiags: TPanel;
     lblTituloHistoricoAtualizacoesSiags: TLabel;
@@ -207,7 +206,6 @@ type
     Label37: TLabel;
     Label38: TLabel;
     Label40: TLabel;
-    Label45: TLabel;
     Panel16: TPanel;
     btnFecharHistoricoSiags: TBitBtn;
     DBNavigator1: TDBNavigator;
@@ -216,33 +214,10 @@ type
     DBEdit3: TDBEdit;
     DBEdit4: TDBEdit;
     DBEdit11: TDBEdit;
-    DBEdit12: TDBEdit;
-    Label46: TLabel;
-    Label47: TLabel;
-    DBEdit13: TDBEdit;
-    DBEdit14: TDBEdit;
-    Label48: TLabel;
-    DBEdit15: TDBEdit;
-    Label49: TLabel;
-    DBEdit16: TDBEdit;
-    Label50: TLabel;
-    Label51: TLabel;
     DBEdit17: TDBEdit;
     Label52: TLabel;
     Label54: TLabel;
     DBEdit19: TDBEdit;
-    Label53: TLabel;
-    DBEdit18: TDBEdit;
-    Label55: TLabel;
-    Label56: TLabel;
-    DBEdit20: TDBEdit;
-    Label57: TLabel;
-    DBEdit21: TDBEdit;
-    Label58: TLabel;
-    DBEdit22: TDBEdit;
-    Label59: TLabel;
-    Label60: TLabel;
-    DBEdit23: TDBEdit;
     pnlGridControlPc: TPanel;
     dbgControlPc: TwwDBGrid;
     pnlTituloControlPc: TPanel;
@@ -250,28 +225,20 @@ type
     pnlFiltrosControlPc: TPanel;
     Label34: TLabel;
     pnlCamposFiltroControlPc: TPanel;
-    Panel18: TPanel;
+    pnlBotoesFiltrosControlPc: TPanel;
     btnFiltrarControlPc: TBitBtn;
     btnCancelarFiltroControlPc: TBitBtn;
-    pnlCampos: TPanel;
-    Label62: TLabel;
+    pnlOpcoesFiltrosControlPc: TPanel;
     Label63: TLabel;
-    Label66: TLabel;
     Label67: TLabel;
     Label69: TLabel;
     Label71: TLabel;
-    cmbPrazos: TDBLookupComboBox;
     cmbTecnicos: TDBLookupComboBox;
-    cmbTiposStatusControlPc: TDBLookupComboBox;
     edtDataAbertura: TMaskEdit;
     cmbTiposCliente: TDBLookupComboBox;
     Label61: TLabel;
     cmbTipoReclame: TComboBox;
     cmbTipoNip: TComboBox;
-    Label64: TLabel;
-    edtDataFechamento: TMaskEdit;
-    Label65: TLabel;
-    edtDataTransferencia: TMaskEdit;
     Label70: TLabel;
     edtPrevisaoSolucao: TMaskEdit;
     TabSheet10: TTabSheet;
@@ -280,36 +247,15 @@ type
     Panel19: TPanel;
     Label72: TLabel;
     Label73: TLabel;
-    Label74: TLabel;
     Label75: TLabel;
-    Label76: TLabel;
-    Label77: TLabel;
     Label78: TLabel;
-    Label81: TLabel;
-    Label82: TLabel;
     Panel20: TPanel;
     btnFechraHistoricoControlPc: TBitBtn;
     dbnControlPc: TDBNavigator;
     dbeDataHoraHistoricoControlPc: TDBEdit;
     dbeResponsavelHistoricoControlPc: TDBEdit;
-    dbeTipoStatusHistoricoControlPc: TDBEdit;
     dbeTecnicoHistoricoControlPc: TDBEdit;
-    dbePrazoHistoricoControlPc: TDBEdit;
     dbeTipoClienteHistoricoControlPc: TDBEdit;
-    dbeTipoReclameHistoricoControlPc: TDBEdit;
-    dbeTipoNipHistoricoControlPc: TDBEdit;
-    pnlSelecaoDesignacao: TPanel;
-    Label8: TLabel;
-    fraPesquisaUsuario: TfraPesquisaUsuario;
-    cmbSetores: TDBLookupComboBox;
-    TabSheet11: TTabSheet;
-    pnlExibirConteudo: TPanel;
-    lblTituloExibicaoConteudo: TLabel;
-    Panel17: TPanel;
-    Panel21: TPanel;
-    btnFecharExibicaoConteudo: TBitBtn;
-    memExibirConteudo: TMemo;
-    dbeClassificacaoHistoricoControlPc: TDBMemo;
     Label68: TLabel;
     edtNumeroProcesso: TEdit;
     edtNumeroAutorizacao: TEdit;
@@ -317,6 +263,29 @@ type
     Label80: TLabel;
     edtNumeroProtocolo: TEdit;
     btnExtrato: TSpeedButton;
+    edtDataPrazoCaixaSiags: TMaskEdit;
+    edtDataPrazoAnsSiags: TMaskEdit;
+    ltbDesignacoesSelecionadas: TListBox;
+    lblDesignacoesSelecionadas: TLabel;
+    btnExcluirDesignacaoSelecionada: TSpeedButton;
+    Label41: TLabel;
+    edtStausAtual: TEdit;
+    pnlJustificativa: TPanel;
+    Label28: TLabel;
+    memJustificativaEncerramento: TMemo;
+    Label43: TLabel;
+    dbeStatusTrueHistoricoControlPc: TDBEdit;
+    TabSheet11: TTabSheet;
+    TabSheet12: TTabSheet;
+    pnlStatusTrue: TPanel;
+    Label31: TLabel;
+    cmbStatusTrue: TDBLookupComboBox;
+    Label44: TLabel;
+    Label62: TLabel;
+    pnlSelecaoDesignacao: TPanel;
+    Label8: TLabel;
+    fraPesquisaUsuario: TfraPesquisaUsuario;
+    cmbSetores: TDBLookupComboBox;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -348,30 +317,39 @@ type
     procedure dbgSiagsRowChanged(Sender: TObject);
     procedure btnFecharHistoricoSiagsClick(Sender: TObject);
     procedure dbgSiagsTitleButtonClick(Sender: TObject; AFieldName: string);
-    procedure btnConfirmaEncerramentoClick(Sender: TObject);
-    procedure btnEncerrarClick(Sender: TObject);
-    procedure btnCancelaEncerramentoClick(Sender: TObject);
+    procedure btnConfirmaMudancaStatusClick(Sender: TObject);
+    procedure btnAlterarStatusTrueClick(Sender: TObject);
+    procedure btnCancelaMudancaStatusClick(Sender: TObject);
     procedure dbgControlPcTitleButtonClick(Sender: TObject; AFieldName: string);
     procedure dbgControlPcRowChanged(Sender: TObject);
     procedure btnFiltrarControlPcClick(Sender: TObject);
     procedure btnCancelarFiltroControlPcClick(Sender: TObject);
     procedure edtDataAberturaExit(Sender: TObject);
-    procedure dbgControlPcDblClick(Sender: TObject);
-    procedure btnFecharExibicaoConteudoClick(Sender: TObject);
     procedure btnFechraHistoricoControlPcClick(Sender: TObject);
     procedure memObservacaoKeyPress(Sender: TObject; var Key: Char);
     procedure btnExtratoClick(Sender: TObject);
+    procedure cmbSetoresClick(Sender: TObject);
+    procedure cmbSetoresEnter(Sender: TObject);
+    procedure btnExcluirDesignacaoSelecionadaClick(Sender: TObject);
+    procedure dbgControlPcFieldChanged(Sender: TObject; Field: TField);
+    procedure ltbDesignacoesSelecionadasExit(Sender: TObject);
+    procedure dbgControlPcCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
+    procedure dbgSiagsFieldChanged(Sender: TObject; Field: TField);
+    procedure dbgSiagsCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
   private
+    FOldValue      : String;
+    FDesignando    : Boolean;
+
     FServiceAutoSC : TSrvAutoSC;
     FFiltroAutoSC  : TFiltros;
 
-    FServiceSiags : TSrvSiags;
-    FFiltroSiags  : TFiltros;
+    FServiceSiags  : TSrvSiags;
+    FFiltroSiags   : TFiltros;
 
     FServiceControlPc : TSrvControlPc;
     FFiltroControlPc  : TFiltros;
 
-    Fdm            : TdtmPaineisConexao;
+    Fdm               : TdtmPaineisConexao;
 
     procedure DesignarAutoSc;
     procedure DesignarSiags;
@@ -391,24 +369,32 @@ type
     procedure BotoesObservacao(const AHabilitar : Boolean);
     procedure AtualizarPainel(const AAtualizar : Boolean = True);
 
+    procedure FiltrarUsuariosDoSetor;
+
+    procedure FecharPainelDesignacao;
+
   public
     { Public declarations }
 
     procedure BotoesDeEdicao(const AHabilitar : Boolean);
   end;
 
+(*
 var
   frmPaineis: TfrmPaineis;
+*)
 
 implementation
 
 {$R *.dfm}
 
 uses
+(*
    Providers.Importacoes,
    Providers.Panels.AutoSC,
    Providers.Panels.Siags,
    Providers.Panels.ControlPc,
+*)
    Libs.Constantes;
 
 function TfrmPaineis.AplicarFiltrosAutoSC: Boolean;
@@ -450,12 +436,12 @@ begin
     Result := False;
 
     LFiltro.numeroDoProtocolo := edtNumeroProtocolo.Text;
-    LFiltro.idTipoStatus      := cmbTiposStatusControlPc.KeyValue;
-    LFiltro.idTipoPrazo       := cmbPrazos.KeyValue;
     LFiltro.idTecnico         := cmbTecnicos.KeyValue;
     LFiltro.idTipoCliente     := cmbTiposCliente.KeyValue;
+    LFiltro.idStatusTrue      := cmbStatusTrue.KeyValue;
     LFiltro.tipoReclame       := cmbTipoReclame.Text;
     LFiltro.tipoNip           := cmbTipoNip.Text;
+
 
     if edtDataAbertura.Text <> C_DATA_EM_BRANCO then
        begin
@@ -463,22 +449,6 @@ begin
        LFiltro.dataAbertura    := StrToDate(edtDataAbertura.Text)
     end else
        LFiltro.usaDataAbertura := False;
-
-    if edtDataFechamento.Text <> C_DATA_EM_BRANCO then
-       begin
-       LFiltro.usaDataFechamento := True;
-       LFiltro.dataFechamento    := StrToDate(edtDataFechamento.Text)
-    end else
-       LFiltro.usaDataFechamento := False;
-
-
-    if edtDataTransferencia.Text <> C_DATA_EM_BRANCO then
-       begin
-       LFiltro.usaDataTransferencia := True;
-       LFiltro.dataTransferencia    := StrToDate(edtDataTransferencia.Text)
-    end else
-       LFiltro.usaDataTransferencia := False;
-
 
     if edtPrevisaoSolucao.Text <> C_DATA_EM_BRANCO then
        begin
@@ -501,14 +471,16 @@ begin
     Result := False;
 
     LFiltro.numeroDaAutorizacao       := edtNumeroAutorizacao.Text;
-    LFiltro.idTipoAuditoria           := cmbAuditoriasSiags.KeyValue;
-    LFiltro.UF                        := cmbUFSiags.KeyValue;
     LFiltro.idTipoAutorizacao         := cmbAutorizacoesSiags.KeyValue;
     LFiltro.idTipoAtendimento         := cmbAtendimentosSiags.KeyValue;
-    LFiltro.idTipoSituacaoAutorizacao := cmbSituacoesSiags.KeyValue;
-    LFiltro.idTipoUltimaAnotacao      := cmbUltimasAnotacoesSiags.KeyValue;
-    LFiltro.idTipoPrazoCaixa          := cmbPrazosCaixaSiags.KeyValue;
-    LFiltro.idTipoPrazoANS            := cmbPrazosAnsSiags.KeyValue;
+    LFiltro.idStatusTrue              := cmbStatusTrue.KeyValue;
+
+    if edtDataPrazoCaixaSiags.Text <> C_DATA_EM_BRANCO then
+       LFiltro.dataPrazoCaixa         := edtDataPrazoCaixaSiags.Text;
+
+    if edtDataPrazoAnsSiags.Text <> C_DATA_EM_BRANCO then
+       LFiltro.dataPrazoAns           := edtDataPrazoAnsSiags.Text;
+
     LFiltro.idSetorDesignado          := cmbSetores.KeyValue;
     LFiltro.idUsuarioDesignado        := fraPesquisaUsuario.getIdUsuario;
 
@@ -521,11 +493,26 @@ begin
    if not AAtualizar then exit;
 
    if pgcPaineis.ActivePage = tbsAutoSC then
-      dbgAutoSCRowChanged(Self)
+      ShowMessage('Implementar')
    else if pgcPaineis.ActivePage = tbsSiags then
-      dbgSiagsRowChanged(Self)
-   else if pgcPaineis.ActivePage = tbsControlPc then
-      dbgControlPcRowChanged(Self)
+      begin
+      FServiceSiags.AtualizarRegistrosPosDesignacao(ltbDesignacoesSelecionadas,
+                                                        fraPesquisaUsuario.getIdUsuario,
+                                                        cmbSetores.KeyValue,
+                                                        fraPesquisaUsuario.getNomeUsuario,
+                                                        cmbSetores.Text);
+      dbgSiagsRowChanged(Self);
+   end else if pgcPaineis.ActivePage = tbsControlPc then
+      begin
+      FServiceControlPc.AtualizarRegistrosPosDesignacao(ltbDesignacoesSelecionadas,
+                                                        fraPesquisaUsuario.getIdUsuario,
+                                                        cmbSetores.KeyValue,
+                                                        fraPesquisaUsuario.getNomeUsuario,
+                                                        cmbSetores.Text);
+      dbgControlPcRowChanged(Self);
+   end;
+
+   ltbDesignacoesSelecionadas.Items.Clear;
 end;
 
 procedure TfrmPaineis.btnFecharHistoricoSiagsClick(Sender: TObject);
@@ -569,11 +556,63 @@ begin
       memObservacao.Color := clWhite;
 end;
 
+procedure TfrmPaineis.FecharPainelDesignacao;
+begin
+   HabilitarEdicaoDoPainel(Self, pnlDesignacao, False);
+   memJustificativa.Text := '';
+
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      FServiceAutoSC.DesignacaoIncluirTodos
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FServiceSiags.DesignacaoIncluirTodos
+   else if pgcPaineis.ActivePage = tbsControlPc then
+      FServiceControlPc.DesignacaoIncluirTodos;
+end;
+
+procedure TfrmPaineis.FiltrarUsuariosDoSetor;
+begin
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      Showmessage('Implementar')
+   else if pgcPaineis.ActivePage = tbsSiags then
+      begin
+      if (cmbSetores.KeyValue = C_CODIGO_NAO_DESIGNADO) or (cmbSetores.KeyValue = 0)  then
+         fraPesquisaUsuario.setDataSet(FServiceSiags.DataSetPesquisaDeUsuario)
+      else
+         begin
+         FServiceSiags.UsuariosDoSetor(cmbSetores.KeyValue);
+         fraPesquisaUsuario.setDataSet(FServiceSiags.DataSetUsuariosDoSetor);
+         fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO, FDesignando);
+      end;
+   end else if pgcPaineis.ActivePage = tbsControlPc then
+      begin
+      if (cmbSetores.KeyValue = C_CODIGO_NAO_DESIGNADO) or (cmbSetores.KeyValue = 0)  then
+         fraPesquisaUsuario.setDataSet(FServiceControlPc.DataSetPesquisaDeUsuario)
+      else
+         begin
+         FServiceControlPc.UsuariosDoSetor(cmbSetores.KeyValue);
+         fraPesquisaUsuario.setDataSet(FServiceControlPc.DataSetUsuariosDoSetor);
+         fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO, FDesignando);
+      end;
+   end;
+end;
+
 procedure TfrmPaineis.FiltrosAutoSC;
 var
    LFiltro : TFiltrosAutoSc;
 begin
+   InformationMessage('Em manutenção','AutoSc');
+   Exit;
+
    pnlSelecaoDesignacao.Parent := pnlCamposFiltroAutoSc;
+   pnlStatusTrue.Parent        := pnlCamposFiltroAutoSc;
+
+
+   cmbStatusTrue.ListSource := FServiceAutoSC.DataSourceStatusTrue;
+   cmbSetores.ListSource    := FServiceAutoSC.DataSourceSetores;
+
+   pnlStatusTrue.TabOrder        := 1;
+   pnlSelecaoDesignacao.TabOrder := 2;
+
    fraPesquisaUsuario.setDataSet(FServiceAutoSC.DataSetPesquisaDeUsuario);
 
    LFiltro := FFiltroAutoSC.getFiltrosAutoSCAsRecord;
@@ -608,33 +647,37 @@ var
    LFiltro : TFiltrosControlPc;
 begin
    pnlSelecaoDesignacao.Parent := pnlCamposFiltroControlPc;
+   pnlStatusTrue.Parent        := pnlCamposFiltroControlPc;
+
+   pnlStatusTrue.TabOrder        := 1;
+   pnlSelecaoDesignacao.TabOrder := 2;
+
+   cmbStatusTrue.ListSource := FServiceControlPc.DataSourceStatusTrue;
+   cmbSetores.ListSource    := FServiceControlPc.DataSourceSetores;
+
    fraPesquisaUsuario.setDataSet(FServiceControlPc.DataSetPesquisaDeUsuario);
 
    LFiltro := FFiltroControlPc.getFiltrosControlPcAsRecord;
 
-   cmbTiposStatusControlPc.KeyValue := LFiltro.idTipoStatus;
-   cmbPrazos.KeyValue               := LFiltro.idTipoPrazo;
    cmbTecnicos.KeyValue             := LFiltro.idTecnico;
    cmbTiposCliente.KeyValue         := LFiltro.idTipoCliente;
    cmbTipoReclame.ItemIndex         := cmbTipoReclame.Items.IndexOf(LFiltro.tipoReclame);
    cmbTipoNip.ItemIndex             := cmbTipoNip.Items.IndexOf(LFiltro.tipoNip);
-   cmbSetores.KeyValue              := LFiltro.idSetorDesignado;
+   cmbStatusTrue.KeyValue           := LFiltro.idStatusTrue;
+
+   if Seguranca.Perfil = C_PERFIL_USUARIO then
+      begin
+      LFiltro.idUsuarioDesignado := Seguranca.id;
+   end;
+
    fraPesquisaUsuario.setIdUsuario(LFiltro.idUsuarioDesignado);
+
+   cmbSetores.KeyValue := LFiltro.idSetorDesignado;
 
    if LFiltro.usaDataAbertura then
       edtDataAbertura.Text := DateToStr(LFiltro.dataAbertura)
    else
       edtDataAbertura.Text := '';
-
-   if LFiltro.usaDataFechamento then
-      edtDataFechamento.Text := DateToStr(LFiltro.dataFechamento)
-   else
-      edtDataFechamento.Text := '';
-
-   if LFiltro.usaDataTransferencia then
-      edtDataTransferencia.Text := DateToStr(LFiltro.dataTransferencia)
-   else
-      edtDataTransferencia.Text := '';
 
    if LFiltro.usaPrevisaoSolucao then
       edtPrevisaoSolucao.Text := DateToStr(LFiltro.PrevisaoSolucao)
@@ -649,21 +692,33 @@ var
    LFiltro : TFiltrosSiags;
 begin
    pnlSelecaoDesignacao.Parent := pnlCamposFiltroSiags;
+   pnlStatusTrue.Parent        := pnlCamposFiltroSiags;
+
+   pnlStatusTrue.TabOrder        := 1;
+   pnlSelecaoDesignacao.TabOrder := 2;
+
+   cmbStatusTrue.ListSource := FServiceSiags.DataSourceStatusTrue;
+   cmbSetores.ListSource    := FServiceSiags.DataSourceSetores;
+
    fraPesquisaUsuario.setDataSet(FServiceSiags.DataSetPesquisaDeUsuario);
 
    LFiltro := FFiltroSiags.getFiltrosSiagsAsRecord;
 
-   cmbAuditoriasSiags.KeyValue       := LFiltro.idTipoAuditoria;
-   cmbUFSiags.KeyValue               := LFiltro.UF;
    cmbAutorizacoesSiags.KeyValue     := LFiltro.idTipoAutorizacao;
    cmbAtendimentosSiags.KeyValue     := LFiltro.idTipoAtendimento;
-   cmbSituacoesSiags.KeyValue        := LFiltro.idTipoSituacaoAutorizacao;
-   cmbUltimasAnotacoesSiags.KeyValue := LFiltro.idTipoUltimaAnotacao;
-   cmbPrazosCaixaSiags.KeyValue      := LFiltro.idTipoPrazoCaixa;
-   cmbPrazosAnsSiags.KeyValue        := LFiltro.idTipoPrazoANS;
+   edtDataPrazoCaixaSiags.Text       := LFiltro.dataPrazoCaixa;
+   edtDataPrazoAnsSiags.Text         := LFiltro.dataPrazoAns;
+   cmbStatusTrue.KeyValue            := LFiltro.idStatusTrue;
    cmbSetores.KeyValue               := LFiltro.idSetorDesignado;
 
+   if Seguranca.Perfil = C_PERFIL_USUARIO then
+      begin
+      LFiltro.idUsuarioDesignado := Seguranca.id;
+   end;
+
    fraPesquisaUsuario.setIdUsuario(LFiltro.idUsuarioDesignado);
+
+   cmbSetores.KeyValue := LFiltro.idSetorDesignado;
 
    HabilitarEdicaoDoPainel(Self, pnlFiltrosSiags, True);
 end;
@@ -677,6 +732,7 @@ procedure TfrmPaineis.FormCreate(Sender: TObject);
 begin
    BotoesDeEdicao(False);
    ConfigurarBotoes;
+   FDesignando := False;
 
    Application.CreateForm(TdtmPaineisConexao, Fdm);
    ConfigurarTabSheets;
@@ -711,6 +767,19 @@ end;
 procedure TfrmPaineis.FormShow(Sender: TObject);
 begin
    LimparTela(Self);
+
+   if tbsAutoSC.TabVisible then
+      pgcPaineis.ActivePage := tbsAutoSC
+   else if tbsSiags.TabVisible then
+      pgcPaineis.ActivePage := tbsSiags
+   else if tbsControlPc.TabVisible then
+      pgcPaineis.ActivePage := tbsControlPc;
+end;
+
+procedure TfrmPaineis.ltbDesignacoesSelecionadasExit(Sender: TObject);
+begin
+   ltbDesignacoesSelecionadas.ItemIndex := -1;
+
 end;
 
 procedure TfrmPaineis.memObservacaoKeyPress(Sender: TObject; var Key: Char);
@@ -747,16 +816,32 @@ begin
      (ADataSet as TClientDataSet).IndexFieldNames := AFieldName;
 end;
 
-procedure TfrmPaineis.btnCancelaEncerramentoClick(Sender: TObject);
+procedure TfrmPaineis.btnExcluirDesignacaoSelecionadaClick(Sender: TObject);
+begin
+   if not ltbDesignacoesSelecionadas.Focused then exit;
+
+   ltbDesignacoesSelecionadas.Items.Delete(ltbDesignacoesSelecionadas.ItemIndex);
+
+end;
+
+procedure TfrmPaineis.btnCancelaMudancaStatusClick(Sender: TObject);
 begin
    memJustificativaEncerramento.Text := '';
-   HabilitarEdicaoDoPainel(Self, pnlEncerramento, False);
+   HabilitarEdicaoDoPainel(Self, pnlMudancaStatus, False);
+
+   if pgcPaineis.ActivePage = tbsAutoSC then
+      ShowMessage('Implementar')
+   else if pgcPaineis.ActivePage = tbsSiags then
+      FServiceSiags.StatusTrueIncluirTodos
+   else if pgcPaineis.ActivePage = tbsControlPc then
+      FServiceControlPc.StatusTrueIncluirTodos;
 end;
 
 procedure TfrmPaineis.btnCancelarDesignacaoClick(Sender: TObject);
 begin
-   HabilitarEdicaoDoPainel(Self, pnlDesignacao, False);
-   memJustificativa.Text := '';
+   FecharPainelDesignacao;
+
+   FDesignando := False;
 end;
 
 procedure TfrmPaineis.btnCancelarFiltroAutoSCClick(Sender: TObject);
@@ -786,45 +871,69 @@ begin
    BotoesObservacao(False);
 end;
 
-procedure TfrmPaineis.btnConfirmaEncerramentoClick(Sender: TObject);
+procedure TfrmPaineis.btnConfirmaMudancaStatusClick(Sender: TObject);
 begin
    if pgcPaineis.ActivePage = tbsAutoSC then
-      FServiceAutoSC.Encerrar(memJustificativaEncerramento.Text)
+      FServiceAutoSC.AlterarStatusTrue(cmbStatusTrue.KeyValue, memJustificativaEncerramento.Text)
    else if pgcPaineis.ActivePage = tbsSiags then
-      FServiceSiags.Encerrar(memJustificativaEncerramento.Text)
+      FServiceSiags.AlterarStatusTrue(cmbStatusTrue.KeyValue, memJustificativaEncerramento.Text)
    else if pgcPaineis.ActivePage = tbsControlPc then
-      FServiceControlPc.Encerrar(memJustificativaEncerramento.Text);
+      FServiceControlPc.AlterarStatusTrue(cmbStatusTrue.KeyValue, memJustificativaEncerramento.Text);
 
    memJustificativaEncerramento.Text := '';
-   HabilitarEdicaoDoPainel(Self, pnlEncerramento, False);
+   HabilitarEdicaoDoPainel(Self, pnlMudancaStatus, False);
 end;
 
 procedure TfrmPaineis.btnConfirmarDesignacaoClick(Sender: TObject);
 var
    LDesignou : Boolean;
+   LDesignacoes  : TStringList;
 begin
+   try
+      LDesignacoes  := TStringList.Create;
+      LDesignacoes.Assign(ltbDesignacoesSelecionadas.Items);
 
-   if pgcPaineis.ActivePage = tbsAutoSC then
-      begin
-      LDesignou := FServiceAutoSC.Designar(memJustificativa.Text,
-                                           cmbSetores.KeyValue,
-                                           fraPesquisaUsuario.getIdUsuario);
-   end else if pgcPaineis.ActivePage = tbsSiags then
-      begin
-      LDesignou := FServiceSiags.Designar(memJustificativa.Text,
-                                          cmbSetores.KeyValue,
-                                          fraPesquisaUsuario.getIdUsuario);
-   end else if pgcPaineis.ActivePage = tbsControlPc then
-      begin
-      LDesignou := FServiceControlPc.Designar(memJustificativa.Text,
-                                     cmbSetores.KeyValue,
-                                     fraPesquisaUsuario.getIdUsuario);
-   end;
+      if pgcPaineis.ActivePage = tbsAutoSC then
+         begin
+         ShowMessage('Implementar');
+      end else if pgcPaineis.ActivePage = tbsSiags then
+         begin
+         if (cmbSetores.KeyValue = FServiceSiags.idSetorDesignado) and
+            (fraPesquisaUsuario.getIdUsuario = FServiceSiags.idUsuarioDesignado) then
+         begin
+            InformationMessage('Não houve alteração de usuário ou setor. A justificativa não será registrada','Designação');
+            Exit;
+         end;
 
-   if LDesignou then
-      begin
-      AtualizarPainel;
-      HabilitarEdicaoDoPainel(Self, pnlDesignacao, False);
+         LDesignou := FServiceSiags.Designar(LDesignacoes,
+                                             memJustificativa.Text,
+                                             cmbSetores.KeyValue,
+                                             fraPesquisaUsuario.getIdUsuario);
+
+      end else if pgcPaineis.ActivePage = tbsControlPc then
+         begin
+         if (cmbSetores.KeyValue = FServiceControlPc.idSetorDesignado) and
+            (fraPesquisaUsuario.getIdUsuario = FServiceControlPc.idUsuarioDesignado) then
+         begin
+            InformationMessage('Não houve alteração de usuário ou setor. A justificativa não será registrada','Designação');
+            Exit;
+         end;
+
+         LDesignou := FServiceControlPc.Designar(LDesignacoes,
+                                                 memJustificativa.Text,
+                                                 cmbSetores.KeyValue,
+                                                 fraPesquisaUsuario.getIdUsuario);
+      end;
+
+      if LDesignou then
+         begin
+         AtualizarPainel;
+         FecharPainelDesignacao;
+         InformationMessage(C_GRAVADO_COM_SUCESSO,'Designação');
+      end;
+
+   finally
+      FreeAndNil(LDesignacoes);
    end;
 
 end;
@@ -838,7 +947,9 @@ begin
    else if pgcPaineis.ActivePage = tbsSiags  then
       DesignarSiags
    else if pgcPaineis.ActivePage = tbsControlPc  then
-      DesignarControlPc
+      DesignarControlPc;
+
+   FDesignando := True;
 end;
 
 
@@ -874,17 +985,34 @@ begin
    HabilitarEdicaoDoPainel(Self, pnlHistoricoDesignacoes, True);
 end;
 
-procedure TfrmPaineis.btnEncerrarClick(Sender: TObject);
+procedure TfrmPaineis.btnAlterarStatusTrueClick(Sender: TObject);
 begin
    if pgcPaineis.ActivePage = tbsAutoSC then
-      lblTituloEncerramento.Caption := 'Encerramento de Processo - AUTOSC - ' + FServiceAutoSC.NumeroDoProcesso
-   else if pgcPaineis.ActivePage = tbsSiags then
-      lblTituloEncerramento.Caption := 'Encerramento de Autorização - SIAGS - ' + FServiceSiags.NumeroDaAutorizacao
-   else if pgcPaineis.ActivePage = tbsControlPc then
-      lblTituloEncerramento.Caption := 'Encerramento do Protocolo - CONTROLPC - ' + FServiceControlPc.NumeroDoProtocolo;
+      begin
+      ShowMessage('Implementar');
+   end else if pgcPaineis.ActivePage = tbsSiags then
+      begin
+      lblTituloEncerramento.Caption := 'Alteração de Status True - SIAGS';
+      edtStausAtual.Text            := FServiceSiags.StatusAtual;
+      cmbStatusTrue.ListSource      := FServiceSiags.DataSourceStatusTrue;
+      cmbStatusTrue.KeyValue        := -1;
+      FServiceSiags.StatusTrueExcluirTodos;
+   end else if pgcPaineis.ActivePage = tbsControlPc then
+      begin
+      lblTituloEncerramento.Caption := 'Alteração de Status True - CONTROLPC';
+      edtStausAtual.Text            := FServiceControlPc.StatusAtual;
+      cmbStatusTrue.ListSource      := FServiceControlPc.DataSourceStatusTrue;
+      cmbStatusTrue.KeyValue        := -1;
+      FServiceControlPc.StatusTrueExcluirTodos;
+   end;
 
    memJustificativaEncerramento.Text := '';
-   HabilitarEdicaoDoPainel(Self, pnlEncerramento, True);
+
+   pnlStatusTrue.Parent := pndDadosMudancaStatus;
+   pnlStatusTrue.TabOrder := 1;
+
+
+   HabilitarEdicaoDoPainel(Self, pnlMudancaStatus, True);
    memJustificativaEncerramento.SetFocus;
 end;
 
@@ -919,7 +1047,7 @@ begin
       LNumero := FServiceSiags.NumeroDaAutorizacao;
 
       FServiceSiags.DesabilitarControles;
-      LFiltroSiags := TFiltros.Create(C_CODIGO_Siags);
+      LFiltroSiags := TFiltros.Create(C_CODIGO_SIAGS);
       LFiltroSiags.setFiltrosSiags(FFiltroSiags.getFiltrosSiagsAsRecord);
       FServiceSiags.ImprimirExtrato(FServiceSiags.NumeroDaAutorizacao, False);
       FFiltroSiags.setFiltrosSiags(LFiltroSiags.getFiltrosSiagsAsRecord);
@@ -943,11 +1071,6 @@ begin
       FServiceControlPc.PosicionarRegistro(LNumero);
       FServiceControlPc.HabilitarControles;
    end;
-end;
-
-procedure TfrmPaineis.btnFecharExibicaoConteudoClick(Sender: TObject);
-begin
-   HabilitarEdicaoDoPainel(Self, pnlExibirConteudo, false);
 end;
 
 procedure TfrmPaineis.btnFecharHistoricoAtualizacoesClick(Sender: TObject);
@@ -1055,14 +1178,25 @@ begin
    Close;
 end;
 
+procedure TfrmPaineis.cmbSetoresClick(Sender: TObject);
+begin
+   if cmbSetores.Text <> FOldValue then
+      FiltrarUsuariosDoSetor;
+end;
+
+procedure TfrmPaineis.cmbSetoresEnter(Sender: TObject);
+begin
+   FOldValue := cmbSetores.Text;
+end;
+
 procedure TfrmPaineis.ConfigurarBotoes;
 begin
-   btnFiltrar.Visible  := True;
-   btnExportar.Visible := True;
-   btnImprimir.Visible := True;
-   btnDesignar.Visible := True;
-   btnEncerrar.Visible := True;
-   btnExtrato.Visible  := True;
+   btnFiltrar.Visible           := True;
+   btnExportar.Visible          := True;
+   btnImprimir.Visible          := True;
+   btnDesignar.Visible          := True;
+   btnExtrato.Visible           := True;
+   btnAlterarStatusTrue.Visible := True;
 
    btnHistoricoDesignacoes.Visible  := True;
    btnHistoricoAtualizacoes.Visible := True;
@@ -1071,7 +1205,7 @@ begin
    btnHistoricoDesignacoes.Enabled  := False;
    btnHistoricoAtualizacoes.Enabled := False;
    btnObservacoes.Enabled           := False;
-   btnEncerrar.Enabled              := False;
+   btnAlterarStatusTrue.Enabled     := False;
    btnExportar.Enabled              := False;
    btnImprimir.Enabled              := False;
    btnDesignar.Enabled              := False;
@@ -1093,8 +1227,8 @@ begin
    btnImprimir.Enabled := LHabilitar;
    btnDesignar.Enabled := LHabilitar;
    btnExportar.Enabled := LHabilitar;
-   btnEncerrar.Enabled := LHabilitar;
    btnExtrato.Enabled  := LHabilitar;
+   btnAlterarStatusTrue.Enabled := LHabilitar;
 end;
 
 
@@ -1190,13 +1324,6 @@ begin
       FServiceControlPc := TSrvControlPc.create(Fdm.SQLConnection);
       FFiltroControlPc := TFiltros.create(C_CODIGO_CONTROLPC);
    end;
-
-   if tbsAutoSC.TabVisible then
-      pgcPaineis.ActivePage := tbsAutoSC
-   else if tbsSiags.TabVisible then
-      pgcPaineis.ActivePage := tbsSiags
-   else if tbsControlPc.TabVisible then
-      pgcPaineis.ActivePage := tbsControlPc;
 end;
 
 
@@ -1213,7 +1340,7 @@ begin
    btnExportar.Enabled              := FServiceAutoSC.TemRegistros;
    btnObservacoes.Enabled           := FServiceAutoSC.TemRegistros;
    btnDesignar.Enabled              := FServiceAutoSC.TemRegistros;
-   btnEncerrar.Enabled              := FServiceAutoSC.TemRegistros;
+   btnAlterarStatusTrue.Enabled     := FServiceAutoSC.TemRegistros;
    btnExtrato.Enabled               := FServiceAutoSC.TemRegistros;
 end;
 
@@ -1222,29 +1349,20 @@ begin
    OrdenarGrid(dbgAutoSC.DataSource.DataSet,AFieldName);
 end;
 
-procedure TfrmPaineis.dbgControlPcDblClick(Sender: TObject);
+procedure TfrmPaineis.dbgControlPcCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
 var
-  LColuna : Integer;
-  LLinha  : Integer;
-  LPoint  : TGridCoord;
-  LCampo  : String;
-
+   LCores : TCoresPrazo;
 begin
-   LPoint := dbgControlPc.MouseCoord(Mouse.CursorPos.X - dbgControlPc.ClientOrigin.X,
-                                     Mouse.CursorPos.Y - dbgControlPc.ClientOrigin.Y);
+   LCores := FServiceControlPc.PrazoCores;
 
-   LCampo := '';
-   if (LPoint.X > 0) and (LPoint.X <= dbgControlPc.GetColCount) then
-      LCampo := dbgControlPc.Columns[LPoint.X - 1].FieldName;
+   AFont.Color :=  LCores.corDaFonte;
+   ABrush.Color := LCores.corDoFundo;
+end;
 
-   if (LCampo = 'Tipo_Classificacao') or (LCampo = 'Solicitacao_Cliente') then
-      begin
-      memExibirConteudo.Text := FServiceControlPc.Conteudo(LCampo);
-      lblTituloExibicaoConteudo.Caption := dbgControlPc.Columns[LPoint.X-1].DisplayLabel;
-
-      HabilitarEdicaoDoPainel(Self, pnlExibirConteudo, memExibirConteudo.Text <> '');
-   end else
-      btnDesignarClick(Self);
+procedure TfrmPaineis.dbgControlPcFieldChanged(Sender: TObject; Field: TField);
+begin
+   if (Field.FieldName = 'Selecionado') then
+      FServiceControlPc.GravarSelecao;
 end;
 
 procedure TfrmPaineis.dbgControlPcRowChanged(Sender: TObject);
@@ -1255,13 +1373,29 @@ begin
    btnExportar.Enabled              := FServiceControlPc.TemRegistros;
    btnObservacoes.Enabled           := FServiceControlPc.TemRegistros;
    btnDesignar.Enabled              := FServiceControlPc.TemRegistros;
-   btnEncerrar.Enabled              := FServiceControlPc.TemRegistros;
+   btnAlterarStatusTrue.Enabled     := FServiceControlPc.TemRegistros;
    btnExtrato.Enabled               := FServiceControlPc.TemRegistros;
 end;
 
 procedure TfrmPaineis.dbgControlPcTitleButtonClick(Sender: TObject; AFieldName: string);
 begin
    OrdenarGrid(dbgControlPc.DataSource.DataSet, AFieldName);
+end;
+
+procedure TfrmPaineis.dbgSiagsCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
+var
+   LCores : TCoresPrazo;
+begin
+   LCores := FServiceSiags.PrazoCores;
+
+   AFont.Color :=  LCores.corDaFonte;
+   ABrush.Color := LCores.corDoFundo;
+end;
+
+procedure TfrmPaineis.dbgSiagsFieldChanged(Sender: TObject; Field: TField);
+begin
+   if (Field.FieldName = 'Selecionado') then
+      FServiceSiags.GravarSelecao;
 end;
 
 procedure TfrmPaineis.dbgSiagsRowChanged(Sender: TObject);
@@ -1272,7 +1406,7 @@ begin
    btnExportar.Enabled              := FServiceSiags.TemRegistros;
    btnObservacoes.Enabled           := FServiceSiags.TemRegistros;
    btnDesignar.Enabled              := FServiceSiags.TemRegistros;
-   btnEncerrar.Enabled              := FServiceSiags.TemRegistros;
+   btnAlterarStatusTrue.Enabled     := FServiceSiags.TemRegistros;
    btnExtrato.Enabled               := FServiceSiags.TemRegistros;
 end;
 
@@ -1285,17 +1419,17 @@ procedure TfrmPaineis.DesignarAutoSc;
 begin
    FServiceAutoSC.DesignacaoExcluirTodos;
 
-   if not FServiceAutoSC.SetorDesignado > 0 then
-      cmbSetores.KeyValue := FServiceAutoSC.SetorDesignado
+   if not FServiceAutoSC.idSetorDesignado > 0 then
+      cmbSetores.KeyValue := FServiceAutoSC.idSetorDesignado
    else
       cmbSetores.KeyValue := C_CODIGO_NAO_DESIGNADO;
 
-   if not FServiceAutoSC.UsuarioDesignado > 0 then
-      fraPesquisaUsuario.setIdUsuario(FServiceAutoSC.UsuarioDesignado)
+   if not FServiceAutoSC.idUsuarioDesignado > 0 then
+      fraPesquisaUsuario.setIdUsuario(FServiceAutoSC.idUsuarioDesignado)
    else
       fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
 
-   lblTituloDesignacao.Caption := 'Designição de Processo - AUTOSC - ' + FServiceAutoSC.NumeroDoProcesso;
+   lblTituloDesignacao.Caption := 'Designição de Processo - AUTOSC';
    pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
    memJustificativa.Text       := '';
 
@@ -1306,21 +1440,28 @@ end;
 
 procedure TfrmPaineis.DesignarControlPc;
 begin
+   if not FServiceControlPc.Selecionados(ltbDesignacoesSelecionadas) then exit;
+
    FServiceControlPc.DesignacaoExcluirTodos;
 
-   if not FServiceControlPc.SetorDesignado > 0 then
-      cmbSetores.KeyValue := FServiceControlPc.SetorDesignado
+   cmbSetores.ListSource := FServiceControlPc.DataSourceSetores;
+
+   if FServiceControlPc.idSetorDesignado > 0 then
+      cmbSetores.KeyValue := FServiceControlPc.idSetorDesignado
    else
       cmbSetores.KeyValue := C_CODIGO_NAO_DESIGNADO;
 
-   if not FServiceControlPc.UsuarioDesignado > 0 then
-      fraPesquisaUsuario.setIdUsuario(FServiceControlPc.UsuarioDesignado)
-   else
-      fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
+   FiltrarUsuariosDoSetor;
 
-   lblTituloDesignacao.Caption := 'Designição de Protocolo - CONTROLPC - ' + FServiceControlPc.NumeroDoProtocolo;
-   pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
-   memJustificativa.Text       := '';
+   if FServiceControlPc.idUsuarioDesignado > 0 then
+      fraPesquisaUsuario.setIdUsuario(FServiceControlPc.idUsuarioDesignado, True)
+   else
+      fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO, True);
+
+   lblDesignacoesSelecionadas.Caption := 'Protocolos';
+   lblTituloDesignacao.Caption        := 'Designição de Protocolo - CONTROLPC ';
+   pnlSelecaoDesignacao.Parent        := pnlCamposDesignacao;
+   memJustificativa.Text              := '';
 
    HabilitarEdicaoDoPainel(Self, pnlDesignacao, True);
    memJustificativa.SetFocus;
@@ -1328,21 +1469,28 @@ end;
 
 procedure TfrmPaineis.DesignarSiags;
 begin
+   if not FServiceSiags.Selecionados(ltbDesignacoesSelecionadas) then exit;
+
    FServiceSiags.DesignacaoExcluirTodos;
 
-   if not FServiceSiags.SetorDesignado > 0 then
-      cmbSetores.KeyValue := FServiceSiags.SetorDesignado
+   cmbSetores.ListSource := FServiceSiags.DataSourceSetores;
+
+   if FServiceSiags.idSetorDesignado > 0 then
+      cmbSetores.KeyValue := FServiceSiags.idSetorDesignado
    else
       cmbSetores.KeyValue := C_CODIGO_NAO_DESIGNADO;
 
-   if not FServiceSiags.UsuarioDesignado > 0 then
-      fraPesquisaUsuario.setIdUsuario(FServiceSiags.UsuarioDesignado)
-   else
-      fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO);
+   FiltrarUsuariosDoSetor;
 
-   lblTituloDesignacao.Caption := 'Designição de Autorização - Siags - ' + FServiceSiags.NumeroDaAutorizacao;
-   pnlSelecaoDesignacao.Parent := pnlCamposDesignacao;
-   memJustificativa.Text       := '';
+   if FServiceSiags.idUsuarioDesignado > 0 then
+      fraPesquisaUsuario.setIdUsuario(FServiceSiags.idUsuarioDesignado, True)
+   else
+      fraPesquisaUsuario.setIdUsuario(C_CODIGO_NAO_DESIGNADO, True);
+
+   lblDesignacoesSelecionadas.Caption := 'Autorizações';
+   lblTituloDesignacao.Caption        := 'Designição de Autorizações - SIAGS';
+   pnlSelecaoDesignacao.Parent        := pnlCamposDesignacao;
+   memJustificativa.Text              := '';
 
    HabilitarEdicaoDoPainel(Self, pnlDesignacao, True);
    memJustificativa.SetFocus;

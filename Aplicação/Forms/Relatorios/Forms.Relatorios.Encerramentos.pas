@@ -59,8 +59,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   frmRelatorioEncerramentos: TfrmRelatorioEncerramentos;
+*)
 
 implementation
 

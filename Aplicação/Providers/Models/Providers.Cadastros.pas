@@ -31,8 +31,10 @@ type
     function Persistir(const ADataSet: TDataSet) : boolean;
   end;
 
+(*
 var
   dtmCadastros: TdtmCadastros;
+*)
 
 implementation
 Uses Providers.Connection, Funcoes, Midas, MidasLib;

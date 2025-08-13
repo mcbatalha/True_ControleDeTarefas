@@ -31,8 +31,11 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmCadastroUsusarios: TdtmCadastroUsusarios;
+*)
+
 
 implementation
 

@@ -25,6 +25,7 @@ uses
   Libs.TSeguranca,
   Libs.TFuncoesJSON,
   Libs.TFiltros,
+  Util.Funcoes,
 
   Providers.Panels.Siags,
   Providers.Panels.Conexao;
@@ -43,25 +44,36 @@ type
      constructor Create(ASqlConnection : TSQLConnection);
 
      function DataSetPesquisaDeUsuario : TDataSet;
-     function DataSourceDesignacao : TDataSource;
-     function DataSourceObservacao : TDataSource;
+     function DataSetUsuariosDoSetor   : TDataSet;
+
+     function DataSourceDesignacao     : TDataSource;
+     function DataSourceObservacao     : TDataSource;
+     function DataSourceStatusTrue     : TDataSource;
+     function DataSourceSetores        : TDataSource;
+     function NumeroDaAutorizacao      : String;
+     function StatusAtual              : String;
+
      function Filtrar(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
-     function NumeroDaAutorizacao  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
-     function SetorDesignado : integer;
-     function UsuarioDesignado : integer;
-     function TemRegistros     : Boolean;
-     function TemDesignacoes   : Boolean;
-     function TemAtualizacoes  : Boolean;
-     function TemObservacoes   : Boolean;
-     function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
-     function Encerrar(const AJustificativa : String) : Boolean;
+     procedure StatusTrueIncluirTodos;
+     procedure StatusTrueExcluirTodos;
 
 
-     function HistoricoDeDesignacoes : String;
-     function HistoricoDeAtualizacoes : String;
+     function idSetorDesignado   : integer;
+     function idUsuarioDesignado : integer;
+     function TemRegistros       : Boolean;
+     function TemDesignacoes     : Boolean;
+     function TemAtualizacoes    : Boolean;
+     function TemObservacoes     : Boolean;
+     function Designar(Const Autorizacoes : TStringList;
+                       const AJustificativa : String;
+                       const AIdSetor, AIdUsuario : Integer) : Boolean;
+     function AlterarStatusTrue(const AIdNovoStatus : Integer; const AJustificativa : String) : Boolean;
+
+     function HistoricoDeDesignacoes   : String;
+     function HistoricoDeAtualizacoes  : String;
      function ObservacoesDaAutorizacao : String;
 
      procedure IncluirObservacao;
@@ -73,6 +85,18 @@ type
 
      procedure HabilitarControles;
      procedure DesabilitarControles;
+
+     procedure UsuariosDoSetor(const AIdSetor : Integer);
+
+
+     procedure GravarSelecao;
+     function Selecionados(AListBox : TListBox) : Boolean;
+     procedure AtualizarRegistrosPosDesignacao(const AListBox : TListBox;
+                                               const AIdUsuario, AIdSetor : Integer;
+                                               const AUsuario, ASetor : String);
+
+     function Prazo : String;
+     function PrazoCores : TCoresPrazo;
 
      destructor Destroy(); override;
 
@@ -94,9 +118,65 @@ begin
    Result := FdmSiags.dtsObservacoes;
 end;
 
+function TSrvSiags.DataSourceSetores: TDataSource;
+begin
+   Result := FdmSiags.dtsSetores;
+end;
+
+function TSrvSiags.DataSourceStatusTrue: TDataSource;
+begin
+   Result := FdmSiags.dtsStatusTrue;
+end;
+
 function TSrvSiags.DataSetPesquisaDeUsuario : TDataSet;
 begin
    Result := FdmSiags.mtbUsuarios;
+end;
+
+function TSrvSiags.DataSetUsuariosDoSetor: TDataSet;
+begin
+   Result := FdmSiags.mtbUsuariosDoSetor;
+end;
+
+procedure TSrvSiags.AtualizarRegistrosPosDesignacao(const AListBox: TListBox; const AIdUsuario, AIdSetor: Integer; const AUsuario, ASetor: String);
+var
+   LIdAutorizacao : Integer;
+   I              : Integer;
+begin
+   try
+      LIdAutorizacao := FdmSiags.cdsPainelid_Autorizacao.AsInteger;
+      FdmSiags.cdsPainel.DisableControls;
+
+      for I := 0 to AListBox.Items.Count - 1 do
+         begin
+         if FdmSiags.cdsPainel.Locate('Numero_Autorizacao',AListBox.Items[I],[]) then
+            begin
+            FdmSiags.cdsPainel.Edit;
+            FdmSiags.cdsPainelSelecionado.AsInteger := 0;
+
+            if Seguranca.Perfil = C_PERFIL_USUARIO then
+               FdmSiags.cdsPainelDesignacao_Pendente.AsString := C_SIM
+            else
+               begin
+               FdmSiags.cdsPainelQtd_Designacoes.AsInteger := FdmSiags.cdsPainelQtd_Designacoes.AsInteger + 1;
+               if (AIdUsuario <> 0) and (AIdUsuario <> C_CODIGO_NAO_DESIGNADO) then
+                  begin
+                  FdmSiags.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
+                  FdmSiags.cdsPainelUsuario_Designado.AsString     := AUsuario;
+               end;
+               if (AIdSetor <> 0) and (AIdSetor <> C_CODIGO_NAO_DESIGNADO) then
+                  begin
+                  FdmSiags.cdsPainelid_Setor_Designado.AsInteger := AIdSetor;
+                  FdmSiags.cdsPainelSetor_Designado.AsString     := ASetor;
+               end;
+            end;
+            FdmSiags.cdsPainel.Post;
+         end;
+      end;
+   finally
+      FdmSiags.cdsPainel.Locate('id_Autorizacao',LIdAutorizacao,[]);
+      FdmSiags.cdsPainel.EnableControls;
+   end;
 end;
 
 procedure TSrvSiags.CancelarObservacao;
@@ -135,7 +215,13 @@ begin
    IncluirRegistro(FdmSiags.mtbUsuarios, 'Nome_Usuario', C_TODOS);
  end;
 
-function TSrvSiags.Designar(const AJustificativa: String; const AIdSetor, AIdUsuario: Integer): Boolean;
+function TSrvSiags.Designar(
+   Const Autorizacoes : TStringList;
+   const AJustificativa : String;
+   const AIdSetor, AIdUsuario : Integer) : Boolean;
+var
+   LAutorizacoes : TJSONArray;
+   I             : Integer;
 begin
    Result := False;
 
@@ -162,14 +248,22 @@ begin
       Exit;
    end;
 
-   if not FPxySiags.Designar(AJustificativa,
-                             AIdSetor,
-                             AIdUsuario,
-                             Seguranca.id,
-                             FdmSiags.cdsPainelid_Autorizacao.AsInteger ) then
-      begin
-      InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
-      Exit;
+   try
+      LAutorizacoes := TJSONArray.Create;
+      for I := 0 to Autorizacoes.Count - 1 do
+         LAutorizacoes.AddElement(TJSONString.Create(Autorizacoes[i]));
+
+      if not FPxySiags.Designar(LAutorizacoes,
+                                AJustificativa,
+                                AIdSetor,
+                                AIdUsuario,
+                                Seguranca.id,
+                                FdmSiags.cdsPainelid_Autorizacao.AsInteger) then
+         begin
+         InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
+         Exit;
+      end;
+   finally
    end;
 
 
@@ -179,6 +273,10 @@ begin
       FdmSiags.mtbSetores.Locate('id',AIdSetor);
       FdmSiags.cdsPainelid_Setor_Designado.AsInteger := AIdSetor;
       FdmSiags.cdsPainelSetor_Designado.AsString     := FdmSiags.mtbSetoresNome_Setor.AsString;
+   end else
+      begin
+      FdmSiags.cdsPainelid_Setor_Designado.Clear;
+      FdmSiags.cdsPainelSetor_Designado.AsString := C_DESCRICAO_NAO_DESIGNADO;
    end;
 
    if AIdUsuario <> C_CODIGO_NAO_DESIGNADO then
@@ -186,6 +284,10 @@ begin
       FdmSiags.mtbUsuarios.Locate('id',AIdUsuario);
       FdmSiags.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
       FdmSiags.cdsPainelUsuario_Designado.AsString     := FdmSiags.mtbUsuariosNome_Usuario.AsString;
+   end else
+      begin
+      FdmSiags.cdsPainelid_Usuario_Designado.Clear;
+      FdmSiags.cdsPainelUsuario_Designado.AsString := C_DESCRICAO_NAO_DESIGNADO;
    end;
    FdmSiags.cdsPainelQtd_Designacoes.AsInteger := FdmSiags.cdsPainelQtd_Designacoes.AsInteger + 1;
 
@@ -202,16 +304,45 @@ begin
    inherited;
 end;
 
-function TSrvSiags.Encerrar(const AJustificativa: String): Boolean;
+function TSrvSiags.AlterarStatusTrue(const AIdNovoStatus : Integer; const AJustificativa: String): Boolean;
+var
+   LEncerra : Boolean;
 begin
-   Result := False;
-   if not QuestionMessage('Confirma o encerramento do autorização ' + FdmSiags.cdsPainelNumero_Autorizacao.AsString + ' ? ','Encerramento') then
-      Exit;
 
-   if FPxySiags.EncerrarAutorizacao(FdmSiags.cdsPainelid_Autorizacao.AsInteger, AJustificativa, Seguranca.id) then
+   Result := False;
+
+   if not FdmSiags.mtbStatusTrue.Locate('id',AIdNovoStatus, []) then
       begin
-      FdmSiags.cdsPainel.Delete;
-      InformationMessage('Autorização encerrada com sucesso !','Encerramento');
+      InformationMessage('Status não localizado !','Alteração de Status SIAGS');
+      Exit;
+   end;
+
+   LEncerra := FdmSiags.mtbStatusTrueEncerra.AsString = C_SIM;
+   if LEncerra then
+      begin
+      if not QuestionMessage('Este Status encerra a Autorização. Confirma a alteração?','Alteração de Status SIAGS') then
+         Exit;
+   end;
+
+   if FPxySiags.AlterarStatus(FdmSiags.cdsPainelid_Autorizacao.AsInteger, AIdNovoStatus, AJustificativa, Seguranca.id) then
+      begin
+      if LEncerra then
+         begin
+         FdmSiags.cdsPainel.Delete;
+         InformationMessage('Autorização encerrada com sucesso !','Alteração de Status SIAGS');
+      end else
+         begin
+         FdmSiags.cdsPainel.Edit;
+         FdmSiags.cdsPainelid_Status_True.AsInteger := FdmSiags.mtbStatusTrueid.AsInteger;
+         FdmSiags.cdsPainelStatus_True.AsString     := FdmSiags.mtbStatusTrueStatus.AsString;
+         FdmSiags.cdsPainelQtd_Historicos.AsInteger := FdmSiags.cdsPainelQtd_Historicos.AsInteger + 1;
+
+         FdmSiags.cdsPainel.Post;
+         InformationMessage('Status alterado com sucesso !','Alteração de Status Siags');
+      end;
+
+      StatusTrueIncluirTodos;
+
       Result := True;
    end;
 end;
@@ -255,6 +386,19 @@ begin
       FdmSiags.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
+end;
+
+procedure TSrvSiags.GravarSelecao;
+begin
+   if FdmSiags.cdsPainelDesignacao_Pendente.AsString = C_SIM then
+      begin
+      InformationMessage('Já existe uma solicitação para designação desta autorização.','Designação');
+      FdmSiags.cdsPainel.Cancel;
+      Exit;
+   end;
+
+   if FdmSiags.cdsPainel.State = dsEdit then
+      FdmSiags.cdsPainel.Post;
 end;
 
 procedure TSrvSiags.HabilitarControles;
@@ -310,10 +454,10 @@ begin
       if TemDesignacoes then
          begin
          LDados := FPxySiags.RelatorioDeDesignacoes(True,
-                                                     StrToDate('01/01/2025'),
-                                                     Date,
-                                                     FdmSiags.cdsPainelNumero_Autorizacao.AsString,
-                                                     0);
+                                                    StrToDate('01/01/2025'),
+                                                    Date,
+                                                    FdmSiags.cdsPainelNumero_Autorizacao.AsString,
+                                                    0);
 
          FdmSiags.mtbDesignacoes.Close;
          if LDados.Count > 0 then
@@ -364,37 +508,80 @@ begin
    FdmSiags.cdsPainel.Locate('Numero_Autorizacao',ANumero,[]);
 end;
 
-procedure TSrvSiags.TabelasDeDominio;
-var
-   LPrazos : TJSONArray;
+function TSrvSiags.Prazo: String;
 begin
-   LPrazos := FPxySiags.TiposDePrazo;
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposAuditoria, FPxySiags.TiposDeAuditoria);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposPrazo, LPrazos);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposPrazoANS, LPrazos);
+   Result := TFuncoes.PrazoStatus(FdmSiags.cdsPainelData_Prazo_Caixa.AsDateTime);
+end;
+
+function TSrvSiags.PrazoCores: TCoresPrazo;
+begin
+   Result := TFuncoes.PrazoCores(FdmSiags.cdsPainelData_Prazo_Caixa.AsDateTime);
+end;
+
+function TSrvSiags.Selecionados(AListBox: TListBox): Boolean;
+var
+   LId    : Integer;
+begin
+   Result := False;
+   AListBox.Items.Clear;
+   LId := FdmSiags.cdsPainelid_Autorizacao.AsInteger;
+   try
+      FdmSiags.cdsPainel.DisableControls;
+      FdmSiags.cdsPainel.First;
+      while not FdmSiags.cdsPainel.Eof do
+         begin
+         if FdmSiags.cdsPainelSelecionado.AsInteger = 1 then
+            AListBox.Items.Add(FdmSiags.cdsPainelNumero_Autorizacao.AsString);
+
+         FdmSiags.cdsPainel.Next;
+      end;
+      Result := AListBox.Count > 0;
+   finally
+
+      FdmSiags.cdsPainel.locate('id_Autorizacao',Lid,[]);
+      if not Result then
+         begin
+         AListBox.Items.Add(FdmSiags.cdsPainelNumero_Autorizacao.AsString);
+         Result := True;
+      end;
+
+      FdmSiags.cdsPainel.EnableControls;
+   end;
+end;
+
+function TSrvSiags.StatusAtual: String;
+begin
+   Result := FdmSiags.cdsPainelStatus_True.AsString;
+end;
+
+procedure TSrvSiags.StatusTrueExcluirTodos;
+begin
+   if FdmSiags.mtbStatusTrue.Locate('Status',C_TODOS)  then
+      FdmSiags.mtbStatusTrue.Delete;
+end;
+
+procedure TSrvSiags.StatusTrueIncluirTodos;
+begin
+   if FdmSiags.mtbStatusTrue.Locate('Status',C_TODOS)  then
+      FdmSiags.mtbStatusTrue.Delete;
+end;
+
+procedure TSrvSiags.TabelasDeDominio;
+begin
    TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposAutorizacao, FPxySiags.TiposDeAutoriazacao);
    TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposAtendimento, FPxySiags.TiposDeAtendimento);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposSituacaoAutorizacao, FPxySiags.TiposDeSituacaoAutorizacao);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbTiposUltimaAnotacao, FPxySiags.TiposDeUltimaAnotacao);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbSetores, FPxySiags.Setores);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbUsuarios, FPxySiags.Usuarios);
-   TFuncoesJSON.PopularTabela(FdmSiags.mtbUF, ListaDeUFs);
+   TFuncoesJSON.PopularTabela(FdmSiags.mtbSetores, FPxySiags.Setores(Seguranca.id));
+   TFuncoesJSON.PopularTabela(FdmSiags.mtbUsuarios, FPxySiags.Usuarios(Seguranca.id));
+   TFuncoesJSON.PopularTabela(FdmSiags.mtbStatusTrue, FPxySiags.StatusTrue);
 
-   IncluirRegistro(FdmSiags.mtbTiposAuditoria, 'Tipo_Auditoria', C_TODAS);
-   IncluirRegistro(FdmSiags.mtbTiposPrazo, 'Tipo_Prazo_Caixa', C_TODOS);
-   IncluirRegistro(FdmSiags.mtbTiposPrazoAns, 'Tipo_Prazo_Caixa', C_TODOS);
    IncluirRegistro(FdmSiags.mtbTiposAutorizacao, 'Tipo_Autorizacao', C_TODAS);
    IncluirRegistro(FdmSiags.mtbTiposAtendimento, 'Tipo_Atendimento', C_TODOS);
-   IncluirRegistro(FdmSiags.mtbTiposSituacaoAutorizacao, 'Tipo_Situacao_Autorizacao', C_TODAS);
-   IncluirRegistro(FdmSiags.mtbTiposUltimaAnotacao, 'Tipo_Ultima_Anotacao', C_TODAS);
-   IncluirRegistro(FdmSiags.mtbSetores, 'Nome_Setor', C_PROCESSO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+   IncluirRegistro(FdmSiags.mtbStatusTrue, 'Status', C_TODOS);
+   IncluirRegistro(FdmSiags.mtbSetores, 'Nome_Setor', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
 
-   IncluirRegistro(FdmSiags.mtbUsuarios, 'Nome_Usuario', C_PROCESSO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
-   IncluirRegistro(FdmSiags.mtbUF, 'Sigla', C_TODOS);
+   IncluirRegistro(FdmSiags.mtbUsuarios, 'Nome_Usuario', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
 
    DesignacaoIncluirTodos;
-
-
 end;
 
 function TSrvSiags.TemAtualizacoes: Boolean;
@@ -417,12 +604,20 @@ begin
    Result := (FdmSiags.cdsPainel.State = dsBrowse) and (not FdmSiags.cdsPainel.IsEmpty);
 end;
 
-function TSrvSiags.SetorDesignado : integer;
+procedure TSrvSiags.UsuariosDoSetor(const AIdSetor: Integer);
+begin
+   FdmSiags.mtbUsuariosDoSetor.Close;
+   TFuncoesJSON.PopularTabela(FdmSiags.mtbUsuariosDoSetor, FPxySiags.UsuariosDoSetor(AIdSetor));
+
+   IncluirRegistro(FdmSiags.mtbUsuariosDoSetor, 'Nome_Usuario', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+end;
+
+function TSrvSiags.idSetorDesignado : integer;
 begin
    Result := FdmSiags.cdsPainelid_Setor_Designado.asinteger;
 end;
 
-function TSrvSiags.UsuarioDesignado: integer;
+function TSrvSiags.idUsuarioDesignado: integer;
 begin
    Result := FdmSiags.cdsPainelid_Usuario_Designado.asinteger;
 end;

@@ -75,8 +75,10 @@ type
                                   ATituloTipo: String);
   end;
 
+(*
 var
   dtmRelatorios: TdtmRelatorios;
+*)
 
 implementation
 

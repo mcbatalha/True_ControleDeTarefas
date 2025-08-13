@@ -35,6 +35,13 @@ type
     Label3: TLabel;
     dbePrazo: TDBEdit;
     rdgTipoPrazo: TDBRadioGroup;
+    cmbEncerra: TDBComboBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    GroupBox1: TGroupBox;
+    chbAutoSC: TDBCheckBox;
+    chbSiags: TDBCheckBox;
+    chbControlPC: TDBCheckBox;
     procedure fraBotoesbtnNovoClick(Sender: TObject);
     procedure fraBotoesbtnExcluirClick(Sender: TObject);
     procedure fraBotoesbtnAlterarClick(Sender: TObject);
@@ -50,8 +57,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   frmCadastroStatusTrue: TfrmCadastroStatusTrue;
+*)
 
 implementation
 

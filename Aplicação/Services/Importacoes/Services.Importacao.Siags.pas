@@ -69,9 +69,6 @@ begin
       begin
       LDado := TJSONObject.Create;
 
-      LColuna := 'UF PRESTADOR';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
       LColuna := 'TIPO AUTORIZACAO';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
@@ -81,64 +78,19 @@ begin
       LColuna := 'TIPO ATENDIMENTO';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
-      LColuna := 'ANEXO OPME';
-      LAux    := DadoDaColuna(ASheet, LColuna, i);
-      if LAux = '' then
-         LAux := C_NAO;
-      LDado.AddPair(LColuna, TJSONString.Create(LAux));
-
-      LColuna := 'ANEXO QUIMIO';
-      LAux    := DadoDaColuna(ASheet, LColuna, i);
-      if LAux = '' then
-         LAux := C_NAO;
-      LDado.AddPair(LColuna, TJSONString.Create(LAux));
-
-      LColuna := 'ANEXO RADIO';
-      LAux    := DadoDaColuna(ASheet, LColuna, i);
-      if LAux = '' then
-         LAux := C_NAO;
-      LDado.AddPair(LColuna, TJSONString.Create(LAux));
-
       LColuna := 'BENEFICIARIO';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
       LColuna := 'NOME';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
-      LColuna := 'SITUACAOAUTORIZ';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'ULT ANOTACAO ADM';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'AUDITORIA';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'DIAINCLUSAO';
-      LDado.AddPair(LColuna, TJSONNumber.Create(StrToIntDef(DadoDaColuna(ASheet, LColuna, i),0)));
-
-      LColuna := 'DIASCORRIDOSABE';
-      LDado.AddPair(LColuna, TJSONNumber.Create(StrToIntDef(DadoDaColuna(ASheet, LColuna, i),0)));
-
-      LColuna := 'DIASUTEISABE';
-      LDado.AddPair(LColuna, TJSONNumber.Create(StrToIntDef(DadoDaColuna(ASheet, LColuna, i),0)));
-
-      LColuna := 'DIASPRAZOCAX';
-      LDado.AddPair(LColuna, TJSONNumber.Create(StrToIntDef(DadoDaColuna(ASheet, LColuna, i),0)));
-
       LColuna := 'DATAPRAZOCAX';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'STATUSPZCAX';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'DIASPRAZOANS';
-      LDado.AddPair(LColuna, TJSONNumber.Create(StrToIntDef(DadoDaColuna(ASheet, LColuna, i),0)));
 
       LColuna := 'DATAPRAZOANS';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
-      LColuna := 'STATUSPZANS';
+      LColuna := 'IDSETOR';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
       FDados.Add(LDado);
@@ -244,6 +196,27 @@ var
 begin
    LColuna := UpperCase(AColuna);
    Result := 0;
+
+   if LColuna = 'TIPO AUTORIZACAO' then
+      Result := 4
+   else if LColuna = 'AUTORIZACAO' then
+      Result := 5
+   else if LColuna = 'TIPO ATENDIMENTO' then
+      Result := 6
+   else if LColuna = 'BENEFICIARIO' then
+      Result := 11
+   else if LColuna = 'NOME' then
+      Result := 12
+   else if LColuna = 'DATAPRAZOCAX' then
+      Result := 49
+   else if LColuna = 'DATAPRAZOANS' then
+      Result := 59
+   else if LColuna = 'IDSETOR' then
+      Result := 69
+   else
+      InformationMessage('Coluna não reconhecida "' + LColuna + '"',C_TITULO_MENSAGENS);
+
+(*
    if LColuna = 'UF PRESTADOR' then
       Result := 2
    else if LColuna = 'TIPO AUTORIZACAO' then
@@ -288,16 +261,13 @@ begin
       Result := 60
    else
       InformationMessage('Coluna não reconhecida "' + LColuna + '"',C_TITULO_MENSAGENS);
-
+*)
 end;
 
 function TSrvImportacaoSiags.Validar(const ASheet : Variant; out AMensagem : String) : Boolean;
 begin
    Result := True;
    AMensagem := '';
-
-   if (trim(ASheet.Cells[1, PosicaoColuna('UF PRESTADOR')].Value) <> 'UF PRESTADOR') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('UF PRESTADOR'))+' - UF PRESTADOR'+ chr(13);
 
    if (trim(ASheet.Cells[1, PosicaoColuna('TIPO AUTORIZACAO')].Value) <> 'TIPO AUTORIZACAO') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO AUTORIZACAO'))+' - TIPO AUTORIZACAO'+ chr(13);
@@ -308,56 +278,22 @@ begin
    if (trim(ASheet.Cells[1, PosicaoColuna('TIPO ATENDIMENTO')].Value) <> 'TIPO ATENDIMENTO') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO ATENDIMENTO'))+' - TIPO ATENDIMENTO'+ chr(13);
 
-   if (trim(ASheet.Cells[1, PosicaoColuna('ANEXO OPME')].Value) <> 'ANEXO OPME') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ANEXO OPME'))+' - ANEXO OPME'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('ANEXO QUIMIO')].Value) <> 'ANEXO QUIMIO') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ANEXO QUIMIO'))+' - ANEXO QUIMIO'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('ANEXO RADIO')].Value) <> 'ANEXO RADIO') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ANEXO RADIO'))+' - ANEXO RADIO'+ chr(13);
-
    if (trim(ASheet.Cells[1,PosicaoColuna('BENEFICIARIO')].Value) <> 'BENEFICIARIO') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('BENEFICIARIO'))+' - BENEFICIARIO'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('NOME')].Value) <> 'NOME') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('NOME'))+' - NOME'+ chr(13);
 
-   if (trim(ASheet.Cells[1,PosicaoColuna('SITUACAOAUTORIZ')].Value) <> 'SITUACAOAUTORIZ') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('SITUACAOAUTORIZ'))+' - SITUACAOAUTORIZ'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('ULT ANOTACAO ADM')].Value) <> 'ULT ANOTACAO ADM') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ULT ANOTACAO ADM'))+' - ULT ANOTACAO ADM'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('AUDITORIA')].Value) <> 'AUDITORIA') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('AUDITORIA'))+' - AUDITORIA'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('DIAINCLUSAO')].Value) <> 'DIAINCLUSAO') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIAINCLUSAO'))+' - DIAINCLUSAO'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('DIASCORRIDOSABE')].Value) <> 'DIASCORRIDOSABE') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASCORRIDOSABE'))+' - DIASCORRIDOSABE'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('DIASUTEISABE')].Value) <> 'DIASUTEISABE') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASUTEISABE'))+' - DIASUTEISABE'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('DIASPRAZOCAX')].Value) <> 'DIASPRAZOCAX') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOCAX'))+' - DIASPRAZOCAX'+ chr(13);
 
    if (trim(ASheet.Cells[1,PosicaoColuna('DATAPRAZOCAX')].Value) <> 'DATAPRAZOCAX') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DATAPRAZOCAX'))+' - DATAPRAZOCAX'+ chr(13);
 
-   if (trim(ASheet.Cells[1,PosicaoColuna('STATUSPZCAX')].Value) <> 'STATUSPZCAX') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('STATUSPZCAX'))+' - STATUSPZCAX'+ chr(13);
-
-   if (trim(ASheet.Cells[1,PosicaoColuna('DIASPRAZOANS')].Value) <> 'DIASPRAZOANS') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOANS'))+' - DIASPRAZOANS'+ chr(13);
-
    if (trim(ASheet.Cells[1,PosicaoColuna('DATAPRAZOANS')].Value) <> 'DATAPRAZOANS') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DATAPRAZOANS'))+' - DATAPRAZOANS'+ chr(13);
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DIASPRAZOCAX'))+' - DIASPRAZOCAX'+ chr(13);
 
-   if (trim(ASheet.Cells[1,PosicaoColuna('STATUSPZANS')].Value) <> 'STATUSPZANS') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('STATUSPZANS'))+' - STATUSPZANS'+ chr(13);
+
+   if (trim(ASheet.Cells[1,PosicaoColuna('IDSETOR')].Value) <> 'IDSETOR') then
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('IDSETOR'))+' - IDSETOR'+ chr(13);
 
    if AMensagem <> '' then
       begin

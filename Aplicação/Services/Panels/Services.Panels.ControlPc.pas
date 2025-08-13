@@ -25,6 +25,7 @@ uses
   Libs.TSeguranca,
   Libs.TFuncoesJSON,
   Libs.TFiltros,
+  Util.Funcoes,
 
   Providers.Panels.ControlPc,
   Providers.Panels.Conexao;
@@ -36,6 +37,7 @@ type
      FPxyControlPc     : TSMControlPcClient;
 
      procedure TabelasDeDominio;
+     procedure UtilizarUsuarioAtual;
 
      const
         C_TITULO_MENSAGENS = 'Designação de Protocolo CONTROLPC';
@@ -43,21 +45,32 @@ type
      constructor Create(ASqlConnection : TSQLConnection);
 
      function DataSetPesquisaDeUsuario : TDataSet;
-     function DataSourceDesignacao : TDataSource;
-     function DataSourceObservacao : TDataSource;
+     function DataSetUsuariosDoSetor   : TDataSet;
+
+     function DataSourceDesignacao     : TDataSource;
+     function DataSourceObservacao     : TDataSource;
+     function DataSourceStatusTrue     : TDataSource;
+     function DataSourceSetores        : TDataSource;
+     function NumeroDoProtocolo        : String;
+     function StatusAtual              : String;
+
      function Filtrar(const AFiltros : TJSONObject; const AIncluirEncerrados : Boolean = False) : Boolean;
-     function NumeroDoProtocolo  : String;
      procedure DesignacaoIncluirTodos;
      procedure DesignacaoExcluirTodos;
 
-     function SetorDesignado : integer;
-     function UsuarioDesignado : integer;
-     function TemRegistros     : Boolean;
-     function TemDesignacoes   : Boolean;
-     function TemAtualizacoes  : Boolean;
-     function TemObservacoes   : Boolean;
-     function Designar(const AJustificativa : String; const AIdSetor, AIdUsuario : Integer) : Boolean;
-     function Encerrar(const AJustificativa : String) : Boolean;
+     procedure StatusTrueIncluirTodos;
+     procedure StatusTrueExcluirTodos;
+
+     function idSetorDesignado   : integer;
+     function idUsuarioDesignado : integer;
+     function TemRegistros       : Boolean;
+     function TemDesignacoes     : Boolean;
+     function TemAtualizacoes    : Boolean;
+     function TemObservacoes     : Boolean;
+     function Designar(Const AProtocolos : TStringList;
+                       const AJustificativa : String;
+                       const AIdSetor, AIdUsuario : Integer) : Boolean;
+     function AlterarStatusTrue(const AIdNovoStatus : integer; const AJustificativa : String) : Boolean;
 
      function HistoricoDeDesignacoes   : String;
      function HistoricoDeAtualizacoes  : String;
@@ -74,7 +87,20 @@ type
      procedure HabilitarControles;
      procedure DesabilitarControles;
 
+     procedure UsuariosDoSetor(const AIdSetor : Integer);
+
+
+     procedure GravarSelecao;
+     function Selecionados(AListBox : TListBox) : Boolean;
+     procedure AtualizarRegistrosPosDesignacao(const AListBox : TListBox;
+                                               const AIdUsuario, AIdSetor : Integer;
+                                               const AUsuario, ASetor : String);
+
+     function Prazo : String;
+     function PrazoCores : TCoresPrazo;
+
      destructor Destroy(); override;
+
 
   end;
 
@@ -96,9 +122,68 @@ begin
 end;
 
 
+function TSrvControlPc.DataSourceSetores: TDataSource;
+begin
+   Result := FdmControlPc.dtsSetores;
+end;
+
+function TSrvControlPc.DataSourceStatusTrue: TDataSource;
+begin
+   Result := FdmControlPc.dtsStatusTrue;
+end;
+
 function TSrvControlPc.DataSetPesquisaDeUsuario : TDataSet;
 begin
    Result := FdmControlPc.mtbUsuarios;
+end;
+
+function TSrvControlPc.DataSetUsuariosDoSetor: TDataSet;
+begin
+   Result := FdmControlPc.mtbUsuariosDoSetor;
+end;
+
+procedure TSrvControlPc.AtualizarRegistrosPosDesignacao(
+   const AListBox : TListBox;
+   const AIdUsuario, AIdSetor : Integer;
+   const AUsuario, ASetor : String);
+var
+   LIdProtocolo : Integer;
+   I            : Integer;
+begin
+   try
+      LIdProtocolo := FdmControlPc.cdsPainelid_Protocolo.AsInteger;
+      FdmControlPc.cdsPainel.DisableControls;
+
+      for I := 0 to AListBox.Items.Count - 1 do
+         begin
+         if FdmControlPc.cdsPainel.Locate('Protocolo',AListBox.Items[I],[]) then
+            begin
+            FdmControlPc.cdsPainel.Edit;
+            FdmControlPc.cdsPainelSelecionado.AsInteger := 0;
+
+            if Seguranca.Perfil = C_PERFIL_USUARIO then
+               FdmControlPc.cdsPainelDesignacao_Pendente.AsString := C_SIM
+            else
+               begin
+               FdmControlPc.cdsPainelQtd_Designacoes.AsInteger := FdmControlPc.cdsPainelQtd_Designacoes.AsInteger + 1;
+               if (AIdUsuario <> 0) and (AIdUsuario <> C_CODIGO_NAO_DESIGNADO) then
+                  begin
+                  FdmControlPc.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
+                  FdmControlPc.cdsPainelUsuario_Designado.AsString     := AUsuario;
+               end;
+               if (AIdSetor <> 0) and (AIdSetor <> C_CODIGO_NAO_DESIGNADO) then
+                  begin
+                  FdmControlPc.cdsPainelid_Setor_Designado.AsInteger := AIdSetor;
+                  FdmControlPc.cdsPainelSetor_Designado.AsString     := ASetor;
+               end;
+            end;
+            FdmControlPc.cdsPainel.Post;
+         end;
+      end;
+   finally
+      FdmControlPc.cdsPainel.Locate('id_Protocolo',LIdProtocolo,[]);
+      FdmControlPc.cdsPainel.EnableControls;
+   end;
 end;
 
 procedure TSrvControlPc.CancelarObservacao;
@@ -131,7 +216,6 @@ begin
 
    if FdmControlPc.mtbUsuarios.Locate('Nome_Usuario',C_TODOS)  then
       FdmControlPc.mtbUsuarios.Delete;
-
 end;
 
 procedure TSrvControlPc.DesignacaoIncluirTodos;
@@ -140,7 +224,13 @@ begin
    IncluirRegistro(FdmControlPc.mtbUsuarios, 'Nome_Usuario', C_TODOS);
  end;
 
-function TSrvControlPc.Designar(const AJustificativa: String; const AIdSetor, AIdUsuario: Integer): Boolean;
+function TSrvControlPc.Designar(
+   Const AProtocolos : TStringList;
+   const AJustificativa: String;
+   const AIdSetor, AIdUsuario: Integer): Boolean;
+var
+   LProtocolos : TJSONArray;
+   I           : Integer;
 begin
    Result := False;
 
@@ -167,14 +257,23 @@ begin
       Exit;
    end;
 
-   if not FPxyControlPc.Designar(AJustificativa,
-                             AIdSetor,
-                             AIdUsuario,
-                             Seguranca.id,
-                             FdmControlPc.cdsPainelid_Protocolo.AsInteger ) then
-      begin
-      InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
-      Exit;
+   try
+      LProtocolos := TJSONArray.Create;
+      for I := 0 to AProtocolos.Count - 1 do
+         LProtocolos.AddElement(TJSONString.Create(AProtocolos[i]));
+
+      if not FPxyControlPc.Designar(LProtocolos,
+                                    AJustificativa,
+                                    AIdSetor,
+                                    AIdUsuario,
+                                    Seguranca.id,
+                                    FdmControlPc.cdsPainelid_Protocolo.AsInteger ) then
+         begin
+         InformationMessage('Ocorreu um erro na tentativa de gravar os dados de designação.',C_TITULO_MENSAGENS);
+         Exit;
+      end;
+   finally
+//      FreeAndNil(LProtocolos);
    end;
 
 
@@ -184,6 +283,10 @@ begin
       FdmControlPc.mtbSetores.Locate('id',AIdSetor);
       FdmControlPc.cdsPainelid_Setor_Designado.AsInteger := AIdSetor;
       FdmControlPc.cdsPainelSetor_Designado.AsString     := FdmControlPc.mtbSetoresNome_Setor.AsString;
+   end else
+      begin
+      FdmControlPc.cdsPainelid_Setor_Designado.Clear;
+      FdmControlPc.cdsPainelSetor_Designado.AsString := C_DESCRICAO_NAO_DESIGNADO;
    end;
 
    if AIdUsuario <> C_CODIGO_NAO_DESIGNADO then
@@ -191,6 +294,10 @@ begin
       FdmControlPc.mtbUsuarios.Locate('id',AIdUsuario);
       FdmControlPc.cdsPainelid_Usuario_Designado.AsInteger := AIdUsuario;
       FdmControlPc.cdsPainelUsuario_Designado.AsString     := FdmControlPc.mtbUsuariosNome_Usuario.AsString;
+   end else
+      begin
+      FdmControlPc.cdsPainelid_Usuario_Designado.Clear;
+      FdmControlPc.cdsPainelUsuario_Designado.AsString := C_DESCRICAO_NAO_DESIGNADO;
    end;
    FdmControlPc.cdsPainelQtd_Designacoes.AsInteger := FdmControlPc.cdsPainelQtd_Designacoes.AsInteger + 1;
 
@@ -207,16 +314,45 @@ begin
    inherited;
 end;
 
-function TSrvControlPc.Encerrar(const AJustificativa: String): Boolean;
+function TSrvControlPc.AlterarStatusTrue(const AIdNovoStatus : integer; const AJustificativa: String): Boolean;
+var
+   LEncerra : Boolean;
 begin
-   Result := False;
-   if not QuestionMessage('Confirma o encerramento do protocolo ' + FdmControlPc.cdsPainelProtocolo.AsString + ' ? ','Encerramento') then
-      Exit;
 
-   if FPxyControlPc.EncerrarProtocolo(FdmControlPc.cdsPainelid_Protocolo.AsInteger, AJustificativa, Seguranca.id) then
+   Result := False;
+
+   if not FdmControlPc.mtbStatusTrue.Locate('id',AIdNovoStatus, []) then
       begin
-      FdmControlPc.cdsPainel.Delete;
-      InformationMessage('Protocolo encerrado com sucesso !','Encerramento');
+      InformationMessage('Status não localizado !','Alteração de Status CONTROLPC');
+      Exit;
+   end;
+
+   LEncerra := FdmControlPc.mtbStatusTrueEncerra.AsString = C_SIM;
+   if LEncerra then
+      begin
+      if not QuestionMessage('Este Status encerra o Protocolo. Confirma a alteração?','Alteração de Status CONTROLPC') then
+         Exit;
+   end;
+
+   if FPxyControlPc.AlterarStatus(FdmControlPc.cdsPainelid_Protocolo.AsInteger, AIdNovoStatus, AJustificativa, Seguranca.id) then
+      begin
+      if LEncerra then
+         begin
+         FdmControlPc.cdsPainel.Delete;
+         InformationMessage('Protocolo encerrado com sucesso !','Alteração de Status CONTROLPC');
+      end else
+         begin
+         FdmControlPc.cdsPainel.Edit;
+         FdmControlPc.cdsPainelid_Status_True.AsInteger := FdmControlPc.mtbStatusTrueid.AsInteger;
+         FdmControlPc.cdsPainelStatus_True.AsString     := FdmControlPc.mtbStatusTrueStatus.AsString;
+         FdmControlPc.cdsPainelQtd_Historicos.AsInteger := FdmControlPc.cdsPainelQtd_Historicos.AsInteger + 1;
+
+         FdmControlPc.cdsPainel.Post;
+         InformationMessage('Status alterado com sucesso !','Alteração de Status CONTROLPC');
+      end;
+
+      StatusTrueIncluirTodos;
+
       Result := True;
    end;
 end;
@@ -260,6 +396,19 @@ begin
       FdmControlPc.cdsPainel.Post;
    end else
       InformationMessage('Ocorreu um erro na tentativa de registrar a observação !','Observações');
+end;
+
+procedure TSrvControlPc.GravarSelecao;
+begin
+   if FdmControlPc.cdsPainelDesignacao_Pendente.AsString = C_SIM then
+      begin
+      InformationMessage('Já existe uma solicitação para designação deste protocolo.','Designação');
+      FdmControlPc.cdsPainel.Cancel;
+      Exit;
+   end;
+
+   if FdmControlPc.cdsPainel.State = dsEdit then
+      FdmControlPc.cdsPainel.Post;
 end;
 
 procedure TSrvControlPc.HabilitarControles;
@@ -368,30 +517,82 @@ begin
    FdmControlPc.cdsPainel.Locate('Protocolo',ANumero,[]);
 end;
 
+function TSrvControlPc.Prazo: String;
+begin
+   Result := TFuncoes.PrazoStatus(FdmControlPc.cdsPainelPrevisao_Solucao.AsDateTime);
+end;
+
+function TSrvControlPc.PrazoCores: TCoresPrazo;
+begin
+   Result := TFuncoes.PrazoCores(FdmControlPc.cdsPainelPrevisao_Solucao.AsDateTime);
+end;
+
+function TSrvControlPc.Selecionados(AListBox : TListBox): Boolean;
+var
+   LId    : Integer;
+begin
+   Result := False;
+   AListBox.Items.Clear;
+   LId := FdmControlPc.cdsPainelid_Protocolo.AsInteger;
+   try
+      FdmControlPc.cdsPainel.DisableControls;
+      FdmControlPc.cdsPainel.First;
+      while not FdmControlPc.cdsPainel.Eof do
+         begin
+         if FdmControlPc.cdsPainelSelecionado.AsInteger = 1 then
+            AListBox.Items.Add(FdmControlPc.cdsPainelProtocolo.AsString);
+
+         FdmControlPc.cdsPainel.Next;
+      end;
+      Result := AListBox.Count > 0;
+   finally
+(*
+      if not Result then
+         InformationMessage('Não há nenhum protocolo selecionado!','CONTROLPC');
+*)
+      FdmControlPc.cdsPainel.locate('id_Protocolo',Lid,[]);
+      if not Result then
+         begin
+         AListBox.Items.Add(FdmControlPc.cdsPainelProtocolo.AsString);
+         Result := True;
+      end;
+
+      FdmControlPc.cdsPainel.EnableControls;
+   end;
+end;
+
+function TSrvControlPc.StatusAtual: String;
+begin
+   Result := FdmControlPc.cdsPainelStatus_True.AsString;
+end;
+
+procedure TSrvControlPc.StatusTrueExcluirTodos;
+begin
+   if FdmControlPc.mtbStatusTrue.Locate('Status',C_TODOS)  then
+      FdmControlPc.mtbStatusTrue.Delete;
+end;
+
+procedure TSrvControlPc.StatusTrueIncluirTodos;
+begin
+   IncluirRegistro(FdmControlPc.mtbStatusTrue, 'Status', C_TODOS);
+end;
+
 procedure TSrvControlPc.TabelasDeDominio;
 begin
-   TFuncoesJSON.PopularTabela(FdmControlPc.mtbTiposPrazo, FPxyControlPc.TiposDePrazo);
    TFuncoesJSON.PopularTabela(FdmControlPc.mtbTecnicos, FPxyControlPc.Tecnicos);
    TFuncoesJSON.PopularTabela(FdmControlPc.mtbTiposCliente, FPxyControlPc.TiposDeCliente);
-   TFuncoesJSON.PopularTabela(FdmControlPc.mtbTiposClassificacao, FPxyControlPc.TiposDeClassificacao);
-   TFuncoesJSON.PopularTabela(FdmControlPc.mtbTiposStatus, FPxyControlPc.TiposDeStatus);
+   TFuncoesJSON.PopularTabela(FdmControlPc.mtbStatusTrue, FPxyControlPc.StatusTrue);
 
-
-   TFuncoesJSON.PopularTabela(FdmControlPc.mtbSetores, FPxyControlPc.Setores);
-   TFuncoesJSON.PopularTabela(FdmControlPc.mtbUsuarios, FPxyControlPc.Usuarios);
-
-   IncluirRegistro(FdmControlPc.mtbTiposPrazo, 'Tipo_Prazo_Caixa', C_TODOS);
    IncluirRegistro(FdmControlPc.mtbTecnicos, 'Nome_Tecnico', C_TODOS);
    IncluirRegistro(FdmControlPc.mtbTiposCliente, 'Tipo_Cliente', C_TODOS);
-   IncluirRegistro(FdmControlPc.mtbTiposClassificacao, 'Tipo_Classificacao', C_TODOS);
-   IncluirRegistro(FdmControlPc.mtbTiposStatus, 'Tipo_Status', C_TODOS);
+   IncluirRegistro(FdmControlPc.mtbStatusTrue, 'Status', C_TODOS);
 
-   IncluirRegistro(FdmControlPc.mtbSetores, 'Nome_Setor', C_PROCESSO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
-   IncluirRegistro(FdmControlPc.mtbUsuarios, 'Nome_Usuario', C_PROCESSO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+   TFuncoesJSON.PopularTabela(FdmControlPc.mtbSetores, FPxyControlPc.Setores(Seguranca.id));
+   TFuncoesJSON.PopularTabela(FdmControlPc.mtbUsuarios, FPxyControlPc.Usuarios(Seguranca.id));
 
+   IncluirRegistro(FdmControlPc.mtbSetores, 'Nome_Setor', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+   IncluirRegistro(FdmControlPc.mtbUsuarios, 'Nome_Usuario', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
    DesignacaoIncluirTodos;
-
-
 end;
 
 function TSrvControlPc.TemAtualizacoes: Boolean;
@@ -414,14 +615,32 @@ begin
    Result := (FdmControlPc.cdsPainel.State = dsBrowse) and (not FdmControlPc.cdsPainel.IsEmpty);
 end;
 
-function TSrvControlPc.SetorDesignado : integer;
+function TSrvControlPc.idSetorDesignado : integer;
 begin
    Result := FdmControlPc.cdsPainelid_Setor_Designado.asinteger;
 end;
 
-function TSrvControlPc.UsuarioDesignado: integer;
+function TSrvControlPc.idUsuarioDesignado: integer;
 begin
    Result := FdmControlPc.cdsPainelid_Usuario_Designado.asinteger;
+end;
+
+procedure TSrvControlPc.UsuariosDoSetor(const AIdSetor: Integer);
+begin
+   FdmControlPc.mtbUsuariosDoSetor.Close;
+   TFuncoesJSON.PopularTabela(FdmControlPc.mtbUsuariosDoSetor, FPxyControlPc.UsuariosDoSetor(AIdSetor));
+
+   IncluirRegistro(FdmControlPc.mtbUsuariosDoSetor, 'Nome_Usuario', C_DESCRICAO_NAO_DESIGNADO, C_CODIGO_NAO_DESIGNADO);
+end;
+
+procedure TSrvControlPc.UtilizarUsuarioAtual;
+begin
+   FdmControlPc.mtbUsuarios.Close;
+   FdmControlPc.mtbUsuarios.Open;
+   FdmControlPc.mtbUsuarios.Append;
+   FdmControlPc.mtbUsuariosid.AsInteger          := Seguranca.id;
+   FdmControlPc.mtbUsuariosNome_Usuario.AsString := Seguranca.Nome;
+   FdmControlPc.mtbUsuarios.Post;
 end;
 
 end.

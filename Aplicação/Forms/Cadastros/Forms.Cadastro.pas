@@ -36,10 +36,10 @@ type
     { Public declarations }
      FOpcao : Char;
   end;
-
+(*
 var
   frmCadastro: TfrmCadastro;
-
+*)
 implementation
 
 {$R *.dfm}

@@ -73,22 +73,10 @@ begin
       LColuna := 'PROTOCOLO';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
-      LColuna := 'STATUS';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
       LColuna := 'DT. ABERTURA';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
-      LColuna := 'DT. TRANSFERÊNCIA';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'DT. FECHAMENTO';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
       LColuna := 'PREVISÃO SOLUÇÃO';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'PRAZO';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
       LColuna := 'TÉCNICO';
@@ -98,12 +86,6 @@ begin
       LDado.AddPair(LColuna, LAux);
 
       LColuna := 'TIPO CLIENTE';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'CLASSIFICAÇÃO';
-      LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
-
-      LColuna := 'SOLICITAÇÃO DO CLIENTE';
       LDado.AddPair(LColuna, TJSONString.Create(DadoDaColuna(ASheet, LColuna, i)));
 
       LColuna := 'TIPO RECLAME';
@@ -116,6 +98,14 @@ begin
       LAux    := DadoDaColuna(ASheet, LColuna, i);
       if LAux = '' then
          LAux := C_NAO;
+      LDado.AddPair(LColuna, TJSONString.Create(LAux));
+
+
+
+      LColuna := 'ID_USUARIO_DESIGNADO';
+      LAux    :=  DadoDaColuna(ASheet, LColuna, i);
+      if LAux = '' then
+         LAux := '0';
       LDado.AddPair(LColuna, TJSONString.Create(LAux));
 
       FDados.Add(LDado);
@@ -224,30 +214,20 @@ begin
    Result := 0;
    if LColuna = 'PROTOCOLO' then
       Result := 1
-   else if LColuna = 'STATUS' then
-      Result := 2
    else if LColuna = 'DT. ABERTURA' then
       Result := 4
-   else if LColuna = 'DT. TRANSFERÊNCIA' then
-      Result := 6
-   else if LColuna = 'DT. FECHAMENTO' then
-      Result := 7
    else if LColuna = 'PREVISÃO SOLUÇÃO' then
       Result := 8
-   else if LColuna = 'PRAZO' then
-      Result := 9
    else if LColuna = 'TÉCNICO' then
       Result := 10
    else if LColuna = 'TIPO CLIENTE' then
       Result := 15
-   else if LColuna = 'CLASSIFICAÇÃO' then
-      Result := 20
-   else if LColuna = 'SOLICITAÇÃO DO CLIENTE' then
-      Result := 21
    else if LColuna = 'TIPO RECLAME' then
       Result := 23
    else if LColuna = 'TIPO NIP/JUDICIAL' then
       Result := 26
+   else if LColuna = 'ID_USUARIO_DESIGNADO' then
+      Result := 28
    else
       InformationMessage('Coluna não reconhecida "' + LColuna + '"',C_TITULO_MENSAGENS);
 
@@ -264,23 +244,11 @@ begin
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PROTOCOLO'))+' - PROTOCOLO'+ chr(13);
    end;
 
-   if (trim(ASheet.Cells[3, PosicaoColuna('STATUS')].Value) <> 'STATUS') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('STATUS'))+' - STATUS'+ chr(13);
-
    if (trim(ASheet.Cells[3, PosicaoColuna('DT. ABERTURA')].Value) <> 'DT. ABERTURA') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DT. ABERTURA'))+' - DT. ABERTURA'+ chr(13);
 
-   if (trim(ASheet.Cells[3, PosicaoColuna('DT. TRANSFERÊNCIA')].Value) <> 'DT. TRANSFERÊNCIA') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DT. TRANSFERÊNCIA'))+' - DT. TRANSFERÊNCIA'+ chr(13);
-
-   if (trim(ASheet.Cells[3, PosicaoColuna('DT. FECHAMENTO')].Value) <> 'DT. FECHAMENTO') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('DT. FECHAMENTO'))+' - DT. FECHAMENTO'+ chr(13);
-
    if (trim(ASheet.Cells[3, PosicaoColuna('PREVISÃO SOLUÇÃO')].Value) <> 'PREVISÃO SOLUÇÃO') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PREVISÃO SOLUÇÃO'))+' - PREVISÃO SOLUÇÃO'+ chr(13);
-
-   if (trim(ASheet.Cells[3, PosicaoColuna('PRAZO')].Value) <> 'PRAZO') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('PRAZO'))+' - PRAZO'+ chr(13);
 
    if (trim(ASheet.Cells[3, PosicaoColuna('TÉCNICO')].Value) <> 'TÉCNICO') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TÉCNICO'))+' - TÉCNICO'+ chr(13);
@@ -288,17 +256,14 @@ begin
    if (trim(ASheet.Cells[3, PosicaoColuna('TIPO CLIENTE')].Value) <> 'TIPO CLIENTE') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO CLIENTE'))+' - TIPO CLIENTE'+ chr(13);
 
-   if (trim(ASheet.Cells[3, PosicaoColuna('CLASSIFICAÇÃO')].Value) <> 'CLASSIFICAÇÃO') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('CLASSIFICAÇÃO'))+' - CLASSIFICAÇÃO'+ chr(13);
-
-   if (trim(ASheet.Cells[3, PosicaoColuna('SOLICITAÇÃO DO CLIENTE')].Value) <> 'SOLICITAÇÃO DO CLIENTE') then
-      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('SOLICITAÇÃO DO CLIENTE'))+' - SOLICITAÇÃO DO CLIENTE'+ chr(13);
-
    if (trim(ASheet.Cells[3, PosicaoColuna('TIPO RECLAME')].Value) <> 'TIPO RECLAME') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO RECLAME'))+' - TIPO RECLAME'+ chr(13);
 
    if (trim(ASheet.Cells[3, PosicaoColuna('TIPO NIP/JUDICIAL')].Value) <> 'TIPO NIP/JUDICIAL') then
       AMensagem := AMensagem + ColunaExcel(PosicaoColuna('TIPO NIP/JUDICIAL'))+' - TIPO NIP/JUDICIAL'+ chr(13);
+
+   if (trim(ASheet.Cells[3, PosicaoColuna('ID_USUARIO_DESIGNADO')].Value) <> 'ID_USUARIO_DESIGNADO') then
+      AMensagem := AMensagem + ColunaExcel(PosicaoColuna('ID_USUARIO_DESIGNADO'))+' - ID_USUARIO_DESIGNADO '+ chr(13);
 
    if AMensagem <> '' then
       begin

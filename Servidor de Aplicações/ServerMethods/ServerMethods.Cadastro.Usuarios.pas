@@ -33,6 +33,7 @@ type
     qrySetoresNome_Setor: TStringField;
     qryGravarLogSenha: TFDQuery;
     qryCadastroPerfil: TStringField;
+    qryAux: TFDQuery;
   private
     { Private declarations }
     procedure MontarQueryCadastro(AQuery : TFDQuery);
@@ -48,13 +49,15 @@ type
 
     function LocalizarLogin(const ALogin : String) : TJSONArray;
     procedure GravarLogLimpesaSenha(const AIdUsuario, AIdUsuarioResponsavel : integer);
+
+    function Usuarios : TJSonArray;
   end;
 
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses Libs.Constantes;
+uses Libs.Constantes, Libs.TFuncoesJSON;
 
 {$R *.dfm}
 
@@ -195,6 +198,20 @@ begin
 
    qryPesquisa.Sql.Add('Order by Nome_Usuario');
 
+end;
+
+function TSMUsuarios.Usuarios: TJSonArray;
+begin
+   qryAux.Close;
+   qryAux.Sql.Clear;
+   qryAux.Sql.Add('Select id, Nome_Usuario ');
+   qryAux.Sql.Add('From ');
+   qryAux.Sql.Add('   Usuarios ');
+   qryAux.Sql.Add('where ');
+   qryAux.Sql.Add('   Ativo = ' + QuotedStr(C_SIM));
+   qryAux.Sql.Add('Order By id');
+
+   Result := TFuncoesJSON.MontarJSON(qryAux);
 end;
 
 end.

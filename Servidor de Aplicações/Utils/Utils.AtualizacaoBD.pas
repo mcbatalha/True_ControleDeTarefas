@@ -22,6 +22,8 @@ var
    procedure AtualizarVersao;
    procedure AtualizarBD;
 
+   procedure Atualizacao015;
+   procedure Atualizacao014;
    procedure Atualizacao013;
    procedure Atualizacao012;
    procedure Atualizacao011;
@@ -163,9 +165,11 @@ begin
    if FVersaoAtual = 10 then Atualizacao011;
    if FVersaoAtual = 11 then Atualizacao012;
    if FVersaoAtual = 12 then Atualizacao013;
+   if FVersaoAtual = 13 then Atualizacao014;
+   if FVersaoAtual = 14 then Atualizacao015;
 end;
 
-procedure Atualizacao013;
+procedure Atualizacao015;
 var LQuery : TFDQuery;
 begin
    FAtualizou := False;
@@ -176,32 +180,18 @@ begin
          LQuery.Connection := ServerContainer.FDConnection;
 
          LQuery.SQL.Clear;
-         LQuery.SQL.Add('CREATE TABLE Status_True');
-         LQuery.SQL.Add('(id int, Status varchar(30), Tipo_Prazo varchar(10), Prazo int, ');
-         LQuery.SQL.Add(' Encerra varchar(3), Ativo varchar(3) Default('+ QuotedStr(C_SIM) +'), ');
-         LQuery.SQL.Add(' CONSTRAINT PK_Status_True PRIMARY KEY (id), ');
-         LQuery.SQL.Add(' CONSTRAINT IK_Status_True UNIQUE NONCLUSTERED (Status))');
+         LQuery.SQL.Add('ALTER TABLE AutoSc');
+         LQuery.SQL.Add('Add Designacao_Pendente varchar(3) Default('+ QuotedStr(C_NAO) + ')');
          LQuery.ExecSQL;
 
          LQuery.SQL.Clear;
-         LQuery.SQL.Add('ALTER TABLE AutoSC ');
-         LQuery.SQL.Add('Add id_Status_True int, ');
-         LQuery.SQL.Add('    CONSTRAINT FK_AutoSc_Status_True FOREIGN KEY (id_Status_True)');
-         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.SQL.Add('ALTER TABLE Siags');
+         LQuery.SQL.Add('Add Designacao_Pendente varchar(3) Default('+ QuotedStr(C_NAO) + ')');
          LQuery.ExecSQL;
 
          LQuery.SQL.Clear;
-         LQuery.SQL.Add('ALTER TABLE Siags ');
-         LQuery.SQL.Add('Add id_Status_True int, ');
-         LQuery.SQL.Add('    CONSTRAINT FK_Siags_Status_True FOREIGN KEY (id_Status_True)');
-         LQuery.SQL.Add('    REFERENCES Status_True (id)');
-         LQuery.ExecSQL;
-
-         LQuery.SQL.Clear;
-         LQuery.SQL.Add('ALTER TABLE ControlPc ');
-         LQuery.SQL.Add('Add id_Status_True int, ');
-         LQuery.SQL.Add('    CONSTRAINT FK_ControlPc_Status_True FOREIGN KEY (id_Status_True)');
-         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.SQL.Add('ALTER TABLE ControlPc');
+         LQuery.SQL.Add('Add Designacao_Pendente varchar(3) Default('+ QuotedStr(C_NAO) + ')');
          LQuery.ExecSQL;
 
          AtualizarVersao;
@@ -221,6 +211,213 @@ begin
    end;
 end;
 
+
+procedure Atualizacao014;
+var LQuery : TFDQuery;
+begin
+   FAtualizou := False;
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+         LQuery := TFDQuery.Create(nil);
+         LQuery.Connection := ServerContainer.FDConnection;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE AutoSc_Designacao_Solicitacao');
+         LQuery.SQL.Add('(id bigint identity(1,1), id_Processo bigint, ');
+         LQuery.SQL.Add(' id_Usuario_Solicitante int, Data_Solicitacao smalldatetime, ');
+         LQuery.SQL.Add(' id_Usuario_Designado int, id_Usuario_Solicitado int, ');
+         LQuery.SQL.Add(' id_Setor_Designado int, id_Setor_Solicitado int,');
+         LQuery.SQL.Add(' Autorizado varchar(10), Data_Hora_Autorizacao smalldatetime, ');
+         LQuery.SQL.Add(' Justificativa varchar(100), id_Usuario_Autorizador int, ');
+         LQuery.SQL.Add(' CONSTRAINT PK_AutoSc_Designacao_Solicitacao PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_AUTOSC FOREIGN KEY (id_Processo) ');
+         LQuery.SQL.Add('            REFERENCES AutoSc (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_Usuarios_Solicitante FOREIGN KEY (id_Usuario_Solicitante) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_Usuarios_Designado FOREIGN KEY (id_Usuario_Designado) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_Usuarios_Solicitado FOREIGN KEY (id_Usuario_Solicitado) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_Usuarios_Autorizador FOREIGN KEY (id_Usuario_Autorizador) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_Setores_Designado FOREIGN KEY (id_Setor_Designado) ');
+         LQuery.SQL.Add('            REFERENCES Setores (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_AutoSc_Designacao_Solicitacao_Setores_Solicitado FOREIGN KEY (id_Setor_Solicitado) ');
+         LQuery.SQL.Add('            REFERENCES Setores (id) ');
+         LQuery.SQL.Add(')');
+         LQuery.ExecSQL;
+
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Siags_Designacao_Solicitacao');
+         LQuery.SQL.Add('(id bigint identity(1,1), id_Autorizacao bigint, ');
+         LQuery.SQL.Add(' id_Usuario_Solicitante int, Data_Solicitacao smalldatetime, ');
+         LQuery.SQL.Add(' id_Usuario_Designado int, id_Usuario_Solicitado int, ');
+         LQuery.SQL.Add(' id_Setor_Designado int, id_Setor_Solicitado int,');
+         LQuery.SQL.Add(' Autorizado varchar(10), Data_Hora_Autorizacao smalldatetime, ');
+         LQuery.SQL.Add(' Justificativa varchar(100), id_Usuario_Autorizador int, ');
+         LQuery.SQL.Add(' CONSTRAINT PK_Siags_Designacao_Solicitacao PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Siags FOREIGN KEY (id_Processo) ');
+         LQuery.SQL.Add('            REFERENCES Siags (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Usuarios_Solicitante FOREIGN KEY (id_Usuario_Solicitante) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Usuarios_Designado FOREIGN KEY (id_Usuario_Designado) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Usuarios_Solicitado FOREIGN KEY (id_Usuario_Solicitado) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Usuarios_Autorizador FOREIGN KEY (id_Usuario_Autorizador) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Setores_Designado FOREIGN KEY (id_Setor_Designado) ');
+         LQuery.SQL.Add('            REFERENCES Setores (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_Siags_Designacao_Solicitacao_Setores_Solicitado FOREIGN KEY (id_Setor_Solicitado) ');
+         LQuery.SQL.Add('            REFERENCES Setores (id) ');
+         LQuery.SQL.Add(')');
+         LQuery.ExecSQL;
+
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE ControlPc_Designacao_Solicitacao');
+         LQuery.SQL.Add('(id bigint identity(1,1), id_Protocolo bigint, ');
+         LQuery.SQL.Add(' id_Usuario_Solicitante int, Data_Solicitacao smalldatetime, ');
+         LQuery.SQL.Add(' id_Usuario_Designado int, id_Usuario_Solicitado int, ');
+         LQuery.SQL.Add(' id_Setor_Designado int, id_Setor_Solicitado int,');
+         LQuery.SQL.Add(' Autorizado varchar(10), Data_Hora_Autorizacao smalldatetime, ');
+         LQuery.SQL.Add(' Justificativa varchar(100), id_Usuario_Autorizador int, ');
+         LQuery.SQL.Add(' CONSTRAINT PK_ControlPc_Designacao_Solicitacao PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_ControlPc FOREIGN KEY (id_Processo) ');
+         LQuery.SQL.Add('            REFERENCES ControlPc (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_Usuarios_Solicitante FOREIGN KEY (id_Usuario_Solicitante) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_Usuarios_Designado FOREIGN KEY (id_Usuario_Designado) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_Usuarios_Solicitado FOREIGN KEY (id_Usuario_Solicitado) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_Usuarios_Autorizador FOREIGN KEY (id_Usuario_Autorizador) ');
+         LQuery.SQL.Add('            REFERENCES Usuarios (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_Setores_Designado FOREIGN KEY (id_Setor_Designado) ');
+         LQuery.SQL.Add('            REFERENCES Setores (id), ');
+
+         LQuery.SQL.Add(' CONSTRAINT FK_ControlPc_Designacao_Solicitacao_Setores_Solicitado FOREIGN KEY (id_Setor_Solicitado) ');
+         LQuery.SQL.Add('            REFERENCES Setores (id) ');
+         LQuery.SQL.Add(')');
+         LQuery.ExecSQL;
+         AtualizarVersao;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         FAtualizou := True;
+         Inc(FVersaoAtual);
+      except
+         on E: Exception do
+            begin
+            TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+            ShowMessage('Erro ao processar a atualização ' + IntToStrZero(VersaoAtual +1,3) + chr(13) + E.Message );
+         end;
+      end;
+   finally
+      LQuery.Close;
+      FreeAndNil(LQuery);
+   end;
+end;
+
+
+procedure Atualizacao013;
+var LQuery : TFDQuery;
+begin
+   FAtualizou := False;
+   try
+      try
+         TTransacao.IniciarTransacao(ServerContainer.FDConnection);
+         LQuery := TFDQuery.Create(nil);
+         LQuery.Connection := ServerContainer.FDConnection;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('CREATE TABLE Status_True');
+         LQuery.SQL.Add('(id int, Status varchar(30), Tipo_Prazo varchar(10), Prazo int, ');
+         LQuery.SQL.Add(' Encerra varchar(3) Default('+ QuotedStr(C_NAO) +'), ');
+         LQuery.SQL.Add(' SIAGS varchar(3) Default(' +QuotedStr(C_NAO)+ '), ');
+         LQuery.SQL.Add(' CONTROLPC varchar(3) Default(' +QuotedStr(C_NAO)+ '), ');
+         LQuery.SQL.Add(' AUTOSC varchar(3) Default(' +QuotedStr(C_NAO)+ '), ');
+         LQuery.SQL.Add(' Ativo varchar(3) Default('+ QuotedStr(C_SIM) +'), ');
+
+         LQuery.SQL.Add(' CONSTRAINT PK_Status_True PRIMARY KEY (id), ');
+         LQuery.SQL.Add(' CONSTRAINT IK_Status_True UNIQUE NONCLUSTERED (Status))');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSC ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_AutoSc_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE AutoSC_Historico ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_AutoSC_Historico_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE Siags ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_Siags_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE Siags_Historico ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_Siags_Historico_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE ControlPc ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_ControlPc_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         LQuery.SQL.Clear;
+         LQuery.SQL.Add('ALTER TABLE ControlPc_Historico ');
+         LQuery.SQL.Add('Add id_Status_True int, ');
+         LQuery.SQL.Add('    CONSTRAINT FK_ControlPc_Historico_Status_True FOREIGN KEY (id_Status_True)');
+         LQuery.SQL.Add('    REFERENCES Status_True (id)');
+         LQuery.ExecSQL;
+
+         AtualizarVersao;
+         TTransacao.ComitarTransacao(ServerContainer.FDConnection);
+         FAtualizou := True;
+         Inc(FVersaoAtual);
+      except
+         on E: Exception do
+            begin
+            TTransacao.CancelarTransacao(ServerContainer.FDConnection);
+            ShowMessage('Erro ao processar a atualização ' + IntToStrZero(VersaoAtual +1,3) + chr(13) + E.Message );
+         end;
+      end;
+   finally
+      LQuery.Close;
+      FreeAndNil(LQuery);
+   end;
+end;
 
 
 procedure Atualizacao012;
@@ -309,11 +506,10 @@ begin
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE ControlPc ');
-         LQuery.SQL.Add('(id bigint identity(1,1), Protocolo varchar(50), id_Tipo_Status int, ');
-         LQuery.SQL.Add(' Data_Abertura smalldatetime, Data_Transferencia smalldatetime, ');
-         LQuery.SQL.Add(' Data_Fechamento smalldatetime, Previsao_Solucao smalldatetime, ');
-         LQuery.SQL.Add(' id_Tipo_Prazo int, id_Tecnico int, id_Tipo_Cliente int, id_Tipo_Classificacao int, ');
-         LQuery.SQL.Add(' Solicitacao_Cliente varchar(500), Tipo_Reclame varchar(3), Tipo_Nip varchar(3), ');
+         LQuery.SQL.Add('(id bigint identity(1,1), Protocolo varchar(50),  ');
+         LQuery.SQL.Add(' Data_Abertura smalldatetime, Previsao_Solucao smalldatetime, ');
+         LQuery.SQL.Add(' id_Tecnico int, id_Tipo_Cliente int,  ');
+         LQuery.SQL.Add(' Tipo_Reclame varchar(3), Tipo_Nip varchar(3), ');
          LQuery.SQL.Add(' Data_Hora_Importacao smalldatetime, ');
          LQuery.SQL.Add(' id_Usuario_Importacao int, id_Setor_Designado int, ');
          LQuery.SQL.Add(' id_Usuario_Designado int, id_Responsavel_Designacao int, ');
@@ -370,9 +566,8 @@ begin
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE ControlPc_Historico ');
-         LQuery.SQL.Add('(id Bigint Identity(1,1), id_ControlPc bigint, id_Tipo_Status int, ');
-         LQuery.SQL.Add(' id_Tipo_Prazo int, id_Tecnico int, id_Tipo_Cliente int,  ');
-         LQuery.SQL.Add(' id_Tipo_Classifiacao int, ');
+         LQuery.SQL.Add('(id Bigint Identity(1,1), id_ControlPc bigint,  ');
+         LQuery.SQL.Add(' id_Tecnico int, id_Tipo_Cliente int,  ');
          LQuery.SQL.Add(' id_Usuario_Responsavel int, Data_Hora_Historico smalldatetime, ');
          LQuery.SQL.Add(' CONSTRAINT PK_ControlPc_Historico PRIMARY KEY (id), ');
 
@@ -497,14 +692,10 @@ begin
 
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE Siags ');
-         LQuery.SQL.Add('(id Bigint Identity(1,1), UF varchar(2), id_Tipo_Autorizacao int, ');
-         LQuery.SQL.Add(' Numero_Autorizacao Bigint, id_Tipo_Atendimento int, Anexo_Opme varchar(3),  ');
-         LQuery.SQL.Add(' Anexo_Quimio varchar(3), Anexo_Radio varchar(3), id_Beneficiario int, ');
-         LQuery.SQL.Add(' id_Tipo_Situacao_Autorizacao int, id_Tipo_Ultima_Anotacao int, ');
-         LQuery.SQL.Add(' id_Tipo_Auditoria int, Dia_Inclusao int, Dias_Corridos_Base int, ');
-         LQuery.SQL.Add(' Dias_Uteis_Base int, Dias_Prazo_Caixa int, Data_Prazo_Caixa smalldatetime, ');
-         LQuery.SQL.Add(' id_Tipo_Prazo_Caixa int, Dias_Prazo_ANS int, Data_Prazo_ANS smalldatetime, ');
-         LQuery.SQL.Add(' id_Tipo_Prazo_ANS int, Data_Hora_Importacao smalldatetime, ');
+         LQuery.SQL.Add('(id Bigint Identity(1,1), id_Tipo_Autorizacao int, ');
+         LQuery.SQL.Add(' Numero_Autorizacao Bigint, id_Tipo_Atendimento int, id_Beneficiario int, ');
+         LQuery.SQL.Add(' Data_Prazo_Caixa smalldatetime, Data_Prazo_ANS smalldatetime, ');
+         LQuery.SQL.Add(' Data_Hora_Importacao smalldatetime, ');
          LQuery.SQL.Add(' id_Usuario_Importacao int, id_Setor_Designado int, ');
          LQuery.SQL.Add(' id_Usuario_Designado int, id_Responsavel_Designacao int, ');
          LQuery.SQL.Add(' Data_Hora_Designacao smalldatetime, Justificativa_Designacao varchar(100), ');
@@ -573,11 +764,8 @@ begin
          LQuery.SQL.Clear;
          LQuery.SQL.Add('CREATE TABLE Siags_Historico ');
          LQuery.SQL.Add('(id Bigint Identity(1,1), id_Siags bigint, id_Tipo_Autorizacao int, ');
-         LQuery.SQL.Add(' id_Tipo_Atendimento int, Anexo_Opme varchar(3), Anexo_Quimio varchar(3), ');
-         LQuery.SQL.Add(' Anexo_Radio varchar(3), id_Tipo_Situacao_Autorizacao int, ');
-         LQuery.SQL.Add(' id_Tipo_Ultima_Anotacao int, id_Tipo_Auditoria int, Dias_Corridos_Base int, ');
-         LQuery.SQL.Add(' Dias_Uteis_Base int, Dias_Prazo_Caixa int, id_Tipo_Prazo_Caixa int, ');
-         LQuery.SQL.Add(' Dias_Prazo_ANS int, id_Tipo_Prazo_ANS int, ');
+         LQuery.SQL.Add(' id_Tipo_Atendimento int, Data_Prazo_Caixa smalldatetime, ');
+         LQuery.SQL.Add(' Data_Prazo_ANS smalldatetime, ');
          LQuery.SQL.Add(' id_Usuario_Responsavel int, Data_Hora_Historico smalldatetime, ');
          LQuery.SQL.Add(' CONSTRAINT PK_Siags_Historico PRIMARY KEY (id), ');
 

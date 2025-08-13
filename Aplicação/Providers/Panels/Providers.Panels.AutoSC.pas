@@ -130,6 +130,13 @@ type
     cdsPainelUsuario_Importacao: TStringField;
     cdsPainelUsuario_Atualizacao: TStringField;
     cdsPainelUsuario_Encerrameto: TStringField;
+    dtsStatusTrue: TDataSource;
+    mtbStatusTrue: TFDMemTable;
+    mtbStatusTrueid: TIntegerField;
+    mtbStatusTrueStatus: TStringField;
+    mtbStatusTrueTipo_Prazo: TStringField;
+    mtbStatusTruePrazo: TIntegerField;
+    mtbStatusTrueEncerra: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure cdsPainelTipo_ProcessoGetText(Sender: TField; var Text: string; DisplayText: Boolean);
@@ -140,8 +147,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   dtmPainelAutoSC: TdtmPainelAutoSC;
+*)
 
 implementation
 

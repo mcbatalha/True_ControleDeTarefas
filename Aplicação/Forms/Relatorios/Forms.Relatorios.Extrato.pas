@@ -74,8 +74,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   frmRelatorioExtrato: TfrmRelatorioExtrato;
+*)
 
 implementation
 

@@ -234,12 +234,16 @@ begin
    dbgPesquisa.AddField('Prazo');
    dbgPesquisa.ColumnByName('Prazo').DisplayLabel := 'Prazo';
 
+   dbgPesquisa.AddField('Encerra');
+   dbgPesquisa.ColumnByName('Encerra').DisplayLabel := 'Encerra';
 
    FCdsPesquisa.FieldByName('Tipo_Prazo').Alignment := taCenter;
    FCdsPesquisa.FieldByName('Prazo').Alignment      := taCenter;
+   FCdsPesquisa.FieldByName('Encerra').Alignment    := taCenter;
 
    dbgPesquisa.ColumnByName('Tipo_Prazo').DisplayWidth := 30;
    dbgPesquisa.ColumnByName('Prazo').DisplayWidth      := 15;
+   dbgPesquisa.ColumnByName('Encerra').DisplayWidth    := 30;
 end;
 
 procedure TfrmPesquisa.TratarCamposUsuario;

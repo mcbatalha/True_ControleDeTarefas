@@ -190,9 +190,10 @@ type
                                  const AIdUsuarioResponsavel : integer;
                                  out ADataHora : TDateTime): Boolean;
 
-    function EncerrarProcesso(const AIdProcesso : LongInt;
-                              const AJustificativa: String;
-                              const AIdUsuarioResponsavel : integer): Boolean;
+    function AlterarStatus(const AIdProcesso : LongInt;
+                           const AIdStatus   : Integer;
+                           const AJustificativa: String;
+                           const AIdUsuarioResponsavel : integer): Boolean;
 
     function HistoricoDeDesignacoes(const AIdProcesso : LongInt) : TJSONArray;
     function HistoricoDeAtualizacoes(const AIdProcesso : LongInt) : TJSONArray;
@@ -537,7 +538,11 @@ begin
    end;
 end;
 
-function TSMAutoSC.EncerrarProcesso(const AIdProcesso: LongInt; const AJustificativa: String; const AIdUsuarioResponsavel: integer): Boolean;
+function TSMAutoSC.AlterarStatus(
+   const AIdProcesso: LongInt;
+   const AIdStatus   : Integer;
+   const AJustificativa: String;
+   const AIdUsuarioResponsavel: Integer): Boolean;
 begin
    Result := False;
 
@@ -830,8 +835,8 @@ begin
    qryAux.Sql.Clear;
    qryAux.Sql.Add('Select ');
    qryAux.Sql.Add('   al.Justificativa, al.Data_Hora_Log, ');
-   qryAux.Sql.Add('   isnull(sd.Nome_Setor, ' + QuotedStr(C_PROCESSO_NAO_DESIGNADO) + ') as Nome_Setor, ');
-   qryAux.Sql.Add('   isnull(ud.Nome_Usuario, ' + QuotedStr(C_PROCESSO_NAO_DESIGNADO) + ') as Usuario_Designado, ');
+   qryAux.Sql.Add('   isnull(sd.Nome_Setor, ' + QuotedStr(C_DESCRICAO_NAO_DESIGNADO) + ') as Nome_Setor, ');
+   qryAux.Sql.Add('   isnull(ud.Nome_Usuario, ' + QuotedStr(C_DESCRICAO_NAO_DESIGNADO) + ') as Usuario_Designado, ');
    qryAux.Sql.Add('   ur.Nome_Usuario as Usuario_Responsavel ');
    qryAux.Sql.Add('from ');
    qryAux.Sql.Add('   AutoSc_Log al ');

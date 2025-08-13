@@ -76,8 +76,10 @@ type
     { Public declarations }
   end;
 
+(*
 var
   frmCadastroUsuarios: TfrmCadastroUsuarios;
+*)
 
 implementation
 
@@ -110,7 +112,9 @@ begin
    if not FService.Gravar(chbLimparSenha.Checked) then exit;
 
    if FOpcao = 'I' then
-      FService.GravarSeguranca;
+      FService.GravarSeguranca
+   else
+      FService.FecharTabelas;
 
    pgcUsuarios.ActivePageIndex := 0;
    Edicao(False);

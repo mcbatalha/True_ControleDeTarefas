@@ -12,6 +12,7 @@ uses
   System.Variants,
   System.Classes,
   System.JSON,
+  System.IOUtils,
 
   Vcl.Graphics,
   Vcl.Controls,
@@ -77,9 +78,10 @@ type
 
   end;
 
+(*
 var
   frmLogin : TfrmLogin;
-
+*)
 
 implementation
 {$R *.DFM}
@@ -92,6 +94,8 @@ uses Forms.Principal,
 
 
 procedure TfrmLogin.FormShow(Sender: TObject);
+var
+   LDataHoraArquivo : TDateTime;
 begin
    Logou := False;
    edtSenha.Text := '';
@@ -102,7 +106,8 @@ begin
    else
       cmbAmbiente.ItemIndex := cmbAmbiente.Items.IndexOf(C_AMBIENTE_DESENVOLVIMENTO);
 
-   StatusBar.Panels[0].Text := 'Versão: ' + FormatdateTime('yymmdd"-"hhmm', FileDateToDateTime(FileAge(Application.ExeName)));
+   LDataHoraArquivo := TFile.GetLastWriteTime(Application.ExeName);
+   StatusBar.Panels[0].Text := 'Versão: ' + FormatdateTime('yymmdd"-"hhmm', LDataHoraArquivo);
    edtLogin.setfocus;
 end;
 

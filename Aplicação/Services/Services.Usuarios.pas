@@ -44,6 +44,7 @@ type
      procedure DesassociarSetor;
      procedure ForcarTrocaSenha(const AForcar : Boolean);
      procedure GravarSeguranca;
+     procedure FecharTabelas;
 
 
      destructor Destroy; override;
@@ -159,6 +160,12 @@ begin
    Result := True;
 end;
 
+procedure TSrvUsuarios.FecharTabelas;
+begin
+   Fdm.cdsCadastro.Close;
+   Fdm.cdsSetores.Close;
+end;
+
 procedure TSrvUsuarios.ForcarTrocaSenha(const AForcar: Boolean);
 begin
    if AForcar then
@@ -190,11 +197,14 @@ begin
       if ALimparSenha then
          FPxyUsuarios.GravarLogLimpesaSenha(Fdm.cdsCadastroid.AsInteger, Seguranca.Id);
 
-(*
-      Fdm.cdsCadastro.Close;
-      Fdm.cdsSetores.Close;
-*)
       Result := True;
+
+      if Fdm.cdsCadastroid.AsInteger = Seguranca.Id then
+         begin
+         Seguranca.Nome   := Fdm.cdsCadastroNome_Usuario.AsString;
+         Seguranca.Login  := Fdm.cdsCadastroLogin.AsString;
+         Seguranca.Perfil := Fdm.cdsCadastroPerfil.AsString;
+      end;
 
       InformationMessage(C_GRAVADO_COM_SUCESSO , C_TITULO_MENSAGENS )
    end;
@@ -212,8 +222,7 @@ begin
       LForm.ShowModal;
       FreeAndNil(LForm);
    finally
-      Fdm.cdsCadastro.Close;
-      Fdm.cdsSetores.Close;
+      FecharTabelas;
    end;
 end;
 

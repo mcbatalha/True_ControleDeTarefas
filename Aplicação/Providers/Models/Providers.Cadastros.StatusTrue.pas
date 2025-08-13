@@ -13,6 +13,9 @@ type
     cdsCadastroPrazo: TIntegerField;
     cdsCadastroEncerra: TStringField;
     cdsCadastroAtivo: TStringField;
+    cdsCadastroAutoSC: TStringField;
+    cdsCadastroSiags: TStringField;
+    cdsCadastroControlPC: TStringField;
     procedure cdsCadastroNewRecord(DataSet: TDataSet);
   private
     { Private declarations }
@@ -21,8 +24,10 @@ type
     procedure LimparPrazo;
   end;
 
+(*
 var
   dtmCadastroStatusTrue: TdtmCadastroStatusTrue;
+*)
 
 implementation
 
