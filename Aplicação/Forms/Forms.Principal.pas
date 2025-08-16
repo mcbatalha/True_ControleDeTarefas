@@ -248,8 +248,10 @@ begin
    Application.CreateForm(TfrmQuadroResumo, LForm);
    LAltura := frmPrincipal.ClientHeight-50;
    LForm.Height := LAltura;
+   pnlBotoes.Visible := False;
    LForm.ShowModal;
    FreeAndNil(LForm);
+   pnlBotoes.Visible := True;
 end;
 
 procedure TfrmPrincipal.mniCadastroSetoresClick(Sender: TObject);

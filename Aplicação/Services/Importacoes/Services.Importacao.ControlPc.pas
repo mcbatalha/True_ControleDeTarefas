@@ -198,7 +198,10 @@ begin
                       ' - Total de registros não atualizados: ' + IntToStr(LRegistrosNaoAtualizados);
          InformationMessage(LMensagem ,C_TITULO_MENSAGENS);
       end else
-         InformationMessage('Ocorreu um erro na tentativa de gravar os dados.',C_TITULO_MENSAGENS)
+         LMensagem := LRetorno.Values['protocolo'].AsType<String>;
+         LMensagem := 'Ocorreu um erro na tentativa de gravar os dados.' + chr(13) +
+                      'Nº do Protocolo que gerou o erro: ' + LMensagem;
+         InformationMessage(LMensagem,C_TITULO_MENSAGENS);
    finally
       FreeAndNil(frmMensagem);
 

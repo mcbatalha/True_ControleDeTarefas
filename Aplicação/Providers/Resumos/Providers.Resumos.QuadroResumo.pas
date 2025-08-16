@@ -9,29 +9,42 @@ uses
 type
   TdtmQuadroResumo = class(TdtmBase)
     mtbQuadroResumo: TFDMemTable;
-    mtbQuadroResumoQtd_Siags: TIntegerField;
-    mtbQuadroResumoQtd_Siags_Vencidos_True: TIntegerField;
-    mtbQuadroResumoQtd_Siags_Vencidos_Ans: TIntegerField;
-    mtbQuadroResumoQtd_AutoSc: TIntegerField;
-    mtbQuadroResumoQtd_AutoSc_Vencidos_True: TIntegerField;
-    mtbQuadroResumoQtd_AutoSc_Vencidos_Ans: TIntegerField;
-    mtbQuadroResumoQtd_ControlPc: TIntegerField;
-    mtbQuadroResumoQtd_ControlPc_Vencidos_True: TIntegerField;
     mtbSiagsVencidos: TFDMemTable;
     mtbAutoScVencidos: TFDMemTable;
     mtbControlPcVencidos: TFDMemTable;
-    mtbSiagsVencidosNome_Setor: TStringField;
-    mtbSiagsVencidosQtd_Vencido: TIntegerField;
-    mtbSiagsVencidosQtd_VenceHoje: TIntegerField;
     mtbAutoScVencidosNome_Setor: TStringField;
     mtbAutoScVencidosQtd_Vencido: TIntegerField;
     mtbAutoScVencidosQtd_VenceHoje: TIntegerField;
-    mtbControlPcVencidosNome_Setor: TStringField;
-    mtbControlPcVencidosQtd_Vencido: TIntegerField;
-    mtbControlPcVencidosQtd_VenceHoje: TIntegerField;
     dtsSiagsVencidos: TDataSource;
     dtsAutoScVencidos: TDataSource;
     dtsControlPcVencidos: TDataSource;
+    mtbQuadroResumoQtd_Siags: TIntegerField;
+    mtbQuadroResumoQtd_Siags_Vencidos: TIntegerField;
+    mtbQuadroResumoQtd_Siags_Vence_Hoje: TIntegerField;
+    mtbQuadroResumoQtd_Siags_Vence_Amanha: TIntegerField;
+    mtbQuadroResumoQtd_Siags_Com_Prazo: TIntegerField;
+    mtbQuadroResumoQtd_ControlPc: TIntegerField;
+    mtbQuadroResumoQtd_ControlPc_Vencidos: TIntegerField;
+    mtbQuadroResumoQtd_ControlPc_Vence_Hoje: TIntegerField;
+    mtbQuadroResumoQtd_ControlPc_Vence_Amanha: TIntegerField;
+    mtbQuadroResumoQtd_ControlPc_Com_Prazo: TIntegerField;
+    mtbSiagsVencidosNome_Setor: TStringField;
+    mtbSiagsVencidosQtd_Vencido: TIntegerField;
+    mtbSiagsVencidosQtd_VenceHoje: TIntegerField;
+    mtbSiagsVencidosQtd_VenceAmanha: TIntegerField;
+    mtbControlPcVencidosNome_Setor: TStringField;
+    mtbControlPcVencidosQtd_Vencido: TIntegerField;
+    mtbControlPcVencidosQtd_VenceHoje: TIntegerField;
+    mtbControlPcVencidosQtd_VenceAmanha: TIntegerField;
+    mtbTitulos: TFDMemTable;
+    dtsTitulos: TDataSource;
+    mtbTitulosSetor: TStringField;
+    mtbTitulosVencido: TStringField;
+    mtbTitulosVence_Hoje: TStringField;
+    mtbTitulosVence_Amanha: TStringField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure mtbSiagsVencidosNome_SetorGetText(Sender: TField; var Text: string; DisplayText: Boolean);
   private
     { Private declarations }
   public
@@ -48,5 +61,36 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdtmQuadroResumo.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+   mtbTitulos.Open;
+   mtbTitulos.Append;
+   mtbTitulosSetor.AsString := 'Setor';
+   mtbTitulosVencido.AsString := 'Vencido';
+   mtbTitulosVence_Hoje.AsString := 'Vence Hoje';
+   mtbTitulosVence_Amanha.AsString := 'Vence Amanhã';
+   mtbTitulos.Post;
+
+
+end;
+
+procedure TdtmQuadroResumo.DataModuleDestroy(Sender: TObject);
+begin
+   mtbTitulos.Open;
+
+  inherited;
+
+end;
+
+procedure TdtmQuadroResumo.mtbSiagsVencidosNome_SetorGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+  inherited;
+   if Sender.AsString = '' then
+      Text := 'Não Designado'
+   else
+      Text := Sender.AsString;
+end;
 
 end.

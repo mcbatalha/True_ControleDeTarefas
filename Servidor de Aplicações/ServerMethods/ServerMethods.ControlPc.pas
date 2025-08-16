@@ -79,8 +79,6 @@ type
     qryTiposCliente: TFDQuery;
     qryTiposClienteid: TFDAutoIncField;
     qryTiposClienteTipo_Cliente: TStringField;
-    qryControlPcHistoricoTipo_Reclame: TStringField;
-    qryControlPcHistoricoTipo_Nip: TStringField;
     qryControlPcUltima_Atualizacao: TDateTimeField;
     qryControlPcid_Usuario_Ultima_Atualizacao: TIntegerField;
     qryControlPcid_Status_True: TIntegerField;
@@ -617,11 +615,12 @@ begin
       qryControlPcHistorico.Open;
       qryControlPcHistorico.Append;
       qryControlPcHistoricoid_ControlPc.AsInteger           := AId;
-      qryControlPcHistoricoid_Tecnico.AsInteger             := qryControlPcid_Tecnico.AsInteger;
-      qryControlPcHistoricoid_Tipo_Cliente.AsInteger        := qryControlPcid_Tipo_Cliente.AsInteger;
-      qryControlPcHistoricoTipo_Reclame.AsString            := qryControlPcTipo_Reclame.AsString;
-      qryControlPcHistoricoTipo_Nip.AsString                := qryControlPcTipo_Nip.AsString;
-      qryControlPcHistoricoid_Status_True.AsInteger         := qryControlPcid_Status_True.AsInteger;
+      if qryControlPcid_Tecnico.AsInteger > 0 then
+         qryControlPcHistoricoid_Tecnico.AsInteger          := qryControlPcid_Tecnico.AsInteger;
+      if qryControlPcid_Tipo_Cliente.AsInteger > 0 then
+         qryControlPcHistoricoid_Tipo_Cliente.AsInteger     := qryControlPcid_Tipo_Cliente.AsInteger;
+      if qryControlPcid_Status_True.AsInteger > 0 then
+         qryControlPcHistoricoid_Status_True.AsInteger         := qryControlPcid_Status_True.AsInteger;
       qryControlPcHistoricoid_Usuario_Responsavel.AsInteger := qryControlPcid_Usuario_Importacao.AsInteger;
       qryControlPcHistoricoData_Hora_Historico.AsDateTime   := FDataHora;
       qryControlPcHistorico.Post;
@@ -837,11 +836,15 @@ begin
             Result.AddPair('totalAtualizados',TJSONNumber.Create(FTotalAtualizados));
             Result.AddPair('totalNaoAtualizados',TJSONNumber.Create(FTotalNaoAtualizados));
          end else
+            begin
             Result.AddPair('importou',TJSONBool.Create(False));
+            Result.AddPair('protocolo',FNumeroProtocolo);
+         end;
 
       except
          begin
          Result.AddPair('importou',TJSONBool.Create(False));
+         Result.AddPair('protocolo',FNumeroProtocolo);
          TTransacao.CancelarTransacao(ServerContainer.FDConnection);
          end;
       end;

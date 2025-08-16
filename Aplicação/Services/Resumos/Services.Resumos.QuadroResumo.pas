@@ -42,16 +42,22 @@ type
      function QuadroResumo : Boolean;
 
      function TotalSiags            : String;
-     function SiagsVencidosTrue     : String;
-     function SiagsVencidosAns      : String;
+     function SiagsVencidos         : String;
+     function SiagsVenceHoje        : String;
+     function SiagsVenceAmanha      : String;
+     function SiagsComPrazo         : String;
+     function SiagsNaoDesignado      : Boolean;
 
      function TotalAutoSc           : String;
      function AutoScVencidosTrue    : String;
      function AutoScVencidosAns     : String;
 
      function TotalControlPc        : String;
-     function ControlPcVencidosTrue : String;
-     function ControlPcVencidosAns  : String;
+     function ControlPcVencidos     : String;
+     function ControlPcVenceHoje    : String;
+     function ControlPcVenceAmanha  : String;
+     function ControlPcComPrazo     : String;
+     function ControlPcNaoDesignado  : Boolean;
 
      destructor Destroy(); override;
   end;
@@ -63,23 +69,45 @@ implementation
 
 function TSrvResumos.AutoScVencidosAns: String;
 begin
-   Result := Fdm.mtbQuadroResumoQtd_Siags_Vencidos_Ans.AsInteger.ToString;
+//   Result := Fdm.mtbQuadroResumoQtd_Siags_Vencidos_Ans.AsInteger.ToString;
 end;
 
 function TSrvResumos.AutoScVencidosTrue: String;
 begin
-   Result := Fdm.mtbQuadroResumoQtd_AutoSc_Vencidos_Ans.AsInteger.ToString;
+//   Result := Fdm.mtbQuadroResumoQtd_AutoSc_Vencidos_Ans.AsInteger.ToString;
 end;
 
-function TSrvResumos.ControlPcVencidosAns: String;
+function TSrvResumos.ControlPcComPrazo: String;
+var
+   LTotal : Integer;
 begin
-//   Result := Fdm.mtbQuadroResumoQtd_ControlPc_Vencidos_Ans.AsInteger.ToString;
-   Result := '0';
+
+   LTotal := Fdm.mtbQuadroResumoQtd_ControlPc.AsInteger -
+             Fdm.mtbQuadroResumoQtd_ControlPc_Vencidos.AsInteger -
+             Fdm.mtbQuadroResumoQtd_ControlPc_Vence_Hoje.AsInteger -
+             Fdm.mtbQuadroResumoQtd_ControlPc_Vence_Amanha.AsInteger;
+
+   Result := IntToStr(LTotal);
 end;
 
-function TSrvResumos.ControlPcVencidosTrue: String;
+function TSrvResumos.ControlPcNaoDesignado: Boolean;
 begin
-   Result := Fdm.mtbQuadroResumoQtd_ControlPc_Vencidos_True.AsInteger.ToString;
+   Result := Fdm.mtbControlPcVencidosNome_Setor.AsString = '';
+end;
+
+function TSrvResumos.ControlPcVenceAmanha: String;
+begin
+   Result := Fdm.mtbQuadroResumoQtd_ControlPc_Vence_Amanha.AsInteger.ToString;
+end;
+
+function TSrvResumos.ControlPcVenceHoje: String;
+begin
+   Result := Fdm.mtbQuadroResumoQtd_ControlPc_Vence_Hoje.AsInteger.ToString;
+end;
+
+function TSrvResumos.ControlPcVencidos: String;
+begin
+   Result := Fdm.mtbQuadroResumoQtd_ControlPc_Vencidos.AsInteger.ToString;
 end;
 
 constructor TSrvResumos.Create;
@@ -126,19 +154,42 @@ begin
       TFuncoesJSON.PopularTabela(Fdm.mtbControlPcVencidos, LDados);
 end;
 
-function TSrvResumos.SiagsVencidosAns: String;
+function TSrvResumos.SiagsComPrazo: String;
+var
+   LTotal : Integer;
 begin
-   Result := Fdm.mtbQuadroResumoQtd_Siags_Vencidos_Ans.AsInteger.ToString;
+
+   LTotal := Fdm.mtbQuadroResumoQtd_Siags.AsInteger -
+             Fdm.mtbQuadroResumoQtd_Siags_Vencidos.AsInteger -
+             Fdm.mtbQuadroResumoQtd_Siags_Vence_Hoje.AsInteger -
+             Fdm.mtbQuadroResumoQtd_Siags_Vence_Amanha.AsInteger;
+
+   Result := IntToStr(LTotal);
 end;
 
-function TSrvResumos.SiagsVencidosTrue: String;
+function TSrvResumos.SiagsNaoDesignado: Boolean;
 begin
-   Result := Fdm.mtbQuadroResumoQtd_Siags_Vencidos_True.AsInteger.ToString;
+   Result := Fdm.mtbSiagsVencidosNome_Setor.AsString = '';
+end;
+
+function TSrvResumos.SiagsVenceAmanha: String;
+begin
+   Result := Fdm.mtbQuadroResumoQtd_Siags_Vence_Amanha.AsInteger.ToString;
+end;
+
+function TSrvResumos.SiagsVenceHoje: String;
+begin
+   Result := Fdm.mtbQuadroResumoQtd_Siags_Vence_Hoje.AsInteger.ToString;
+end;
+
+function TSrvResumos.SiagsVencidos: String;
+begin
+   Result := Fdm.mtbQuadroResumoQtd_Siags_Vencidos.AsInteger.ToString;
 end;
 
 function TSrvResumos.TotalAutoSc: String;
 begin
-   Result := Fdm.mtbQuadroResumoQtd_AutoSc.AsInteger.ToString;
+//   Result := Fdm.mtbQuadroResumoQtd_AutoSc.AsInteger.ToString;
 end;
 
 function TSrvResumos.TotalControlPc: String;

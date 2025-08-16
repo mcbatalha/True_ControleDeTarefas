@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Forms.Base, Vcl.Buttons, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Services.Resumos.QuadroResumo, Vcl.Grids, vcl.wwdbigrd, vcl.wwdbgrid;
+  Services.Resumos.QuadroResumo, Vcl.Grids, vcl.wwdbigrd, vcl.wwdbgrid, Data.Db, Util.Funcoes;
 
 type
   TfrmQuadroResumo = class(TfrmBase)
@@ -24,23 +24,8 @@ type
     Shape5: TShape;
     Shape6: TShape;
     lblTotalSiags: TLabel;
-    lblSiagsVencidosTrue: TLabel;
-    lblSiagsVencidosAns: TLabel;
-    Panel2: TPanel;
-    Label5: TLabel;
-    Panel3: TPanel;
-    Shape10: TShape;
-    Shape9: TShape;
-    Label7: TLabel;
-    Label8: TLabel;
-    Shape7: TShape;
-    Shape8: TShape;
-    Shape12: TShape;
-    Shape11: TShape;
-    Label6: TLabel;
-    lblAutoScVencidosTrue: TLabel;
-    lblAutoScVencidosAns: TLabel;
-    lblTotalAutoSc: TLabel;
+    lblSiagsVencidos: TLabel;
+    lblSiagsVenceHoje: TLabel;
     Panel4: TPanel;
     Label9: TLabel;
     Panel5: TPanel;
@@ -53,28 +38,40 @@ type
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
-    lblControlPcVencidosTrue: TLabel;
-    lblControlPcVencidosAns: TLabel;
+    lblControlPcVencidos: TLabel;
+    lblControlPcVenceHoje: TLabel;
     lblTotalControlPc: TLabel;
     pnlTotaisVencidos: TPanel;
     Panel9: TPanel;
     Panel10: TPanel;
-    Panel11: TPanel;
-    Panel12: TPanel;
     Panel13: TPanel;
     Panel14: TPanel;
-    dbgAutoScVencidos: TwwDBGrid;
     dbgControPcVencidos: TwwDBGrid;
-    dbgSiagsVencidos: TwwDBGrid;
-    Label13: TLabel;
-    Label14: TLabel;
+    Shape7: TShape;
+    Label5: TLabel;
+    lblSiagsVenceAmanha: TLabel;
+    Shape8: TShape;
+    Shape9: TShape;
+    Label7: TLabel;
+    Shape10: TShape;
+    lblSiagsComPrazo: TLabel;
+    Shape11: TShape;
+    Shape12: TShape;
+    Label6: TLabel;
+    lblControlPcVenceAmanha: TLabel;
+    Shape19: TShape;
+    Shape20: TShape;
     Label15: TLabel;
-    Label16: TLabel;
-    Label17: TLabel;
-    Label18: TLabel;
+    lblControlPcComPrazo: TLabel;
+    wwDBGrid1: TwwDBGrid;
+    dbgSiagsVencidos: TwwDBGrid;
+    wwDBGrid2: TwwDBGrid;
+    SpeedButton1: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure dbgSiagsVencidosCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
+    procedure dbgControPcVencidosCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
   private
     { Private declarations }
     FService : TSrvResumos;
@@ -101,33 +98,95 @@ procedure TfrmQuadroResumo.AtualizarQuantidades;
 begin
 
   lblTotalSiags.Caption            := FService.TotalSiags;
-  lblSiagsVencidosTrue.Caption     := FService.SiagsVencidosTrue;
-  lblSiagsVencidosAns.Caption      := FService.SiagsVencidosAns;
-
-  lblTotalAutoSc.Caption           := FService.TotalAutoSc;
-  lblAutoScVencidosTrue.Caption    := FService.AutoScVencidosTrue;
-  lblAutoScVencidosAns.Caption     := FService.AutoScVencidosAns;
+  lblSiagsVencidos.Caption         := FService.SiagsVencidos;
+  lblSiagsVenceHoje.Caption        := FService.SiagsVenceHoje;
+  lblSiagsVenceAmanha.Caption      := FService.SiagsVenceAmanha;
+  lblSiagsComPrazo.Caption         := FService.SiagsComPrazo;
 
   lblTotalControlPc.Caption        := FService.TotalControlPc;
-  lblControlPcVencidosTrue.Caption := FService.ControlPcVencidosTrue;
-  lblControlPcVencidosAns.Caption  := FService.ControlPcVencidosAns;
+  lblControlPcVencidos.Caption     := FService.ControlPcVencidos;
+  lblControlPcVenceHoje.Caption    := FService.ControlPcVenceHoje;
+  lblControlPcVenceAmanha.Caption  := FService.ControlPcVenceAmanha;
+  lblControlPcComPrazo.Caption     := FService.ControlPcComPrazo;
+end;
+
+procedure TfrmQuadroResumo.dbgControPcVencidosCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
+var
+   LPrazoCores : TCoresPrazo;
+begin
+  inherited;
+    inherited;
+    if Field.FieldName = 'Nome_Setor' then
+       begin
+       if FService.ControlPcNaoDesignado then
+          AFont.Color := clred;
+    end else if Field.FieldName = 'Qtd_Vencido' then
+       begin
+       LPrazoCores  := TFuncoes.PrazoCores(Date-1);
+       ABrush.Color := LPrazoCores.corDoFundo;
+       AFont.Color  := LPrazoCores.corDaFonte;
+    end else if Field.FieldName = 'Qtd_VenceHoje' then
+       begin
+       LPrazoCores  := TFuncoes.PrazoCores(Date);
+       ABrush.Color := LPrazoCores.corDoFundo;
+       AFont.Color  := LPrazoCores.corDaFonte;
+    end else if Field.FieldName = 'Qtd_VenceAmanha' then
+       begin
+       LPrazoCores  := TFuncoes.PrazoCores(Date+1);
+       ABrush.Color := LPrazoCores.corDoFundo;
+       AFont.Color  := LPrazoCores.corDaFonte;
+    end;
+
+end;
+
+procedure TfrmQuadroResumo.dbgSiagsVencidosCalcCellColors(Sender: TObject; Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont; ABrush: TBrush);
+var
+   LPrazoCores : TCoresPrazo;
+begin
+    inherited;
+    if Field.FieldName = 'Nome_Setor' then
+       begin
+       if FService.SiagsNaoDesignado then
+          AFont.Color := clred;
+    end else if Field.FieldName = 'Qtd_Vencido' then
+       begin
+       LPrazoCores  := TFuncoes.PrazoCores(Date-1);
+       ABrush.Color := LPrazoCores.corDoFundo;
+       AFont.Color  := LPrazoCores.corDaFonte;
+    end else if Field.FieldName = 'Qtd_VenceHoje' then
+       begin
+       LPrazoCores  := TFuncoes.PrazoCores(Date);
+       ABrush.Color := LPrazoCores.corDoFundo;
+       AFont.Color  := LPrazoCores.corDaFonte;
+    end else if Field.FieldName = 'Qtd_VenceAmanha' then
+       begin
+       LPrazoCores  := TFuncoes.PrazoCores(Date+1);
+       ABrush.Color := LPrazoCores.corDoFundo;
+       AFont.Color  := LPrazoCores.corDaFonte;
+    end;
 end;
 
 procedure TfrmQuadroResumo.FormCreate(Sender: TObject);
 begin
   inherited;
 
-  lblTotalSiags.Caption     := '0';
+(*
   lblTotalAutoSc.Caption    := '0';
-  lblTotalControlPc.Caption := '0';
-
-  lblSiagsVencidosTrue.Caption     := '0';
   lblAutoScVencidosTrue.Caption    := '0';
-  lblControlPcVencidosTrue.Caption := '0';
-
-  lblSiagsVencidosAns.Caption      := '0';
   lblAutoScVencidosAns.Caption     := '0';
-  lblControlPcVencidosAns.Caption  := '0';
+*)
+
+  lblTotalSiags.Caption           := '0';
+  lblSiagsVencidos.Caption        := '0';
+  lblSiagsVenceHoje.Caption       := '0';
+  lblSiagsVenceAmanha.Caption     := '0';
+  lblSiagsComPrazo.Caption        := '0';
+
+  lblTotalControlPc.Caption       := '0';
+  lblControlPcVencidos.Caption    := '0';
+  lblControlPcVenceHoje.Caption   := '0';
+  lblControlPcVenceAmanha.Caption := '0';
+  lblControlPcComPrazo.Caption    := '0';
 
   FService := TSrvResumos.Create;
 end;

@@ -638,7 +638,8 @@ begin
          begin
          qrySiags.Append;
          qrySiagsNumero_Autorizacao.AsInteger := FNumeroAutorizacao;
-         qrySiagsid_Setor_Designado.AsInteger := FIdSetor;
+         if FIdSetor > 0 then
+            qrySiagsid_Setor_Designado.AsInteger := FIdSetor;
       end else
          begin
          if (qrySiagsid_Tipo_Autorizacao.AsInteger <> FIdTipoAutorizacao) or
@@ -689,14 +690,15 @@ begin
       qrySiagsHistorico.Open;
       qrySiagsHistorico.Append;
 
-      qrySiagsHistoricoid_Siags.AsInteger                     := AId;
-      qrySiagsHistoricoid_Tipo_Autorizacao.AsInteger          := qrySiagsid_Tipo_Autorizacao.AsInteger;
-      qrySiagsHistoricoid_Tipo_Atendimento.AsInteger          := qrySiagsid_Tipo_Atendimento.AsInteger;
-      qrySiagsHistoricoData_Prazo_Caixa.AsDateTime            := qrySiagsData_Prazo_Caixa.AsDateTime;
-      qrySiagsHistoricoData_Prazo_Ans.AsDateTime              := qrySiagsData_Prazo_Ans.AsDateTime;
+      qrySiagsHistoricoid_Siags.AsInteger                 := AId;
+      if qrySiagsid_Tipo_Autorizacao.AsInteger > 0 then
+         qrySiagsHistoricoid_Tipo_Autorizacao.AsInteger   := qrySiagsid_Tipo_Autorizacao.AsInteger;
+      if qrySiagsid_Tipo_Atendimento.AsInteger > 0 then
+         qrySiagsHistoricoid_Tipo_Atendimento.AsInteger   := qrySiagsid_Tipo_Atendimento.AsInteger;
+      qrySiagsHistoricoData_Prazo_Caixa.AsDateTime        := qrySiagsData_Prazo_Caixa.AsDateTime;
+      qrySiagsHistoricoData_Prazo_Ans.AsDateTime          := qrySiagsData_Prazo_Ans.AsDateTime;
 
-      qrySiagsHistoricoid_Usuario_Responsavel.AsInteger       := qrySiagsid_Usuario_Importacao.AsInteger;
-//      qrySiagsHistoricoid_Usuario_Responsavel.AsInteger   := FIdUsuarioResponsavel;
+      qrySiagsHistoricoid_Usuario_Responsavel.AsInteger   := qrySiagsid_Usuario_Importacao.AsInteger;
       qrySiagsHistoricoData_Hora_Historico.AsDateTime     := FDataHora;
       qrySiagsHistorico.Post;
    finally
@@ -778,6 +780,7 @@ var
    I                   : Integer;
    LNomeBeneficiario   : String;
    LNumeroBeneficiario : String;
+   LSetor              : String;
 
    LObject : TJSONObject;
 begin
@@ -806,7 +809,8 @@ begin
             FIdBeneficiarios           := ObterIdBeneficiario(LNumeroBeneficiario, LNomeBeneficiario);
             FDataPrazoCaixa            := StrToDate(LObject.Values['DATAPRAZOCAX'].Value);
             FDataPrazoANS              := StrToDate(LObject.Values['DATAPRAZOANS'].Value);
-            FIDSETOR                   := LObject.Values['IDSETOR'].AsType<Integer>;
+            LSetor                     := LObject.Values['IDSETOR'].AsType<String>;
+            FIDSETOR                   := StrToIntDef(LSetor,0);
 
             GravarAutorizacao;
          end;
@@ -820,10 +824,14 @@ begin
             Result.AddPair('totalAtualizados',TJSONNumber.Create(FTotalAtualizados));
             Result.AddPair('totalNaoAtualizados',TJSONNumber.Create(FTotalNaoAtualizados));
          end else
+            begin
             Result.AddPair('importou',TJSONBool.Create(False));
+            Result.AddPair('autorizacao',InttoStr(FNumeroAutorizacao));
+         end;
       except
          begin
          Result.AddPair('importou',TJSONBool.Create(False));
+         Result.AddPair('autorizacao',InttoStr(FNumeroAutorizacao));
          TTransacao.CancelarTransacao(ServerContainer.FDConnection);
          end;
       end;

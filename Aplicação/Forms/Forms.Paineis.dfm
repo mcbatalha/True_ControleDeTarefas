@@ -701,7 +701,6 @@ object frmPaineis: TfrmPaineis
             OnFieldChanged = dbgControlPcFieldChanged
             FooterHeight = 20
             PaintOptions.AlternatingRowColor = 16053492
-            ExplicitLeft = 2
           end
           object pnlTituloControlPc: TPanel
             Left = 2
@@ -731,7 +730,7 @@ object frmPaineis: TfrmPaineis
     Top = 91
     Width = 1345
     Height = 657
-    ActivePage = TabSheet8
+    ActivePage = TabSheet10
     MultiLine = True
     TabOrder = 1
     Visible = False
@@ -1768,7 +1767,7 @@ object frmPaineis: TfrmPaineis
           AlignWithMargins = True
           Left = 10
           Top = 10
-          Width = 324
+          Width = 605
           Height = 24
           Margins.Bottom = 10
           Align = alTop
@@ -1780,6 +1779,7 @@ object frmPaineis: TfrmPaineis
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
+          ExplicitWidth = 324
         end
         object Panel6: TPanel
           Left = 7
@@ -2186,7 +2186,7 @@ object frmPaineis: TfrmPaineis
           AlignWithMargins = True
           Left = 10
           Top = 10
-          Width = 363
+          Width = 651
           Height = 24
           Margins.Bottom = 10
           Align = alTop
@@ -2198,6 +2198,7 @@ object frmPaineis: TfrmPaineis
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
+          ExplicitWidth = 363
         end
         object Panel19: TPanel
           Left = 7
@@ -2659,7 +2660,7 @@ object frmPaineis: TfrmPaineis
           AlignWithMargins = True
           Left = 10
           Top = 10
-          Width = 113
+          Width = 605
           Height = 24
           Margins.Bottom = 10
           Align = alTop
@@ -2671,6 +2672,7 @@ object frmPaineis: TfrmPaineis
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
+          ExplicitWidth = 113
         end
         object Panel3: TPanel
           Left = 7
@@ -2837,7 +2839,7 @@ object frmPaineis: TfrmPaineis
           AlignWithMargins = True
           Left = 10
           Top = 10
-          Width = 308
+          Width = 605
           Height = 24
           Margins.Bottom = 10
           Align = alTop
@@ -2849,6 +2851,7 @@ object frmPaineis: TfrmPaineis
           Font.Name = 'Roboto'
           Font.Style = []
           ParentFont = False
+          ExplicitWidth = 308
         end
         object Panel10: TPanel
           Left = 7

@@ -37,10 +37,8 @@ type
     destructor destroy();
   end;
 
-(*
 var
   frmTrocarSenha: TfrmTrocarSenha;
-*)
 
 
 implementation

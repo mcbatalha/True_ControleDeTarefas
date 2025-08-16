@@ -188,16 +188,6 @@ object SMControlPc: TSMControlPc
       FieldName = 'id_Status_True'
       Origin = 'id_Status_True'
     end
-    object qryControlPcHistoricoTipo_Reclame: TStringField
-      FieldName = 'Tipo_Reclame'
-      Origin = 'Tipo_Reclame'
-      Size = 3
-    end
-    object qryControlPcHistoricoTipo_Nip: TStringField
-      FieldName = 'Tipo_Nip'
-      Origin = 'Tipo_Nip'
-      Size = 3
-    end
     object qryControlPcHistoricoid_Usuario_Responsavel: TIntegerField
       FieldName = 'id_Usuario_Responsavel'
       Origin = 'id_Usuario_Responsavel'

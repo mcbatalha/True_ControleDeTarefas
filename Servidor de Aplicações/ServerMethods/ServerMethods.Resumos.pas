@@ -36,26 +36,30 @@ type
   TSMResumos = class(TDSServerModule)
     qryAux: TFDQuery;
     qryQuadroResumo: TFDQuery;
-    qryQuadroResumoQtd_Siags: TIntegerField;
-    qryQuadroResumoQtd_Siags_Vencidos_True: TIntegerField;
-    qryQuadroResumoQtd_Siags_Vencidos_Ans: TIntegerField;
-    qryQuadroResumoQtd_AutoSc: TIntegerField;
-    qryQuadroResumoQtd_AutoSc_Vencidos_True: TIntegerField;
-    qryQuadroResumoQtd_AutoSc_Vencidos_Ans: TIntegerField;
-    qryQuadroResumoQtd_ControlPc: TIntegerField;
-    qryQuadroResumoQtd_ControlPc_Vencidos_True: TIntegerField;
     qrySiagsVencidos: TFDQuery;
-    qrySiagsVencidosNome_Setor: TStringField;
-    qrySiagsVencidosQtd_Vencido: TIntegerField;
-    qrySiagsVencidosQtd_VenceHoje: TIntegerField;
     qryAutoScVencidos: TFDQuery;
     qryControlPcVencidos: TFDQuery;
     qryAutoScVencidosNome_Setor: TStringField;
     qryAutoScVencidosQtd_Vencido: TIntegerField;
     qryAutoScVencidosQtd_VenceHoje: TIntegerField;
+    qryQuadroResumoQtd_Siags: TIntegerField;
+    qryQuadroResumoQtd_Siags_Vencidos: TIntegerField;
+    qryQuadroResumoQtd_Siags_Vence_Hoje: TIntegerField;
+    qryQuadroResumoQtd_Siags_Vence_Amanha: TIntegerField;
+    qryQuadroResumoQtd_Siags_Com_Prazo: TIntegerField;
+    qryQuadroResumoQtd_ControlPc: TIntegerField;
+    qryQuadroResumoQtd_ControlPc_Vencidos: TIntegerField;
+    qryQuadroResumoQtd_ControlPc_Vence_Hoje: TIntegerField;
+    qryQuadroResumoQtd_ControlPc_Vence_Amanha: TIntegerField;
+    qryQuadroResumoQtd_ControlPc_Com_Prazo: TIntegerField;
+    qrySiagsVencidosNome_Setor: TStringField;
+    qrySiagsVencidosQtd_Vencido: TIntegerField;
+    qrySiagsVencidosQtd_VenceHoje: TIntegerField;
+    qrySiagsVencidosQtd_VenceAmanha: TIntegerField;
     qryControlPcVencidosNome_Setor: TStringField;
     qryControlPcVencidosQtd_Vencido: TIntegerField;
     qryControlPcVencidosQtd_VenceHoje: TIntegerField;
+    qryControlPcVencidosQtd_VenceAmanha: TIntegerField;
   private
   public
      function QuadroResumo : TJSONArray;

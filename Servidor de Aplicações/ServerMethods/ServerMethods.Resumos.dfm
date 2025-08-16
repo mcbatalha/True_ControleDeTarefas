@@ -55,28 +55,30 @@ object SMResumos: TSMResumos
       ' (Select count(*) '
       '  From Siags '
       '  where Data_Hora_Encerramento is null'
-      '        and id_Tipo_Prazo_Caixa = 3) as Qtd_Siags_Vencidos_True,'
-      ' (Select count(*)'
+      
+        '        and cast(Data_Prazo_Caixa as Date) <  cast(getDate() as ' +
+        'Date)) as Qtd_Siags_Vencidos,'
+      ' '
+      ' (Select count(*) '
       '  From Siags '
       '  where Data_Hora_Encerramento is null'
-      '        and id_Tipo_Prazo_ANS = 3) as Qtd_Siags_Vencidos_Ans,'
-      ''
-      '     '
+      
+        '        and cast(Data_Prazo_Caixa as Date) =  cast(getDate() as ' +
+        'Date)) as Qtd_Siags_Vence_Hoje,'
+      ' '
       ' (Select count(*) '
-      '  From AutoSc '
-      '  where Data_Hora_Encerramento is null) as Qtd_AutoSc,'
-      ''
-      ' (Select count(*) '
-      '  From AutoSc '
+      '  From Siags '
       '  where Data_Hora_Encerramento is null'
       
-        '        and id_Tipo_Prazo_Caixa = 3) as Qtd_AutoSc_Vencidos_True' +
-        ','
+        '        and cast(Data_Prazo_Caixa as Date) =  cast(getDate() + 1' +
+        ' as Date)) as Qtd_Siags_Vence_Amanha,'
       ''
-      ' (Select count(*)'
-      '  From AutoSc '
+      ' (Select count(*) '
+      '  From Siags '
       '  where Data_Hora_Encerramento is null'
-      '        and id_Tipo_Prazo_ANS = 3) as Qtd_AutoSc_Vencidos_Ans,'
+      
+        '        and cast(Data_Prazo_Caixa as Date) >  cast(getDate() + 1' +
+        ' as Date)) as Qtd_Siags_Com_Prazo,'
       ''
       ' (Select count(*) '
       '  From ControlPc '
@@ -85,7 +87,30 @@ object SMResumos: TSMResumos
       ' (Select count(*) '
       '  From ControlPc '
       '  where Data_Hora_Encerramento is null'
-      '        and id_Tipo_Prazo = 6) as Qtd_ControlPc_Vencidos_True')
+      
+        '        and cast(Previsao_Solucao as Date) <  cast(getDate() as ' +
+        'Date)) as Qtd_ControlPc_Vencidos,'
+      ' '
+      ' (Select count(*) '
+      '  From ControlPc '
+      '  where Data_Hora_Encerramento is null'
+      
+        '        and cast(Previsao_Solucao as Date) =  cast(getDate() as ' +
+        'Date)) as Qtd_ControlPc_Vence_Hoje,'
+      ' '
+      ' (Select count(*) '
+      '  From ControlPc '
+      '  where Data_Hora_Encerramento is null'
+      
+        '        and cast(Previsao_Solucao as Date) =  cast(getDate() + 1' +
+        ' as Date)) as Qtd_ControlPc_Vence_Amanha,'
+      ''
+      ' (Select count(*) '
+      '  From ControlPc '
+      '  where Data_Hora_Encerramento is null'
+      
+        '        and cast(Previsao_Solucao as Date) >  cast(getDate() + 1' +
+        ' as Date)) as Qtd_ControlPc_Com_Prazo')
     Left = 77
     Top = 32
     object qryQuadroResumoQtd_Siags: TIntegerField
@@ -93,29 +118,24 @@ object SMResumos: TSMResumos
       Origin = 'Qtd_Siags'
       ReadOnly = True
     end
-    object qryQuadroResumoQtd_Siags_Vencidos_True: TIntegerField
-      FieldName = 'Qtd_Siags_Vencidos_True'
-      Origin = 'Qtd_Siags_Vencidos_True'
+    object qryQuadroResumoQtd_Siags_Vencidos: TIntegerField
+      FieldName = 'Qtd_Siags_Vencidos'
+      Origin = 'Qtd_Siags_Vencidos'
       ReadOnly = True
     end
-    object qryQuadroResumoQtd_Siags_Vencidos_Ans: TIntegerField
-      FieldName = 'Qtd_Siags_Vencidos_Ans'
-      Origin = 'Qtd_Siags_Vencidos_Ans'
+    object qryQuadroResumoQtd_Siags_Vence_Hoje: TIntegerField
+      FieldName = 'Qtd_Siags_Vence_Hoje'
+      Origin = 'Qtd_Siags_Vence_Hoje'
       ReadOnly = True
     end
-    object qryQuadroResumoQtd_AutoSc: TIntegerField
-      FieldName = 'Qtd_AutoSc'
-      Origin = 'Qtd_AutoSc'
+    object qryQuadroResumoQtd_Siags_Vence_Amanha: TIntegerField
+      FieldName = 'Qtd_Siags_Vence_Amanha'
+      Origin = 'Qtd_Siags_Vence_Amanha'
       ReadOnly = True
     end
-    object qryQuadroResumoQtd_AutoSc_Vencidos_True: TIntegerField
-      FieldName = 'Qtd_AutoSc_Vencidos_True'
-      Origin = 'Qtd_AutoSc_Vencidos_True'
-      ReadOnly = True
-    end
-    object qryQuadroResumoQtd_AutoSc_Vencidos_Ans: TIntegerField
-      FieldName = 'Qtd_AutoSc_Vencidos_Ans'
-      Origin = 'Qtd_AutoSc_Vencidos_Ans'
+    object qryQuadroResumoQtd_Siags_Com_Prazo: TIntegerField
+      FieldName = 'Qtd_Siags_Com_Prazo'
+      Origin = 'Qtd_Siags_Com_Prazo'
       ReadOnly = True
     end
     object qryQuadroResumoQtd_ControlPc: TIntegerField
@@ -123,9 +143,24 @@ object SMResumos: TSMResumos
       Origin = 'Qtd_ControlPc'
       ReadOnly = True
     end
-    object qryQuadroResumoQtd_ControlPc_Vencidos_True: TIntegerField
-      FieldName = 'Qtd_ControlPc_Vencidos_True'
-      Origin = 'Qtd_ControlPc_Vencidos_True'
+    object qryQuadroResumoQtd_ControlPc_Vencidos: TIntegerField
+      FieldName = 'Qtd_ControlPc_Vencidos'
+      Origin = 'Qtd_ControlPc_Vencidos'
+      ReadOnly = True
+    end
+    object qryQuadroResumoQtd_ControlPc_Vence_Hoje: TIntegerField
+      FieldName = 'Qtd_ControlPc_Vence_Hoje'
+      Origin = 'Qtd_ControlPc_Vence_Hoje'
+      ReadOnly = True
+    end
+    object qryQuadroResumoQtd_ControlPc_Vence_Amanha: TIntegerField
+      FieldName = 'Qtd_ControlPc_Vence_Amanha'
+      Origin = 'Qtd_ControlPc_Vence_Amanha'
+      ReadOnly = True
+    end
+    object qryQuadroResumoQtd_ControlPc_Com_Prazo: TIntegerField
+      FieldName = 'Qtd_ControlPc_Com_Prazo'
+      Origin = 'Qtd_ControlPc_Com_Prazo'
       ReadOnly = True
     end
   end
@@ -134,47 +169,90 @@ object SMResumos: TSMResumos
     SQL.Strings = (
       'Select '
       '       Nome_Setor, '
-      '       isnull(sv.Qtd,0) as Qtd_Vencido, '
-      '       isnull(svh.Qtd,0) as Qtd_VenceHoje'
+      '       isnull(v.Qtd,0) as Qtd_Vencido, '
+      '       isnull(vh.Qtd,0) as Qtd_VenceHoje,'
+      '       isnull(vA.Qtd,0) as Qtd_VenceAmanha'
       'From Setores s'
       
         '     Left Outer Join (Select count(*) Qtd, isnull(id_Setor_Desig' +
         'nado,0) id_Setor_Designado'
       '                      From Siags '
       '                      where Data_Hora_Encerramento is null'
-      '                            and id_Tipo_Prazo_Caixa = 3'
       
-        '                      Group by id_Setor_Designado) sv on (sv.id_' +
-        'Setor_Designado = s.id) '
+        '                            and cast(Data_Prazo_Caixa as Date) <' +
+        '  cast(getDate() as Date)'
+      
+        '                      Group by id_Setor_Designado) v on (v.id_Se' +
+        'tor_Designado = s.id) '
       
         '     Left Outer Join (Select count(*) Qtd, isnull(id_Setor_Desig' +
         'nado,0) id_Setor_Designado'
       '                      From Siags '
       '                      where Data_Hora_Encerramento is null'
-      '                            and id_Tipo_Prazo_Caixa = 3'
-      #9#9#9#9#9#9#9'and Data_Prazo_Caixa = getdate()'
       
-        '                      Group by id_Setor_Designado) svh on (svh.i' +
-        'd_Setor_Designado = s.id )'
+        '                            and cast(Data_Prazo_Caixa as Date) =' +
+        '  cast(getDate() as Date)'
+      
+        '                      Group by id_Setor_Designado) vh on (vh.id_' +
+        'Setor_Designado = s.id )'
+      
+        '     Left Outer Join (Select count(*) Qtd, isnull(id_Setor_Desig' +
+        'nado,0) id_Setor_Designado'
+      '                      From Siags '
+      '                      where Data_Hora_Encerramento is null'
+      
+        '                            and cast(Data_Prazo_Caixa as Date) =' +
+        '  cast(getDate() as Date)'
+      
+        '                      Group by id_Setor_Designado) va on (va.id_' +
+        'Setor_Designado = s.id )'
+      'union'
+      'Select '
+      '       Null as Nome_Setor, '
+      '      (Select count(*) Qtd'
+      '       From Siags '
+      '       where Data_Hora_Encerramento is null'
+      
+        '             and cast(Data_Prazo_Caixa as Date) <  cast(getDate(' +
+        ') as Date)'
+      #9#9#9' and id_Setor_Designado is null) as  Qtd_Vencido,'
+      '      (Select count(*) Qtd'
+      '       From Siags '
+      '       where Data_Hora_Encerramento is null'
+      
+        '             and cast(Data_Prazo_Caixa as Date) =  cast(getDate(' +
+        ') as Date)'
+      #9#9#9' and id_Setor_Designado is null) as  Qtd_VenceHoje,'
+      '      (Select count(*) Qtd'
+      '       From Siags '
+      '       where Data_Hora_Encerramento is null'
+      
+        '             and cast(Data_Prazo_Caixa + 1 as Date) =  cast(getD' +
+        'ate() as Date)'
+      #9#9#9' and id_Setor_Designado is null) as  Qtd_VenceAmanha'
       'Order by Nome_Setor')
     Left = 77
     Top = 112
     object qrySiagsVencidosNome_Setor: TStringField
       FieldName = 'Nome_Setor'
       Origin = 'Nome_Setor'
+      ReadOnly = True
       Size = 50
     end
     object qrySiagsVencidosQtd_Vencido: TIntegerField
       FieldName = 'Qtd_Vencido'
       Origin = 'Qtd_Vencido'
       ReadOnly = True
-      Required = True
     end
     object qrySiagsVencidosQtd_VenceHoje: TIntegerField
       FieldName = 'Qtd_VenceHoje'
       Origin = 'Qtd_VenceHoje'
       ReadOnly = True
-      Required = True
+    end
+    object qrySiagsVencidosQtd_VenceAmanha: TIntegerField
+      FieldName = 'Qtd_VenceAmanha'
+      Origin = 'Qtd_VenceAmanha'
+      ReadOnly = True
     end
   end
   object qryAutoScVencidos: TFDQuery
@@ -233,47 +311,90 @@ object SMResumos: TSMResumos
     SQL.Strings = (
       'Select '
       '       Nome_Setor, '
-      '       isnull(cv.Qtd,0) as Qtd_Vencido, '
-      #9'   isnull(cvh.Qtd,0) as Qtd_VenceHoje'
+      '       isnull(v.Qtd,0) as Qtd_Vencido, '
+      '       isnull(vh.Qtd,0) as Qtd_VenceHoje,'
+      '       isnull(vA.Qtd,0) as Qtd_VenceAmanha'
       'From Setores s'
       
         '     Left Outer Join (Select count(*) Qtd, isnull(id_Setor_Desig' +
         'nado,0) id_Setor_Designado'
       '                      From ControlPc '
       '                      where Data_Hora_Encerramento is null'
-      '                            and id_Tipo_Prazo = 6'
       
-        '                      Group by id_Setor_Designado) cv on (cv.id_' +
-        'Setor_Designado = s.id) '
+        '                            and cast(Previsao_Solucao as Date) <' +
+        '  cast(getDate() as Date)'
+      
+        '                      Group by id_Setor_Designado) v on (v.id_Se' +
+        'tor_Designado = s.id) '
       
         '     Left Outer Join (Select count(*) Qtd, isnull(id_Setor_Desig' +
         'nado,0) id_Setor_Designado'
       '                      From ControlPc '
       '                      where Data_Hora_Encerramento is null'
-      '                            and id_Tipo_Prazo = 6'
-      #9#9#9#9#9#9#9'and Previsao_Solucao = getdate()'
       
-        '                      Group by id_Setor_Designado) cvh on (cvh.i' +
-        'd_Setor_Designado = s.id )'
+        '                            and cast(Previsao_Solucao as Date) =' +
+        '  cast(getDate() as Date)'
+      
+        '                      Group by id_Setor_Designado) vh on (vh.id_' +
+        'Setor_Designado = s.id )'
+      
+        '     Left Outer Join (Select count(*) Qtd, isnull(id_Setor_Desig' +
+        'nado,0) id_Setor_Designado'
+      '                      From ControlPc '
+      '                      where Data_Hora_Encerramento is null'
+      
+        '                            and cast(Previsao_Solucao as Date) =' +
+        '  cast(getDate() as Date)'
+      
+        '                      Group by id_Setor_Designado) va on (va.id_' +
+        'Setor_Designado = s.id )'
+      'union'
+      'Select '
+      '       Null as Nome_Setor, '
+      '      (Select count(*) Qtd'
+      '       From ControlPc '
+      '       where Data_Hora_Encerramento is null'
+      
+        '             and cast(Previsao_Solucao as Date) <  cast(getDate(' +
+        ') as Date)'
+      #9#9#9' and id_Setor_Designado is null) as  Qtd_Vencido,'
+      '      (Select count(*) Qtd'
+      '       From ControlPc '
+      '       where Data_Hora_Encerramento is null'
+      
+        '             and cast(Previsao_Solucao as Date) =  cast(getDate(' +
+        ') as Date)'
+      #9#9#9' and id_Setor_Designado is null) as  Qtd_VenceHoje,'
+      '      (Select count(*) Qtd'
+      '       From ControlPc '
+      '       where Data_Hora_Encerramento is null'
+      
+        '             and cast(Previsao_Solucao + 1 as Date) =  cast(getD' +
+        'ate() as Date)'
+      #9#9#9' and id_Setor_Designado is null) as  Qtd_VenceAmanha'
       'Order by Nome_Setor')
     Left = 69
     Top = 272
     object qryControlPcVencidosNome_Setor: TStringField
       FieldName = 'Nome_Setor'
       Origin = 'Nome_Setor'
+      ReadOnly = True
       Size = 50
     end
     object qryControlPcVencidosQtd_Vencido: TIntegerField
       FieldName = 'Qtd_Vencido'
       Origin = 'Qtd_Vencido'
       ReadOnly = True
-      Required = True
     end
     object qryControlPcVencidosQtd_VenceHoje: TIntegerField
       FieldName = 'Qtd_VenceHoje'
       Origin = 'Qtd_VenceHoje'
       ReadOnly = True
-      Required = True
+    end
+    object qryControlPcVencidosQtd_VenceAmanha: TIntegerField
+      FieldName = 'Qtd_VenceAmanha'
+      Origin = 'Qtd_VenceAmanha'
+      ReadOnly = True
     end
   end
 end

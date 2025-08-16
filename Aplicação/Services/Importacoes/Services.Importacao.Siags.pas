@@ -183,7 +183,12 @@ begin
                       ' - Total de registros não atualizados: ' + IntToStr(LRegistrosNaoAtualizados);
          InformationMessage(LMensagem ,C_TITULO_MENSAGENS);
       end else
-         InformationMessage('Ocorreu um erro na tentativa de gravar os dados.',C_TITULO_MENSAGENS)
+         begin
+         LMensagem := LRetorno.Values['autorizacao'].AsType<String>;
+         LMensagem := 'Ocorreu um erro na tentativa de gravar os dados.' + chr(13) +
+                      'Nº da Autorização que gerou o erro: ' + LMensagem;
+         InformationMessage(LMensagem,C_TITULO_MENSAGENS);
+      end;
    finally
       FreeAndNil(frmMensagem);
 

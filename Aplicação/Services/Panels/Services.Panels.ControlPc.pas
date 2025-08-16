@@ -250,13 +250,13 @@ begin
       Exit;
    end;
 
-
+(*
    if (AIdSetor = C_CODIGO_NAO_DESIGNADO) and (AIdUsuario <> C_CODIGO_NAO_DESIGNADO) then
       begin
       InformationMessage('É preciso selecionar o setor do usuário para designação.', C_TITULO_MENSAGENS);
       Exit;
    end;
-
+*)
    try
       LProtocolos := TJSONArray.Create;
       for I := 0 to AProtocolos.Count - 1 do
